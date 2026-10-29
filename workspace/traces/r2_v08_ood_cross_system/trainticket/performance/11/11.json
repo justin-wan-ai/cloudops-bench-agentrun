@@ -1,0 +1,795 @@
+{
+ "case_id": "trainticket/performance/11",
+ "system_name": "trainticket",
+ "question": "Service quality degradation.",
+ "case_path": "/Users/justinwan/work/workspace/cloudops_bench_rsi/repo/benchmark/trainticket/performance/11",
+ "max_steps": 8,
+ "current_step": 3,
+ "finished": true,
+ "stop_reason": "submit",
+ "final_answer": "{\"key_evidence_summary\": \"network latency anomaly on the pod\", \"top_3_predictions\": [{\"rank\": 1, \"fault_object\": \"app/ts-gateway-service\", \"root_cause\": \"pod_network_delay\"}, {\"rank\": 2, \"fault_object\": \"app/ts-preserve-service\", \"root_cause\": \"pod_network_delay\"}, {\"rank\": 3, \"fault_object\": \"app/ts-seat-service\", \"root_cause\": \"pod_network_delay\"}]}",
+ "metadata": {
+  "namespace": "train-ticket",
+  "query": "Service quality degradation.",
+  "fault_category": "performance",
+  "model_name": "agentrun-v0.8"
+ },
+ "steps": [
+  {
+   "step_id": 0,
+   "action_type": "tool",
+   "action_name": "GetResources",
+   "action_input": {
+    "namespace": "train-ticket",
+    "resource_type": "pods",
+    "output_wide": true
+   },
+   "observation": "NAME                                            READY   STATUS    RESTARTS        AGE    IP             NODE        NOMINATED NODE   READINESS GATES\nnacos-0                                         1/1     Running   0               8d     172.20.2.76    worker-02   <none>           <none>\nnacos-1                                         1/1     Running   0               8d     172.20.1.247   worker-01   <none>           <none>\nnacos-2                                         1/1     Running   0               8d     172.20.3.7     worker-03   <none>           <none>\nnacosdb-mysql-0                                 3/3     Running   1 (8d ago)      8d     172.20.2.75    worker-02   <none>           <none>\nnacosdb-mysql-1                                 3/3     Running   2 (8d ago)      8d     172.20.1.246   worker-01   <none>           <none>\nnacosdb-mysql-2                                 3/3     Running   1 (8d ago)      8d     172.20.3.6     worker-03   <none>           <none>\nrabbitmq-57b4f9969c-4cndj                       1/1     Running   0               8d     172.20.2.77    worker-02   <none>           <none>\nts-assurance-service-88f65755-nlwhf             2/2     Running   0               14m    172.20.2.217   worker-02   <none>           <none>\nts-auth-service-656fb96d87-9d7tm                2/2     Running   0               14m    172.20.3.121   worker-03   <none>           <none>\nts-avatar-service-54fb8f5c57-mqjgd              2/2     Running   0               14m    172.20.2.221   worker-02   <none>           <none>\nts-basic-service-57fb684696-92cpw               2/2     Running   0               14m    172.20.3.117   worker-03   <none>           <none>\nts-cancel-service-67fb7d5bb4-rldvd              2/2     Running   0               14m    172.20.3.113   worker-03   <none>           <none>\nts-config-service-65779cfcd7-blnn8              2/2     Running   0               14m    172.20.2.211   worker-02   <none>           <none>\nts-consign-price-service-9dbb69844-g9tgm        1/1     Running   0               2d4h   172.20.2.30    worker-02   <none>           <none>\nts-consign-service-846bdf46cc-56577             2/2     Running   0               14m    172.20.2.218   worker-02   <none>           <none>\nts-contacts-service-7fc68f4bbc-mhmxv            2/2     Running   0               14m    172.20.2.216   worker-02   <none>           <none>\nts-delivery-service-659b5d4f75-cfvl5            2/2     Running   0               14m    172.20.3.112   worker-03   <none>           <none>\nts-execute-service-5f7c9df447-djjlg             2/2     Running   0               14m    172.20.1.55    worker-01   <none>           <none>\nts-food-delivery-service-5b898fdbbf-7knbk       2/2     Running   0               14m    172.20.3.120   worker-03   <none>           <none>\nts-food-service-59c58c74cc-79b4c                2/2     Running   0               14m    172.20.2.214   worker-02   <none>           <none>\nts-gateway-service-ddc65b886-vp6c6              2/2     Running   0               14m    172.20.3.114   worker-03   <none>           <none>\nts-inside-payment-service-5b98976c87-w7mmc      2/2     Running   0               14m    172.20.2.208   worker-02   <none>           <none>\nts-news-service-578fd9cd67-jnrwf                2/2     Running   0               14m    172.20.1.56    worker-01   <none>           <none>\nts-notification-service-6b579b64d7-jsggf        2/2     Running   0               14m    172.20.2.215   worker-02   <none>           <none>\nts-order-other-service-788d947bdf-qf4pg         2/2     Running   0               14m    172.20.3.115   worker-03   <none>           <none>\nts-order-service-dd54d5df9-jvh46                2/2     Running   0               14m    172.20.3.122   worker-03   <none>           <none>\nts-payment-service-666d596f87-tzwmb             2/2     Running   0               14m    172.20.1.60    worker-01   <none>           <none>\nts-preserve-other-service-5f85fdfd7-2wkcv       2/2     Running   0               14m    172.20.2.213   worker-02   <none>           <none>\nts-preserve-service-6bccdc5454-5jj7m            2/2     Running   0               14m    172.20.2.210   worker-02   <none>           <none>\nts-price-service-6c4b77845-jrlzj                2/2     Running   0               14m    172.20.2.209   worker-02   <none>           <none>\nts-rebook-service-75d676f77b-mvtf2              2/2     Running   0               14m    172.20.3.111   worker-03   <none>           <none>\nts-route-plan-service-695f545f8c-lkn9h          2/2     Running   0               14m    172.20.2.219   worker-02   <none>           <none>\nts-route-service-688dc779fc-2lxk6               2/2     Running   0               14m    172.20.1.50    worker-01   <none>           <none>\nts-seat-service-5fc7c67c7f-jssvx                2/2     Running   0               14m    172.20.1.51    worker-01   <none>           <none>\nts-security-service-5fb7f7fbff-xxdsh            2/2     Running   0               14m    172.20.1.59    worker-01   <none>           <none>\nts-station-food-service-d99b9b859-fnfrx         2/2     Running   0               14m    172.20.1.61    worker-01   <none>           <none>\nts-station-service-7cbf6b96c9-tfhpc             2/2     Running   0               14m    172.20.1.54    worker-01   <none>           <none>\nts-ticket-office-service-6fd78bd9df-fvqj4       2/2     Running   1 (14m ago)     14m    172.20.3.116   worker-03   <none>           <none>\nts-train-food-service-67cb5bdf99-gbfxd          2/2     Running   0               14m    172.20.1.58    worker-01   <none>           <none>\nts-train-service-c4fb58df9-c266t                2/2     Running   0               14m    172.20.1.62    worker-01   <none>           <none>\nts-travel-plan-service-5985cdf6b6-lrqhp         2/2     Running   0               14m    172.20.2.222   worker-02   <none>           <none>\nts-travel-service-5b9b99c879-8m4kc              2/2     Running   0               14m    172.20.2.220   worker-02   <none>           <none>\nts-travel2-service-849bffcb7c-hgs26             2/2     Running   0               14m    172.20.3.119   worker-03   <none>           <none>\nts-ui-dashboard-554844f867-lgrk6                2/2     Running   0               14m    172.20.3.118   worker-03   <none>           <none>\nts-user-service-6886cbf9cf-crwkz                2/2     Running   0               14m    172.20.2.212   worker-02   <none>           <none>\nts-verification-code-service-7cbd896f77-fb8p5   2/2     Running   0               14m    172.20.1.57    worker-01   <none>           <none>\nts-voucher-service-5ffdd5456c-b6r5t             2/2     Running   0               14m    172.20.1.53    worker-01   <none>           <none>\nts-wait-order-service-848dbb9dd7-5w5hh          2/2     Running   0               14m    172.20.1.52    worker-01   <none>           <none>\ntsdb-mysql-0                                    4/4     Running   1 (5h59m ago)   6h3m   172.20.1.130   worker-01   <none>           <none>\ntsdb-mysql-1                                    4/4     Running   1 (5h59m ago)   6h2m   172.20.2.49    worker-02   <none>           <none>\ntsdb-mysql-2                                    4/4     Running   1 (5h59m ago)   6h     172.20.3.219   worker-03   <none>           <none>\n",
+   "error": null,
+   "purpose": "pod readiness census",
+   "tool_latency": null
+  },
+  {
+   "step_id": 1,
+   "action_type": "tool",
+   "action_name": "GetAlerts",
+   "action_input": {},
+   "observation": "{'status': 'has_anomalies', 'alert_count': 5, 'alerts': [{'type': 'Service', 'name': 'ts-gateway-service', 'entity_type': 'Service', 'entity_name': 'ts-gateway-service', 'time_range': '2026-03-16 17:07:52 ~ 2026-03-16 17:09:42', 'status': 'ABNORMAL', 'metric_category': 'LATENCY_DEGRADATION', 'evidence': ['LATENCY_DEGRADATION [Slow Response] | p90latency: Normal=372.82ms -> Current=5860.00ms (+1471.8%) | Peak=6137.93ms']}, {'type': 'Service', 'name': 'ts-preserve-service', 'entity_type': 'Service', 'entity_name': 'ts-preserve-service', 'time_range': '2026-03-16 17:07:52 ~ 2026-03-16 17:09:42', 'status': 'ABNORMAL', 'metric_category': 'LATENCY_DEGRADATION', 'evidence': ['LATENCY_DEGRADATION [Slow Response] | p50latency: Normal=463.24ms -> Current=8416.67ms (+1716.9%) | Peak=9642.86ms | p90latency: Normal=1337.50ms -> Current=22545.46ms (+1585.6%) | Peak=25666.67ms']}, {'type': 'Service', 'name': 'ts-seat-service', 'entity_type': 'Service', 'entity_name': 'ts-seat-service', 'time_range': '2026-03-16 17:07:52 ~ 2026-03-16 17:09:42', 'status': 'ABNORMAL', 'metric_category': 'LATENCY_DEGRADATION, THROUGHPUT_DROP', 'evidence': ['THROUGHPUT_DROP [RPS] | Normal=2.30req/s -> Current=0.44req/s (-81.0%)', 'LATENCY_DEGRADATION [Slow Response] | p50latency: Normal=19.72ms -> Current=3065.48ms (+15445.4%) | Peak=3437.50ms | p90latency: Normal=66.40ms -> Current=4613.10ms (+6847.4%) | Peak=4687.50ms']}, {'type': 'Service', 'name': 'ts-travel-service', 'entity_type': 'Service', 'entity_name': 'ts-travel-service', 'time_range': '2026-03-16 17:07:52 ~ 2026-03-16 17:09:42', 'status': 'ABNORMAL', 'metric_category': 'LATENCY_DEGRADATION', 'evidence': ['LATENCY_DEGRADATION [Slow Response] | p90latency: Normal=209.04ms -> Current=8925.00ms (+4169.6%) | Peak=9025.00ms']}, {'type': 'Service', 'name': 'ts-ui-dashboard', 'entity_type': 'Service', 'entity_name': 'ts-ui-dashboard', 'time_range': '2026-03-16 17:07:52 ~ 2026-03-16 17:09:42', 'status': 'ABNORMAL', 'metric_category': 'LATENCY_DEGRADATION', 'evidence': ['LATENCY_DEGRADATION [Slow Response] | p90latency: Normal=391.18ms -> Current=5800.00ms (+1382.7%) | Peak=6178.57ms']}]}",
+   "error": null,
+   "purpose": "anomaly signature (routes performance/code families)",
+   "tool_latency": null
+  },
+  {
+   "step_id": 2,
+   "action_type": "tool",
+   "action_name": "GetRecentLogs",
+   "action_input": {
+    "namespace": "train-ticket",
+    "service_name": "ts-gateway-service"
+   },
+   "observation": "['From previous container logs:', 'Error: Error from server (BadRequest): previous terminated container \"ts-gateway-service\" in pod \"ts-gateway-service-ddc65b886-vp6c6\" not found']",
+   "error": null,
+   "purpose": "request latency / saturation logs",
+   "tool_latency": null
+  }
+ ],
+ "agentrun": {
+  "tag": "test",
+  "dsl": "workspace/dsl_versions/v0.8.dsl.txt",
+  "dsl_version": "0.8",
+  "sop": {
+   "sop": "boutique-runtime-rca",
+   "scope": {
+    "system": "boutique",
+    "families": [
+     "runtime",
+     "admission",
+     "scheduling",
+     "startup",
+     "service",
+     "performance",
+     "infrastructure",
+     "codedefect"
+    ],
+    "severity": [
+     "SEV2",
+     "SEV3"
+    ]
+   },
+   "owner": "sre-platform",
+   "approved_by": [
+    "oncall-primary",
+    "sre-lead"
+   ],
+   "reviewed_at": "2026-10-23",
+   "change_ticket": "OPS-1236",
+   "boundaries": "只读诊断：本 SOP 不执行任何写操作（重启/回滚/扩缩容），也不做对外播报；\n它回答\"最可能的根因与受害对象\"，处置与沟通由值班按 runbook 人工执行。\n不覆盖 SEV1（需 incident commander 介入）与变更引发的问题（走变更回滚流程）。\n输入是冻结快照：诊断结论对\"快照时刻\"成立，恢复后需重新取证。\nR1 已知边界：PVC 的 requested size / accessMode 在本 benchmark 的工具面不可见，\n因此 pvc_capacity 与 pvc_access_mode 无法区分（同一分数并列，交给 jev 或升级）。\n"
+  },
+  "params": {
+   "cands_cap": 8,
+   "max_waves": 8,
+   "min_waves": 5,
+   "steps_per_wave": 1,
+   "dominance_ratio": 1.5,
+   "conf_min": 0.0,
+   "escalate": true,
+   "escalate_budget": 8,
+   "judge_on_codedefect": true,
+   "jev_route": true,
+   "jev_pick": true,
+   "jev_verify": true,
+   "route_fallback": "runtime"
+  },
+  "nodes_executed": [
+   "anchors:extract_anchors",
+   "census:probes",
+   "route:decide",
+   "plan:build_plan",
+   "probe:probes",
+   "derive:derive_candidates",
+   "pick:decide",
+   "verify:decide",
+   "probe:probes",
+   "derive:derive_candidates",
+   "pick:decide",
+   "verify:decide",
+   "probe:probes",
+   "derive:derive_candidates",
+   "pick:decide",
+   "verify:decide",
+   "escalate:escalate",
+   "answer:normalize_answer",
+   "persist:persist_trace"
+  ],
+  "census": [
+   {
+    "step": "pods",
+    "gate": "always"
+   },
+   {
+    "step": "alerts",
+    "gate": "healthy_system"
+   }
+  ],
+  "plan": [
+   {
+    "step": "recent_logs",
+    "gate": "always",
+    "wave": 1
+   },
+   {
+    "step": "describe_pod",
+    "gate": "weak",
+    "wave": 2
+   },
+   {
+    "step": "deps",
+    "gate": "weak",
+    "wave": 3
+   }
+  ],
+  "family": "performance",
+  "state_wiring": {
+   "family": "$route.family",
+   "route_probs": "$route.probabilities",
+   "picked": "$pick.picked",
+   "pick_dominant": "$pick.dominant",
+   "verify_status": "$verify.status",
+   "verify_prob": "$verify.confidence"
+  },
+  "bindings": {
+   "anchors": {
+    "anchors": "Anchors(case_id='trainticket/performance/11', system='trainticket', namespace='train-ticket', query='Service quality degradation.', difficulty='hard', symptoms=['degradation'], mentioned_apps=[], priors={'db_service': 'tsdb-mysql-leader', 'db_port': 3306})"
+   },
+   "route": {
+    "family": "performance",
+    "probabilities": {},
+    "route_why": "mechanism_mode"
+   },
+   "plan": {
+    "plan": "[{'name': 'recent_logs', 'key': 'recent', 'tool': 'GetRecentLogs', 'args': <function _args_error_logs at 0x107ddb740>, 'purpose': 'request latency / saturation logs', 'when': <function compile_steps.<locals>.<lambda> at 0x107ea28e0>, 'gate': 'always', 'wave': 1}, {'name': 'describe_pod', 'key': 'describe:pod', 'tool': 'DescribeResource', 'args': <function _args_describe_pod at 0x107ddb560>, 'purpose': 'probe config, container state, restart reasons, scheduler events', 'when': <function compile_steps.<locals>.<lambda> at 0x107ea2de0>, 'gate': 'weak', 'wave': 2}, {'name': 'deps', 'key': 'deps', 'tool': 'GetServiceDependencies', 'args': <function _args_deps at 0x107ddbe20>, 'purpose': 'upstream/downstream call graph', 'when': <function compile_steps.<locals>.<lambda> at 0x107ea2f20>, 'gate': 'weak', 'wave': 3}]"
+   },
+   "derive": {
+    "candidates": "[Candidate(root_cause='pod_network_delay', object='app/ts-gateway-service', score=0.82, evidence='network latency anomaly on the pod', rule='delay_alert'), Candidate(root_cause='pod_network_delay', object='app/ts-preserve-service', score=0.82, evidence='network latency anomaly on the pod', rule='delay_alert'), Candidate(root_cause='pod_network_delay', object='app/ts-seat-service', score=0.82, evidence='network latency anomaly on the pod', rule='delay_alert'), Candidate(root_cause='pod_network_delay', object='app/ts-travel-service', score=0.82, evidence='network latency anomaly on the pod', rule='delay_alert'), Candidate(root_cause='pod_network_delay', object='app/ts-ui-dashboard', score=0.82, evidence='network latency anomaly on the pod', rule='delay_alert'), Candidate(root_cause='gateway_misrouted', object='app/ts-gateway-service', score=0.42, evidence='gateway returned routing errors', rule='gateway')]"
+   },
+   "pick": {
+    "picked": 0,
+    "dominant": false,
+    "pick_why": "no_new_evidence"
+   },
+   "verify": {
+    "status": "verified",
+    "confidence": null,
+    "verify_why": "no_new_evidence"
+   },
+   "escalate": {
+    "answer": null
+   },
+   "answer": {
+    "final": {
+     "key_evidence_summary": "network latency anomaly on the pod",
+     "top_3_predictions": [
+      {
+       "rank": 1,
+       "fault_object": "app/ts-gateway-service",
+       "root_cause": "pod_network_delay"
+      },
+      {
+       "rank": 2,
+       "fault_object": "app/ts-preserve-service",
+       "root_cause": "pod_network_delay"
+      },
+      {
+       "rank": 3,
+       "fault_object": "app/ts-seat-service",
+       "root_cause": "pod_network_delay"
+      }
+     ]
+    }
+   }
+  },
+  "picked": {
+   "root_cause": "pod_network_delay",
+   "object": "app/ts-gateway-service",
+   "score": 0.82,
+   "evidence": "network latency anomaly on the pod",
+   "rule": "delay_alert"
+  },
+  "pick_why": "",
+  "verify_prob": null,
+  "verify_verdict": "verified",
+  "verified": true,
+  "escalated": false,
+  "escalate_reason": "",
+  "escalate_steps": 0,
+  "waves": 3,
+  "candidates": [
+   {
+    "root_cause": "pod_network_delay",
+    "object": "app/ts-gateway-service",
+    "score": 0.82,
+    "evidence": "network latency anomaly on the pod",
+    "rule": "delay_alert"
+   },
+   {
+    "root_cause": "pod_network_delay",
+    "object": "app/ts-preserve-service",
+    "score": 0.82,
+    "evidence": "network latency anomaly on the pod",
+    "rule": "delay_alert"
+   },
+   {
+    "root_cause": "pod_network_delay",
+    "object": "app/ts-seat-service",
+    "score": 0.82,
+    "evidence": "network latency anomaly on the pod",
+    "rule": "delay_alert"
+   },
+   {
+    "root_cause": "pod_network_delay",
+    "object": "app/ts-travel-service",
+    "score": 0.82,
+    "evidence": "network latency anomaly on the pod",
+    "rule": "delay_alert"
+   },
+   {
+    "root_cause": "pod_network_delay",
+    "object": "app/ts-ui-dashboard",
+    "score": 0.82,
+    "evidence": "network latency anomaly on the pod",
+    "rule": "delay_alert"
+   },
+   {
+    "root_cause": "gateway_misrouted",
+    "object": "app/ts-gateway-service",
+    "score": 0.42,
+    "evidence": "gateway returned routing errors",
+    "rule": "gateway"
+   }
+  ],
+  "jev": [
+   {
+    "rid": "test:trainticket/performance/11#route",
+    "kind": "route",
+    "node": "route",
+    "mode": "mechanism",
+    "options": [
+     "performance",
+     "infrastructure"
+    ],
+    "status": "mechanical",
+    "guard": "unavailable",
+    "use": "first_option",
+    "choice": "performance",
+    "why": "mechanism_mode",
+    "dominant": false,
+    "continue_loop": false,
+    "escalate": false
+   },
+   {
+    "rid": "test:trainticket/performance/11#pick1",
+    "kind": "pick",
+    "node": "pick",
+    "mode": "mechanism",
+    "options": [
+     "c0",
+     "c1",
+     "c2",
+     "c3",
+     "c4",
+     "c5"
+    ],
+    "status": "mechanical",
+    "guard": "unavailable",
+    "use": "first_option",
+    "choice": 0,
+    "why": "mechanism_mode",
+    "dominant": false,
+    "continue_loop": false,
+    "escalate": false
+   },
+   {
+    "rid": "test:trainticket/performance/11#verify1",
+    "kind": "verify",
+    "node": "verify",
+    "mode": "mechanism",
+    "options": [
+     "supported",
+     "insufficient",
+     "contradicted"
+    ],
+    "status": "mechanical",
+    "guard": "unavailable",
+    "use": "verified",
+    "choice": "verified",
+    "why": "mechanism_mode",
+    "dominant": false,
+    "continue_loop": false,
+    "escalate": false
+   },
+   {
+    "rid": "test:trainticket/performance/11#pick2",
+    "kind": "pick",
+    "node": "pick",
+    "mode": "mechanism",
+    "options": [
+     "c0",
+     "c1",
+     "c2",
+     "c3",
+     "c4",
+     "c5"
+    ],
+    "status": "mechanical",
+    "guard": "unchanged_since_last",
+    "use": "previous",
+    "choice": 0,
+    "why": "no_new_evidence",
+    "dominant": false,
+    "continue_loop": false,
+    "escalate": false
+   },
+   {
+    "rid": "test:trainticket/performance/11#verify2",
+    "kind": "verify",
+    "node": "verify",
+    "mode": "mechanism",
+    "options": [
+     "supported",
+     "insufficient",
+     "contradicted"
+    ],
+    "status": "mechanical",
+    "guard": "unchanged_since_last",
+    "use": "previous",
+    "choice": "verified",
+    "why": "no_new_evidence",
+    "dominant": false,
+    "continue_loop": false,
+    "escalate": false
+   },
+   {
+    "rid": "test:trainticket/performance/11#pick3",
+    "kind": "pick",
+    "node": "pick",
+    "mode": "mechanism",
+    "options": [
+     "c0",
+     "c1",
+     "c2",
+     "c3",
+     "c4",
+     "c5"
+    ],
+    "status": "mechanical",
+    "guard": "unchanged_since_last",
+    "use": "previous",
+    "choice": 0,
+    "why": "no_new_evidence",
+    "dominant": false,
+    "continue_loop": false,
+    "escalate": false
+   },
+   {
+    "rid": "test:trainticket/performance/11#verify3",
+    "kind": "verify",
+    "node": "verify",
+    "mode": "mechanism",
+    "options": [
+     "supported",
+     "insufficient",
+     "contradicted"
+    ],
+    "status": "mechanical",
+    "guard": "unchanged_since_last",
+    "use": "previous",
+    "choice": "verified",
+    "why": "no_new_evidence",
+    "dominant": false,
+    "continue_loop": false,
+    "escalate": false
+   }
+  ],
+  "nodes": [
+   {
+    "node": "code",
+    "id": "anchors",
+    "anchors": {
+     "case_id": "trainticket/performance/11",
+     "system": "trainticket",
+     "namespace": "train-ticket",
+     "query": "Service quality degradation.",
+     "difficulty": "hard",
+     "symptoms": [
+      "degradation"
+     ],
+     "mentioned_apps": []
+    }
+   },
+   {
+    "node": "probes",
+    "plan": "census",
+    "wave": 0,
+    "executed": 2,
+    "steps": [
+     {
+      "key": "pods",
+      "tool": "GetResources",
+      "arguments": {
+       "namespace": "train-ticket",
+       "resource_type": "pods",
+       "output_wide": true
+      },
+      "gate": "always"
+     },
+     {
+      "key": "alerts",
+      "tool": "GetAlerts",
+      "arguments": {},
+      "gate": "healthy_system"
+     }
+    ],
+    "skipped": []
+   },
+   {
+    "node": "decide",
+    "id": "route",
+    "rid": "test:trainticket/performance/11#route",
+    "status": "mechanical",
+    "guard": "unavailable",
+    "use": "first_option",
+    "choice": "performance",
+    "dominant": false,
+    "why": "mechanism_mode"
+   },
+   {
+    "node": "code",
+    "id": "plan",
+    "family": "performance",
+    "plan": [
+     {
+      "step": "recent_logs",
+      "gate": "always",
+      "wave": 1
+     },
+     {
+      "step": "describe_pod",
+      "gate": "weak",
+      "wave": 2
+     },
+     {
+      "step": "deps",
+      "gate": "weak",
+      "wave": 3
+     }
+    ]
+   },
+   {
+    "node": "probes",
+    "plan": "family",
+    "wave": 1,
+    "executed": 1,
+    "steps": [
+     {
+      "key": "recent",
+      "tool": "GetRecentLogs",
+      "arguments": {
+       "namespace": "train-ticket",
+       "service_name": "ts-gateway-service"
+      },
+      "gate": "always"
+     }
+    ],
+    "skipped": []
+   },
+   {
+    "node": "code",
+    "id": "derive",
+    "raw": 6,
+    "kept": 6,
+    "top": [
+     {
+      "root_cause": "pod_network_delay",
+      "object": "app/ts-gateway-service",
+      "score": 0.82,
+      "evidence": "network latency anomaly on the pod",
+      "rule": "delay_alert"
+     },
+     {
+      "root_cause": "pod_network_delay",
+      "object": "app/ts-preserve-service",
+      "score": 0.82,
+      "evidence": "network latency anomaly on the pod",
+      "rule": "delay_alert"
+     },
+     {
+      "root_cause": "pod_network_delay",
+      "object": "app/ts-seat-service",
+      "score": 0.82,
+      "evidence": "network latency anomaly on the pod",
+      "rule": "delay_alert"
+     },
+     {
+      "root_cause": "pod_network_delay",
+      "object": "app/ts-travel-service",
+      "score": 0.82,
+      "evidence": "network latency anomaly on the pod",
+      "rule": "delay_alert"
+     },
+     {
+      "root_cause": "pod_network_delay",
+      "object": "app/ts-ui-dashboard",
+      "score": 0.82,
+      "evidence": "network latency anomaly on the pod",
+      "rule": "delay_alert"
+     },
+     {
+      "root_cause": "gateway_misrouted",
+      "object": "app/ts-gateway-service",
+      "score": 0.42,
+      "evidence": "gateway returned routing errors",
+      "rule": "gateway"
+     }
+    ]
+   },
+   {
+    "node": "decide",
+    "id": "pick",
+    "rid": "test:trainticket/performance/11#pick1",
+    "status": "mechanical",
+    "guard": "unavailable",
+    "use": "first_option",
+    "choice": 0,
+    "dominant": false,
+    "why": "mechanism_mode"
+   },
+   {
+    "node": "decide",
+    "id": "verify",
+    "rid": "test:trainticket/performance/11#verify1",
+    "status": "mechanical",
+    "guard": "unavailable",
+    "use": "verified",
+    "choice": "verified",
+    "dominant": false,
+    "why": "mechanism_mode"
+   },
+   {
+    "node": "probes",
+    "plan": "family",
+    "wave": 2,
+    "executed": 0,
+    "steps": [],
+    "skipped": [
+     {
+      "step": "describe_pod",
+      "why": "gate weak"
+     }
+    ]
+   },
+   {
+    "node": "code",
+    "id": "derive",
+    "raw": 6,
+    "kept": 6,
+    "top": [
+     {
+      "root_cause": "pod_network_delay",
+      "object": "app/ts-gateway-service",
+      "score": 0.82,
+      "evidence": "network latency anomaly on the pod",
+      "rule": "delay_alert"
+     },
+     {
+      "root_cause": "pod_network_delay",
+      "object": "app/ts-preserve-service",
+      "score": 0.82,
+      "evidence": "network latency anomaly on the pod",
+      "rule": "delay_alert"
+     },
+     {
+      "root_cause": "pod_network_delay",
+      "object": "app/ts-seat-service",
+      "score": 0.82,
+      "evidence": "network latency anomaly on the pod",
+      "rule": "delay_alert"
+     },
+     {
+      "root_cause": "pod_network_delay",
+      "object": "app/ts-travel-service",
+      "score": 0.82,
+      "evidence": "network latency anomaly on the pod",
+      "rule": "delay_alert"
+     },
+     {
+      "root_cause": "pod_network_delay",
+      "object": "app/ts-ui-dashboard",
+      "score": 0.82,
+      "evidence": "network latency anomaly on the pod",
+      "rule": "delay_alert"
+     },
+     {
+      "root_cause": "gateway_misrouted",
+      "object": "app/ts-gateway-service",
+      "score": 0.42,
+      "evidence": "gateway returned routing errors",
+      "rule": "gateway"
+     }
+    ]
+   },
+   {
+    "node": "decide",
+    "id": "pick",
+    "rid": "test:trainticket/performance/11#pick2",
+    "status": "mechanical",
+    "guard": "unchanged_since_last",
+    "use": "previous",
+    "choice": 0,
+    "dominant": false,
+    "why": "no_new_evidence"
+   },
+   {
+    "node": "decide",
+    "id": "verify",
+    "rid": "test:trainticket/performance/11#verify2",
+    "status": "mechanical",
+    "guard": "unchanged_since_last",
+    "use": "previous",
+    "choice": "verified",
+    "dominant": false,
+    "why": "no_new_evidence"
+   },
+   {
+    "node": "probes",
+    "plan": "family",
+    "wave": 3,
+    "executed": 0,
+    "steps": [],
+    "skipped": [
+     {
+      "step": "deps",
+      "why": "gate weak"
+     }
+    ]
+   },
+   {
+    "node": "code",
+    "id": "derive",
+    "raw": 6,
+    "kept": 6,
+    "top": [
+     {
+      "root_cause": "pod_network_delay",
+      "object": "app/ts-gateway-service",
+      "score": 0.82,
+      "evidence": "network latency anomaly on the pod",
+      "rule": "delay_alert"
+     },
+     {
+      "root_cause": "pod_network_delay",
+      "object": "app/ts-preserve-service",
+      "score": 0.82,
+      "evidence": "network latency anomaly on the pod",
+      "rule": "delay_alert"
+     },
+     {
+      "root_cause": "pod_network_delay",
+      "object": "app/ts-seat-service",
+      "score": 0.82,
+      "evidence": "network latency anomaly on the pod",
+      "rule": "delay_alert"
+     },
+     {
+      "root_cause": "pod_network_delay",
+      "object": "app/ts-travel-service",
+      "score": 0.82,
+      "evidence": "network latency anomaly on the pod",
+      "rule": "delay_alert"
+     },
+     {
+      "root_cause": "pod_network_delay",
+      "object": "app/ts-ui-dashboard",
+      "score": 0.82,
+      "evidence": "network latency anomaly on the pod",
+      "rule": "delay_alert"
+     },
+     {
+      "root_cause": "gateway_misrouted",
+      "object": "app/ts-gateway-service",
+      "score": 0.42,
+      "evidence": "gateway returned routing errors",
+      "rule": "gateway"
+     }
+    ]
+   },
+   {
+    "node": "decide",
+    "id": "pick",
+    "rid": "test:trainticket/performance/11#pick3",
+    "status": "mechanical",
+    "guard": "unchanged_since_last",
+    "use": "previous",
+    "choice": 0,
+    "dominant": false,
+    "why": "no_new_evidence"
+   },
+   {
+    "node": "decide",
+    "id": "verify",
+    "rid": "test:trainticket/performance/11#verify3",
+    "status": "mechanical",
+    "guard": "unchanged_since_last",
+    "use": "previous",
+    "choice": "verified",
+    "dominant": false,
+    "why": "no_new_evidence"
+   },
+   {
+    "node": "loop",
+    "id": "waves",
+    "stop": "plan_exhausted",
+    "wave": 3
+   },
+   {
+    "node": "escalate",
+    "id": "escalate",
+    "fired": false,
+    "reasons": [],
+    "why": "no reason"
+   },
+   {
+    "node": "code",
+    "id": "answer",
+    "predictions": [
+     {
+      "rank": 1,
+      "fault_object": "app/ts-gateway-service",
+      "root_cause": "pod_network_delay"
+     },
+     {
+      "rank": 2,
+      "fault_object": "app/ts-preserve-service",
+      "root_cause": "pod_network_delay"
+     },
+     {
+      "rank": 3,
+      "fault_object": "app/ts-seat-service",
+      "root_cause": "pod_network_delay"
+     }
+    ]
+   },
+   {
+    "node": "artifact",
+    "id": "persist",
+    "persisted": false,
+    "why": "written by the CLI driver"
+   }
+  ],
+  "notes": [],
+  "tool_calls": 3,
+  "model_calls": 0,
+  "tokens_in": 0,
+  "tokens_out": 0,
+  "wall_s": 0.08
+ }
+}

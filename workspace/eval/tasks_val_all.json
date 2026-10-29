@@ -1,0 +1,307 @@
+{
+ "split": "val",
+ "n": 43,
+ "cases": [
+  {
+   "id": "boutique/codedefect/63",
+   "system": "boutique",
+   "category": "codedefect",
+   "case": "63",
+   "difficulty": "hard"
+  },
+  {
+   "id": "boutique/runtime/28",
+   "system": "boutique",
+   "category": "runtime",
+   "case": "28",
+   "difficulty": "easy"
+  },
+  {
+   "id": "boutique/infrastructure/9",
+   "system": "boutique",
+   "category": "infrastructure",
+   "case": "9",
+   "difficulty": "medium"
+  },
+  {
+   "id": "boutique/scheduling/27",
+   "system": "boutique",
+   "category": "scheduling",
+   "case": "27",
+   "difficulty": "easy"
+  },
+  {
+   "id": "boutique/startup/11",
+   "system": "boutique",
+   "category": "startup",
+   "case": "11",
+   "difficulty": "easy"
+  },
+  {
+   "id": "boutique/startup/25",
+   "system": "boutique",
+   "category": "startup",
+   "case": "25",
+   "difficulty": "easy"
+  },
+  {
+   "id": "boutique/infrastructure/16",
+   "system": "boutique",
+   "category": "infrastructure",
+   "case": "16",
+   "difficulty": "medium"
+  },
+  {
+   "id": "boutique/infrastructure/29",
+   "system": "boutique",
+   "category": "infrastructure",
+   "case": "29",
+   "difficulty": "medium"
+  },
+  {
+   "id": "boutique/infrastructure/36",
+   "system": "boutique",
+   "category": "infrastructure",
+   "case": "36",
+   "difficulty": "medium"
+  },
+  {
+   "id": "boutique/scheduling/35",
+   "system": "boutique",
+   "category": "scheduling",
+   "case": "35",
+   "difficulty": "easy"
+  },
+  {
+   "id": "boutique/startup/51",
+   "system": "boutique",
+   "category": "startup",
+   "case": "51",
+   "difficulty": "easy"
+  },
+  {
+   "id": "boutique/admission/8",
+   "system": "boutique",
+   "category": "admission",
+   "case": "8",
+   "difficulty": "medium"
+  },
+  {
+   "id": "boutique/admission/18",
+   "system": "boutique",
+   "category": "admission",
+   "case": "18",
+   "difficulty": "medium"
+  },
+  {
+   "id": "boutique/admission/23",
+   "system": "boutique",
+   "category": "admission",
+   "case": "23",
+   "difficulty": "medium"
+  },
+  {
+   "id": "boutique/admission/43",
+   "system": "boutique",
+   "category": "admission",
+   "case": "43",
+   "difficulty": "medium"
+  },
+  {
+   "id": "boutique/admission/54",
+   "system": "boutique",
+   "category": "admission",
+   "case": "54",
+   "difficulty": "medium"
+  },
+  {
+   "id": "boutique/admission/55",
+   "system": "boutique",
+   "category": "admission",
+   "case": "55",
+   "difficulty": "medium"
+  },
+  {
+   "id": "boutique/scheduling/72",
+   "system": "boutique",
+   "category": "scheduling",
+   "case": "72",
+   "difficulty": "easy"
+  },
+  {
+   "id": "boutique/scheduling/7",
+   "system": "boutique",
+   "category": "scheduling",
+   "case": "7",
+   "difficulty": "easy"
+  },
+  {
+   "id": "boutique/performance/22",
+   "system": "boutique",
+   "category": "performance",
+   "case": "22",
+   "difficulty": "hard"
+  },
+  {
+   "id": "boutique/performance/29",
+   "system": "boutique",
+   "category": "performance",
+   "case": "29",
+   "difficulty": "hard"
+  },
+  {
+   "id": "boutique/scheduling/106",
+   "system": "boutique",
+   "category": "scheduling",
+   "case": "106",
+   "difficulty": "easy"
+  },
+  {
+   "id": "boutique/scheduling/117",
+   "system": "boutique",
+   "category": "scheduling",
+   "case": "117",
+   "difficulty": "easy"
+  },
+  {
+   "id": "boutique/performance/4",
+   "system": "boutique",
+   "category": "performance",
+   "case": "4",
+   "difficulty": "hard"
+  },
+  {
+   "id": "boutique/performance/17",
+   "system": "boutique",
+   "category": "performance",
+   "case": "17",
+   "difficulty": "hard"
+  },
+  {
+   "id": "boutique/scheduling/138",
+   "system": "boutique",
+   "category": "scheduling",
+   "case": "138",
+   "difficulty": "easy"
+  },
+  {
+   "id": "boutique/scheduling/128",
+   "system": "boutique",
+   "category": "scheduling",
+   "case": "128",
+   "difficulty": "easy"
+  },
+  {
+   "id": "boutique/scheduling/55",
+   "system": "boutique",
+   "category": "scheduling",
+   "case": "55",
+   "difficulty": "easy"
+  },
+  {
+   "id": "boutique/scheduling/132",
+   "system": "boutique",
+   "category": "scheduling",
+   "case": "132",
+   "difficulty": "easy"
+  },
+  {
+   "id": "boutique/scheduling/136",
+   "system": "boutique",
+   "category": "scheduling",
+   "case": "136",
+   "difficulty": "easy"
+  },
+  {
+   "id": "boutique/runtime/40",
+   "system": "boutique",
+   "category": "runtime",
+   "case": "40",
+   "difficulty": "easy"
+  },
+  {
+   "id": "boutique/runtime/38",
+   "system": "boutique",
+   "category": "runtime",
+   "case": "38",
+   "difficulty": "easy"
+  },
+  {
+   "id": "boutique/service/1",
+   "system": "boutique",
+   "category": "service",
+   "case": "1",
+   "difficulty": "medium"
+  },
+  {
+   "id": "boutique/service/10",
+   "system": "boutique",
+   "category": "service",
+   "case": "10",
+   "difficulty": "medium"
+  },
+  {
+   "id": "boutique/service/29",
+   "system": "boutique",
+   "category": "service",
+   "case": "29",
+   "difficulty": "medium"
+  },
+  {
+   "id": "boutique/service/35",
+   "system": "boutique",
+   "category": "service",
+   "case": "35",
+   "difficulty": "medium"
+  },
+  {
+   "id": "boutique/scheduling/148",
+   "system": "boutique",
+   "category": "scheduling",
+   "case": "148",
+   "difficulty": "easy"
+  },
+  {
+   "id": "boutique/startup/61",
+   "system": "boutique",
+   "category": "startup",
+   "case": "61",
+   "difficulty": "easy"
+  },
+  {
+   "id": "trainticket/runtime/24",
+   "system": "trainticket",
+   "category": "runtime",
+   "case": "24",
+   "difficulty": "easy"
+  },
+  {
+   "id": "trainticket/startup/18",
+   "system": "trainticket",
+   "category": "startup",
+   "case": "18",
+   "difficulty": "easy"
+  },
+  {
+   "id": "trainticket/runtime/52",
+   "system": "trainticket",
+   "category": "runtime",
+   "case": "52",
+   "difficulty": "easy"
+  },
+  {
+   "id": "trainticket/runtime/67",
+   "system": "trainticket",
+   "category": "runtime",
+   "case": "67",
+   "difficulty": "easy"
+  },
+  {
+   "id": "trainticket/runtime/95",
+   "system": "trainticket",
+   "category": "runtime",
+   "case": "95",
+   "difficulty": "easy"
+  }
+ ]
+}

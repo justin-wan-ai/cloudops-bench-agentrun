@@ -1,0 +1,764 @@
+{
+ "case_id": "trainticket/performance/26",
+ "system_name": "trainticket",
+ "question": "Service quality degradation.",
+ "case_path": "/Users/justinwan/work/workspace/cloudops_bench_rsi/repo/benchmark/trainticket/performance/26",
+ "max_steps": 8,
+ "current_step": 3,
+ "finished": true,
+ "stop_reason": "submit",
+ "final_answer": "{\"key_evidence_summary\": \"network latency anomaly on the pod\", \"top_3_predictions\": [{\"rank\": 1, \"fault_object\": \"app/ts-assurance-service\", \"root_cause\": \"pod_network_delay\"}, {\"rank\": 2, \"fault_object\": \"app/ts-basic-service\", \"root_cause\": \"pod_network_delay\"}, {\"rank\": 3, \"fault_object\": \"app/ts-food-service\", \"root_cause\": \"pod_network_delay\"}]}",
+ "metadata": {
+  "namespace": "train-ticket",
+  "query": "Service quality degradation.",
+  "fault_category": "performance",
+  "model_name": "agentrun-v0.8"
+ },
+ "steps": [
+  {
+   "step_id": 0,
+   "action_type": "tool",
+   "action_name": "GetResources",
+   "action_input": {
+    "namespace": "train-ticket",
+    "resource_type": "pods",
+    "output_wide": true
+   },
+   "observation": "NAME                                            READY   STATUS    RESTARTS      AGE   IP             NODE        NOMINATED NODE   READINESS GATES\nnacos-0                                         1/1     Running   0             11d   172.20.2.76    worker-02   <none>           <none>\nnacos-1                                         1/1     Running   0             11d   172.20.1.247   worker-01   <none>           <none>\nnacos-2                                         1/1     Running   0             11d   172.20.3.7     worker-03   <none>           <none>\nnacosdb-mysql-0                                 3/3     Running   1 (11d ago)   11d   172.20.2.75    worker-02   <none>           <none>\nnacosdb-mysql-1                                 3/3     Running   2 (11d ago)   11d   172.20.1.246   worker-01   <none>           <none>\nnacosdb-mysql-2                                 3/3     Running   1 (11d ago)   11d   172.20.3.6     worker-03   <none>           <none>\nrabbitmq-57b4f9969c-4cndj                       1/1     Running   0             11d   172.20.2.77    worker-02   <none>           <none>\nts-assurance-service-88f65755-sfpls             2/2     Running   0             14m   172.20.1.131   worker-01   <none>           <none>\nts-auth-service-656fb96d87-g8l8w                2/2     Running   0             14m   172.20.1.134   worker-01   <none>           <none>\nts-avatar-service-54fb8f5c57-ggvsj              2/2     Running   0             14m   172.20.3.11    worker-03   <none>           <none>\nts-basic-service-57fb684696-5vsvw               2/2     Running   0             14m   172.20.1.133   worker-01   <none>           <none>\nts-cancel-service-67fb7d5bb4-tn62m              2/2     Running   0             14m   172.20.1.135   worker-01   <none>           <none>\nts-config-service-65779cfcd7-bmqb8              2/2     Running   0             14m   172.20.3.4     worker-03   <none>           <none>\nts-consign-price-service-b74c79d7-slfdv         2/2     Running   0             21h   172.20.2.48    worker-02   <none>           <none>\nts-consign-service-846bdf46cc-58xlt             2/2     Running   0             14m   172.20.3.12    worker-03   <none>           <none>\nts-contacts-service-7fc68f4bbc-hj6sc            2/2     Running   0             14m   172.20.2.236   worker-02   <none>           <none>\nts-delivery-service-659b5d4f75-fxwd8            2/2     Running   0             14m   172.20.2.231   worker-02   <none>           <none>\nts-execute-service-5f7c9df447-5ntjw             2/2     Running   0             14m   172.20.3.2     worker-03   <none>           <none>\nts-food-delivery-service-5b898fdbbf-dk88n       2/2     Running   0             14m   172.20.1.140   worker-01   <none>           <none>\nts-food-service-59c58c74cc-x47ww                2/2     Running   0             14m   172.20.1.130   worker-01   <none>           <none>\nts-gateway-service-ddc65b886-tblvz              2/2     Running   0             14m   172.20.3.8     worker-03   <none>           <none>\nts-inside-payment-service-5b98976c87-qcrbw      2/2     Running   0             14m   172.20.2.244   worker-02   <none>           <none>\nts-news-service-578fd9cd67-x79hr                2/2     Running   0             14m   172.20.2.235   worker-02   <none>           <none>\nts-notification-service-6b579b64d7-bk2rz        2/2     Running   0             14m   172.20.2.237   worker-02   <none>           <none>\nts-order-other-service-788d947bdf-k64nx         2/2     Running   0             14m   172.20.1.138   worker-01   <none>           <none>\nts-order-service-dd54d5df9-z4626                2/2     Running   0             14m   172.20.3.9     worker-03   <none>           <none>\nts-payment-service-666d596f87-h5shr             2/2     Running   0             14m   172.20.1.129   worker-01   <none>           <none>\nts-preserve-other-service-5f85fdfd7-d6mlg       2/2     Running   0             14m   172.20.3.13    worker-03   <none>           <none>\nts-preserve-service-6bccdc5454-xvjlb            2/2     Running   0             14m   172.20.1.142   worker-01   <none>           <none>\nts-price-service-6c4b77845-wtv6x                2/2     Running   0             14m   172.20.2.233   worker-02   <none>           <none>\nts-rebook-service-75d676f77b-7jj9v              2/2     Running   0             14m   172.20.1.136   worker-01   <none>           <none>\nts-route-plan-service-695f545f8c-sb85n          2/2     Running   0             14m   172.20.2.239   worker-02   <none>           <none>\nts-route-service-688dc779fc-mn9bv               2/2     Running   0             14m   172.20.2.232   worker-02   <none>           <none>\nts-seat-service-5fc7c67c7f-hn54f                2/2     Running   0             14m   172.20.2.238   worker-02   <none>           <none>\nts-security-service-5fb7f7fbff-9qfzb            2/2     Running   0             14m   172.20.2.241   worker-02   <none>           <none>\nts-station-food-service-d99b9b859-897fx         2/2     Running   0             14m   172.20.3.3     worker-03   <none>           <none>\nts-station-service-7cbf6b96c9-g8dk5             2/2     Running   0             14m   172.20.2.242   worker-02   <none>           <none>\nts-ticket-office-service-6fd78bd9df-bdtb2       2/2     Running   0             14m   172.20.2.240   worker-02   <none>           <none>\nts-train-food-service-67cb5bdf99-b428v          2/2     Running   0             14m   172.20.3.253   worker-03   <none>           <none>\nts-train-service-c4fb58df9-v9vjz                2/2     Running   0             14m   172.20.3.254   worker-03   <none>           <none>\nts-travel-plan-service-5985cdf6b6-mvdzd         2/2     Running   0             14m   172.20.3.10    worker-03   <none>           <none>\nts-travel-service-5b9b99c879-x7pmf              2/2     Running   0             14m   172.20.2.234   worker-02   <none>           <none>\nts-travel2-service-849bffcb7c-575pp             2/2     Running   0             14m   172.20.2.243   worker-02   <none>           <none>\nts-ui-dashboard-554844f867-mtbsx                2/2     Running   0             14m   172.20.1.137   worker-01   <none>           <none>\nts-user-service-6886cbf9cf-hlx7r                2/2     Running   0             14m   172.20.1.132   worker-01   <none>           <none>\nts-verification-code-service-7cbd896f77-t74c6   2/2     Running   0             14m   172.20.1.139   worker-01   <none>           <none>\nts-voucher-service-5ffdd5456c-zr22w             2/2     Running   0             14m   172.20.3.5     worker-03   <none>           <none>\nts-wait-order-service-848dbb9dd7-66brj          2/2     Running   0             14m   172.20.1.141   worker-01   <none>           <none>\ntsdb-mysql-0                                    4/4     Running   1 (21h ago)   21h   172.20.2.47    worker-02   <none>           <none>\ntsdb-mysql-1                                    4/4     Running   1 (21h ago)   21h   172.20.1.187   worker-01   <none>           <none>\ntsdb-mysql-2                                    4/4     Running   1 (21h ago)   21h   172.20.3.159   worker-03   <none>           <none>\n",
+   "error": null,
+   "purpose": "pod readiness census",
+   "tool_latency": null
+  },
+  {
+   "step_id": 1,
+   "action_type": "tool",
+   "action_name": "GetAlerts",
+   "action_input": {},
+   "observation": "{'status': 'has_anomalies', 'alert_count': 5, 'alerts': [{'type': 'Service', 'name': 'ts-assurance-service', 'entity_type': 'Service', 'entity_name': 'ts-assurance-service', 'time_range': '2026-03-20 11:46:04 ~ 2026-03-20 11:47:54', 'status': 'ABNORMAL', 'metric_category': 'RESOURCE_SATURATION', 'evidence': ['RESOURCE_SATURATION [cpu core] | Normal=0.01 cores -> Current=0.01 cores (+68.0%)']}, {'type': 'Service', 'name': 'ts-basic-service', 'entity_type': 'Service', 'entity_name': 'ts-basic-service', 'time_range': '2026-03-20 11:46:04 ~ 2026-03-20 11:47:54', 'status': 'ABNORMAL', 'metric_category': 'LATENCY_DEGRADATION', 'evidence': ['LATENCY_DEGRADATION [Slow Response] | p90latency: Normal=49.15ms -> Current=1145.55ms (+2230.9%) | Peak=1728.57ms']}, {'type': 'Service', 'name': 'ts-food-service', 'entity_type': 'Service', 'entity_name': 'ts-food-service', 'time_range': '2026-03-20 11:46:04 ~ 2026-03-20 11:47:54', 'status': 'ABNORMAL', 'metric_category': 'LATENCY_DEGRADATION', 'evidence': ['LATENCY_DEGRADATION [Slow Response] | p90latency: Normal=23.50ms -> Current=1750.00ms (+7346.8%) | Peak=2079.77ms']}, {'type': 'Service', 'name': 'ts-order-service', 'entity_type': 'Service', 'entity_name': 'ts-order-service', 'time_range': '2026-03-20 11:46:04 ~ 2026-03-20 11:47:54', 'status': 'ABNORMAL', 'metric_category': 'RESOURCE_SATURATION', 'evidence': ['RESOURCE_SATURATION [cpu_cfs] | Val: 0.519s (Throttled)']}, {'type': 'Service', 'name': 'ts-preserve-service', 'entity_type': 'Service', 'entity_name': 'ts-preserve-service', 'time_range': '2026-03-20 11:46:04 ~ 2026-03-20 11:47:54', 'status': 'ABNORMAL', 'metric_category': 'LATENCY_DEGRADATION', 'evidence': ['LATENCY_DEGRADATION [Slow Response] | p50latency: Normal=3571.43ms -> Current=8453.99ms (+136.7%) | Peak=9431.82ms | p90latency: Normal=10500.00ms -> Current=23627.85ms (+125.0%) | Peak=25411.76ms']}]}",
+   "error": null,
+   "purpose": "anomaly signature (routes performance/code families)",
+   "tool_latency": null
+  },
+  {
+   "step_id": 2,
+   "action_type": "tool",
+   "action_name": "GetRecentLogs",
+   "action_input": {
+    "namespace": "train-ticket",
+    "service_name": "ts-assurance-service"
+   },
+   "observation": "['From ts-assurance-service logs:', '2026-03-20T11:48:18.119418049+08:00 2026-03-20 11:48:18.119  INFO 1 --- [io-18888-exec-1] a.controller.AssuranceController         : [getAllAssuranceType][Get Assurance Type]', '2026-03-20T11:48:18.119455136+08:00 2026-03-20 11:48:18.119  INFO 1 --- [io-18888-exec-1] assurance.service.AssuranceServiceImpl   : [getAllAssuranceTypes][find all assurance type success][list size: 1]', '2026-03-20T11:48:18.131150283+08:00 2026-03-20 11:48:18.131  INFO 1 --- [io-18888-exec-8] a.controller.AssuranceController         : [getAllAssuranceType][Get Assurance Type]', '2026-03-20T11:48:18.131181163+08:00 2026-03-20 11:48:18.131  INFO 1 --- [io-18888-exec-8] assurance.service.AssuranceServiceImpl   : [getAllAssuranceTypes][find all assurance type success][list size: 1]', '2026-03-20T11:48:21.672997532+08:00 2026-03-20 11:48:21.672  INFO 1 --- [io-18888-exec-2] a.controller.AssuranceController         : [getAllAssuranceType][Get Assurance Type]', '2026-03-20T11:48:21.673034333+08:00 2026-03-20 11:48:21.672  INFO 1 --- [io-18888-exec-2] assurance.service.AssuranceServiceImpl   : [getAllAssuranceTypes][find all assurance type success][list size: 1]', '2026-03-20T11:48:21.753169675+08:00 2026-03-20 11:48:21.752  INFO 1 --- [io-18888-exec-4] a.controller.AssuranceController         : [getAllAssuranceType][Get Assurance Type]', '2026-03-20T11:48:21.753202236+08:00 2026-03-20 11:48:21.753  INFO 1 --- [io-18888-exec-4] assurance.service.AssuranceServiceImpl   : [getAllAssuranceTypes][find all assurance type success][list size: 1]', '2026-03-20T11:48:23.164090394+08:00 2026-03-20 11:48:23.163  INFO 1 --- [io-18888-exec-3] a.controller.AssuranceController         : [getAllAssuranceType][Get Assurance Type]', '2026-03-20T11:48:23.164132725+08:00 2026-03-20 11:48:23.164  INFO 1 --- [io-18888-exec-3] assurance.service.AssuranceServiceImpl   : [getAllAssuranceTypes][find all assurance type success][list size: 1]', '2026-03-20T11:48:25.779851751+08:00 2026-03-20 11:48:25.779  INFO 1 --- [io-18888-exec-5] a.controller.AssuranceController         : [getAllAssuranceType][Get Assurance Type]', '2026-03-20T11:48:25.779871251+08:00 2026-03-20 11:48:25.779  INFO 1 --- [io-18888-exec-5] assurance.service.AssuranceServiceImpl   : [getAllAssuranceTypes][find all assurance type success][list size: 1]', '2026-03-20T11:48:26.298297291+08:00 2026-03-20 11:48:26.298  INFO 1 --- [io-18888-exec-6] a.controller.AssuranceController         : [getAllAssuranceType][Get Assurance Type]', '2026-03-20T11:48:26.298399892+08:00 2026-03-20 11:48:26.298  INFO 1 --- [io-18888-exec-6] assurance.service.AssuranceServiceImpl   : [getAllAssuranceTypes][find all assurance type success][list size: 1]', '2026-03-20T11:48:29.144856297+08:00 2026-03-20 11:48:29.144  INFO 1 --- [io-18888-exec-7] a.controller.AssuranceController         : [getAllAssuranceType][Get Assurance Type]', '2026-03-20T11:48:29.144875698+08:00 2026-03-20 11:48:29.144  INFO 1 --- [io-18888-exec-7] assurance.service.AssuranceServiceImpl   : [getAllAssuranceTypes][find all assurance type success][list size: 1]', '2026-03-20T11:48:31.496265185+08:00 2026-03-20 11:48:31.496  INFO 1 --- [io-18888-exec-1] a.controller.AssuranceController         : [getAllAssuranceType][Get Assurance Type]', '2026-03-20T11:48:31.496297927+08:00 2026-03-20 11:48:31.496  INFO 1 --- [io-18888-exec-1] assurance.service.AssuranceServiceImpl   : [getAllAssuranceTypes][find all assurance type success][list size: 1]', '2026-03-20T11:48:32.667095075+08:00 2026-03-20 11:48:32.666  INFO 1 --- [io-18888-exec-8] a.controller.AssuranceController         : [getAllAssuranceType][Get Assurance Type]', '2026-03-20T11:48:32.667119723+08:00 2026-03-20 11:48:32.667  INFO 1 --- [io-18888-exec-8] assurance.service.AssuranceServiceImpl   : [getAllAssuranceTypes][find all assurance type success][list size: 1]', '2026-03-20T11:48:33.708981291+08:00 2026-03-20 11:48:33.708  INFO 1 --- [o-18888-exec-10] a.controller.AssuranceController         : [getAllAssuranceType][Get Assurance Type]', '2026-03-20T11:48:33.709012950+08:00 2026-03-20 11:48:33.708  INFO 1 --- [o-18888-exec-10] assurance.service.AssuranceServiceImpl   : [getAllAssuranceTypes][find all assurance type success][list size: 1]', '2026-03-20T11:48:34.101327945+08:00 2026-03-20 11:48:34.101  INFO 1 --- [io-18888-exec-2] a.controller.AssuranceController         : [getAllAssuranceType][Get Assurance Type]', '2026-03-20T11:48:34.101358952+08:00 2026-03-20 11:48:34.101  INFO 1 --- [io-18888-exec-2] assurance.service.AssuranceServiceImpl   : [getAllAssuranceTypes][find all assurance type success][list size: 1]', '2026-03-20T11:48:35.957812139+08:00 2026-03-20 11:48:35.957  INFO 1 --- [io-18888-exec-4] a.controller.AssuranceController         : [getAllAssuranceType][Get Assurance Type]', '2026-03-20T11:48:35.957833460+08:00 2026-03-20 11:48:35.957  INFO 1 --- [io-18888-exec-4] assurance.service.AssuranceServiceImpl   : [getAllAssuranceTypes][find all assurance type success][list size: 1]', '2026-03-20T11:48:36.107229381+08:00 2026-03-20 11:48:36.107  INFO 1 --- [io-18888-exec-3] a.controller.AssuranceController         : [getAllAssuranceType][Get Assurance Type]', '2026-03-20T11:48:36.107247478+08:00 2026-03-20 11:48:36.107  INFO 1 --- [io-18888-exec-3] assurance.service.AssuranceServiceImpl   : [getAllAssuranceTypes][find all assurance type success][list size: 1]', '2026-03-20T11:48:37.823145717+08:00 2026-03-20 11:48:37.822  INFO 1 --- [io-18888-exec-5] a.controller.AssuranceController         : [getAllAssuranceType][Get Assurance Type]', '2026-03-20T11:48:37.823168090+08:00 2026-03-20 11:48:37.823  INFO 1 --- [io-18888-exec-5] assurance.service.AssuranceServiceImpl   : [getAllAssuranceTypes][find all assurance type success][list size: 1]', '2026-03-20T11:48:40.205548296+08:00 2026-03-20 11:48:40.205  INFO 1 --- [io-18888-exec-6] a.controller.AssuranceController         : [getAllAssuranceType][Get Assurance Type]', '2026-03-20T11:48:40.205569219+08:00 2026-03-20 11:48:40.205  INFO 1 --- [io-18888-exec-6] assurance.service.AssuranceServiceImpl   : [getAllAssuranceTypes][find all assurance type success][list size: 1]', '2026-03-20T11:48:40.435485131+08:00 2026-03-20 11:48:40.435  INFO 1 --- [io-18888-exec-7] a.controller.AssuranceController         : [getAllAssuranceType][Get Assurance Type]', '2026-03-20T11:48:40.435510311+08:00 2026-03-20 11:48:40.435  INFO 1 --- [io-18888-exec-7] assurance.service.AssuranceServiceImpl   : [getAllAssuranceTypes][find all assurance type success][list size: 1]', '2026-03-20T11:48:42.203032082+08:00 2026-03-20 11:48:42.202  INFO 1 --- [io-18888-exec-1] a.controller.AssuranceController         : [getAllAssuranceType][Get Assurance Type]', '2026-03-20T11:48:42.203051568+08:00 2026-03-20 11:48:42.202  INFO 1 --- [io-18888-exec-1] assurance.service.AssuranceServiceImpl   : [getAllAssuranceTypes][find all assurance type success][list size: 1]', '2026-03-20T11:48:43.860093028+08:00 2026-03-20 11:48:43.859  INFO 1 --- [io-18888-exec-8] a.controller.AssuranceController         : [getAllAssuranceType][Get Assurance Type]', '2026-03-20T11:48:43.860162033+08:00 2026-03-20 11:48:43.860  INFO 1 --- [io-18888-exec-8] assurance.service.AssuranceServiceImpl   : [getAllAssuranceTypes][find all assurance type success][list size: 1]', '2026-03-20T11:48:46.054090726+08:00 2026-03-20 11:48:46.053  INFO 1 --- [o-18888-exec-10] a.controller.AssuranceController         : [getAllAssuranceType][Get Assurance Type]', '2026-03-20T11:48:46.054120939+08:00 2026-03-20 11:48:46.054  INFO 1 --- [o-18888-exec-10] assurance.service.AssuranceServiceImpl   : [getAllAssuranceTypes][find all assurance type success][list size: 1]', '2026-03-20T11:48:49.032067989+08:00 2026-03-20 11:48:49.031  INFO 1 --- [io-18888-exec-2] a.controller.AssuranceController         : [getAllAssuranceType][Get Assurance Type]', '2026-03-20T11:48:49.032099708+08:00 2026-03-20 11:48:49.031  INFO 1 --- [io-18888-exec-2] assurance.service.AssuranceServiceImpl   : [getAllAssuranceTypes][find all assurance type success][list size: 1]', '2026-03-20T11:48:49.552536298+08:00 2026-03-20 11:48:49.552  INFO 1 --- [io-18888-exec-4] a.controller.AssuranceController         : [getAllAssuranceType][Get Assurance Type]', '2026-03-20T11:48:49.552611358+08:00 2026-03-20 11:48:49.552  INFO 1 --- [io-18888-exec-4] assurance.service.AssuranceServiceImpl   : [getAllAssuranceTypes][find all assurance type success][list size: 1]', '2026-03-20T11:48:50.276953968+08:00 2026-03-20 11:48:50.276  INFO 1 --- [io-18888-exec-3] a.controller.AssuranceController         : [getAllAssuranceType][Get Assurance Type]', '2026-03-20T11:48:50.276979662+08:00 2026-03-20 11:48:50.276  INFO 1 --- [io-18888-exec-3] assurance.service.AssuranceServiceImpl   : [getAllAssuranceTypes][find all assurance type success][list size: 1]', '2026-03-20T11:48:52.040157906+08:00 2026-03-20 11:48:52.039  INFO 1 --- [io-18888-exec-6] a.controller.AssuranceController         : [getAllAssuranceType][Get Assurance Type]', '2026-03-20T11:48:52.040188382+08:00 2026-03-20 11:48:52.040  INFO 1 --- [io-18888-exec-6] assurance.service.AssuranceServiceImpl   : [getAllAssuranceTypes][find all assurance type success][list size: 1]', '2026-03-20T11:48:53.070458948+08:00 2026-03-20 11:48:53.070  INFO 1 --- [io-18888-exec-7] a.controller.AssuranceController         : [getAllAssuranceType][Get Assurance Type]', '2026-03-20T11:48:53.070487075+08:00 2026-03-20 11:48:53.070  INFO 1 --- [io-18888-exec-7] assurance.service.AssuranceServiceImpl   : [getAllAssuranceTypes][find all assurance type success][list size: 1]', '', 'From previous container logs:', 'Error: Error from server (BadRequest): previous terminated container \"ts-assurance-service\" in pod \"ts-assurance-service-88f65755-sfpls\" not found', '', 'From istio-proxy logs:', 'concurrency: 2', 'configPath: ./etc/istio/proxy', 'controlPlaneAuthPolicy: MUTUAL_TLS', 'discoveryAddress: istiod.istio-system.svc:15012', 'drainDuration: 45s', 'image:', '  imageType: distroless', 'proxyAdminPort: 15000', 'proxyMetadata:', '  ISTIO_META_ENABLE_HBONE: \"true\"', 'serviceCluster: istio-proxy', 'statNameLength: 189', 'statusPort: 15020', 'terminationDrainDuration: 5s']",
+   "error": null,
+   "purpose": "request latency / saturation logs",
+   "tool_latency": null
+  }
+ ],
+ "agentrun": {
+  "tag": "test",
+  "dsl": "workspace/dsl_versions/v0.8.dsl.txt",
+  "dsl_version": "0.8",
+  "sop": {
+   "sop": "boutique-runtime-rca",
+   "scope": {
+    "system": "boutique",
+    "families": [
+     "runtime",
+     "admission",
+     "scheduling",
+     "startup",
+     "service",
+     "performance",
+     "infrastructure",
+     "codedefect"
+    ],
+    "severity": [
+     "SEV2",
+     "SEV3"
+    ]
+   },
+   "owner": "sre-platform",
+   "approved_by": [
+    "oncall-primary",
+    "sre-lead"
+   ],
+   "reviewed_at": "2026-10-23",
+   "change_ticket": "OPS-1236",
+   "boundaries": "只读诊断：本 SOP 不执行任何写操作（重启/回滚/扩缩容），也不做对外播报；\n它回答\"最可能的根因与受害对象\"，处置与沟通由值班按 runbook 人工执行。\n不覆盖 SEV1（需 incident commander 介入）与变更引发的问题（走变更回滚流程）。\n输入是冻结快照：诊断结论对\"快照时刻\"成立，恢复后需重新取证。\nR1 已知边界：PVC 的 requested size / accessMode 在本 benchmark 的工具面不可见，\n因此 pvc_capacity 与 pvc_access_mode 无法区分（同一分数并列，交给 jev 或升级）。\n"
+  },
+  "params": {
+   "cands_cap": 8,
+   "max_waves": 8,
+   "min_waves": 5,
+   "steps_per_wave": 1,
+   "dominance_ratio": 1.5,
+   "conf_min": 0.0,
+   "escalate": true,
+   "escalate_budget": 8,
+   "judge_on_codedefect": true,
+   "jev_route": true,
+   "jev_pick": true,
+   "jev_verify": true,
+   "route_fallback": "runtime"
+  },
+  "nodes_executed": [
+   "anchors:extract_anchors",
+   "census:probes",
+   "route:decide",
+   "plan:build_plan",
+   "probe:probes",
+   "derive:derive_candidates",
+   "pick:decide",
+   "verify:decide",
+   "probe:probes",
+   "derive:derive_candidates",
+   "pick:decide",
+   "verify:decide",
+   "probe:probes",
+   "derive:derive_candidates",
+   "pick:decide",
+   "verify:decide",
+   "escalate:escalate",
+   "answer:normalize_answer",
+   "persist:persist_trace"
+  ],
+  "census": [
+   {
+    "step": "pods",
+    "gate": "always"
+   },
+   {
+    "step": "alerts",
+    "gate": "healthy_system"
+   }
+  ],
+  "plan": [
+   {
+    "step": "recent_logs",
+    "gate": "always",
+    "wave": 1
+   },
+   {
+    "step": "describe_pod",
+    "gate": "weak",
+    "wave": 2
+   },
+   {
+    "step": "deps",
+    "gate": "weak",
+    "wave": 3
+   }
+  ],
+  "family": "performance",
+  "state_wiring": {
+   "family": "$route.family",
+   "route_probs": "$route.probabilities",
+   "picked": "$pick.picked",
+   "pick_dominant": "$pick.dominant",
+   "verify_status": "$verify.status",
+   "verify_prob": "$verify.confidence"
+  },
+  "bindings": {
+   "anchors": {
+    "anchors": "Anchors(case_id='trainticket/performance/26', system='trainticket', namespace='train-ticket', query='Service quality degradation.', difficulty='hard', symptoms=['degradation'], mentioned_apps=[], priors={'db_service': 'tsdb-mysql-leader', 'db_port': 3306})"
+   },
+   "route": {
+    "family": "performance",
+    "probabilities": {},
+    "route_why": "mechanism_mode"
+   },
+   "plan": {
+    "plan": "[{'name': 'recent_logs', 'key': 'recent', 'tool': 'GetRecentLogs', 'args': <function _args_error_logs at 0x107ddb740>, 'purpose': 'request latency / saturation logs', 'when': <function compile_steps.<locals>.<lambda> at 0x107e4c7c0>, 'gate': 'always', 'wave': 1}, {'name': 'describe_pod', 'key': 'describe:pod', 'tool': 'DescribeResource', 'args': <function _args_describe_pod at 0x107ddb560>, 'purpose': 'probe config, container state, restart reasons, scheduler events', 'when': <function compile_steps.<locals>.<lambda> at 0x107e4c400>, 'gate': 'weak', 'wave': 2}, {'name': 'deps', 'key': 'deps', 'tool': 'GetServiceDependencies', 'args': <function _args_deps at 0x107ddbe20>, 'purpose': 'upstream/downstream call graph', 'when': <function compile_steps.<locals>.<lambda> at 0x107e4c5e0>, 'gate': 'weak', 'wave': 3}]"
+   },
+   "derive": {
+    "candidates": "[Candidate(root_cause='pod_network_delay', object='app/ts-assurance-service', score=0.82, evidence='network latency anomaly on the pod', rule='delay_alert'), Candidate(root_cause='pod_network_delay', object='app/ts-basic-service', score=0.82, evidence='network latency anomaly on the pod', rule='delay_alert'), Candidate(root_cause='pod_network_delay', object='app/ts-food-service', score=0.82, evidence='network latency anomaly on the pod', rule='delay_alert'), Candidate(root_cause='pod_network_delay', object='app/ts-order-service', score=0.82, evidence='network latency anomaly on the pod', rule='delay_alert'), Candidate(root_cause='pod_network_delay', object='app/ts-preserve-service', score=0.82, evidence='network latency anomaly on the pod', rule='delay_alert')]"
+   },
+   "pick": {
+    "picked": 0,
+    "dominant": false,
+    "pick_why": "no_new_evidence"
+   },
+   "verify": {
+    "status": "verified",
+    "confidence": null,
+    "verify_why": "no_new_evidence"
+   },
+   "escalate": {
+    "answer": null
+   },
+   "answer": {
+    "final": {
+     "key_evidence_summary": "network latency anomaly on the pod",
+     "top_3_predictions": [
+      {
+       "rank": 1,
+       "fault_object": "app/ts-assurance-service",
+       "root_cause": "pod_network_delay"
+      },
+      {
+       "rank": 2,
+       "fault_object": "app/ts-basic-service",
+       "root_cause": "pod_network_delay"
+      },
+      {
+       "rank": 3,
+       "fault_object": "app/ts-food-service",
+       "root_cause": "pod_network_delay"
+      }
+     ]
+    }
+   }
+  },
+  "picked": {
+   "root_cause": "pod_network_delay",
+   "object": "app/ts-assurance-service",
+   "score": 0.82,
+   "evidence": "network latency anomaly on the pod",
+   "rule": "delay_alert"
+  },
+  "pick_why": "",
+  "verify_prob": null,
+  "verify_verdict": "verified",
+  "verified": true,
+  "escalated": false,
+  "escalate_reason": "",
+  "escalate_steps": 0,
+  "waves": 3,
+  "candidates": [
+   {
+    "root_cause": "pod_network_delay",
+    "object": "app/ts-assurance-service",
+    "score": 0.82,
+    "evidence": "network latency anomaly on the pod",
+    "rule": "delay_alert"
+   },
+   {
+    "root_cause": "pod_network_delay",
+    "object": "app/ts-basic-service",
+    "score": 0.82,
+    "evidence": "network latency anomaly on the pod",
+    "rule": "delay_alert"
+   },
+   {
+    "root_cause": "pod_network_delay",
+    "object": "app/ts-food-service",
+    "score": 0.82,
+    "evidence": "network latency anomaly on the pod",
+    "rule": "delay_alert"
+   },
+   {
+    "root_cause": "pod_network_delay",
+    "object": "app/ts-order-service",
+    "score": 0.82,
+    "evidence": "network latency anomaly on the pod",
+    "rule": "delay_alert"
+   },
+   {
+    "root_cause": "pod_network_delay",
+    "object": "app/ts-preserve-service",
+    "score": 0.82,
+    "evidence": "network latency anomaly on the pod",
+    "rule": "delay_alert"
+   }
+  ],
+  "jev": [
+   {
+    "rid": "test:trainticket/performance/26#route",
+    "kind": "route",
+    "node": "route",
+    "mode": "mechanism",
+    "options": [
+     "performance",
+     "infrastructure"
+    ],
+    "status": "mechanical",
+    "guard": "unavailable",
+    "use": "first_option",
+    "choice": "performance",
+    "why": "mechanism_mode",
+    "dominant": false,
+    "continue_loop": false,
+    "escalate": false
+   },
+   {
+    "rid": "test:trainticket/performance/26#pick1",
+    "kind": "pick",
+    "node": "pick",
+    "mode": "mechanism",
+    "options": [
+     "c0",
+     "c1",
+     "c2",
+     "c3",
+     "c4"
+    ],
+    "status": "mechanical",
+    "guard": "unavailable",
+    "use": "first_option",
+    "choice": 0,
+    "why": "mechanism_mode",
+    "dominant": false,
+    "continue_loop": false,
+    "escalate": false
+   },
+   {
+    "rid": "test:trainticket/performance/26#verify1",
+    "kind": "verify",
+    "node": "verify",
+    "mode": "mechanism",
+    "options": [
+     "supported",
+     "insufficient",
+     "contradicted"
+    ],
+    "status": "mechanical",
+    "guard": "unavailable",
+    "use": "verified",
+    "choice": "verified",
+    "why": "mechanism_mode",
+    "dominant": false,
+    "continue_loop": false,
+    "escalate": false
+   },
+   {
+    "rid": "test:trainticket/performance/26#pick2",
+    "kind": "pick",
+    "node": "pick",
+    "mode": "mechanism",
+    "options": [
+     "c0",
+     "c1",
+     "c2",
+     "c3",
+     "c4"
+    ],
+    "status": "mechanical",
+    "guard": "unchanged_since_last",
+    "use": "previous",
+    "choice": 0,
+    "why": "no_new_evidence",
+    "dominant": false,
+    "continue_loop": false,
+    "escalate": false
+   },
+   {
+    "rid": "test:trainticket/performance/26#verify2",
+    "kind": "verify",
+    "node": "verify",
+    "mode": "mechanism",
+    "options": [
+     "supported",
+     "insufficient",
+     "contradicted"
+    ],
+    "status": "mechanical",
+    "guard": "unchanged_since_last",
+    "use": "previous",
+    "choice": "verified",
+    "why": "no_new_evidence",
+    "dominant": false,
+    "continue_loop": false,
+    "escalate": false
+   },
+   {
+    "rid": "test:trainticket/performance/26#pick3",
+    "kind": "pick",
+    "node": "pick",
+    "mode": "mechanism",
+    "options": [
+     "c0",
+     "c1",
+     "c2",
+     "c3",
+     "c4"
+    ],
+    "status": "mechanical",
+    "guard": "unchanged_since_last",
+    "use": "previous",
+    "choice": 0,
+    "why": "no_new_evidence",
+    "dominant": false,
+    "continue_loop": false,
+    "escalate": false
+   },
+   {
+    "rid": "test:trainticket/performance/26#verify3",
+    "kind": "verify",
+    "node": "verify",
+    "mode": "mechanism",
+    "options": [
+     "supported",
+     "insufficient",
+     "contradicted"
+    ],
+    "status": "mechanical",
+    "guard": "unchanged_since_last",
+    "use": "previous",
+    "choice": "verified",
+    "why": "no_new_evidence",
+    "dominant": false,
+    "continue_loop": false,
+    "escalate": false
+   }
+  ],
+  "nodes": [
+   {
+    "node": "code",
+    "id": "anchors",
+    "anchors": {
+     "case_id": "trainticket/performance/26",
+     "system": "trainticket",
+     "namespace": "train-ticket",
+     "query": "Service quality degradation.",
+     "difficulty": "hard",
+     "symptoms": [
+      "degradation"
+     ],
+     "mentioned_apps": []
+    }
+   },
+   {
+    "node": "probes",
+    "plan": "census",
+    "wave": 0,
+    "executed": 2,
+    "steps": [
+     {
+      "key": "pods",
+      "tool": "GetResources",
+      "arguments": {
+       "namespace": "train-ticket",
+       "resource_type": "pods",
+       "output_wide": true
+      },
+      "gate": "always"
+     },
+     {
+      "key": "alerts",
+      "tool": "GetAlerts",
+      "arguments": {},
+      "gate": "healthy_system"
+     }
+    ],
+    "skipped": []
+   },
+   {
+    "node": "decide",
+    "id": "route",
+    "rid": "test:trainticket/performance/26#route",
+    "status": "mechanical",
+    "guard": "unavailable",
+    "use": "first_option",
+    "choice": "performance",
+    "dominant": false,
+    "why": "mechanism_mode"
+   },
+   {
+    "node": "code",
+    "id": "plan",
+    "family": "performance",
+    "plan": [
+     {
+      "step": "recent_logs",
+      "gate": "always",
+      "wave": 1
+     },
+     {
+      "step": "describe_pod",
+      "gate": "weak",
+      "wave": 2
+     },
+     {
+      "step": "deps",
+      "gate": "weak",
+      "wave": 3
+     }
+    ]
+   },
+   {
+    "node": "probes",
+    "plan": "family",
+    "wave": 1,
+    "executed": 1,
+    "steps": [
+     {
+      "key": "recent",
+      "tool": "GetRecentLogs",
+      "arguments": {
+       "namespace": "train-ticket",
+       "service_name": "ts-assurance-service"
+      },
+      "gate": "always"
+     }
+    ],
+    "skipped": []
+   },
+   {
+    "node": "code",
+    "id": "derive",
+    "raw": 5,
+    "kept": 5,
+    "top": [
+     {
+      "root_cause": "pod_network_delay",
+      "object": "app/ts-assurance-service",
+      "score": 0.82,
+      "evidence": "network latency anomaly on the pod",
+      "rule": "delay_alert"
+     },
+     {
+      "root_cause": "pod_network_delay",
+      "object": "app/ts-basic-service",
+      "score": 0.82,
+      "evidence": "network latency anomaly on the pod",
+      "rule": "delay_alert"
+     },
+     {
+      "root_cause": "pod_network_delay",
+      "object": "app/ts-food-service",
+      "score": 0.82,
+      "evidence": "network latency anomaly on the pod",
+      "rule": "delay_alert"
+     },
+     {
+      "root_cause": "pod_network_delay",
+      "object": "app/ts-order-service",
+      "score": 0.82,
+      "evidence": "network latency anomaly on the pod",
+      "rule": "delay_alert"
+     },
+     {
+      "root_cause": "pod_network_delay",
+      "object": "app/ts-preserve-service",
+      "score": 0.82,
+      "evidence": "network latency anomaly on the pod",
+      "rule": "delay_alert"
+     }
+    ]
+   },
+   {
+    "node": "decide",
+    "id": "pick",
+    "rid": "test:trainticket/performance/26#pick1",
+    "status": "mechanical",
+    "guard": "unavailable",
+    "use": "first_option",
+    "choice": 0,
+    "dominant": false,
+    "why": "mechanism_mode"
+   },
+   {
+    "node": "decide",
+    "id": "verify",
+    "rid": "test:trainticket/performance/26#verify1",
+    "status": "mechanical",
+    "guard": "unavailable",
+    "use": "verified",
+    "choice": "verified",
+    "dominant": false,
+    "why": "mechanism_mode"
+   },
+   {
+    "node": "probes",
+    "plan": "family",
+    "wave": 2,
+    "executed": 0,
+    "steps": [],
+    "skipped": [
+     {
+      "step": "describe_pod",
+      "why": "gate weak"
+     }
+    ]
+   },
+   {
+    "node": "code",
+    "id": "derive",
+    "raw": 5,
+    "kept": 5,
+    "top": [
+     {
+      "root_cause": "pod_network_delay",
+      "object": "app/ts-assurance-service",
+      "score": 0.82,
+      "evidence": "network latency anomaly on the pod",
+      "rule": "delay_alert"
+     },
+     {
+      "root_cause": "pod_network_delay",
+      "object": "app/ts-basic-service",
+      "score": 0.82,
+      "evidence": "network latency anomaly on the pod",
+      "rule": "delay_alert"
+     },
+     {
+      "root_cause": "pod_network_delay",
+      "object": "app/ts-food-service",
+      "score": 0.82,
+      "evidence": "network latency anomaly on the pod",
+      "rule": "delay_alert"
+     },
+     {
+      "root_cause": "pod_network_delay",
+      "object": "app/ts-order-service",
+      "score": 0.82,
+      "evidence": "network latency anomaly on the pod",
+      "rule": "delay_alert"
+     },
+     {
+      "root_cause": "pod_network_delay",
+      "object": "app/ts-preserve-service",
+      "score": 0.82,
+      "evidence": "network latency anomaly on the pod",
+      "rule": "delay_alert"
+     }
+    ]
+   },
+   {
+    "node": "decide",
+    "id": "pick",
+    "rid": "test:trainticket/performance/26#pick2",
+    "status": "mechanical",
+    "guard": "unchanged_since_last",
+    "use": "previous",
+    "choice": 0,
+    "dominant": false,
+    "why": "no_new_evidence"
+   },
+   {
+    "node": "decide",
+    "id": "verify",
+    "rid": "test:trainticket/performance/26#verify2",
+    "status": "mechanical",
+    "guard": "unchanged_since_last",
+    "use": "previous",
+    "choice": "verified",
+    "dominant": false,
+    "why": "no_new_evidence"
+   },
+   {
+    "node": "probes",
+    "plan": "family",
+    "wave": 3,
+    "executed": 0,
+    "steps": [],
+    "skipped": [
+     {
+      "step": "deps",
+      "why": "gate weak"
+     }
+    ]
+   },
+   {
+    "node": "code",
+    "id": "derive",
+    "raw": 5,
+    "kept": 5,
+    "top": [
+     {
+      "root_cause": "pod_network_delay",
+      "object": "app/ts-assurance-service",
+      "score": 0.82,
+      "evidence": "network latency anomaly on the pod",
+      "rule": "delay_alert"
+     },
+     {
+      "root_cause": "pod_network_delay",
+      "object": "app/ts-basic-service",
+      "score": 0.82,
+      "evidence": "network latency anomaly on the pod",
+      "rule": "delay_alert"
+     },
+     {
+      "root_cause": "pod_network_delay",
+      "object": "app/ts-food-service",
+      "score": 0.82,
+      "evidence": "network latency anomaly on the pod",
+      "rule": "delay_alert"
+     },
+     {
+      "root_cause": "pod_network_delay",
+      "object": "app/ts-order-service",
+      "score": 0.82,
+      "evidence": "network latency anomaly on the pod",
+      "rule": "delay_alert"
+     },
+     {
+      "root_cause": "pod_network_delay",
+      "object": "app/ts-preserve-service",
+      "score": 0.82,
+      "evidence": "network latency anomaly on the pod",
+      "rule": "delay_alert"
+     }
+    ]
+   },
+   {
+    "node": "decide",
+    "id": "pick",
+    "rid": "test:trainticket/performance/26#pick3",
+    "status": "mechanical",
+    "guard": "unchanged_since_last",
+    "use": "previous",
+    "choice": 0,
+    "dominant": false,
+    "why": "no_new_evidence"
+   },
+   {
+    "node": "decide",
+    "id": "verify",
+    "rid": "test:trainticket/performance/26#verify3",
+    "status": "mechanical",
+    "guard": "unchanged_since_last",
+    "use": "previous",
+    "choice": "verified",
+    "dominant": false,
+    "why": "no_new_evidence"
+   },
+   {
+    "node": "loop",
+    "id": "waves",
+    "stop": "plan_exhausted",
+    "wave": 3
+   },
+   {
+    "node": "escalate",
+    "id": "escalate",
+    "fired": false,
+    "reasons": [],
+    "why": "no reason"
+   },
+   {
+    "node": "code",
+    "id": "answer",
+    "predictions": [
+     {
+      "rank": 1,
+      "fault_object": "app/ts-assurance-service",
+      "root_cause": "pod_network_delay"
+     },
+     {
+      "rank": 2,
+      "fault_object": "app/ts-basic-service",
+      "root_cause": "pod_network_delay"
+     },
+     {
+      "rank": 3,
+      "fault_object": "app/ts-food-service",
+      "root_cause": "pod_network_delay"
+     }
+    ]
+   },
+   {
+    "node": "artifact",
+    "id": "persist",
+    "persisted": false,
+    "why": "written by the CLI driver"
+   }
+  ],
+  "notes": [],
+  "tool_calls": 3,
+  "model_calls": 0,
+  "tokens_in": 0,
+  "tokens_out": 0,
+  "wall_s": 0.1
+ }
+}

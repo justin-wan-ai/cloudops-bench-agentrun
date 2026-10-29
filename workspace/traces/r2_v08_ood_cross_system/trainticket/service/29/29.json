@@ -1,0 +1,967 @@
+{
+ "case_id": "trainticket/service/29",
+ "system_name": "trainticket",
+ "question": "Partial Service Unreachability.",
+ "case_path": "/Users/justinwan/work/workspace/cloudops_bench_rsi/repo/benchmark/trainticket/service/29",
+ "max_steps": 8,
+ "current_step": 5,
+ "finished": true,
+ "stop_reason": "submit",
+ "final_answer": "{\"key_evidence_summary\": \"readiness probe targets :15020 but the container listens on :14568\", \"top_3_predictions\": [{\"rank\": 1, \"fault_object\": \"app/ts-preserve-service\", \"root_cause\": \"readiness_probe_incorrect_port\"}, {\"rank\": 2, \"fault_object\": \"app/ts-preserve-service\", \"root_cause\": \"readiness_probe_incorrect_port\"}, {\"rank\": 3, \"fault_object\": \"app/ts-preserve-service\", \"root_cause\": \"readiness_probe_incorrect_port\"}]}",
+ "metadata": {
+  "namespace": "train-ticket",
+  "query": "Partial Service Unreachability.",
+  "fault_category": "service",
+  "model_name": "agentrun-v0.8"
+ },
+ "steps": [
+  {
+   "step_id": 0,
+   "action_type": "tool",
+   "action_name": "GetResources",
+   "action_input": {
+    "namespace": "train-ticket",
+    "resource_type": "pods",
+    "output_wide": true
+   },
+   "observation": "NAME                                            READY   STATUS    RESTARTS       AGE     IP             NODE        NOMINATED NODE   READINESS GATES\nnacos-0                                         1/1     Running   0              8d      172.20.2.76    worker-02   <none>           <none>\nnacos-1                                         1/1     Running   0              8d      172.20.1.247   worker-01   <none>           <none>\nnacos-2                                         1/1     Running   0              8d      172.20.3.7     worker-03   <none>           <none>\nnacosdb-mysql-0                                 3/3     Running   1 (8d ago)     8d      172.20.2.75    worker-02   <none>           <none>\nnacosdb-mysql-1                                 3/3     Running   2 (8d ago)     8d      172.20.1.246   worker-01   <none>           <none>\nnacosdb-mysql-2                                 3/3     Running   1 (8d ago)     8d      172.20.3.6     worker-03   <none>           <none>\nrabbitmq-57b4f9969c-4cndj                       1/1     Running   0              8d      172.20.2.77    worker-02   <none>           <none>\nts-assurance-service-88f65755-vsh2b             2/2     Running   0              5m6s    172.20.3.186   worker-03   <none>           <none>\nts-auth-service-656fb96d87-2v9q8                2/2     Running   0              5m14s   172.20.2.106   worker-02   <none>           <none>\nts-avatar-service-54fb8f5c57-7bndw              2/2     Running   0              5m11s   172.20.2.112   worker-02   <none>           <none>\nts-basic-service-57fb684696-wstx4               2/2     Running   0              5m14s   172.20.1.215   worker-01   <none>           <none>\nts-cancel-service-67fb7d5bb4-dmwzx              2/2     Running   0              5m13s   172.20.2.108   worker-02   <none>           <none>\nts-config-service-65779cfcd7-fczc9              2/2     Running   0              5m7s    172.20.2.117   worker-02   <none>           <none>\nts-consign-price-service-b74c79d7-zvs4s         2/2     Running   0              140m    172.20.2.120   worker-02   <none>           <none>\nts-consign-service-846bdf46cc-tw4dg             2/2     Running   0              5m11s   172.20.3.177   worker-03   <none>           <none>\nts-contacts-service-7fc68f4bbc-wrpdh            2/2     Running   0              5m13s   172.20.2.109   worker-02   <none>           <none>\nts-delivery-service-659b5d4f75-5g44b            2/2     Running   0              5m9s    172.20.2.115   worker-02   <none>           <none>\nts-execute-service-5f7c9df447-kswrn             2/2     Running   0              5m11s   172.20.1.220   worker-01   <none>           <none>\nts-food-delivery-service-5b898fdbbf-t4sg4       2/2     Running   0              5m7s    172.20.2.118   worker-02   <none>           <none>\nts-food-service-59c58c74cc-x2pf8                2/2     Running   0              5m7s    172.20.3.184   worker-03   <none>           <none>\nts-gateway-service-ddc65b886-78fzw              2/2     Running   0              5m14s   172.20.1.213   worker-01   <none>           <none>\nts-inside-payment-service-5b98976c87-kt6bl      2/2     Running   0              5m10s   172.20.2.113   worker-02   <none>           <none>\nts-news-service-578fd9cd67-dqtdz                2/2     Running   0              5m6s    172.20.1.228   worker-01   <none>           <none>\nts-notification-service-6b579b64d7-g7d2s        2/2     Running   0              5m8s    172.20.3.182   worker-03   <none>           <none>\nts-order-other-service-788d947bdf-nx258         2/2     Running   0              5m12s   172.20.1.218   worker-01   <none>           <none>\nts-order-service-dd54d5df9-jfc8m                2/2     Running   0              5m9s    172.20.1.222   worker-01   <none>           <none>\nts-payment-service-666d596f87-vkjtb             2/2     Running   0              5m6s    172.20.1.227   worker-01   <none>           <none>\nts-preserve-other-service-5f85fdfd7-qwltr       2/2     Running   0              5m10s   172.20.1.221   worker-01   <none>           <none>\nts-preserve-service-6bd658cfc9-gpc6b            0/2     Running   4 (75s ago)    5m5s    172.20.2.121   worker-02   <none>           <none>\nts-price-service-6c4b77845-5zzs7                2/2     Running   0              5m13s   172.20.1.217   worker-01   <none>           <none>\nts-rebook-service-75d676f77b-k58mm              2/2     Running   0              5m11s   172.20.3.178   worker-03   <none>           <none>\nts-route-plan-service-695f545f8c-w5j58          2/2     Running   0              5m12s   172.20.1.219   worker-01   <none>           <none>\nts-route-service-688dc779fc-k6dfq               2/2     Running   0              5m13s   172.20.1.216   worker-01   <none>           <none>\nts-seat-service-5fc7c67c7f-jpccb                2/2     Running   0              5m10s   172.20.3.180   worker-03   <none>           <none>\nts-security-service-5fb7f7fbff-29h7p            2/2     Running   0              5m8s    172.20.1.225   worker-01   <none>           <none>\nts-station-food-service-d99b9b859-8f4qs         2/2     Running   0              5m13s   172.20.2.107   worker-02   <none>           <none>\nts-station-service-7cbf6b96c9-grz6m             2/2     Running   0              5m12s   172.20.2.110   worker-02   <none>           <none>\nts-ticket-office-service-6fd78bd9df-stfvw       2/2     Running   0              5m12s   172.20.2.111   worker-02   <none>           <none>\nts-train-food-service-67cb5bdf99-9mbd2          2/2     Running   0              5m9s    172.20.2.114   worker-02   <none>           <none>\nts-train-service-c4fb58df9-sdh6x                2/2     Running   0              5m8s    172.20.1.224   worker-01   <none>           <none>\nts-travel-plan-service-5985cdf6b6-4gdm2         2/2     Running   0              5m10s   172.20.3.179   worker-03   <none>           <none>\nts-travel-service-5b9b99c879-hpscj              2/2     Running   0              5m6s    172.20.2.119   worker-02   <none>           <none>\nts-travel2-service-849bffcb7c-sl5x2             2/2     Running   0              5m12s   172.20.3.176   worker-03   <none>           <none>\nts-ui-dashboard-554844f867-7hh9r                2/2     Running   0              5m9s    172.20.1.223   worker-01   <none>           <none>\nts-user-service-6886cbf9cf-rhqbj                2/2     Running   0              5m7s    172.20.1.226   worker-01   <none>           <none>\nts-verification-code-service-7cbd896f77-56xjv   2/2     Running   0              5m6s    172.20.3.185   worker-03   <none>           <none>\nts-voucher-service-5ffdd5456c-hk2zt             2/2     Running   0              5m9s    172.20.3.181   worker-03   <none>           <none>\nts-wait-order-service-848dbb9dd7-tqwcb          2/2     Running   0              5m8s    172.20.3.183   worker-03   <none>           <none>\ntsdb-mysql-0                                    4/4     Running   1 (140m ago)   144m    172.20.1.214   worker-01   <none>           <none>\ntsdb-mysql-1                                    4/4     Running   1 (140m ago)   143m    172.20.2.116   worker-02   <none>           <none>\ntsdb-mysql-2                                    4/4     Running   1 (140m ago)   141m    172.20.3.235   worker-03   <none>           <none>\n",
+   "error": null,
+   "purpose": "pod readiness census",
+   "tool_latency": null
+  },
+  {
+   "step_id": 1,
+   "action_type": "tool",
+   "action_name": "DescribeResource",
+   "action_input": {
+    "namespace": "train-ticket",
+    "resource_type": "pods",
+    "name": "ts-preserve-service-6bd658cfc9-gpc6b"
+   },
+   "observation": "Name:             ts-preserve-service-6bd658cfc9-gpc6b\nNamespace:        train-ticket\nPriority:         0\nService Account:  default\nNode:             worker-02/192.168.0.53\nStart Time:       Tue, 17 Mar 2026 01:14:44 +0800\nLabels:           app=ts-preserve-service\n                  networking.istio.io/tunnel=http\n                  pod-template-hash=6bd658cfc9\n                  security.istio.io/tlsMode=istio\n                  service.istio.io/canonical-name=ts-preserve-service\n                  service.istio.io/canonical-revision=latest\nAnnotations:      istio.io/rev: default\n                  kubectl.kubernetes.io/default-container: ts-preserve-service\n                  kubectl.kubernetes.io/default-logs-container: ts-preserve-service\n                  prometheus.io/path: /stats/prometheus\n                  prometheus.io/port: 15020\n                  prometheus.io/scrape: true\n                  sidecar.istio.io/interceptionMode: REDIRECT\n                  sidecar.istio.io/status:\n                    {\"initContainers\":[\"istio-validation\"],\"containers\":[\"istio-proxy\"],\"volumes\":[\"workload-socket\",\"credential-socket\",\"workload-certs\",\"ist...\n                  traffic.sidecar.istio.io/excludeInboundPorts: 15020\n                  traffic.sidecar.istio.io/includeInboundPorts: *\n                  traffic.sidecar.istio.io/includeOutboundIPRanges: *\nStatus:           Running\nIP:               172.20.2.121\nIPs:\n  IP:           172.20.2.121\nControlled By:  ReplicaSet/ts-preserve-service-6bd658cfc9\nInit Containers:\n  istio-validation:\n    Container ID:  containerd://3f04f95fcd86945ff8283c4b6d3ed6f46b205f05c26e536cdb52dea0f46266bf\n    Image:         docker.io/istio/proxyv2:1.27.3-distroless\n    Image ID:      docker.io/istio/proxyv2@sha256:0ff2299890e3e5b9fe0e38391b048c0788900f69af27306a7aef3036a59220e1\n    Port:          <none>\n    Host Port:     <none>\n    Args:\n      istio-iptables\n      -p\n      15001\n      -z\n      15006\n      -u\n      1337\n      -m\n      REDIRECT\n      -i\n      *\n      -x\n      \n      -b\n      *\n      -d\n      15090,15021,15020\n      --log_output_level=default:info\n      --run-validation\n      --skip-rule-apply\n    State:          Terminated\n      Reason:       Completed\n      Exit Code:    0\n      Started:      Tue, 17 Mar 2026 01:14:46 +0800\n      Finished:     Tue, 17 Mar 2026 01:14:46 +0800\n    Ready:          True\n    Restart Count:  0\n    Limits:\n      cpu:     2\n      memory:  1Gi\n    Requests:\n      cpu:     100m\n      memory:  128Mi\n    Environment:\n      ISTIO_META_ENABLE_HBONE:  true\n    Mounts:\n      /var/run/secrets/kubernetes.io/serviceaccount from kube-api-access-mjnfj (ro)\nContainers:\n  ts-preserve-service:\n    Container ID:   containerd://0fedd1f581dc014cc7e7a50d1af67ac2940d47fe2b4cad74c83674e6dea9bd62\n    Image:          ghcr.io/sregym/ts-preserve-service:latest\n    Image ID:       ghcr.io/sregym/ts-preserve-service@sha256:28f11ef161005414d407927a31a5471dd94428f7d35708388528e552ee8525f5\n    Port:           14568/TCP\n    Host Port:      0/TCP\n    State:          Running\n      Started:      Tue, 17 Mar 2026 01:19:18 +0800\n    Last State:     Terminated\n      Reason:       Error\n      Exit Code:    1\n      Started:      Tue, 17 Mar 2026 01:17:49 +0800\n      Finished:     Tue, 17 Mar 2026 01:18:34 +0800\n    Ready:          False\n    Restart Count:  4\n    Limits:\n      cpu:     500m\n      memory:  512Mi\n    Requests:\n      cpu:      200m\n      memory:   350Mi\n    Readiness:  http-get http://:15020/app-health/ts-preserve-service/readyz delay=60s timeout=5s period=10s #success=1 #failure=3\n    Environment Variables from:\n      nacos     ConfigMap  Optional: false\n      rabbitmq  ConfigMap  Optional: false\n    Environment:\n      SPRING_MAIN_ALLOW_CIRCULAR_REFERENCES:  true\n      NODE_IP:                                 (v1:status.hostIP)\n    Mounts:\n      /var/run/secrets/kubernetes.io/serviceaccount from kube-api-access-mjnfj (ro)\n  istio-proxy:\n    Container ID:  containerd://1e05052a3481b16b2331710d8dd5c8763d4cac38ef9fe35dd204db3c306f0576\n    Image:         docker.io/istio/proxyv2:1.27.3-distroless\n    Image ID:      docker.io/istio/proxyv2@sha256:0ff2299890e3e5b9fe0e38391b048c0788900f69af27306a7aef3036a59220e1\n    Port:          15090/TCP\n    Host Port:     0/TCP\n    Args:\n      proxy\n      sidecar\n      --domain\n      $(POD_NAMESPACE).svc.cluster.local\n      --proxyLogLevel=warning\n      --proxyComponentLogLevel=misc:error\n      --log_output_level=default:info\n    State:          Running\n      Started:      Tue, 17 Mar 2026 01:14:47 +0800\n    Ready:          False\n    Restart Count:  0\n    Limits:\n      cpu:     2\n      memory:  1Gi\n    Requests:\n      cpu:      100m\n      memory:   128Mi\n    Readiness:  http-get http://:15021/healthz/ready delay=0s timeout=3s period=15s #success=1 #failure=4\n    Startup:    http-get http://:15021/healthz/ready delay=0s timeout=3s period=1s #success=1 #failure=600\n    Environment:\n      PILOT_CERT_PROVIDER:           istiod\n      CA_ADDR:                       istiod.istio-system.svc:15012\n      POD_NAME:                      ts-preserve-service-6bd658cfc9-gpc6b (v1:metadata.name)\n      POD_NAMESPACE:                 train-ticket (v1:metadata.namespace)\n      INSTANCE_IP:                    (v1:status.podIP)\n      SERVICE_ACCOUNT:                (v1:spec.serviceAccountName)\n      HOST_IP:                        (v1:status.hostIP)\n      ISTIO_CPU_LIMIT:               2 (limits.cpu)\n      PROXY_CONFIG:                  {\"proxyMetadata\":{\"ISTIO_META_ENABLE_HBONE\":\"true\"},\"image\":{\"imageType\":\"distroless\"}}\n                                     \n      ISTIO_META_POD_PORTS:          [\n                                         {\"containerPort\":14568,\"protocol\":\"TCP\"}\n                                     ]\n      ISTIO_META_APP_CONTAINERS:     ts-preserve-service\n      GOMEMLIMIT:                    1073741824 (limits.memory)\n      GOMAXPROCS:                    2 (limits.cpu)\n      ISTIO_META_CLUSTER_ID:         Kubernetes\n      ISTIO_META_NODE_NAME:           (v1:spec.nodeName)\n      ISTIO_META_INTERCEPTION_MODE:  REDIRECT\n      ISTIO_META_WORKLOAD_NAME:      ts-preserve-service\n      ISTIO_META_OWNER:              kubernetes://apis/apps/v1/namespaces/train-ticket/deployments/ts-preserve-service\n      ISTIO_META_MESH_ID:            cluster.local\n      TRUST_DOMAIN:                  cluster.local\n      ISTIO_META_ENABLE_HBONE:       true\n      ISTIO_KUBE_APP_PROBERS:        {\"/app-health/ts-preserve-service/readyz\":{\"tcpSocket\":{\"port\":14568},\"timeoutSeconds\":5}}\n    Mounts:\n      /etc/istio/pod from istio-podinfo (rw)\n      /etc/istio/proxy from istio-envoy (rw)\n      /var/lib/istio/data from istio-data (rw)\n      /var/run/secrets/credential-uds from credential-socket (rw)\n      /var/run/secrets/istio from istiod-ca-cert (rw)\n      /var/run/secrets/istio/crl from istio-ca-crl (rw)\n      /var/run/secrets/kubernetes.io/serviceaccount from kube-api-access-mjnfj (ro)\n      /var/run/secrets/tokens from istio-token (rw)\n      /var/run/secrets/workload-spiffe-credentials from workload-certs (rw)\n      /var/run/secrets/workload-spiffe-uds from workload-socket (rw)\nConditions:\n  Type                        Status\n  PodReadyToStartContainers   True \n  Initialized                 True \n  Ready                       False \n  ContainersReady             False \n  PodScheduled                True \nVolumes:\n  workload-socket:\n    Type:       EmptyDir (a temporary directory that shares a pod's lifetime)\n    Medium:     \n    SizeLimit:  <unset>\n  credential-socket:\n    Type:       EmptyDir (a temporary directory that shares a pod's lifetime)\n    Medium:     \n    SizeLimit:  <unset>\n  workload-certs:\n    Type:       EmptyDir (a temporary directory that shares a pod's lifetime)\n    Medium:     \n    SizeLimit:  <unset>\n  istio-envoy:\n    Type:       EmptyDir (a temporary directory that shares a pod's lifetime)\n    Medium:     Memory\n    SizeLimit:  <unset>\n  istio-data:\n    Type:       EmptyDir (a temporary directory that shares a pod's lifetime)\n    Medium:     \n    SizeLimit:  <unset>\n  istio-podinfo:\n    Type:  DownwardAPI (a volume populated by information about the pod)\n    Items:\n      metadata.labels -> labels\n      metadata.annotations -> annotations\n  istio-token:\n    Type:                    Projected (a volume that contains injected data from multiple sources)\n    TokenExpirationSeconds:  43200\n  istiod-ca-cert:\n    Type:      ConfigMap (a volume populated by a ConfigMap)\n    Name:      istio-ca-root-cert\n    Optional:  false\n  istio-ca-crl:\n    Type:      ConfigMap (a volume populated by a ConfigMap)\n    Name:      istio-ca-crl\n    Optional:  true\n  kube-api-access-mjnfj:\n    Type:                    Projected (a volume that contains injected data from multiple sources)\n    TokenExpirationSeconds:  3607\n    ConfigMapName:           kube-root-ca.crt\n    ConfigMapOptional:       <nil>\n    DownwardAPI:             true\nQoS Class:                   Burstable\nNode-Selectors:              <none>\nTolerations:                 node.kubernetes.io/not-ready:NoExecute op=Exists for 300s\n                             node.kubernetes.io/unreachable:NoExecute op=Exists for 300s\nEvents:\n  Type     Reason     Age                     From               Message\n  ----     ------     ----                    ----               -------\n  Normal   Scheduled  5m14s                   default-scheduler  Successfully assigned train-ticket/ts-preserve-service-6bd658cfc9-gpc6b to worker-02\n  Normal   Pulled     5m13s                   kubelet            Container image \"docker.io/istio/proxyv2:1.27.3-distroless\" already present on machine\n  Normal   Created    5m13s                   kubelet            Created container istio-validation\n  Normal   Started    5m12s                   kubelet            Started container istio-validation\n  Normal   Pulled     5m12s                   kubelet            Container image \"ghcr.io/sregym/ts-preserve-service:latest\" already present on machine\n  Normal   Created    5m11s                   kubelet            Created container ts-preserve-service\n  Normal   Started    5m11s                   kubelet            Started container ts-preserve-service\n  Normal   Pulled     5m11s                   kubelet            Container image \"docker.io/istio/proxyv2:1.27.3-distroless\" already present on machine\n  Normal   Created    5m11s                   kubelet            Created container istio-proxy\n  Normal   Started    5m11s                   kubelet            Started container istio-proxy\n  Warning  Unhealthy  4m55s (x16 over 5m10s)  kubelet            Startup probe failed: Get \"http://172.20.2.121:15021/healthz/ready\": dial tcp 172.20.2.121:15021: connect: connection refused\n",
+   "error": null,
+   "purpose": "probe config, container state, restart reasons, scheduler events",
+   "tool_latency": null
+  },
+  {
+   "step_id": 2,
+   "action_type": "tool",
+   "action_name": "GetAppYAML",
+   "action_input": {
+    "app_name": "ts-preserve-service"
+   },
+   "observation": "apiVersion: apps/v1\nkind: Deployment\nmetadata:\n  namespace: train-ticket\n  name: ts-preserve-service\nspec:\n  selector:\n    matchLabels:\n      app: ts-preserve-service\n  replicas: 1\n  template:\n    metadata:\n      labels:\n        app: ts-preserve-service\n    spec:\n      dnsPolicy: \"None\"\n      dnsConfig:\n        nameservers:\n          - 10.255.6.254\n      containers:\n      - name: ts-preserve-service\n        image: ghcr.io/sregym/ts-preserve-service:latest\n        imagePullPolicy: IfNotPresent\n        env:\n        - name: SPRING_MAIN_ALLOW_CIRCULAR_REFERENCES\n          value: 'true'\n        - name: NODE_IP\n          valueFrom:\n            fieldRef:\n              fieldPath: status.hostIP\n        envFrom:\n        - configMapRef:\n            name: nacos\n        - configMapRef:\n            name: rabbitmq\n        ports:\n        - containerPort: 14568\n        resources:\n          requests:\n            cpu: 200m\n            memory: 350Mi\n          limits:\n            cpu: 500m\n            memory: 512Mi\n        readinessProbe:\n          tcpSocket:\n            port: 14568\n          initialDelaySeconds: 60\n          periodSeconds: 10\n          timeoutSeconds: 5\n---\napiVersion: v1\nkind: Service\nmetadata:\n  namespace: train-ticket\n  name: ts-preserve-service\nspec:\n  ports:\n  - name: http\n    port: 14568\n  selector:\n    app: ts-preserve-service\n",
+   "error": null,
+   "purpose": "declared probes / limits / image / env",
+   "tool_latency": null
+  },
+  {
+   "step_id": 3,
+   "action_type": "tool",
+   "action_name": "GetErrorLogs",
+   "action_input": {
+    "namespace": "train-ticket",
+    "service_name": "ts-preserve-service"
+   },
+   "observation": "{\n  \"istio-proxy\": {\n    \"total_log_count\": 227,\n    \"total_errors\": 67,\n    \"total_error_ratio\": 0.2952,\n    \"patterns\": [\n      {\n        \"count\": 18,\n        \"ratio\": 0.0793,\n        \"sample\": \"2026-03-16T17:15:29.481653Z\\twarning\\tenvoy config external/envoy/source/extensions/config_subscription/grpc/grpc_stream.h:226\\tDeltaAggregatedResources gRPC config stream to xds-grpc closed since 31s ago: 14, connection error: desc = \\\"transport: Error while dialing: dial tcp: lookup istiod.istio-system.svc on 10.255.6.254:53: read udp 172.20.2.121:38852->10.255.6.254:53: i/o timeout\\\"{via_upstream}\\tthread=14\"\n      },\n      {\n        \"count\": 16,\n        \"ratio\": 0.0705,\n        \"sample\": \"2026-03-16T17:14:59.329178Z\\terror\\tcitadelclient\\tfailed to sign CSR: create certificate: rpc error: code = Unavailable desc = connection error: desc = \\\"transport: Error while dialing: dial tcp: lookup istiod.istio-system.svc on 10.255.6.254:53: read udp 172.20.2.121:34410->10.255.6.254:53: i/o timeout\\\"\"\n      },\n      {\n        \"count\": 16,\n        \"ratio\": 0.0705,\n        \"sample\": \"2026-03-16T17:14:59.329890Z\\terror\\tcache\\tresource:default failed to sign: create certificate: rpc error: code = Unavailable desc = connection error: desc = \\\"transport: Error while dialing: dial tcp: lookup istiod.istio-system.svc on 10.255.6.254:53: read udp 172.20.2.121:34410->10.255.6.254:53: i/o timeout\\\"\"\n      },\n      {\n        \"count\": 16,\n        \"ratio\": 0.0705,\n        \"sample\": \"2026-03-16T17:14:59.329951Z\\twarn\\tsds\\tfailed to warm certificate: failed to generate workload certificate: create certificate: rpc error: code = Unavailable desc = connection error: desc = \\\"transport: Error while dialing: dial tcp: lookup istiod.istio-system.svc on 10.255.6.254:53: read udp 172.20.2.121:34410->10.255.6.254:53: i/o timeout\\\"\"\n      },\n      {\n        \"count\": 1,\n        \"ratio\": 0.0044,\n        \"sample\": \"2026-03-16T17:15:02.889109Z\\twarning\\tenvoy config external/envoy/source/extensions/config_subscription/grpc/grpc_subscription_impl.cc:130\\tgRPC config: initial fetch timed out for type.googleapis.com/istio.workload.Workload\\tthread=14\"\n      }\n    ]\n  },\n  \"previous\": [\n    \"2026-03-17 01:20:02.964 ERROR 1 --- [           main] c.a.c.n.registry.NacosServiceRegistry    : nacos registry, ts-preserve-service register failed...NacosRegistration{nacosDiscoveryProperties=NacosDiscoveryProperties{serverAddr='nacos-0.nacos-headless.train-ticket.svc.cluster.local:8848,nacos-1.nacos-headless.train-ticket.svc.cluster.local:8848,nacos-2.nacos-headless.train-ticket.svc.cluster.local:8848', username='', password='', endpoint='', namespace='', watchDelay=30000, logName='', service='ts-preserve-service', weight=1.0, clusterName='DEFAULT', group='DEFAULT_GROUP', namingLoadCacheAtStart='false', metadata={IPv6=null, preserved.register.source=SPRING_CLOUD}, registerEnabled=true, ip='172.20.2.121', networkInterface='', port=14568, secure=false, accessKey='', secretKey='', heartBeatInterval=null, heartBeatTimeout=null, ipDeleteTimeout=null, instanceEnabled=true, ephemeral=true, failureToleranceEnabled=false}, ipDeleteTimeout=null, failFast=true}},\\nCaused by: java.lang.reflect.UndeclaredThrowableException: null\\nCaused by: com.alibaba.nacos.api.exception.NacosException: Client not connected, current status:STARTING\\n\\tat com.alibaba.nacos.common.remote.client.RpcClient.reque...\"\n  ]\n}",
+   "error": null,
+   "purpose": "application error logs",
+   "tool_latency": null
+  },
+  {
+   "step_id": 4,
+   "action_type": "tool",
+   "action_name": "CheckNodeServiceStatus",
+   "action_input": {
+    "node_name": "worker-02",
+    "service_name": "containerd"
+   },
+   "observation": "Service: containerd\nNode: worker-02\nStatus: ● containerd.service - containerd container runtime\n     Loaded: loaded (/etc/systemd/system/containerd.service; enabled; vendor preset: enabled)\n     Active: active (running) since Sat 2026-02-28 10:42:46 CST; 2 weeks 2 days ago\n       Docs: https://containerd.io\n   Main PID: 914 (containerd)\n      Tasks: 474 (limit: 18592)\n     Memory: 2.3G\n        CPU: 19h 25min 25.440s\n     CGroup: /system.slice/containerd.service\n             ├─    914 /opt/kube/bin/containerd-bin/containerd\n             ├─   2062 /opt/kube/bin/containerd-bin/containerd-shim-runc-v2 -namespace k8s.io -id 50c64a765b83e2cfc2a24822dbbfe9c6a255f146ecf22d9f56ae88e067cb5a87 -address /run/containerd/containerd.sock\n             ├─   2071 /opt/kube/bin/containerd-bin/containerd-shim-runc-v2 -namespace k8s.io -id 4cd68727de79a85991c656467fc692a1725be51c6605507bab5c267154e7356c -address /run/containerd/containerd.sock\n             ├─   2088 /opt/kube/bin/containerd-bin/containerd-shim-runc-v2 -namespace k8s.io -id fd3aff1b24a5dfb46e26ec1d02151d6da22ecbc42acbc8d21ffc59e3e263a852 -address /run/containerd/containerd.sock\n             ├─   2105 /opt/kube/bin/containerd-bin/containerd-shim-runc-v2 -namespace k8s.io -id 1b858809bb6b542abe58e72f5303ac78d973bbacfc264b5d993a1b0c88caf2af -address /run/containerd/containerd.sock\n             ├─   2923 /opt/kube/bin/containerd-bin/containerd-shim-runc-v2 -namespace k8s.io -id c8a6663a0c21020fd7120cfdc1d26d874d418507039eb79a626f27bef40312c4 -address /run/containerd/containerd.sock\n             ├─   3327 /opt/kube/bin/containerd-bin/containerd-shim-runc-v2 -namespace k8s.io -id 8c4c8b43c6c5990f98b2086d184d43aab86ca7899ce5f6f33176dc6a2b94981e -address /run/containerd/containerd.sock\n             ├─   3502 /opt/kube/bin/containerd-bin/containerd-shim-runc-v2 -namespace k8s.io -id 04b98a2c5f074b7273953733c0a924991e44a9951f21b9c4ba865bded469234e -address /run/containerd/containerd.sock\n             ├─ 250288 /opt/kube/bin/containerd-bin/containerd-shim-runc-v2 -namespace k8s.io -id 6d00a51a6a35b15adbc27e538dfa5d3c0d9800f6ae0dc6596e61d7c6c0fdfa7f -address /run/containerd/containerd.sock\n             ├─ 259322 /opt/kube/bin/containerd-bin/containerd-shim-runc-v2 -namespace k8s.io -id e73fe6a718a33c8c5447b649bbc9b4380bdf7b6f6bfa2019538f7cf10a40c314 -address /run/containerd/containerd.sock\n             ├─ 290814 /opt/kube/bin/containerd-bin/containerd-shim-runc-v2 -namespace k8s.io -id 3173e06e65572621473ed3fb7060f46fc2eb66e0d91dc6d1ceef61da1d92f8d3 -address /run/containerd/containerd.sock\n             ├─ 291000 /opt/kube/bin/containerd-bin/containerd-shim-runc-v2 -namespace k8s.io -id a0cd247100f5ef6bcdf149d9e28a84def4be1d5a7117806770db2b2a4b396a36 -address /run/containerd/containerd.sock\n             ├─ 291010 /opt/kube/bin/containerd-bin/containerd-shim-runc-v2 -namespace k8s.io -id 087278e01dba546485b51b9ea03a16580cd1679355b6c93afa4c2f0f4fad784c -address /run/containerd/containerd.sock\n             ├─ 291036 /opt/kube/bin/containerd-bin/containerd-shim-runc-v2 -namespace k8s.io -id 59969d7d937e99427f6dd3085777088cf8fe0c907412bae109c0611a35877993 -address /run/containerd/containerd.sock\n             ├─ 295553 /opt/kube/bin/containerd-bin/containerd-shim-runc-v2 -namespace k8s.io -id 43e150ac1cfe67aace0ea2fe19a742a6aec2f19768fc994bb5d7c66ddb5d04dc -address /run/containerd/containerd.sock\n             ├─ 373297 /opt/kube/bin/containerd-bin/containerd-shim-runc-v2 -namespace k8s.io -id 8168bdd3be5ef3d2ba236d31c778f9dc3bd4ac071badcafdb822d6b22c247cdc -address /run/containerd/containerd.sock\n             ├─ 374811 /opt/kube/bin/containerd-bin/containerd-shim-runc-v2 -namespace k8s.io -id 67c455a233c0ea7319163de7751d201b59f085ea2d4fe851e2021d4c6bc8aa9b -address /run/containerd/containerd.sock\n             ├─ 815714 /opt/kube/bin/containerd-bin/containerd-shim-runc-v2 -namespace k8s.io -id 61c775ab2a1f63e88ce6d45ea2927b92ec719ca51999213ecf42f00e8c487762 -address /run/containerd/containerd.sock\n             ├─ 815770 /opt/kube/bin/containerd-bin/containerd-shim-runc-v2 -namespace k8s.io -id 9a17e4530984004aedefb7cc5bc6758e2d3edb472255a03be380751a1b1bf0ff -address /run/containerd/containerd.sock\n             ├─ 816188 /opt/kube/bin/containerd-bin/containerd-shim-runc-v2 -namespace k8s.io -id a4f9a8924f4ce9c3e9f32e4f2789c37e1e293b7c99c1f4c409b6006f1d27e3f8 -address /run/containerd/containerd.sock\n             ├─ 816552 /opt/kube/bin/containerd-bin/containerd-shim-runc-v2 -namespace k8s.io -id c51a7b40c39198238e9aae14a9a1a4acfe2a9004d26c06eca3adc0ba0436f0df -address /run/containerd/containerd.sock\n             ├─ 817036 /opt/kube/bin/containerd-bin/containerd-shim-runc-v2 -namespace k8s.io -id 1f1ef76ce6068fec08319dea4004a478d265fad028d52bc6fa76e8b9b5283647 -address /run/containerd/containerd.sock\n             ├─ 817614 /opt/kube/bin/containerd-bin/containerd-shim-runc-v2 -namespace k8s.io -id ac10f97f636733dfc24544c81727760dc2554919c62c3603a1cd1405515a2505 -address /run/containerd/containerd.sock\n             ├─ 818362 /opt/kube/bin/containerd-bin/containerd-shim-runc-v2 -namespace k8s.io -id c42f6e47402f6a6e60f0c15ab9d81a3f6c36fa2192bdef33475309078bdf024e -address /run/containerd/containerd.sock\n             ├─ 818841 /opt/kube/bin/containerd-bin/containerd-shim-runc-v2 -namespace k8s.io -id 205ac72ca6e9154655afe0b6880203c270c8e43f4d49c81ff75e45bdbed47288 -address /run/containerd/containerd.sock\n             ├─ 819292 /opt/kube/bin/containerd-bin/containerd-shim-runc-v2 -namespace k8s.io -id 8f64218bf38c94a2be4aecf3a58f089d773efef20ef8d1b136e76e65b2818256 -address /run/containerd/containerd.sock\n             ├─ 819798 /opt/kube/bin/containerd-bin/containerd-shim-runc-v2 -namespace k8s.io -id ba7d080748c570b54b34d70022eb3043855b8af72ddcd63eff9826503352eb99 -address /run/containerd/containerd.sock\n             ├─ 820529 /opt/kube/bin/containerd-bin/containerd-shim-runc-v2 -namespace k8s.io -id b623409d15ae94d22692f9c8b038f5b7051f0e34ca4f0ab7e92c5fda31996803 -address /run/containerd/containerd.sock\n             ├─ 820957 /opt/kube/bin/containerd-bin/containerd-shim-runc-v2 -namespace k8s.io -id d3dbceb2de5ac60238936f23b988aa3428c1bc241d8ab1f5d3eb32d8608e9668 -address /run/containerd/containerd.sock\n             ├─ 821421 /opt/kube/bin/containerd-bin/containerd-shim-runc-v2 -namespace k8s.io -id 0cae43dc1ba988796ace314ca043579f23a5209d46a7950d70909356634e0bc6 -address /run/containerd/containerd.sock\n             ├─ 821870 /opt/kube/bin/containerd-bin/containerd-shim-runc-v2 -namespace k8s.io -id c0b1fb094880ec63c9f03005b76ad7db74fe1018ead422fb2e5133d471c90158 -address /run/containerd/containerd.sock\n             ├─1491794 /opt/kube/bin/containerd-bin/containerd-shim-runc-v2 -namespace k8s.io -id b45750f154c1a5ba4ac11f475399e9f93b927b2e6f0050f864373a45fef59493 -address /run/containerd/containerd.sock\n             ├─1499529 /opt/kube/bin/containerd-bin/containerd-shim-runc-v2 -namespace k8s.io -id 345189758f268b0cd613ebf935e66b6b95ef704349ed64b27377dc7f4ee552ce -address /run/containerd/containerd.sock\n             └─1500319 /opt/kube/bin/containerd-bin/containerd-shim-runc-v2 -namespace k8s.io -id 80fab1e31c01c7f8e160e520da7b76f2c3d977c3bd5cf027704a814536e53701 -address /run/containerd/containerd.sock\n\nMar 17 01:20:47 worker-02 containerd[914]: time=\"2026-03-17T01:20:47.880591107+08:00\" level=info msg=\"StopPodSandbox for \\\"b241d27ed413e5571b9c3c0fe83ace7f307a39d5b37eeb67dac38e792e8687e0\\\" returns successfully\"\nMar 17 01:20:47 worker-02 containerd[914]: time=\"2026-03-17T01:20:47.881009032+08:00\" level=info msg=\"RemovePodSandbox for \\\"b241d27ed413e5571b9c3c0fe83ace7f307a39d5b37eeb67dac38e792e8687e0\\\"\"\nMar 17 01:20:47 worker-02 containerd[914]: time=\"2026-03-17T01:20:47.881064048+08:00\" level=info msg=\"Forcibly stopping sandbox \\\"b241d27ed413e5571b9c3c0fe83ace7f307a39d5b37eeb67dac38e792e8687e0\\\"\"\nMar 17 01:20:47 worker-02 containerd[914]: time=\"2026-03-17T01:20:47.913364368+08:00\" level=info msg=\"TearDown network for sandbox \\\"b241d27ed413e5571b9c3c0fe83ace7f307a39d5b37eeb67dac38e792e8687e0\\\" successfully\"\nMar 17 01:20:47 worker-02 containerd[914]: time=\"2026-03-17T01:20:47.919239309+08:00\" level=warning msg=\"Failed to get podSandbox status for container event for sandboxID \\\"b241d27ed413e5571b9c3c0fe83ace7f307a39d5b37eeb67dac38e792e8687e0\\\": an error occurred when try to find sandbox: not found. Sending the event with nil podSandboxStatus.\"\nMar 17 01:20:47 worker-02 containerd[914]: time=\"2026-03-17T01:20:47.919398430+08:00\" level=info msg=\"RemovePodSandbox \\\"b241d27ed413e5571b9c3c0fe83ace7f307a39d5b37eeb67dac38e792e8687e0\\\" returns successfully\"\nMar 17 01:21:35 worker-02 containerd[914]: time=\"2026-03-17T01:21:35.140772628+08:00\" level=info msg=\"CreateContainer within sandbox \\\"c0b1fb094880ec63c9f03005b76ad7db74fe1018ead422fb2e5133d471c90158\\\" for container &ContainerMetadata{Name:ts-preserve-service,Attempt:5,}\"\nMar 17 01:21:35 worker-02 containerd[914]: time=\"2026-03-17T01:21:35.155981995+08:00\" level=info msg=\"CreateContainer within sandbox \\\"c0b1fb094880ec63c9f03005b76ad7db74fe1018ead422fb2e5133d471c90158\\\" for &ContainerMetadata{Name:ts-preserve-service,Attempt:5,} returns container id \\\"00cbd3de18cf36f7abf593d2c932e1fe64dce0ed2ab838aeb0722983c77d9ff9\\\"\"\nMar 17 01:21:35 worker-02 containerd[914]: time=\"2026-03-17T01:21:35.156393790+08:00\" level=info msg=\"StartContainer for \\\"00cbd3de18cf36f7abf593d2c932e1fe64dce0ed2ab838aeb0722983c77d9ff9\\\"\"\nMar 17 01:21:35 worker-02 containerd[914]: time=\"2026-03-17T01:21:35.197632676+08:00\" level=info msg=\"StartContainer for \\\"00cbd3de18cf36f7abf593d2c932e1fe64dce0ed2ab838aeb0722983c77d9ff9\\\" returns successfully\"",
+   "error": null,
+   "purpose": "container runtime status on the same node",
+   "tool_latency": null
+  }
+ ],
+ "agentrun": {
+  "tag": "test",
+  "dsl": "workspace/dsl_versions/v0.8.dsl.txt",
+  "dsl_version": "0.8",
+  "sop": {
+   "sop": "boutique-runtime-rca",
+   "scope": {
+    "system": "boutique",
+    "families": [
+     "runtime",
+     "admission",
+     "scheduling",
+     "startup",
+     "service",
+     "performance",
+     "infrastructure",
+     "codedefect"
+    ],
+    "severity": [
+     "SEV2",
+     "SEV3"
+    ]
+   },
+   "owner": "sre-platform",
+   "approved_by": [
+    "oncall-primary",
+    "sre-lead"
+   ],
+   "reviewed_at": "2026-10-23",
+   "change_ticket": "OPS-1236",
+   "boundaries": "只读诊断：本 SOP 不执行任何写操作（重启/回滚/扩缩容），也不做对外播报；\n它回答\"最可能的根因与受害对象\"，处置与沟通由值班按 runbook 人工执行。\n不覆盖 SEV1（需 incident commander 介入）与变更引发的问题（走变更回滚流程）。\n输入是冻结快照：诊断结论对\"快照时刻\"成立，恢复后需重新取证。\nR1 已知边界：PVC 的 requested size / accessMode 在本 benchmark 的工具面不可见，\n因此 pvc_capacity 与 pvc_access_mode 无法区分（同一分数并列，交给 jev 或升级）。\n"
+  },
+  "params": {
+   "cands_cap": 8,
+   "max_waves": 8,
+   "min_waves": 5,
+   "steps_per_wave": 1,
+   "dominance_ratio": 1.5,
+   "conf_min": 0.0,
+   "escalate": true,
+   "escalate_budget": 8,
+   "judge_on_codedefect": true,
+   "jev_route": true,
+   "jev_pick": true,
+   "jev_verify": true,
+   "route_fallback": "runtime"
+  },
+  "nodes_executed": [
+   "anchors:extract_anchors",
+   "census:probes",
+   "route:decide",
+   "plan:build_plan",
+   "probe:probes",
+   "derive:derive_candidates",
+   "pick:decide",
+   "verify:decide",
+   "probe:probes",
+   "derive:derive_candidates",
+   "pick:decide",
+   "verify:decide",
+   "probe:probes",
+   "derive:derive_candidates",
+   "pick:decide",
+   "verify:decide",
+   "probe:probes",
+   "derive:derive_candidates",
+   "pick:decide",
+   "verify:decide",
+   "probe:probes",
+   "derive:derive_candidates",
+   "pick:decide",
+   "verify:decide",
+   "probe:probes",
+   "derive:derive_candidates",
+   "pick:decide",
+   "verify:decide",
+   "escalate:escalate",
+   "answer:normalize_answer",
+   "persist:persist_trace"
+  ],
+  "census": [
+   {
+    "step": "pods",
+    "gate": "always"
+   },
+   {
+    "step": "alerts",
+    "gate": "healthy_system"
+   }
+  ],
+  "plan": [
+   {
+    "step": "describe_pod",
+    "gate": "always",
+    "wave": 1
+   },
+   {
+    "step": "app_yaml",
+    "gate": "probe_evidence | restart_evidence | weak",
+    "wave": 2
+   },
+   {
+    "step": "error_logs",
+    "gate": "restart_evidence | weak_strong",
+    "wave": 3
+   },
+   {
+    "step": "node_kubelet",
+    "gate": "runtime_stall",
+    "wave": 4
+   },
+   {
+    "step": "node_containerd",
+    "gate": "runtime_stall | node_all_healthy",
+    "wave": 5
+   }
+  ],
+  "family": "runtime",
+  "state_wiring": {
+   "family": "$route.family",
+   "route_probs": "$route.probabilities",
+   "picked": "$pick.picked",
+   "pick_dominant": "$pick.dominant",
+   "verify_status": "$verify.status",
+   "verify_prob": "$verify.confidence"
+  },
+  "bindings": {
+   "anchors": {
+    "anchors": "Anchors(case_id='trainticket/service/29', system='trainticket', namespace='train-ticket', query='Partial Service Unreachability.', difficulty='medium', symptoms=['unavailable'], mentioned_apps=[], priors={'db_service': 'tsdb-mysql-leader', 'db_port': 3306})"
+   },
+   "route": {
+    "family": "runtime",
+    "probabilities": {},
+    "route_why": "mechanism_mode"
+   },
+   "plan": {
+    "plan": "[{'name': 'describe_pod', 'key': 'describe:pod', 'tool': 'DescribeResource', 'args': <function _args_describe_pod at 0x107ddb560>, 'purpose': 'probe config, container state, restart reasons, scheduler events', 'when': <function compile_steps.<locals>.<lambda> at 0x1081aac00>, 'gate': 'always', 'wave': 1}, {'name': 'app_yaml', 'key': 'appyaml', 'tool': 'GetAppYAML', 'args': <function _args_app_yaml at 0x107ddb6a0>, 'purpose': 'declared probes / limits / image / env', 'when': <function compile_steps.<locals>.<lambda> at 0x1081aaca0>, 'gate': 'probe_evidence | restart_evidence | weak', 'wave': 2}, {'name': 'error_logs', 'key': 'errors', 'tool': 'GetErrorLogs', 'args': <function _args_error_logs at 0x107ddb740>, 'purpose': 'application error logs', 'when': <function compile_steps.<locals>.<lambda> at 0x1081aad40>, 'gate': 'restart_evidence | weak_strong', 'wave': 3}, {'name': 'node_kubelet', 'key': 'node:kubelet', 'tool': 'CheckNodeServiceStatus', 'args': <function _args_node_kubelet at 0x107ddbba0>, 'purpose': 'kubelet status on the node hosting the stalled pod', 'when': <function compile_steps.<locals>.<lambda> at 0x1081aade0>, 'gate': 'runtime_stall', 'wave': 4}, {'name': 'node_containerd', 'key': 'node:containerd', 'tool': 'CheckNodeServiceStatus', 'args': <function _args_node_containerd at 0x107ddbc40>, 'purpose': 'container runtime status on the same node', 'when': <function compile_steps.<locals>.<lambda> at 0x1081aae80>, 'gate': 'runtime_stall | node_all_healthy', 'wave': 5}]"
+   },
+   "derive": {
+    "candidates": "[Candidate(root_cause='readiness_probe_incorrect_port', object='app/ts-preserve-service', score=0.5700000000000001, evidence='readiness probe targets :15020 but the container listens on :14568', rule='probe_config')]"
+   },
+   "pick": {
+    "picked": 0,
+    "dominant": true,
+    "pick_why": "no_new_evidence"
+   },
+   "verify": {
+    "status": "verified",
+    "confidence": null,
+    "verify_why": "dominant_candidate"
+   },
+   "escalate": {
+    "answer": null
+   },
+   "answer": {
+    "final": {
+     "key_evidence_summary": "readiness probe targets :15020 but the container listens on :14568",
+     "top_3_predictions": [
+      {
+       "rank": 1,
+       "fault_object": "app/ts-preserve-service",
+       "root_cause": "readiness_probe_incorrect_port"
+      },
+      {
+       "rank": 2,
+       "fault_object": "app/ts-preserve-service",
+       "root_cause": "readiness_probe_incorrect_port"
+      },
+      {
+       "rank": 3,
+       "fault_object": "app/ts-preserve-service",
+       "root_cause": "readiness_probe_incorrect_port"
+      }
+     ]
+    }
+   }
+  },
+  "picked": {
+   "root_cause": "readiness_probe_incorrect_port",
+   "object": "app/ts-preserve-service",
+   "score": 0.57,
+   "evidence": "readiness probe targets :15020 but the container listens on :14568",
+   "rule": "probe_config"
+  },
+  "pick_why": "",
+  "verify_prob": null,
+  "verify_verdict": "verified",
+  "verified": true,
+  "escalated": false,
+  "escalate_reason": "",
+  "escalate_steps": 0,
+  "waves": 6,
+  "candidates": [
+   {
+    "root_cause": "readiness_probe_incorrect_port",
+    "object": "app/ts-preserve-service",
+    "score": 0.57,
+    "evidence": "readiness probe targets :15020 but the container listens on :14568",
+    "rule": "probe_config"
+   }
+  ],
+  "jev": [
+   {
+    "rid": "test:trainticket/service/29#route",
+    "kind": "route",
+    "node": "route",
+    "mode": "mechanism",
+    "options": [
+     "runtime",
+     "infrastructure"
+    ],
+    "status": "mechanical",
+    "guard": "unavailable",
+    "use": "first_option",
+    "choice": "runtime",
+    "why": "mechanism_mode",
+    "dominant": false,
+    "continue_loop": false,
+    "escalate": false
+   },
+   {
+    "rid": "test:trainticket/service/29#pick1",
+    "kind": "pick",
+    "node": "pick",
+    "mode": "mechanism",
+    "options": [
+     "c0"
+    ],
+    "status": "mechanical",
+    "guard": "top_over_second >= $params.dominance_ratio",
+    "use": "first_option",
+    "choice": 0,
+    "why": "dominance",
+    "dominant": true,
+    "continue_loop": false,
+    "escalate": false
+   },
+   {
+    "rid": "test:trainticket/service/29#verify1",
+    "kind": "verify",
+    "node": "verify",
+    "mode": "mechanism",
+    "options": [
+     "supported",
+     "insufficient",
+     "contradicted"
+    ],
+    "status": "mechanical",
+    "guard": "$pick.dominant",
+    "use": "verified",
+    "choice": "verified",
+    "why": "dominant_candidate",
+    "dominant": false,
+    "continue_loop": false,
+    "escalate": false
+   },
+   {
+    "rid": "test:trainticket/service/29#pick2",
+    "kind": "pick",
+    "node": "pick",
+    "mode": "mechanism",
+    "options": [
+     "c0"
+    ],
+    "status": "mechanical",
+    "guard": "unchanged_since_last",
+    "use": "previous",
+    "choice": 0,
+    "why": "no_new_evidence",
+    "dominant": true,
+    "continue_loop": false,
+    "escalate": false
+   },
+   {
+    "rid": "test:trainticket/service/29#verify2",
+    "kind": "verify",
+    "node": "verify",
+    "mode": "mechanism",
+    "options": [
+     "supported",
+     "insufficient",
+     "contradicted"
+    ],
+    "status": "mechanical",
+    "guard": "$pick.dominant",
+    "use": "verified",
+    "choice": "verified",
+    "why": "dominant_candidate",
+    "dominant": false,
+    "continue_loop": false,
+    "escalate": false
+   },
+   {
+    "rid": "test:trainticket/service/29#pick3",
+    "kind": "pick",
+    "node": "pick",
+    "mode": "mechanism",
+    "options": [
+     "c0"
+    ],
+    "status": "mechanical",
+    "guard": "unchanged_since_last",
+    "use": "previous",
+    "choice": 0,
+    "why": "no_new_evidence",
+    "dominant": true,
+    "continue_loop": false,
+    "escalate": false
+   },
+   {
+    "rid": "test:trainticket/service/29#verify3",
+    "kind": "verify",
+    "node": "verify",
+    "mode": "mechanism",
+    "options": [
+     "supported",
+     "insufficient",
+     "contradicted"
+    ],
+    "status": "mechanical",
+    "guard": "$pick.dominant",
+    "use": "verified",
+    "choice": "verified",
+    "why": "dominant_candidate",
+    "dominant": false,
+    "continue_loop": false,
+    "escalate": false
+   },
+   {
+    "rid": "test:trainticket/service/29#pick4",
+    "kind": "pick",
+    "node": "pick",
+    "mode": "mechanism",
+    "options": [
+     "c0"
+    ],
+    "status": "mechanical",
+    "guard": "unchanged_since_last",
+    "use": "previous",
+    "choice": 0,
+    "why": "no_new_evidence",
+    "dominant": true,
+    "continue_loop": false,
+    "escalate": false
+   },
+   {
+    "rid": "test:trainticket/service/29#verify4",
+    "kind": "verify",
+    "node": "verify",
+    "mode": "mechanism",
+    "options": [
+     "supported",
+     "insufficient",
+     "contradicted"
+    ],
+    "status": "mechanical",
+    "guard": "$pick.dominant",
+    "use": "verified",
+    "choice": "verified",
+    "why": "dominant_candidate",
+    "dominant": false,
+    "continue_loop": false,
+    "escalate": false
+   },
+   {
+    "rid": "test:trainticket/service/29#pick5",
+    "kind": "pick",
+    "node": "pick",
+    "mode": "mechanism",
+    "options": [
+     "c0"
+    ],
+    "status": "mechanical",
+    "guard": "unchanged_since_last",
+    "use": "previous",
+    "choice": 0,
+    "why": "no_new_evidence",
+    "dominant": true,
+    "continue_loop": false,
+    "escalate": false
+   },
+   {
+    "rid": "test:trainticket/service/29#verify5",
+    "kind": "verify",
+    "node": "verify",
+    "mode": "mechanism",
+    "options": [
+     "supported",
+     "insufficient",
+     "contradicted"
+    ],
+    "status": "mechanical",
+    "guard": "$pick.dominant",
+    "use": "verified",
+    "choice": "verified",
+    "why": "dominant_candidate",
+    "dominant": false,
+    "continue_loop": false,
+    "escalate": false
+   },
+   {
+    "rid": "test:trainticket/service/29#pick6",
+    "kind": "pick",
+    "node": "pick",
+    "mode": "mechanism",
+    "options": [
+     "c0"
+    ],
+    "status": "mechanical",
+    "guard": "unchanged_since_last",
+    "use": "previous",
+    "choice": 0,
+    "why": "no_new_evidence",
+    "dominant": true,
+    "continue_loop": false,
+    "escalate": false
+   },
+   {
+    "rid": "test:trainticket/service/29#verify6",
+    "kind": "verify",
+    "node": "verify",
+    "mode": "mechanism",
+    "options": [
+     "supported",
+     "insufficient",
+     "contradicted"
+    ],
+    "status": "mechanical",
+    "guard": "$pick.dominant",
+    "use": "verified",
+    "choice": "verified",
+    "why": "dominant_candidate",
+    "dominant": false,
+    "continue_loop": false,
+    "escalate": false
+   }
+  ],
+  "nodes": [
+   {
+    "node": "code",
+    "id": "anchors",
+    "anchors": {
+     "case_id": "trainticket/service/29",
+     "system": "trainticket",
+     "namespace": "train-ticket",
+     "query": "Partial Service Unreachability.",
+     "difficulty": "medium",
+     "symptoms": [
+      "unavailable"
+     ],
+     "mentioned_apps": []
+    }
+   },
+   {
+    "node": "probes",
+    "plan": "census",
+    "wave": 0,
+    "executed": 1,
+    "steps": [
+     {
+      "key": "pods",
+      "tool": "GetResources",
+      "arguments": {
+       "namespace": "train-ticket",
+       "resource_type": "pods",
+       "output_wide": true
+      },
+      "gate": "always"
+     }
+    ],
+    "skipped": [
+     {
+      "step": "alerts",
+      "why": "gate healthy_system"
+     }
+    ]
+   },
+   {
+    "node": "decide",
+    "id": "route",
+    "rid": "test:trainticket/service/29#route",
+    "status": "mechanical",
+    "guard": "unavailable",
+    "use": "first_option",
+    "choice": "runtime",
+    "dominant": false,
+    "why": "mechanism_mode"
+   },
+   {
+    "node": "code",
+    "id": "plan",
+    "family": "runtime",
+    "plan": [
+     {
+      "step": "describe_pod",
+      "gate": "always",
+      "wave": 1
+     },
+     {
+      "step": "app_yaml",
+      "gate": "probe_evidence | restart_evidence | weak",
+      "wave": 2
+     },
+     {
+      "step": "error_logs",
+      "gate": "restart_evidence | weak_strong",
+      "wave": 3
+     },
+     {
+      "step": "node_kubelet",
+      "gate": "runtime_stall",
+      "wave": 4
+     },
+     {
+      "step": "node_containerd",
+      "gate": "runtime_stall | node_all_healthy",
+      "wave": 5
+     }
+    ]
+   },
+   {
+    "node": "probes",
+    "plan": "family",
+    "wave": 1,
+    "executed": 1,
+    "steps": [
+     {
+      "key": "describe:pod",
+      "tool": "DescribeResource",
+      "arguments": {
+       "namespace": "train-ticket",
+       "resource_type": "pods",
+       "name": "ts-preserve-service-6bd658cfc9-gpc6b"
+      },
+      "gate": "always"
+     }
+    ],
+    "skipped": []
+   },
+   {
+    "node": "code",
+    "id": "derive",
+    "raw": 1,
+    "kept": 1,
+    "top": [
+     {
+      "root_cause": "readiness_probe_incorrect_port",
+      "object": "app/ts-preserve-service",
+      "score": 0.57,
+      "evidence": "readiness probe targets :15020 but the container listens on :14568",
+      "rule": "probe_config"
+     }
+    ]
+   },
+   {
+    "node": "decide",
+    "id": "pick",
+    "rid": "test:trainticket/service/29#pick1",
+    "status": "mechanical",
+    "guard": "top_over_second >= $params.dominance_ratio",
+    "use": "first_option",
+    "choice": 0,
+    "dominant": true,
+    "why": "dominance"
+   },
+   {
+    "node": "decide",
+    "id": "verify",
+    "rid": "test:trainticket/service/29#verify1",
+    "status": "mechanical",
+    "guard": "$pick.dominant",
+    "use": "verified",
+    "choice": "verified",
+    "dominant": false,
+    "why": "dominant_candidate"
+   },
+   {
+    "node": "probes",
+    "plan": "family",
+    "wave": 2,
+    "executed": 1,
+    "steps": [
+     {
+      "key": "appyaml",
+      "tool": "GetAppYAML",
+      "arguments": {
+       "app_name": "ts-preserve-service"
+      },
+      "gate": "probe_evidence | restart_evidence | weak"
+     }
+    ],
+    "skipped": []
+   },
+   {
+    "node": "code",
+    "id": "derive",
+    "raw": 1,
+    "kept": 1,
+    "top": [
+     {
+      "root_cause": "readiness_probe_incorrect_port",
+      "object": "app/ts-preserve-service",
+      "score": 0.57,
+      "evidence": "readiness probe targets :15020 but the container listens on :14568",
+      "rule": "probe_config"
+     }
+    ]
+   },
+   {
+    "node": "decide",
+    "id": "pick",
+    "rid": "test:trainticket/service/29#pick2",
+    "status": "mechanical",
+    "guard": "unchanged_since_last",
+    "use": "previous",
+    "choice": 0,
+    "dominant": true,
+    "why": "no_new_evidence"
+   },
+   {
+    "node": "decide",
+    "id": "verify",
+    "rid": "test:trainticket/service/29#verify2",
+    "status": "mechanical",
+    "guard": "$pick.dominant",
+    "use": "verified",
+    "choice": "verified",
+    "dominant": false,
+    "why": "dominant_candidate"
+   },
+   {
+    "node": "probes",
+    "plan": "family",
+    "wave": 3,
+    "executed": 1,
+    "steps": [
+     {
+      "key": "errors",
+      "tool": "GetErrorLogs",
+      "arguments": {
+       "namespace": "train-ticket",
+       "service_name": "ts-preserve-service"
+      },
+      "gate": "restart_evidence | weak_strong"
+     }
+    ],
+    "skipped": []
+   },
+   {
+    "node": "code",
+    "id": "derive",
+    "raw": 1,
+    "kept": 1,
+    "top": [
+     {
+      "root_cause": "readiness_probe_incorrect_port",
+      "object": "app/ts-preserve-service",
+      "score": 0.57,
+      "evidence": "readiness probe targets :15020 but the container listens on :14568",
+      "rule": "probe_config"
+     }
+    ]
+   },
+   {
+    "node": "decide",
+    "id": "pick",
+    "rid": "test:trainticket/service/29#pick3",
+    "status": "mechanical",
+    "guard": "unchanged_since_last",
+    "use": "previous",
+    "choice": 0,
+    "dominant": true,
+    "why": "no_new_evidence"
+   },
+   {
+    "node": "decide",
+    "id": "verify",
+    "rid": "test:trainticket/service/29#verify3",
+    "status": "mechanical",
+    "guard": "$pick.dominant",
+    "use": "verified",
+    "choice": "verified",
+    "dominant": false,
+    "why": "dominant_candidate"
+   },
+   {
+    "node": "probes",
+    "plan": "family",
+    "wave": 4,
+    "executed": 0,
+    "steps": [],
+    "skipped": [
+     {
+      "step": "node_kubelet",
+      "why": "gate runtime_stall"
+     }
+    ]
+   },
+   {
+    "node": "code",
+    "id": "derive",
+    "raw": 1,
+    "kept": 1,
+    "top": [
+     {
+      "root_cause": "readiness_probe_incorrect_port",
+      "object": "app/ts-preserve-service",
+      "score": 0.57,
+      "evidence": "readiness probe targets :15020 but the container listens on :14568",
+      "rule": "probe_config"
+     }
+    ]
+   },
+   {
+    "node": "decide",
+    "id": "pick",
+    "rid": "test:trainticket/service/29#pick4",
+    "status": "mechanical",
+    "guard": "unchanged_since_last",
+    "use": "previous",
+    "choice": 0,
+    "dominant": true,
+    "why": "no_new_evidence"
+   },
+   {
+    "node": "decide",
+    "id": "verify",
+    "rid": "test:trainticket/service/29#verify4",
+    "status": "mechanical",
+    "guard": "$pick.dominant",
+    "use": "verified",
+    "choice": "verified",
+    "dominant": false,
+    "why": "dominant_candidate"
+   },
+   {
+    "node": "probes",
+    "plan": "family",
+    "wave": 5,
+    "executed": 1,
+    "steps": [
+     {
+      "key": "node:containerd",
+      "tool": "CheckNodeServiceStatus",
+      "arguments": {
+       "node_name": "worker-02",
+       "service_name": "containerd"
+      },
+      "gate": "runtime_stall | node_all_healthy"
+     }
+    ],
+    "skipped": []
+   },
+   {
+    "node": "code",
+    "id": "derive",
+    "raw": 1,
+    "kept": 1,
+    "top": [
+     {
+      "root_cause": "readiness_probe_incorrect_port",
+      "object": "app/ts-preserve-service",
+      "score": 0.57,
+      "evidence": "readiness probe targets :15020 but the container listens on :14568",
+      "rule": "probe_config"
+     }
+    ]
+   },
+   {
+    "node": "decide",
+    "id": "pick",
+    "rid": "test:trainticket/service/29#pick5",
+    "status": "mechanical",
+    "guard": "unchanged_since_last",
+    "use": "previous",
+    "choice": 0,
+    "dominant": true,
+    "why": "no_new_evidence"
+   },
+   {
+    "node": "decide",
+    "id": "verify",
+    "rid": "test:trainticket/service/29#verify5",
+    "status": "mechanical",
+    "guard": "$pick.dominant",
+    "use": "verified",
+    "choice": "verified",
+    "dominant": false,
+    "why": "dominant_candidate"
+   },
+   {
+    "node": "probes",
+    "plan": "family",
+    "wave": 6,
+    "executed": 0,
+    "why": "plan exhausted"
+   },
+   {
+    "node": "code",
+    "id": "derive",
+    "raw": 1,
+    "kept": 1,
+    "top": [
+     {
+      "root_cause": "readiness_probe_incorrect_port",
+      "object": "app/ts-preserve-service",
+      "score": 0.57,
+      "evidence": "readiness probe targets :15020 but the container listens on :14568",
+      "rule": "probe_config"
+     }
+    ]
+   },
+   {
+    "node": "decide",
+    "id": "pick",
+    "rid": "test:trainticket/service/29#pick6",
+    "status": "mechanical",
+    "guard": "unchanged_since_last",
+    "use": "previous",
+    "choice": 0,
+    "dominant": true,
+    "why": "no_new_evidence"
+   },
+   {
+    "node": "decide",
+    "id": "verify",
+    "rid": "test:trainticket/service/29#verify6",
+    "status": "mechanical",
+    "guard": "$pick.dominant",
+    "use": "verified",
+    "choice": "verified",
+    "dominant": false,
+    "why": "dominant_candidate"
+   },
+   {
+    "node": "loop",
+    "id": "waves",
+    "stop": "plan_exhausted",
+    "wave": 6
+   },
+   {
+    "node": "escalate",
+    "id": "escalate",
+    "fired": false,
+    "reasons": [],
+    "why": "no reason"
+   },
+   {
+    "node": "code",
+    "id": "answer",
+    "predictions": [
+     {
+      "rank": 1,
+      "fault_object": "app/ts-preserve-service",
+      "root_cause": "readiness_probe_incorrect_port"
+     },
+     {
+      "rank": 2,
+      "fault_object": "app/ts-preserve-service",
+      "root_cause": "readiness_probe_incorrect_port"
+     },
+     {
+      "rank": 3,
+      "fault_object": "app/ts-preserve-service",
+      "root_cause": "readiness_probe_incorrect_port"
+     }
+    ]
+   },
+   {
+    "node": "artifact",
+    "id": "persist",
+    "persisted": false,
+    "why": "written by the CLI driver"
+   }
+  ],
+  "notes": [],
+  "tool_calls": 5,
+  "model_calls": 0,
+  "tokens_in": 0,
+  "tokens_out": 0,
+  "wall_s": 0.09
+ }
+}

@@ -1,0 +1,558 @@
+{
+ "case_id": "boutique/infrastructure/13",
+ "system_name": "boutique",
+ "question": "Service Availability Disruption.",
+ "case_path": "/Users/justinwan/work/workspace/cloudops_bench_rsi/repo/benchmark/boutique/infrastructure/13",
+ "max_steps": 8,
+ "current_step": 3,
+ "finished": true,
+ "stop_reason": "submit",
+ "final_answer": "{\"key_evidence_summary\": \"containerd reported unhealthy on worker-01\", \"top_3_predictions\": [{\"rank\": 1, \"fault_object\": \"node/worker-01\", \"root_cause\": \"containerd_unavailable\"}, {\"rank\": 2, \"fault_object\": \"node/worker-01\", \"root_cause\": \"kubelet_unavailable\"}, {\"rank\": 3, \"fault_object\": \"node/worker-01\", \"root_cause\": \"containerd_unavailable\"}]}",
+ "metadata": {
+  "namespace": "boutique",
+  "query": "Service Availability Disruption.",
+  "fault_category": "infrastructure",
+  "model_name": "agentrun-v0.7"
+ },
+ "steps": [
+  {
+   "step_id": 0,
+   "action_type": "tool",
+   "action_name": "GetResources",
+   "action_input": {
+    "namespace": "boutique",
+    "resource_type": "pods"
+   },
+   "observation": "NAME                                     READY   STATUS    RESTARTS   AGE\nadservice-d68dfc56-fjwch                 1/1     Running   0          72s\ncartservice-7c5f46fc47-jz76b             1/1     Running   0          73s\ncheckoutservice-dbcdcb5fb-s8gff          1/1     Running   0          72s\ncurrencyservice-5cd6467fc4-nn57w         1/1     Running   0          72s\nemailservice-7dc7d85bcb-kjxqs            1/1     Running   0          72s\nfrontend-6778bd7b8b-k9hrh                1/1     Running   0          74s\npaymentservice-869f9f96cd-xwz4b          1/1     Running   0          72s\nproductcatalogservice-6fb89f98f8-2v4m9   1/1     Running   0          73s\nrecommendationservice-54dfdd6986-2nwmw   1/1     Running   0          71s\nredis-cart-58649b5469-df8f9              1/1     Running   0          73s\nshippingservice-674c8c548d-trm4m         1/1     Running   0          73s\n",
+   "error": null,
+   "purpose": "pod readiness census",
+   "tool_latency": null
+  },
+  {
+   "step_id": 1,
+   "action_type": "tool",
+   "action_name": "GetAlerts",
+   "action_input": {},
+   "observation": "No active metric anomalies detected at this time.",
+   "error": null,
+   "purpose": "anomaly signature (routes performance/code families)",
+   "tool_latency": null
+  },
+  {
+   "step_id": 2,
+   "action_type": "tool",
+   "action_name": "CheckNodeServiceStatus",
+   "action_input": {
+    "node_name": "worker-01",
+    "service_name": "kubelet"
+   },
+   "observation": "Service: kubelet\nNode: worker-01\nStatus: ● kubelet.service - Kubernetes Kubelet\n     Loaded: loaded (/etc/systemd/system/kubelet.service; enabled; vendor preset: enabled)\n     Active: active (running) since Fri 2026-01-02 11:52:39 CST; 4h 2min ago\n       Docs: https://github.com/GoogleCloudPlatform/kubernetes\n    Process: 1520 ExecStartPre=/bin/mount -o remount,rw /sys/fs/cgroup (code=exited, status=0/SUCCESS)\n   Main PID: 1521 (kubelet)\n      Tasks: 23 (limit: 18592)\n     Memory: 58.3M\n        CPU: 4min 19.873s\n     CGroup: /system.slice/kubelet.service\n             └─1521 /opt/kube/bin/kubelet --config=/var/lib/kubelet/config.yaml --container-runtime-endpoint=unix:///run/containerd/containerd.sock --hostname-override=worker-01 --kubeconfig=/etc/kubernetes/kubelet.kubeconfig --root-dir=/var/lib/kubelet --v=2\n\nJan 02 15:55:22 worker-01 kubelet[1521]: I0102 15:55:22.356567    1521 util.go:48] \"No ready sandbox for pod can be found. Need to start a new one\" pod=\"boutique/debug-connect\"\nJan 02 15:55:22 worker-01 kubelet[1521]: I0102 15:55:22.377312    1521 kubelet.go:2423] \"SyncLoop DELETE\" source=\"api\" pods=[\"boutique/debug-connect\"]\nJan 02 15:55:22 worker-01 kubelet[1521]: I0102 15:55:22.379132    1521 kubelet.go:2417] \"SyncLoop REMOVE\" source=\"api\" pods=[\"boutique/debug-connect\"]\nJan 02 15:55:22 worker-01 kubelet[1521]: I0102 15:55:22.488867    1521 reconciler_common.go:159] \"operationExecutor.UnmountVolume started for volume \\\"kube-api-access-2v2xk\\\" (UniqueName: \\\"kubernetes.io/projected/0878e87e-3023-4a34-bab2-9e2e7cd32a6a-kube-api-access-2v2xk\\\") pod \\\"0878e87e-3023-4a34-bab2-9e2e7cd32a6a\\\" (UID: \\\"0878e87e-3023-4a34-bab2-9e2e7cd32a6a\\\") \"\nJan 02 15:55:22 worker-01 kubelet[1521]: I0102 15:55:22.490445    1521 operation_generator.go:803] UnmountVolume.TearDown succeeded for volume \"kubernetes.io/projected/0878e87e-3023-4a34-bab2-9e2e7cd32a6a-kube-api-access-2v2xk\" (OuterVolumeSpecName: \"kube-api-access-2v2xk\") pod \"0878e87e-3023-4a34-bab2-9e2e7cd32a6a\" (UID: \"0878e87e-3023-4a34-bab2-9e2e7cd32a6a\"). InnerVolumeSpecName \"kube-api-access-2v2xk\". PluginName \"kubernetes.io/projected\", VolumeGidValue \"\"\nJan 02 15:55:22 worker-01 kubelet[1521]: I0102 15:55:22.589873    1521 reconciler_common.go:288] \"Volume detached for volume \\\"kube-api-access-2v2xk\\\" (UniqueName: \\\"kubernetes.io/projected/0878e87e-3023-4a34-bab2-9e2e7cd32a6a-kube-api-access-2v2xk\\\") on node \\\"worker-01\\\" DevicePath \\\"\\\"\"\nJan 02 15:55:23 worker-01 kubelet[1521]: I0102 15:55:23.204361    1521 pod_container_deletor.go:80] \"Container not found in pod's containers\" containerID=\"6f09621a90a5090733422da22a2af9524b7833b17f4c5746f6009e881ac92d2c\"\nJan 02 15:55:23 worker-01 kubelet[1521]: I0102 15:55:23.204393    1521 util.go:48] \"No ready sandbox for pod can be found. Need to start a new one\" pod=\"boutique/debug-connect\"\nJan 02 15:55:23 worker-01 kubelet[1521]: I0102 15:55:23.211474    1521 status_manager.go:861] \"Pod was deleted and then recreated, skipping status update\" pod=\"boutique/debug-connect\" oldPodUID=\"0878e87e-3023-4a34-bab2-9e2e7cd32a6a\" podUID=\"7f3436f2-01d5-4917-af44-1e0e1511c021\"\nJan 02 15:55:23 worker-01 kubelet[1521]: I0102 15:55:23.478683    1521 kubelet_volumes.go:163] \"Cleaned up orphaned pod volumes dir\" podUID=\"0878e87e-3023-4a34-bab2-9e2e7cd32a6a\" path=\"/var/lib/kubelet/pods/0878e87e-3023-4a34-bab2-9e2e7cd32a6a/volumes\"",
+   "error": null,
+   "purpose": "node component health",
+   "tool_latency": null
+  }
+ ],
+ "agentrun": {
+  "tag": "test",
+  "dsl": "workspace/dsl_versions/v0.7.dsl.txt",
+  "dsl_version": "0.7",
+  "sop": {
+   "sop": "boutique-runtime-rca",
+   "scope": {
+    "system": "boutique",
+    "families": [
+     "runtime",
+     "admission",
+     "scheduling",
+     "startup",
+     "service",
+     "performance",
+     "infrastructure",
+     "codedefect"
+    ],
+    "severity": [
+     "SEV2",
+     "SEV3"
+    ]
+   },
+   "owner": "sre-platform",
+   "approved_by": [
+    "oncall-primary",
+    "sre-lead"
+   ],
+   "reviewed_at": "2026-10-23",
+   "change_ticket": "OPS-1235",
+   "boundaries": "只读诊断：本 SOP 不执行任何写操作（重启/回滚/扩缩容），也不做对外播报；\n它回答\"最可能的根因与受害对象\"，处置与沟通由值班按 runbook 人工执行。\n不覆盖 SEV1（需 incident commander 介入）与变更引发的问题（走变更回滚流程）。\n输入是冻结快照：诊断结论对\"快照时刻\"成立，恢复后需重新取证。\nR1 已知边界：PVC 的 requested size / accessMode 在本 benchmark 的工具面不可见，\n因此 pvc_capacity 与 pvc_access_mode 无法区分（同一分数并列，交给 jev 或升级）。\n"
+  },
+  "params": {
+   "cands_cap": 8,
+   "max_waves": 8,
+   "min_waves": 5,
+   "steps_per_wave": 1,
+   "dominance_ratio": 1.5,
+   "conf_min": 0.0,
+   "escalate": true,
+   "escalate_budget": 8,
+   "judge_on_codedefect": true,
+   "jev_route": true,
+   "jev_pick": true,
+   "jev_verify": true,
+   "route_fallback": "runtime"
+  },
+  "nodes_executed": [
+   "anchors:extract_anchors",
+   "census:probes",
+   "route:decide",
+   "plan:build_plan",
+   "probe:probes",
+   "derive:derive_candidates",
+   "pick:decide",
+   "verify:decide",
+   "probe:probes",
+   "derive:derive_candidates",
+   "pick:decide",
+   "verify:decide",
+   "escalate:escalate",
+   "answer:normalize_answer",
+   "persist:persist_trace"
+  ],
+  "census": [
+   {
+    "step": "pods",
+    "gate": "always"
+   },
+   {
+    "step": "alerts",
+    "gate": "healthy_system"
+   }
+  ],
+  "plan": [
+   {
+    "step": "node_status",
+    "gate": "always",
+    "wave": 1
+   },
+   {
+    "step": "cluster_config",
+    "gate": "weak",
+    "wave": 2
+   }
+  ],
+  "family": "infrastructure",
+  "state_wiring": {
+   "family": "$route.family",
+   "route_probs": "$route.probabilities",
+   "picked": "$pick.picked",
+   "pick_dominant": "$pick.dominant",
+   "verify_status": "$verify.status",
+   "verify_prob": "$verify.confidence"
+  },
+  "bindings": {
+   "anchors": {
+    "anchors": "Anchors(case_id='boutique/infrastructure/13', system='boutique', namespace='boutique', query='Service Availability Disruption.', difficulty='medium', symptoms=[], mentioned_apps=[], priors={'db_service': '', 'db_port': 0})"
+   },
+   "route": {
+    "family": "infrastructure",
+    "probabilities": {},
+    "route_why": "mechanism_mode"
+   },
+   "plan": {
+    "plan": "[{'name': 'node_status', 'key': 'node:status', 'tool': 'CheckNodeServiceStatus', 'args': <function _args_node_status at 0x103d4b240>, 'purpose': 'node component health', 'when': <function compile_steps.<locals>.<lambda> at 0x103e2c5e0>, 'gate': 'always', 'wave': 1}, {'name': 'cluster_config', 'key': 'cluster', 'tool': 'GetClusterConfiguration', 'args': {}, 'purpose': 'cluster-wide node state', 'when': <function compile_steps.<locals>.<lambda> at 0x103e2c720>, 'gate': 'weak', 'wave': 2}]"
+   },
+   "derive": {
+    "candidates": "[Candidate(root_cause='containerd_unavailable', object='node/worker-01', score=0.97, evidence='containerd reported unhealthy on worker-01', rule='node_component'), Candidate(root_cause='kubelet_unavailable', object='node/worker-01', score=0.97, evidence='kubelet reported unhealthy on worker-01', rule='node_component')]"
+   },
+   "pick": {
+    "picked": 0,
+    "dominant": false,
+    "pick_why": "no_new_evidence"
+   },
+   "verify": {
+    "status": "verified",
+    "confidence": null,
+    "verify_why": "no_new_evidence"
+   },
+   "escalate": {
+    "answer": null
+   },
+   "answer": {
+    "final": {
+     "key_evidence_summary": "containerd reported unhealthy on worker-01",
+     "top_3_predictions": [
+      {
+       "rank": 1,
+       "fault_object": "node/worker-01",
+       "root_cause": "containerd_unavailable"
+      },
+      {
+       "rank": 2,
+       "fault_object": "node/worker-01",
+       "root_cause": "kubelet_unavailable"
+      },
+      {
+       "rank": 3,
+       "fault_object": "node/worker-01",
+       "root_cause": "containerd_unavailable"
+      }
+     ]
+    }
+   }
+  },
+  "picked": {
+   "root_cause": "containerd_unavailable",
+   "object": "node/worker-01",
+   "score": 0.97,
+   "evidence": "containerd reported unhealthy on worker-01",
+   "rule": "node_component"
+  },
+  "pick_why": "",
+  "verify_prob": null,
+  "verify_verdict": "verified",
+  "verified": true,
+  "escalated": false,
+  "escalate_reason": "",
+  "escalate_steps": 0,
+  "waves": 2,
+  "candidates": [
+   {
+    "root_cause": "containerd_unavailable",
+    "object": "node/worker-01",
+    "score": 0.97,
+    "evidence": "containerd reported unhealthy on worker-01",
+    "rule": "node_component"
+   },
+   {
+    "root_cause": "kubelet_unavailable",
+    "object": "node/worker-01",
+    "score": 0.97,
+    "evidence": "kubelet reported unhealthy on worker-01",
+    "rule": "node_component"
+   }
+  ],
+  "jev": [
+   {
+    "rid": "test:boutique/infrastructure/13#route",
+    "kind": "route",
+    "node": "route",
+    "mode": "mechanism",
+    "options": [
+     "infrastructure"
+    ],
+    "status": "mechanical",
+    "guard": "unavailable",
+    "use": "first_option",
+    "choice": "infrastructure",
+    "why": "mechanism_mode",
+    "dominant": false,
+    "continue_loop": false,
+    "escalate": false
+   },
+   {
+    "rid": "test:boutique/infrastructure/13#pick1",
+    "kind": "pick",
+    "node": "pick",
+    "mode": "mechanism",
+    "options": [
+     "c0",
+     "c1"
+    ],
+    "status": "mechanical",
+    "guard": "unavailable",
+    "use": "first_option",
+    "choice": 0,
+    "why": "mechanism_mode",
+    "dominant": false,
+    "continue_loop": false,
+    "escalate": false
+   },
+   {
+    "rid": "test:boutique/infrastructure/13#verify1",
+    "kind": "verify",
+    "node": "verify",
+    "mode": "mechanism",
+    "options": [
+     "supported",
+     "insufficient",
+     "contradicted"
+    ],
+    "status": "mechanical",
+    "guard": "unavailable",
+    "use": "verified",
+    "choice": "verified",
+    "why": "mechanism_mode",
+    "dominant": false,
+    "continue_loop": false,
+    "escalate": false
+   },
+   {
+    "rid": "test:boutique/infrastructure/13#pick2",
+    "kind": "pick",
+    "node": "pick",
+    "mode": "mechanism",
+    "options": [
+     "c0",
+     "c1"
+    ],
+    "status": "mechanical",
+    "guard": "unchanged_since_last",
+    "use": "previous",
+    "choice": 0,
+    "why": "no_new_evidence",
+    "dominant": false,
+    "continue_loop": false,
+    "escalate": false
+   },
+   {
+    "rid": "test:boutique/infrastructure/13#verify2",
+    "kind": "verify",
+    "node": "verify",
+    "mode": "mechanism",
+    "options": [
+     "supported",
+     "insufficient",
+     "contradicted"
+    ],
+    "status": "mechanical",
+    "guard": "unchanged_since_last",
+    "use": "previous",
+    "choice": "verified",
+    "why": "no_new_evidence",
+    "dominant": false,
+    "continue_loop": false,
+    "escalate": false
+   }
+  ],
+  "nodes": [
+   {
+    "node": "code",
+    "id": "anchors",
+    "anchors": {
+     "case_id": "boutique/infrastructure/13",
+     "system": "boutique",
+     "namespace": "boutique",
+     "query": "Service Availability Disruption.",
+     "difficulty": "medium",
+     "symptoms": [],
+     "mentioned_apps": []
+    }
+   },
+   {
+    "node": "probes",
+    "plan": "census",
+    "wave": 0,
+    "executed": 2,
+    "steps": [
+     {
+      "key": "pods",
+      "tool": "GetResources",
+      "arguments": {
+       "namespace": "boutique",
+       "resource_type": "pods"
+      },
+      "gate": "always"
+     },
+     {
+      "key": "alerts",
+      "tool": "GetAlerts",
+      "arguments": {},
+      "gate": "healthy_system"
+     }
+    ],
+    "skipped": []
+   },
+   {
+    "node": "decide",
+    "id": "route",
+    "rid": "test:boutique/infrastructure/13#route",
+    "status": "mechanical",
+    "guard": "unavailable",
+    "use": "first_option",
+    "choice": "infrastructure",
+    "dominant": false,
+    "why": "mechanism_mode"
+   },
+   {
+    "node": "code",
+    "id": "plan",
+    "family": "infrastructure",
+    "plan": [
+     {
+      "step": "node_status",
+      "gate": "always",
+      "wave": 1
+     },
+     {
+      "step": "cluster_config",
+      "gate": "weak",
+      "wave": 2
+     }
+    ]
+   },
+   {
+    "node": "probes",
+    "plan": "family",
+    "wave": 1,
+    "executed": 1,
+    "steps": [
+     {
+      "key": "node:status",
+      "tool": "CheckNodeServiceStatus",
+      "arguments": {
+       "node_name": "worker-01",
+       "service_name": "kubelet"
+      },
+      "gate": "always"
+     }
+    ],
+    "skipped": []
+   },
+   {
+    "node": "code",
+    "id": "derive",
+    "raw": 2,
+    "kept": 2,
+    "top": [
+     {
+      "root_cause": "containerd_unavailable",
+      "object": "node/worker-01",
+      "score": 0.97,
+      "evidence": "containerd reported unhealthy on worker-01",
+      "rule": "node_component"
+     },
+     {
+      "root_cause": "kubelet_unavailable",
+      "object": "node/worker-01",
+      "score": 0.97,
+      "evidence": "kubelet reported unhealthy on worker-01",
+      "rule": "node_component"
+     }
+    ]
+   },
+   {
+    "node": "decide",
+    "id": "pick",
+    "rid": "test:boutique/infrastructure/13#pick1",
+    "status": "mechanical",
+    "guard": "unavailable",
+    "use": "first_option",
+    "choice": 0,
+    "dominant": false,
+    "why": "mechanism_mode"
+   },
+   {
+    "node": "decide",
+    "id": "verify",
+    "rid": "test:boutique/infrastructure/13#verify1",
+    "status": "mechanical",
+    "guard": "unavailable",
+    "use": "verified",
+    "choice": "verified",
+    "dominant": false,
+    "why": "mechanism_mode"
+   },
+   {
+    "node": "probes",
+    "plan": "family",
+    "wave": 2,
+    "executed": 0,
+    "steps": [],
+    "skipped": [
+     {
+      "step": "cluster_config",
+      "why": "gate weak"
+     }
+    ]
+   },
+   {
+    "node": "code",
+    "id": "derive",
+    "raw": 2,
+    "kept": 2,
+    "top": [
+     {
+      "root_cause": "containerd_unavailable",
+      "object": "node/worker-01",
+      "score": 0.97,
+      "evidence": "containerd reported unhealthy on worker-01",
+      "rule": "node_component"
+     },
+     {
+      "root_cause": "kubelet_unavailable",
+      "object": "node/worker-01",
+      "score": 0.97,
+      "evidence": "kubelet reported unhealthy on worker-01",
+      "rule": "node_component"
+     }
+    ]
+   },
+   {
+    "node": "decide",
+    "id": "pick",
+    "rid": "test:boutique/infrastructure/13#pick2",
+    "status": "mechanical",
+    "guard": "unchanged_since_last",
+    "use": "previous",
+    "choice": 0,
+    "dominant": false,
+    "why": "no_new_evidence"
+   },
+   {
+    "node": "decide",
+    "id": "verify",
+    "rid": "test:boutique/infrastructure/13#verify2",
+    "status": "mechanical",
+    "guard": "unchanged_since_last",
+    "use": "previous",
+    "choice": "verified",
+    "dominant": false,
+    "why": "no_new_evidence"
+   },
+   {
+    "node": "loop",
+    "id": "waves",
+    "stop": "plan_exhausted",
+    "wave": 2
+   },
+   {
+    "node": "escalate",
+    "id": "escalate",
+    "fired": false,
+    "reasons": [],
+    "why": "no reason"
+   },
+   {
+    "node": "code",
+    "id": "answer",
+    "predictions": [
+     {
+      "rank": 1,
+      "fault_object": "node/worker-01",
+      "root_cause": "containerd_unavailable"
+     },
+     {
+      "rank": 2,
+      "fault_object": "node/worker-01",
+      "root_cause": "kubelet_unavailable"
+     },
+     {
+      "rank": 3,
+      "fault_object": "node/worker-01",
+      "root_cause": "containerd_unavailable"
+     }
+    ]
+   },
+   {
+    "node": "artifact",
+    "id": "persist",
+    "persisted": false,
+    "why": "written by the CLI driver"
+   }
+  ],
+  "notes": [],
+  "tool_calls": 3,
+  "model_calls": 0,
+  "tokens_in": 0,
+  "tokens_out": 0,
+  "wall_s": 0.02
+ }
+}

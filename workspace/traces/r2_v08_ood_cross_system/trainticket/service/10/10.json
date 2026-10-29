@@ -1,0 +1,1158 @@
+{
+ "case_id": "trainticket/service/10",
+ "system_name": "trainticket",
+ "question": "Partial Service Unreachability.",
+ "case_path": "/Users/justinwan/work/workspace/cloudops_bench_rsi/repo/benchmark/trainticket/service/10",
+ "max_steps": 8,
+ "current_step": 8,
+ "finished": true,
+ "stop_reason": "submit",
+ "final_answer": "{\"key_evidence_summary\": \"service endpoints are empty while the backing pods are Running\", \"top_3_predictions\": [{\"rank\": 1, \"fault_object\": \"app/ts-inside-payment-service\", \"root_cause\": \"service_selector_mismatch\"}, {\"rank\": 2, \"fault_object\": \"app/ts-inside-payment-service\", \"root_cause\": \"service_port_mapping_mismatch\"}, {\"rank\": 3, \"fault_object\": \"app/ts-inside-payment-service\", \"root_cause\": \"service_selector_mismatch\"}]}",
+ "metadata": {
+  "namespace": "train-ticket",
+  "query": "Partial Service Unreachability.",
+  "fault_category": "service",
+  "model_name": "agentrun-v0.8"
+ },
+ "steps": [
+  {
+   "step_id": 0,
+   "action_type": "tool",
+   "action_name": "GetResources",
+   "action_input": {
+    "namespace": "train-ticket",
+    "resource_type": "pods",
+    "output_wide": true
+   },
+   "observation": "NAME                                            READY   STATUS    RESTARTS        AGE     IP             NODE        NOMINATED NODE   READINESS GATES\nnacos-0                                         1/1     Running   0               9d      172.20.2.76    worker-02   <none>           <none>\nnacos-1                                         1/1     Running   0               9d      172.20.1.247   worker-01   <none>           <none>\nnacos-2                                         1/1     Running   0               9d      172.20.3.7     worker-03   <none>           <none>\nnacosdb-mysql-0                                 3/3     Running   1 (9d ago)      9d      172.20.2.75    worker-02   <none>           <none>\nnacosdb-mysql-1                                 3/3     Running   2 (9d ago)      9d      172.20.1.246   worker-01   <none>           <none>\nnacosdb-mysql-2                                 3/3     Running   1 (9d ago)      9d      172.20.3.6     worker-03   <none>           <none>\nrabbitmq-57b4f9969c-4cndj                       1/1     Running   0               9d      172.20.2.77    worker-02   <none>           <none>\nts-assurance-service-88f65755-q25jp             2/2     Running   0               5m5s    172.20.3.100   worker-03   <none>           <none>\nts-auth-service-656fb96d87-27m88                2/2     Running   0               5m14s   172.20.1.9     worker-01   <none>           <none>\nts-avatar-service-54fb8f5c57-tkdx2              2/2     Running   0               5m11s   172.20.3.92    worker-03   <none>           <none>\nts-basic-service-57fb684696-gnws6               2/2     Running   0               5m13s   172.20.2.137   worker-02   <none>           <none>\nts-cancel-service-67fb7d5bb4-slgl8              2/2     Running   0               5m13s   172.20.1.11    worker-01   <none>           <none>\nts-config-service-65779cfcd7-j4bvv              2/2     Running   0               5m7s    172.20.1.20    worker-01   <none>           <none>\nts-consign-price-service-b74c79d7-zvs4s         2/2     Running   0               17h     172.20.2.120   worker-02   <none>           <none>\nts-consign-service-846bdf46cc-qvjgs             2/2     Running   0               5m11s   172.20.2.142   worker-02   <none>           <none>\nts-contacts-service-7fc68f4bbc-pbw7d            2/2     Running   0               5m12s   172.20.1.12    worker-01   <none>           <none>\nts-delivery-service-659b5d4f75-tw9j2            2/2     Running   0               5m9s    172.20.1.18    worker-01   <none>           <none>\nts-execute-service-5f7c9df447-5s66q             2/2     Running   0               5m11s   172.20.3.91    worker-03   <none>           <none>\nts-food-delivery-service-5b898fdbbf-7pcwd       2/2     Running   0               5m7s    172.20.2.148   worker-02   <none>           <none>\nts-food-service-59c58c74cc-q7ngp                2/2     Running   0               5m7s    172.20.3.98    worker-03   <none>           <none>\nts-gateway-service-88868597f-gtdsb              2/2     Running   0               5m5s    172.20.1.23    worker-01   <none>           <none>\nts-inside-payment-service-5b98976c87-r864g      2/2     Running   0               5m10s   172.20.3.93    worker-03   <none>           <none>\nts-news-service-578fd9cd67-hrbh9                2/2     Running   0               5m5s    172.20.2.150   worker-02   <none>           <none>\nts-notification-service-6b579b64d7-wcjkt        2/2     Running   0               5m8s    172.20.3.96    worker-03   <none>           <none>\nts-order-other-service-788d947bdf-nczlt         2/2     Running   0               5m12s   172.20.2.140   worker-02   <none>           <none>\nts-order-service-dd54d5df9-7pnmx                2/2     Running   0               5m9s    172.20.3.94    worker-03   <none>           <none>\nts-payment-service-666d596f87-p5grm             2/2     Running   0               5m6s    172.20.2.149   worker-02   <none>           <none>\nts-preserve-other-service-5f85fdfd7-2j6jl       2/2     Running   0               5m10s   172.20.2.143   worker-02   <none>           <none>\nts-preserve-service-6bccdc5454-2xsrt            2/2     Running   0               5m7s    172.20.2.147   worker-02   <none>           <none>\nts-price-service-6c4b77845-xkrct                2/2     Running   0               5m13s   172.20.2.139   worker-02   <none>           <none>\nts-rebook-service-75d676f77b-7n2sb              2/2     Running   0               5m11s   172.20.1.15    worker-01   <none>           <none>\nts-route-plan-service-695f545f8c-bp7fr          2/2     Running   0               5m11s   172.20.1.14    worker-01   <none>           <none>\nts-route-service-688dc779fc-lb82d               2/2     Running   0               5m13s   172.20.2.138   worker-02   <none>           <none>\nts-seat-service-5fc7c67c7f-k7g4t                2/2     Running   0               5m10s   172.20.2.144   worker-02   <none>           <none>\nts-security-service-5fb7f7fbff-gxb7c            2/2     Running   0               5m8s    172.20.3.97    worker-03   <none>           <none>\nts-station-food-service-d99b9b859-kq47l         2/2     Running   0               5m13s   172.20.1.10    worker-01   <none>           <none>\nts-station-service-7cbf6b96c9-n5cbl             2/2     Running   0               5m12s   172.20.1.13    worker-01   <none>           <none>\nts-ticket-office-service-6fd78bd9df-7vr74       2/2     Running   0               5m12s   172.20.2.141   worker-02   <none>           <none>\nts-train-food-service-67cb5bdf99-5lplv          2/2     Running   0               5m9s    172.20.1.17    worker-01   <none>           <none>\nts-train-service-c4fb58df9-pfv4h                2/2     Running   0               5m8s    172.20.2.146   worker-02   <none>           <none>\nts-travel-plan-service-5985cdf6b6-zfkqd         2/2     Running   0               5m10s   172.20.1.16    worker-01   <none>           <none>\nts-travel-service-5b9b99c879-pf8p2              2/2     Running   0               5m6s    172.20.1.22    worker-01   <none>           <none>\nts-travel2-service-849bffcb7c-46g2l             2/2     Running   0               5m12s   172.20.3.90    worker-03   <none>           <none>\nts-ui-dashboard-554844f867-dqp65                2/2     Running   3 (4m51s ago)   5m9s    172.20.2.145   worker-02   <none>           <none>\nts-user-service-6886cbf9cf-gcq9n                2/2     Running   0               5m6s    172.20.1.21    worker-01   <none>           <none>\nts-verification-code-service-7cbd896f77-49d5v   2/2     Running   0               5m6s    172.20.3.99    worker-03   <none>           <none>\nts-voucher-service-5ffdd5456c-97g9s             2/2     Running   0               5m9s    172.20.3.95    worker-03   <none>           <none>\nts-wait-order-service-848dbb9dd7-ncbm2          2/2     Running   0               5m8s    172.20.1.19    worker-01   <none>           <none>\ntsdb-mysql-0                                    4/4     Running   1 (17h ago)     17h     172.20.1.214   worker-01   <none>           <none>\ntsdb-mysql-1                                    4/4     Running   1 (17h ago)     17h     172.20.2.116   worker-02   <none>           <none>\ntsdb-mysql-2                                    4/4     Running   1 (17h ago)     17h     172.20.3.235   worker-03   <none>           <none>\n",
+   "error": null,
+   "purpose": "pod readiness census",
+   "tool_latency": null
+  },
+  {
+   "step_id": 1,
+   "action_type": "tool",
+   "action_name": "GetAlerts",
+   "action_input": {},
+   "observation": "{'status': 'has_anomalies', 'alert_count': 1, 'alerts': [{'request_method': 'POST', 'business_action': 'Process payment', 'entry_service': 'ts-inside-payment-service', 'url': '/api/v1/inside_pay_service/inside_payment', 'occurrences': 5, 'raw_error': \"HTTPError('500 Server Error: Internal Server Error')\"}]}",
+   "error": null,
+   "purpose": "anomaly signature (routes performance/code families)",
+   "tool_latency": null
+  },
+  {
+   "step_id": 2,
+   "action_type": "tool",
+   "action_name": "GetResources",
+   "action_input": {
+    "namespace": "train-ticket",
+    "resource_type": "services"
+   },
+   "observation": "NAME                           TYPE        CLUSTER-IP      EXTERNAL-IP   PORT(S)                               AGE\nflagd                          ClusterIP   10.68.241.97    <none>        8013/TCP                              44h\nnacos                          NodePort    10.68.184.132   <none>        8848:32506/TCP,7848:32334/TCP         9d\nnacos-headless                 ClusterIP   None            <none>        8848/TCP,9848/TCP,9849/TCP,7848/TCP   9d\nnacosdb-mysql                  ClusterIP   None            <none>        3306/TCP                              9d\nnacosdb-mysql-follower         ClusterIP   10.68.105.32    <none>        3306/TCP                              9d\nnacosdb-mysql-leader           ClusterIP   10.68.174.190   <none>        3306/TCP                              9d\nrabbitmq                       ClusterIP   10.68.202.15    <none>        5672/TCP                              9d\nts-assurance-service           ClusterIP   10.68.77.59     <none>        18888/TCP                             5m22s\nts-auth-service                ClusterIP   10.68.13.254    <none>        12340/TCP                             5m30s\nts-avatar-service              ClusterIP   10.68.129.72    <none>        17001/TCP                             5m27s\nts-basic-service               ClusterIP   10.68.17.237    <none>        15680/TCP                             5m29s\nts-cancel-service              ClusterIP   10.68.172.125   <none>        18885/TCP                             5m29s\nts-config-service              ClusterIP   10.68.98.21     <none>        15679/TCP                             5m24s\nts-consign-price-service       ClusterIP   10.68.147.223   <none>        16110/TCP                             17h\nts-consign-service             ClusterIP   10.68.252.227   <none>        16111/TCP                             5m27s\nts-contacts-service            ClusterIP   10.68.186.17    <none>        12347/TCP                             5m28s\nts-delivery-service            ClusterIP   10.68.172.66    <none>        18808/TCP                             5m25s\nts-execute-service             ClusterIP   10.68.225.242   <none>        12386/TCP                             5m27s\nts-food-service                ClusterIP   10.68.90.85     <none>        18856/TCP                             5m24s\nts-gateway-service             NodePort    10.68.156.93    <none>        18888:30467/TCP                       5m22s\nts-inside-payment-service      ClusterIP   10.68.156.167   <none>        18673/TCP                             5m26s\nts-news-service                ClusterIP   10.68.166.133   <none>        12862/TCP                             5m22s\nts-notification-service        ClusterIP   10.68.85.102    <none>        17853/TCP                             5m25s\nts-order-other-service         ClusterIP   10.68.138.212   <none>        12032/TCP                             5m28s\nts-order-service               ClusterIP   10.68.193.101   <none>        12031/TCP                             5m26s\nts-payment-service             ClusterIP   10.68.31.199    <none>        19001/TCP                             5m23s\nts-preserve-other-service      ClusterIP   10.68.147.156   <none>        14569/TCP                             5m27s\nts-preserve-service            ClusterIP   10.68.139.87    <none>        14568/TCP                             5m24s\nts-price-service               ClusterIP   10.68.80.17     <none>        16579/TCP                             5m29s\nts-rebook-service              ClusterIP   10.68.7.194     <none>        18886/TCP                             5m27s\nts-route-plan-service          ClusterIP   10.68.93.244    <none>        14578/TCP                             5m27s\nts-route-service               ClusterIP   10.68.169.191   <none>        11178/TCP                             5m29s\nts-seat-service                ClusterIP   10.68.82.41     <none>        18898/TCP                             5m26s\nts-security-service            ClusterIP   10.68.58.46     <none>        11188/TCP                             5m24s\nts-station-food-service        ClusterIP   10.68.127.2     <none>        18855/TCP                             5m29s\nts-station-service             ClusterIP   10.68.153.65    <none>        12345/TCP                             5m28s\nts-ticket-office-service       ClusterIP   10.68.53.103    <none>        16108/TCP                             5m28s\nts-train-food-service          ClusterIP   10.68.224.130   <none>        19999/TCP                             5m26s\nts-train-service               ClusterIP   10.68.137.249   <none>        14567/TCP                             5m25s\nts-travel-plan-service         ClusterIP   10.68.195.136   <none>        14322/TCP                             5m26s\nts-travel-service              ClusterIP   10.68.38.46     <none>        12346/TCP                             5m22s\nts-travel2-service             ClusterIP   10.68.84.211    <none>        16346/TCP                             5m28s\nts-ui-dashboard                NodePort    10.68.195.150   <none>        8080:32677/TCP                        6d5h\nts-user-service                ClusterIP   10.68.213.204   <none>        12342/TCP                             5m23s\nts-verification-code-service   ClusterIP   10.68.139.49    <none>        15678/TCP                             5m23s\nts-voucher-service             ClusterIP   10.68.75.66     <none>        16101/TCP                             5m25s\ntsdb-mysql                     ClusterIP   None            <none>        3306/TCP                              17h\ntsdb-mysql-follower            ClusterIP   10.68.46.32     <none>        3306/TCP                              17h\ntsdb-mysql-leader              ClusterIP   10.68.188.173   <none>        3306/TCP                              17h\n",
+   "error": null,
+   "purpose": "service ports and selectors",
+   "tool_latency": null
+  },
+  {
+   "step_id": 3,
+   "action_type": "tool",
+   "action_name": "GetResources",
+   "action_input": {
+    "namespace": "train-ticket",
+    "resource_type": "endpoints"
+   },
+   "observation": "NAME                           ENDPOINTS                                                        AGE\nflagd                          <none>                                                           44h\nnacos                          172.20.1.247:7848,172.20.2.76:7848,172.20.3.7:7848 + 3 more...   9d\nnacos-headless                 172.20.1.247:9848,172.20.2.76:9848,172.20.3.7:9848 + 9 more...   9d\nnacosdb-mysql                  172.20.1.246:3306,172.20.2.75:3306,172.20.3.6:3306               9d\nnacosdb-mysql-follower         172.20.1.246:3306,172.20.3.6:3306                                9d\nnacosdb-mysql-leader           172.20.2.75:3306                                                 9d\nrabbitmq                       172.20.2.77:5672                                                 9d\nts-assurance-service           172.20.3.100:18888                                               6m27s\nts-auth-service                172.20.1.9:12340                                                 6m35s\nts-avatar-service              172.20.3.92:17001                                                6m32s\nts-basic-service               172.20.2.137:15680                                               6m34s\nts-cancel-service              172.20.1.11:18885                                                6m34s\nts-config-service              172.20.1.20:15679                                                6m29s\nts-consign-price-service       172.20.2.120:16110                                               17h\nts-consign-service             172.20.2.142:16111                                               6m32s\nts-contacts-service            172.20.1.12:12347                                                6m33s\nts-delivery-service            172.20.1.18:18808                                                6m30s\nts-execute-service             172.20.3.91:12386                                                6m32s\nts-food-service                172.20.3.98:18856                                                6m29s\nts-gateway-service             172.20.1.23:18888                                                6m27s\nts-inside-payment-service      172.20.3.93:18673                                                6m31s\nts-news-service                172.20.2.150:12862                                               6m27s\nts-notification-service        172.20.3.96:17853                                                6m30s\nts-order-other-service         172.20.2.140:12032                                               6m33s\nts-order-service               172.20.3.94:12031                                                6m31s\nts-payment-service             172.20.2.149:19001                                               6m28s\nts-preserve-other-service      172.20.2.143:14569                                               6m32s\nts-preserve-service            172.20.2.147:14568                                               6m29s\nts-price-service               172.20.2.139:16579                                               6m34s\nts-rebook-service              172.20.1.15:18886                                                6m32s\nts-route-plan-service          172.20.1.14:14578                                                6m32s\nts-route-service               172.20.2.138:11178                                               6m34s\nts-seat-service                172.20.2.144:18898                                               6m31s\nts-security-service            172.20.3.97:11188                                                6m29s\nts-station-food-service        172.20.1.10:18855                                                6m34s\nts-station-service             172.20.1.13:12345                                                6m33s\nts-ticket-office-service       172.20.2.141:16108                                               6m33s\nts-train-food-service          172.20.1.17:19999                                                6m31s\nts-train-service               172.20.2.146:14567                                               6m30s\nts-travel-plan-service         172.20.1.16:14322                                                6m31s\nts-travel-service              172.20.1.22:12346                                                6m27s\nts-travel2-service             172.20.3.90:16346                                                6m33s\nts-ui-dashboard                172.20.2.145:8080                                                6d5h\nts-user-service                172.20.1.21:12342                                                6m28s\nts-verification-code-service   172.20.3.99:15678                                                6m28s\nts-voucher-service             172.20.3.95:16101                                                6m30s\ntsdb-mysql                     172.20.1.214:3306,172.20.2.116:3306,172.20.3.235:3306            17h\ntsdb-mysql-follower            172.20.1.214:3306,172.20.2.116:3306                              17h\ntsdb-mysql-leader              172.20.3.235:3306                                                17h\n",
+   "error": null,
+   "purpose": "endpoint population",
+   "tool_latency": null
+  },
+  {
+   "step_id": 4,
+   "action_type": "tool",
+   "action_name": "CheckServiceConnectivity",
+   "action_input": {
+    "namespace": "train-ticket",
+    "service_name": "ts-inside-payment-service",
+    "port": 18673
+   },
+   "observation": "=== Service ts-inside-payment-service:18673 Connectivity test report ===\nDebug Pod test results deployed on worker-01: ts-inside-payment-service (10.68.156.167:18673) open\nConnection Succeeded\nDebug Pod test results deployed on worker-02: ts-inside-payment-service (10.68.156.167:18673) open\nConnection Succeeded\nDebug Pod test results deployed on worker-03: ts-inside-payment-service (10.68.156.167:18673) open\nConnection Succeeded",
+   "error": null,
+   "purpose": "in-cluster TCP reachability",
+   "tool_latency": null
+  },
+  {
+   "step_id": 5,
+   "action_type": "tool",
+   "action_name": "GetAppYAML",
+   "action_input": {
+    "app_name": "ts-inside-payment-service"
+   },
+   "observation": "apiVersion: apps/v1\nkind: Deployment\nmetadata:\n  namespace: train-ticket\n  name: ts-inside-payment-service\nspec:\n  selector:\n    matchLabels:\n      app: ts-inside-payment-service\n  replicas: 1\n  template:\n    metadata:\n      labels:\n        app: ts-inside-payment-service\n    spec:\n      containers:\n      - name: ts-inside-payment-service\n        image: ghcr.io/sregym/ts-inside-payment-service:latest\n        imagePullPolicy: IfNotPresent\n        env:\n        - name: SPRING_MAIN_ALLOW_CIRCULAR_REFERENCES\n          value: 'true'\n        - name: NODE_IP\n          valueFrom:\n            fieldRef:\n              fieldPath: status.hostIP\n        envFrom:\n        - secretRef:\n            name: ts-inside-payment-mysql\n        - configMapRef:\n            name: nacos\n        ports:\n        - containerPort: 18673\n        resources:\n          requests:\n            cpu: 200m\n            memory: 350Mi\n          limits:\n            cpu: 500m\n            memory: 512Mi\n        readinessProbe:\n          tcpSocket:\n            port: 18673\n          initialDelaySeconds: 60\n          periodSeconds: 10\n          timeoutSeconds: 5\n---\napiVersion: v1\nkind: Service\nmetadata:\n  namespace: train-ticket\n  name: ts-inside-payment-service\nspec:\n  ports:\n  - name: http\n    port: 18673\n  selector:\n    app: ts-inside-payment-service\n---\napiVersion: v1\nkind: Secret\nmetadata:\n  namespace: train-ticket\n  name: ts-inside-payment-mysql\ntype: Opaque\nstringData:\n  INSIDE_PAYMENT_MYSQL_HOST: tsdb-mysql-leader\n  INSIDE_PAYMENT_MYSQL_PORT: '3306'\n  INSIDE_PAYMENT_MYSQL_DATABASE: ts\n  INSIDE_PAYMENT_MYSQL_USER: ts\n  INSIDE_PAYMENT_MYSQL_PASSWORD: Ts_123456\n",
+   "error": null,
+   "purpose": "declared probes / limits / image / env",
+   "tool_latency": null
+  },
+  {
+   "step_id": 6,
+   "action_type": "tool",
+   "action_name": "GetServiceDependencies",
+   "action_input": {
+    "service_name": "ts-inside-payment-service"
+   },
+   "observation": "[Service]: ts-inside-payment-service\n[Upstream (Called By)]: ts-gateway-service, ts-cancel-service, ts-rebook-service\n[Downstream (Calls)]:\nts-inside-payment-service\n├── ts-payment-service\n├── ts-order-service\n└── ts-order-other-service",
+   "error": null,
+   "purpose": "upstream/downstream call graph",
+   "tool_latency": null
+  },
+  {
+   "step_id": 7,
+   "action_type": "tool",
+   "action_name": "CheckNodeServiceStatus",
+   "action_input": {
+    "node_name": "worker-01",
+    "service_name": "kube-proxy"
+   },
+   "observation": "Service: kube-proxy\nNode: worker-01\nStatus: ● kube-proxy.service - Kubernetes Kube-Proxy Server\n     Loaded: loaded (/etc/systemd/system/kube-proxy.service; enabled; vendor preset: enabled)\n     Active: active (running) since Sat 2026-02-28 10:42:43 CST; 2 weeks 3 days ago\n       Docs: https://github.com/GoogleCloudPlatform/kubernetes\n   Main PID: 909 (kube-proxy)\n      Tasks: 13 (limit: 18592)\n     Memory: 37.1M\n        CPU: 2h 42min 39.673s\n     CGroup: /system.slice/kube-proxy.service\n             └─909 /opt/kube/bin/kube-proxy --config=/var/lib/kube-proxy/kube-proxy-config.yaml\n\nMar 16 15:39:16 worker-01 kube-proxy[909]: I0316 15:39:16.535999     909 graceful_termination.go:105] \"Removed real server from graceful delete real server list\" realServer=\"10.68.180.240:15012/TCP/172.20.1.242:15012\"\nMar 16 16:12:16 worker-01 kube-proxy[909]: I0316 16:12:16.563206     909 graceful_termination.go:105] \"Removed real server from graceful delete real server list\" realServer=\"10.68.180.240:15012/TCP/172.20.1.21:15012\"\nMar 16 17:53:16 worker-01 kube-proxy[909]: I0316 17:53:16.653430     909 graceful_termination.go:105] \"Removed real server from graceful delete real server list\" realServer=\"10.68.180.240:15012/TCP/172.20.1.107:15012\"\nMar 16 18:54:16 worker-01 kube-proxy[909]: I0316 18:54:16.714156     909 graceful_termination.go:105] \"Removed real server from graceful delete real server list\" realServer=\"10.68.180.240:15012/TCP/172.20.2.68:15012\"\nMar 17 00:58:17 worker-01 kube-proxy[909]: I0317 00:58:17.130288     909 graceful_termination.go:105] \"Removed real server from graceful delete real server list\" realServer=\"10.68.180.240:15012/TCP/172.20.2.72:15012\"\nMar 17 03:08:17 worker-01 kube-proxy[909]: I0317 03:08:17.276758     909 graceful_termination.go:105] \"Removed real server from graceful delete real server list\" realServer=\"10.68.180.240:15012/TCP/172.20.2.65:15012\"\nMar 17 03:24:17 worker-01 kube-proxy[909]: I0317 03:24:17.295825     909 graceful_termination.go:105] \"Removed real server from graceful delete real server list\" realServer=\"10.68.180.240:15012/TCP/172.20.2.98:15012\"\nMar 17 03:40:17 worker-01 kube-proxy[909]: I0317 03:40:17.315312     909 graceful_termination.go:105] \"Removed real server from graceful delete real server list\" realServer=\"10.68.180.240:15012/TCP/172.20.2.129:15012\"\nMar 17 15:24:18 worker-01 kube-proxy[909]: I0317 15:24:18.282877     909 graceful_termination.go:105] \"Removed real server from graceful delete real server list\" realServer=\"10.68.180.240:15012/TCP/172.20.2.44:15012\"\nMar 17 15:40:18 worker-01 kube-proxy[909]: I0317 15:40:18.311759     909 graceful_termination.go:105] \"Removed real server from graceful delete real server list\" realServer=\"10.68.180.240:15012/TCP/172.20.2.74:15012\"",
+   "error": null,
+   "purpose": "kube-proxy status on the same node",
+   "tool_latency": null
+  }
+ ],
+ "agentrun": {
+  "tag": "test",
+  "dsl": "workspace/dsl_versions/v0.8.dsl.txt",
+  "dsl_version": "0.8",
+  "sop": {
+   "sop": "boutique-runtime-rca",
+   "scope": {
+    "system": "boutique",
+    "families": [
+     "runtime",
+     "admission",
+     "scheduling",
+     "startup",
+     "service",
+     "performance",
+     "infrastructure",
+     "codedefect"
+    ],
+    "severity": [
+     "SEV2",
+     "SEV3"
+    ]
+   },
+   "owner": "sre-platform",
+   "approved_by": [
+    "oncall-primary",
+    "sre-lead"
+   ],
+   "reviewed_at": "2026-10-23",
+   "change_ticket": "OPS-1236",
+   "boundaries": "只读诊断：本 SOP 不执行任何写操作（重启/回滚/扩缩容），也不做对外播报；\n它回答\"最可能的根因与受害对象\"，处置与沟通由值班按 runbook 人工执行。\n不覆盖 SEV1（需 incident commander 介入）与变更引发的问题（走变更回滚流程）。\n输入是冻结快照：诊断结论对\"快照时刻\"成立，恢复后需重新取证。\nR1 已知边界：PVC 的 requested size / accessMode 在本 benchmark 的工具面不可见，\n因此 pvc_capacity 与 pvc_access_mode 无法区分（同一分数并列，交给 jev 或升级）。\n"
+  },
+  "params": {
+   "cands_cap": 8,
+   "max_waves": 8,
+   "min_waves": 5,
+   "steps_per_wave": 1,
+   "dominance_ratio": 1.5,
+   "conf_min": 0.0,
+   "escalate": true,
+   "escalate_budget": 8,
+   "judge_on_codedefect": true,
+   "jev_route": true,
+   "jev_pick": true,
+   "jev_verify": true,
+   "route_fallback": "runtime"
+  },
+  "nodes_executed": [
+   "anchors:extract_anchors",
+   "census:probes",
+   "route:decide",
+   "plan:build_plan",
+   "probe:probes",
+   "derive:derive_candidates",
+   "pick:decide",
+   "verify:decide",
+   "probe:probes",
+   "derive:derive_candidates",
+   "pick:decide",
+   "verify:decide",
+   "probe:probes",
+   "derive:derive_candidates",
+   "pick:decide",
+   "verify:decide",
+   "probe:probes",
+   "derive:derive_candidates",
+   "pick:decide",
+   "verify:decide",
+   "probe:probes",
+   "derive:derive_candidates",
+   "pick:decide",
+   "verify:decide",
+   "probe:probes",
+   "derive:derive_candidates",
+   "pick:decide",
+   "verify:decide",
+   "probe:probes",
+   "derive:derive_candidates",
+   "pick:decide",
+   "verify:decide",
+   "escalate:escalate",
+   "answer:normalize_answer",
+   "persist:persist_trace"
+  ],
+  "census": [
+   {
+    "step": "pods",
+    "gate": "always"
+   },
+   {
+    "step": "alerts",
+    "gate": "healthy_system"
+   }
+  ],
+  "plan": [
+   {
+    "step": "services",
+    "gate": "always",
+    "wave": 1
+   },
+   {
+    "step": "endpoints",
+    "gate": "always",
+    "wave": 2
+   },
+   {
+    "step": "connectivity",
+    "gate": "always",
+    "wave": 3
+   },
+   {
+    "step": "app_yaml",
+    "gate": "weak",
+    "wave": 4
+   },
+   {
+    "step": "deps",
+    "gate": "weak_strong",
+    "wave": 5
+   },
+   {
+    "step": "node_kube_proxy",
+    "gate": "connectivity_node_failure",
+    "wave": 6
+   }
+  ],
+  "family": "service",
+  "state_wiring": {
+   "family": "$route.family",
+   "route_probs": "$route.probabilities",
+   "picked": "$pick.picked",
+   "pick_dominant": "$pick.dominant",
+   "verify_status": "$verify.status",
+   "verify_prob": "$verify.confidence"
+  },
+  "bindings": {
+   "anchors": {
+    "anchors": "Anchors(case_id='trainticket/service/10', system='trainticket', namespace='train-ticket', query='Partial Service Unreachability.', difficulty='medium', symptoms=['unavailable'], mentioned_apps=[], priors={'db_service': 'tsdb-mysql-leader', 'db_port': 3306})"
+   },
+   "route": {
+    "family": "service",
+    "probabilities": {},
+    "route_why": "mechanism_mode"
+   },
+   "plan": {
+    "plan": "[{'name': 'services', 'key': 'services', 'tool': 'GetResources', 'args': <function _args_services at 0x107ddb420>, 'purpose': 'service ports and selectors', 'when': <function compile_steps.<locals>.<lambda> at 0x108185e40>, 'gate': 'always', 'wave': 1}, {'name': 'endpoints', 'key': 'endpoints', 'tool': 'GetResources', 'args': <function _args_endpoints at 0x107ddb4c0>, 'purpose': 'endpoint population', 'when': <function compile_steps.<locals>.<lambda> at 0x108185ee0>, 'gate': 'always', 'wave': 2}, {'name': 'connectivity', 'key': 'connectivity', 'tool': 'CheckServiceConnectivity', 'args': <function _args_connectivity at 0x107ddb7e0>, 'purpose': 'in-cluster TCP reachability', 'when': <function compile_steps.<locals>.<lambda> at 0x108185f80>, 'gate': 'always', 'wave': 3}, {'name': 'app_yaml', 'key': 'appyaml', 'tool': 'GetAppYAML', 'args': <function _args_app_yaml at 0x107ddb6a0>, 'purpose': 'declared probes / limits / image / env', 'when': <function compile_steps.<locals>.<lambda> at 0x108186020>, 'gate': 'weak', 'wave': 4}, {'name': 'deps', 'key': 'deps', 'tool': 'GetServiceDependencies', 'args': <function _args_deps at 0x107ddbe20>, 'purpose': 'upstream/downstream call graph', 'when': <function compile_steps.<locals>.<lambda> at 0x1081860c0>, 'gate': 'weak_strong', 'wave': 5}, {'name': 'node_kube_proxy', 'key': 'node:kube-proxy', 'tool': 'CheckNodeServiceStatus', 'args': <function _args_node_kube_proxy at 0x107ddbce0>, 'purpose': 'kube-proxy status on the same node', 'when': <function compile_steps.<locals>.<lambda> at 0x108186160>, 'gate': 'connectivity_node_failure', 'wave': 6}]"
+   },
+   "derive": {
+    "candidates": "[Candidate(root_cause='service_selector_mismatch', object='app/ts-inside-payment-service', score=0.72, evidence='service endpoints are empty while the backing pods are Running', rule='endpoints_empty'), Candidate(root_cause='service_port_mapping_mismatch', object='app/ts-inside-payment-service', score=0.62, evidence='empty endpoints may also mean the Service port does not map to the container port', rule='endpoints_empty')]"
+   },
+   "pick": {
+    "picked": 0,
+    "dominant": false,
+    "pick_why": "no_new_evidence"
+   },
+   "verify": {
+    "status": "verified",
+    "confidence": null,
+    "verify_why": "no_new_evidence"
+   },
+   "escalate": {
+    "answer": null
+   },
+   "answer": {
+    "final": {
+     "key_evidence_summary": "service endpoints are empty while the backing pods are Running",
+     "top_3_predictions": [
+      {
+       "rank": 1,
+       "fault_object": "app/ts-inside-payment-service",
+       "root_cause": "service_selector_mismatch"
+      },
+      {
+       "rank": 2,
+       "fault_object": "app/ts-inside-payment-service",
+       "root_cause": "service_port_mapping_mismatch"
+      },
+      {
+       "rank": 3,
+       "fault_object": "app/ts-inside-payment-service",
+       "root_cause": "service_selector_mismatch"
+      }
+     ]
+    }
+   }
+  },
+  "picked": {
+   "root_cause": "service_selector_mismatch",
+   "object": "app/ts-inside-payment-service",
+   "score": 0.72,
+   "evidence": "service endpoints are empty while the backing pods are Running",
+   "rule": "endpoints_empty"
+  },
+  "pick_why": "",
+  "verify_prob": null,
+  "verify_verdict": "verified",
+  "verified": true,
+  "escalated": false,
+  "escalate_reason": "",
+  "escalate_steps": 0,
+  "waves": 7,
+  "candidates": [
+   {
+    "root_cause": "service_selector_mismatch",
+    "object": "app/ts-inside-payment-service",
+    "score": 0.72,
+    "evidence": "service endpoints are empty while the backing pods are Running",
+    "rule": "endpoints_empty"
+   },
+   {
+    "root_cause": "service_port_mapping_mismatch",
+    "object": "app/ts-inside-payment-service",
+    "score": 0.62,
+    "evidence": "empty endpoints may also mean the Service port does not map to the container port",
+    "rule": "endpoints_empty"
+   }
+  ],
+  "jev": [
+   {
+    "rid": "test:trainticket/service/10#route",
+    "kind": "route",
+    "node": "route",
+    "mode": "mechanism",
+    "options": [
+     "service",
+     "performance",
+     "infrastructure"
+    ],
+    "status": "mechanical",
+    "guard": "unavailable",
+    "use": "first_option",
+    "choice": "service",
+    "why": "mechanism_mode",
+    "dominant": false,
+    "continue_loop": false,
+    "escalate": false
+   },
+   {
+    "rid": "test:trainticket/service/10#pick1",
+    "kind": "pick",
+    "node": "pick",
+    "mode": "mechanism",
+    "options": [],
+    "status": "mechanical",
+    "guard": "no_options",
+    "use": "none",
+    "choice": null,
+    "why": "no_candidates",
+    "dominant": false,
+    "continue_loop": false,
+    "escalate": false
+   },
+   {
+    "rid": "test:trainticket/service/10#verify1",
+    "kind": "verify",
+    "node": "verify",
+    "mode": "mechanism",
+    "options": [
+     "supported",
+     "insufficient",
+     "contradicted"
+    ],
+    "status": "mechanical",
+    "guard": "no_pick",
+    "use": "unverified",
+    "choice": "unverified",
+    "why": "nothing_to_verify",
+    "dominant": false,
+    "continue_loop": false,
+    "escalate": false
+   },
+   {
+    "rid": "test:trainticket/service/10#pick2",
+    "kind": "pick",
+    "node": "pick",
+    "mode": "mechanism",
+    "options": [
+     "c0",
+     "c1"
+    ],
+    "status": "mechanical",
+    "guard": "unavailable",
+    "use": "first_option",
+    "choice": 0,
+    "why": "mechanism_mode",
+    "dominant": false,
+    "continue_loop": false,
+    "escalate": false
+   },
+   {
+    "rid": "test:trainticket/service/10#verify2",
+    "kind": "verify",
+    "node": "verify",
+    "mode": "mechanism",
+    "options": [
+     "supported",
+     "insufficient",
+     "contradicted"
+    ],
+    "status": "mechanical",
+    "guard": "unavailable",
+    "use": "verified",
+    "choice": "verified",
+    "why": "mechanism_mode",
+    "dominant": false,
+    "continue_loop": false,
+    "escalate": false
+   },
+   {
+    "rid": "test:trainticket/service/10#pick3",
+    "kind": "pick",
+    "node": "pick",
+    "mode": "mechanism",
+    "options": [
+     "c0",
+     "c1"
+    ],
+    "status": "mechanical",
+    "guard": "unchanged_since_last",
+    "use": "previous",
+    "choice": 0,
+    "why": "no_new_evidence",
+    "dominant": false,
+    "continue_loop": false,
+    "escalate": false
+   },
+   {
+    "rid": "test:trainticket/service/10#verify3",
+    "kind": "verify",
+    "node": "verify",
+    "mode": "mechanism",
+    "options": [
+     "supported",
+     "insufficient",
+     "contradicted"
+    ],
+    "status": "mechanical",
+    "guard": "unchanged_since_last",
+    "use": "previous",
+    "choice": "verified",
+    "why": "no_new_evidence",
+    "dominant": false,
+    "continue_loop": false,
+    "escalate": false
+   },
+   {
+    "rid": "test:trainticket/service/10#pick4",
+    "kind": "pick",
+    "node": "pick",
+    "mode": "mechanism",
+    "options": [
+     "c0",
+     "c1"
+    ],
+    "status": "mechanical",
+    "guard": "unchanged_since_last",
+    "use": "previous",
+    "choice": 0,
+    "why": "no_new_evidence",
+    "dominant": false,
+    "continue_loop": false,
+    "escalate": false
+   },
+   {
+    "rid": "test:trainticket/service/10#verify4",
+    "kind": "verify",
+    "node": "verify",
+    "mode": "mechanism",
+    "options": [
+     "supported",
+     "insufficient",
+     "contradicted"
+    ],
+    "status": "mechanical",
+    "guard": "unchanged_since_last",
+    "use": "previous",
+    "choice": "verified",
+    "why": "no_new_evidence",
+    "dominant": false,
+    "continue_loop": false,
+    "escalate": false
+   },
+   {
+    "rid": "test:trainticket/service/10#pick5",
+    "kind": "pick",
+    "node": "pick",
+    "mode": "mechanism",
+    "options": [
+     "c0",
+     "c1"
+    ],
+    "status": "mechanical",
+    "guard": "unchanged_since_last",
+    "use": "previous",
+    "choice": 0,
+    "why": "no_new_evidence",
+    "dominant": false,
+    "continue_loop": false,
+    "escalate": false
+   },
+   {
+    "rid": "test:trainticket/service/10#verify5",
+    "kind": "verify",
+    "node": "verify",
+    "mode": "mechanism",
+    "options": [
+     "supported",
+     "insufficient",
+     "contradicted"
+    ],
+    "status": "mechanical",
+    "guard": "unchanged_since_last",
+    "use": "previous",
+    "choice": "verified",
+    "why": "no_new_evidence",
+    "dominant": false,
+    "continue_loop": false,
+    "escalate": false
+   },
+   {
+    "rid": "test:trainticket/service/10#pick6",
+    "kind": "pick",
+    "node": "pick",
+    "mode": "mechanism",
+    "options": [
+     "c0",
+     "c1"
+    ],
+    "status": "mechanical",
+    "guard": "unchanged_since_last",
+    "use": "previous",
+    "choice": 0,
+    "why": "no_new_evidence",
+    "dominant": false,
+    "continue_loop": false,
+    "escalate": false
+   },
+   {
+    "rid": "test:trainticket/service/10#verify6",
+    "kind": "verify",
+    "node": "verify",
+    "mode": "mechanism",
+    "options": [
+     "supported",
+     "insufficient",
+     "contradicted"
+    ],
+    "status": "mechanical",
+    "guard": "unchanged_since_last",
+    "use": "previous",
+    "choice": "verified",
+    "why": "no_new_evidence",
+    "dominant": false,
+    "continue_loop": false,
+    "escalate": false
+   },
+   {
+    "rid": "test:trainticket/service/10#pick7",
+    "kind": "pick",
+    "node": "pick",
+    "mode": "mechanism",
+    "options": [
+     "c0",
+     "c1"
+    ],
+    "status": "mechanical",
+    "guard": "unchanged_since_last",
+    "use": "previous",
+    "choice": 0,
+    "why": "no_new_evidence",
+    "dominant": false,
+    "continue_loop": false,
+    "escalate": false
+   },
+   {
+    "rid": "test:trainticket/service/10#verify7",
+    "kind": "verify",
+    "node": "verify",
+    "mode": "mechanism",
+    "options": [
+     "supported",
+     "insufficient",
+     "contradicted"
+    ],
+    "status": "mechanical",
+    "guard": "unchanged_since_last",
+    "use": "previous",
+    "choice": "verified",
+    "why": "no_new_evidence",
+    "dominant": false,
+    "continue_loop": false,
+    "escalate": false
+   }
+  ],
+  "nodes": [
+   {
+    "node": "code",
+    "id": "anchors",
+    "anchors": {
+     "case_id": "trainticket/service/10",
+     "system": "trainticket",
+     "namespace": "train-ticket",
+     "query": "Partial Service Unreachability.",
+     "difficulty": "medium",
+     "symptoms": [
+      "unavailable"
+     ],
+     "mentioned_apps": []
+    }
+   },
+   {
+    "node": "probes",
+    "plan": "census",
+    "wave": 0,
+    "executed": 2,
+    "steps": [
+     {
+      "key": "pods",
+      "tool": "GetResources",
+      "arguments": {
+       "namespace": "train-ticket",
+       "resource_type": "pods",
+       "output_wide": true
+      },
+      "gate": "always"
+     },
+     {
+      "key": "alerts",
+      "tool": "GetAlerts",
+      "arguments": {},
+      "gate": "healthy_system"
+     }
+    ],
+    "skipped": []
+   },
+   {
+    "node": "decide",
+    "id": "route",
+    "rid": "test:trainticket/service/10#route",
+    "status": "mechanical",
+    "guard": "unavailable",
+    "use": "first_option",
+    "choice": "service",
+    "dominant": false,
+    "why": "mechanism_mode"
+   },
+   {
+    "node": "code",
+    "id": "plan",
+    "family": "service",
+    "plan": [
+     {
+      "step": "services",
+      "gate": "always",
+      "wave": 1
+     },
+     {
+      "step": "endpoints",
+      "gate": "always",
+      "wave": 2
+     },
+     {
+      "step": "connectivity",
+      "gate": "always",
+      "wave": 3
+     },
+     {
+      "step": "app_yaml",
+      "gate": "weak",
+      "wave": 4
+     },
+     {
+      "step": "deps",
+      "gate": "weak_strong",
+      "wave": 5
+     },
+     {
+      "step": "node_kube_proxy",
+      "gate": "connectivity_node_failure",
+      "wave": 6
+     }
+    ]
+   },
+   {
+    "node": "probes",
+    "plan": "family",
+    "wave": 1,
+    "executed": 1,
+    "steps": [
+     {
+      "key": "services",
+      "tool": "GetResources",
+      "arguments": {
+       "namespace": "train-ticket",
+       "resource_type": "services"
+      },
+      "gate": "always"
+     }
+    ],
+    "skipped": []
+   },
+   {
+    "node": "code",
+    "id": "derive",
+    "raw": 0,
+    "kept": 0,
+    "top": []
+   },
+   {
+    "node": "decide",
+    "id": "pick",
+    "rid": "test:trainticket/service/10#pick1",
+    "status": "mechanical",
+    "guard": "no_options",
+    "use": "none",
+    "choice": null,
+    "dominant": false,
+    "why": "no_candidates"
+   },
+   {
+    "node": "decide",
+    "id": "verify",
+    "rid": "test:trainticket/service/10#verify1",
+    "status": "mechanical",
+    "guard": "no_pick",
+    "use": "unverified",
+    "choice": "unverified",
+    "dominant": false,
+    "why": "nothing_to_verify"
+   },
+   {
+    "node": "probes",
+    "plan": "family",
+    "wave": 2,
+    "executed": 1,
+    "steps": [
+     {
+      "key": "endpoints",
+      "tool": "GetResources",
+      "arguments": {
+       "namespace": "train-ticket",
+       "resource_type": "endpoints"
+      },
+      "gate": "always"
+     }
+    ],
+    "skipped": []
+   },
+   {
+    "node": "code",
+    "id": "derive",
+    "raw": 2,
+    "kept": 2,
+    "top": [
+     {
+      "root_cause": "service_selector_mismatch",
+      "object": "app/ts-inside-payment-service",
+      "score": 0.72,
+      "evidence": "service endpoints are empty while the backing pods are Running",
+      "rule": "endpoints_empty"
+     },
+     {
+      "root_cause": "service_port_mapping_mismatch",
+      "object": "app/ts-inside-payment-service",
+      "score": 0.62,
+      "evidence": "empty endpoints may also mean the Service port does not map to the container port",
+      "rule": "endpoints_empty"
+     }
+    ]
+   },
+   {
+    "node": "decide",
+    "id": "pick",
+    "rid": "test:trainticket/service/10#pick2",
+    "status": "mechanical",
+    "guard": "unavailable",
+    "use": "first_option",
+    "choice": 0,
+    "dominant": false,
+    "why": "mechanism_mode"
+   },
+   {
+    "node": "decide",
+    "id": "verify",
+    "rid": "test:trainticket/service/10#verify2",
+    "status": "mechanical",
+    "guard": "unavailable",
+    "use": "verified",
+    "choice": "verified",
+    "dominant": false,
+    "why": "mechanism_mode"
+   },
+   {
+    "node": "probes",
+    "plan": "family",
+    "wave": 3,
+    "executed": 1,
+    "steps": [
+     {
+      "key": "connectivity",
+      "tool": "CheckServiceConnectivity",
+      "arguments": {
+       "namespace": "train-ticket",
+       "service_name": "ts-inside-payment-service",
+       "port": 18673
+      },
+      "gate": "always"
+     }
+    ],
+    "skipped": []
+   },
+   {
+    "node": "code",
+    "id": "derive",
+    "raw": 2,
+    "kept": 2,
+    "top": [
+     {
+      "root_cause": "service_selector_mismatch",
+      "object": "app/ts-inside-payment-service",
+      "score": 0.72,
+      "evidence": "service endpoints are empty while the backing pods are Running",
+      "rule": "endpoints_empty"
+     },
+     {
+      "root_cause": "service_port_mapping_mismatch",
+      "object": "app/ts-inside-payment-service",
+      "score": 0.62,
+      "evidence": "empty endpoints may also mean the Service port does not map to the container port",
+      "rule": "endpoints_empty"
+     }
+    ]
+   },
+   {
+    "node": "decide",
+    "id": "pick",
+    "rid": "test:trainticket/service/10#pick3",
+    "status": "mechanical",
+    "guard": "unchanged_since_last",
+    "use": "previous",
+    "choice": 0,
+    "dominant": false,
+    "why": "no_new_evidence"
+   },
+   {
+    "node": "decide",
+    "id": "verify",
+    "rid": "test:trainticket/service/10#verify3",
+    "status": "mechanical",
+    "guard": "unchanged_since_last",
+    "use": "previous",
+    "choice": "verified",
+    "dominant": false,
+    "why": "no_new_evidence"
+   },
+   {
+    "node": "probes",
+    "plan": "family",
+    "wave": 4,
+    "executed": 1,
+    "steps": [
+     {
+      "key": "appyaml",
+      "tool": "GetAppYAML",
+      "arguments": {
+       "app_name": "ts-inside-payment-service"
+      },
+      "gate": "weak"
+     }
+    ],
+    "skipped": []
+   },
+   {
+    "node": "code",
+    "id": "derive",
+    "raw": 2,
+    "kept": 2,
+    "top": [
+     {
+      "root_cause": "service_selector_mismatch",
+      "object": "app/ts-inside-payment-service",
+      "score": 0.72,
+      "evidence": "service endpoints are empty while the backing pods are Running",
+      "rule": "endpoints_empty"
+     },
+     {
+      "root_cause": "service_port_mapping_mismatch",
+      "object": "app/ts-inside-payment-service",
+      "score": 0.62,
+      "evidence": "empty endpoints may also mean the Service port does not map to the container port",
+      "rule": "endpoints_empty"
+     }
+    ]
+   },
+   {
+    "node": "decide",
+    "id": "pick",
+    "rid": "test:trainticket/service/10#pick4",
+    "status": "mechanical",
+    "guard": "unchanged_since_last",
+    "use": "previous",
+    "choice": 0,
+    "dominant": false,
+    "why": "no_new_evidence"
+   },
+   {
+    "node": "decide",
+    "id": "verify",
+    "rid": "test:trainticket/service/10#verify4",
+    "status": "mechanical",
+    "guard": "unchanged_since_last",
+    "use": "previous",
+    "choice": "verified",
+    "dominant": false,
+    "why": "no_new_evidence"
+   },
+   {
+    "node": "probes",
+    "plan": "family",
+    "wave": 5,
+    "executed": 1,
+    "steps": [
+     {
+      "key": "deps",
+      "tool": "GetServiceDependencies",
+      "arguments": {
+       "service_name": "ts-inside-payment-service"
+      },
+      "gate": "weak_strong"
+     }
+    ],
+    "skipped": []
+   },
+   {
+    "node": "code",
+    "id": "derive",
+    "raw": 2,
+    "kept": 2,
+    "top": [
+     {
+      "root_cause": "service_selector_mismatch",
+      "object": "app/ts-inside-payment-service",
+      "score": 0.72,
+      "evidence": "service endpoints are empty while the backing pods are Running",
+      "rule": "endpoints_empty"
+     },
+     {
+      "root_cause": "service_port_mapping_mismatch",
+      "object": "app/ts-inside-payment-service",
+      "score": 0.62,
+      "evidence": "empty endpoints may also mean the Service port does not map to the container port",
+      "rule": "endpoints_empty"
+     }
+    ]
+   },
+   {
+    "node": "decide",
+    "id": "pick",
+    "rid": "test:trainticket/service/10#pick5",
+    "status": "mechanical",
+    "guard": "unchanged_since_last",
+    "use": "previous",
+    "choice": 0,
+    "dominant": false,
+    "why": "no_new_evidence"
+   },
+   {
+    "node": "decide",
+    "id": "verify",
+    "rid": "test:trainticket/service/10#verify5",
+    "status": "mechanical",
+    "guard": "unchanged_since_last",
+    "use": "previous",
+    "choice": "verified",
+    "dominant": false,
+    "why": "no_new_evidence"
+   },
+   {
+    "node": "probes",
+    "plan": "family",
+    "wave": 6,
+    "executed": 1,
+    "steps": [
+     {
+      "key": "node:kube-proxy",
+      "tool": "CheckNodeServiceStatus",
+      "arguments": {
+       "node_name": "worker-01",
+       "service_name": "kube-proxy"
+      },
+      "gate": "connectivity_node_failure"
+     }
+    ],
+    "skipped": []
+   },
+   {
+    "node": "code",
+    "id": "derive",
+    "raw": 2,
+    "kept": 2,
+    "top": [
+     {
+      "root_cause": "service_selector_mismatch",
+      "object": "app/ts-inside-payment-service",
+      "score": 0.72,
+      "evidence": "service endpoints are empty while the backing pods are Running",
+      "rule": "endpoints_empty"
+     },
+     {
+      "root_cause": "service_port_mapping_mismatch",
+      "object": "app/ts-inside-payment-service",
+      "score": 0.62,
+      "evidence": "empty endpoints may also mean the Service port does not map to the container port",
+      "rule": "endpoints_empty"
+     }
+    ]
+   },
+   {
+    "node": "decide",
+    "id": "pick",
+    "rid": "test:trainticket/service/10#pick6",
+    "status": "mechanical",
+    "guard": "unchanged_since_last",
+    "use": "previous",
+    "choice": 0,
+    "dominant": false,
+    "why": "no_new_evidence"
+   },
+   {
+    "node": "decide",
+    "id": "verify",
+    "rid": "test:trainticket/service/10#verify6",
+    "status": "mechanical",
+    "guard": "unchanged_since_last",
+    "use": "previous",
+    "choice": "verified",
+    "dominant": false,
+    "why": "no_new_evidence"
+   },
+   {
+    "node": "probes",
+    "plan": "family",
+    "wave": 7,
+    "executed": 0,
+    "why": "plan exhausted"
+   },
+   {
+    "node": "code",
+    "id": "derive",
+    "raw": 2,
+    "kept": 2,
+    "top": [
+     {
+      "root_cause": "service_selector_mismatch",
+      "object": "app/ts-inside-payment-service",
+      "score": 0.72,
+      "evidence": "service endpoints are empty while the backing pods are Running",
+      "rule": "endpoints_empty"
+     },
+     {
+      "root_cause": "service_port_mapping_mismatch",
+      "object": "app/ts-inside-payment-service",
+      "score": 0.62,
+      "evidence": "empty endpoints may also mean the Service port does not map to the container port",
+      "rule": "endpoints_empty"
+     }
+    ]
+   },
+   {
+    "node": "decide",
+    "id": "pick",
+    "rid": "test:trainticket/service/10#pick7",
+    "status": "mechanical",
+    "guard": "unchanged_since_last",
+    "use": "previous",
+    "choice": 0,
+    "dominant": false,
+    "why": "no_new_evidence"
+   },
+   {
+    "node": "decide",
+    "id": "verify",
+    "rid": "test:trainticket/service/10#verify7",
+    "status": "mechanical",
+    "guard": "unchanged_since_last",
+    "use": "previous",
+    "choice": "verified",
+    "dominant": false,
+    "why": "no_new_evidence"
+   },
+   {
+    "node": "loop",
+    "id": "waves",
+    "stop": "plan_exhausted",
+    "wave": 7
+   },
+   {
+    "node": "escalate",
+    "id": "escalate",
+    "fired": false,
+    "reasons": [],
+    "why": "no reason"
+   },
+   {
+    "node": "code",
+    "id": "answer",
+    "predictions": [
+     {
+      "rank": 1,
+      "fault_object": "app/ts-inside-payment-service",
+      "root_cause": "service_selector_mismatch"
+     },
+     {
+      "rank": 2,
+      "fault_object": "app/ts-inside-payment-service",
+      "root_cause": "service_port_mapping_mismatch"
+     },
+     {
+      "rank": 3,
+      "fault_object": "app/ts-inside-payment-service",
+      "root_cause": "service_selector_mismatch"
+     }
+    ]
+   },
+   {
+    "node": "artifact",
+    "id": "persist",
+    "persisted": false,
+    "why": "written by the CLI driver"
+   }
+  ],
+  "notes": [],
+  "tool_calls": 8,
+  "model_calls": 0,
+  "tokens_in": 0,
+  "tokens_out": 0,
+  "wall_s": 0.09
+ }
+}

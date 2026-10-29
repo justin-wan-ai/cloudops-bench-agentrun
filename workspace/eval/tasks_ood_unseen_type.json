@@ -1,0 +1,257 @@
+{
+ "n": 36,
+ "cases": [
+  {
+   "id": "boutique/codedefect/24",
+   "system": "boutique",
+   "category": "codedefect",
+   "case": "24",
+   "difficulty": "hard"
+  },
+  {
+   "id": "boutique/codedefect/25",
+   "system": "boutique",
+   "category": "codedefect",
+   "case": "25",
+   "difficulty": "hard"
+  },
+  {
+   "id": "boutique/codedefect/26",
+   "system": "boutique",
+   "category": "codedefect",
+   "case": "26",
+   "difficulty": "hard"
+  },
+  {
+   "id": "boutique/codedefect/27",
+   "system": "boutique",
+   "category": "codedefect",
+   "case": "27",
+   "difficulty": "hard"
+  },
+  {
+   "id": "boutique/codedefect/28",
+   "system": "boutique",
+   "category": "codedefect",
+   "case": "28",
+   "difficulty": "hard"
+  },
+  {
+   "id": "boutique/codedefect/55",
+   "system": "boutique",
+   "category": "codedefect",
+   "case": "55",
+   "difficulty": "hard"
+  },
+  {
+   "id": "boutique/codedefect/56",
+   "system": "boutique",
+   "category": "codedefect",
+   "case": "56",
+   "difficulty": "hard"
+  },
+  {
+   "id": "boutique/codedefect/57",
+   "system": "boutique",
+   "category": "codedefect",
+   "case": "57",
+   "difficulty": "hard"
+  },
+  {
+   "id": "boutique/codedefect/58",
+   "system": "boutique",
+   "category": "codedefect",
+   "case": "58",
+   "difficulty": "hard"
+  },
+  {
+   "id": "boutique/codedefect/59",
+   "system": "boutique",
+   "category": "codedefect",
+   "case": "59",
+   "difficulty": "hard"
+  },
+  {
+   "id": "boutique/codedefect/76",
+   "system": "boutique",
+   "category": "codedefect",
+   "case": "76",
+   "difficulty": "hard"
+  },
+  {
+   "id": "boutique/codedefect/77",
+   "system": "boutique",
+   "category": "codedefect",
+   "case": "77",
+   "difficulty": "hard"
+  },
+  {
+   "id": "boutique/codedefect/78",
+   "system": "boutique",
+   "category": "codedefect",
+   "case": "78",
+   "difficulty": "hard"
+  },
+  {
+   "id": "boutique/codedefect/79",
+   "system": "boutique",
+   "category": "codedefect",
+   "case": "79",
+   "difficulty": "hard"
+  },
+  {
+   "id": "boutique/codedefect/80",
+   "system": "boutique",
+   "category": "codedefect",
+   "case": "80",
+   "difficulty": "hard"
+  },
+  {
+   "id": "boutique/runtime/1",
+   "system": "boutique",
+   "category": "runtime",
+   "case": "1",
+   "difficulty": "easy"
+  },
+  {
+   "id": "boutique/runtime/10",
+   "system": "boutique",
+   "category": "runtime",
+   "case": "10",
+   "difficulty": "easy"
+  },
+  {
+   "id": "boutique/runtime/11",
+   "system": "boutique",
+   "category": "runtime",
+   "case": "11",
+   "difficulty": "easy"
+  },
+  {
+   "id": "boutique/runtime/12",
+   "system": "boutique",
+   "category": "runtime",
+   "case": "12",
+   "difficulty": "easy"
+  },
+  {
+   "id": "boutique/runtime/13",
+   "system": "boutique",
+   "category": "runtime",
+   "case": "13",
+   "difficulty": "easy"
+  },
+  {
+   "id": "boutique/runtime/14",
+   "system": "boutique",
+   "category": "runtime",
+   "case": "14",
+   "difficulty": "easy"
+  },
+  {
+   "id": "boutique/runtime/15",
+   "system": "boutique",
+   "category": "runtime",
+   "case": "15",
+   "difficulty": "easy"
+  },
+  {
+   "id": "boutique/runtime/16",
+   "system": "boutique",
+   "category": "runtime",
+   "case": "16",
+   "difficulty": "easy"
+  },
+  {
+   "id": "boutique/runtime/17",
+   "system": "boutique",
+   "category": "runtime",
+   "case": "17",
+   "difficulty": "easy"
+  },
+  {
+   "id": "boutique/runtime/18",
+   "system": "boutique",
+   "category": "runtime",
+   "case": "18",
+   "difficulty": "easy"
+  },
+  {
+   "id": "boutique/runtime/19",
+   "system": "boutique",
+   "category": "runtime",
+   "case": "19",
+   "difficulty": "easy"
+  },
+  {
+   "id": "boutique/runtime/2",
+   "system": "boutique",
+   "category": "runtime",
+   "case": "2",
+   "difficulty": "easy"
+  },
+  {
+   "id": "boutique/runtime/20",
+   "system": "boutique",
+   "category": "runtime",
+   "case": "20",
+   "difficulty": "easy"
+  },
+  {
+   "id": "boutique/runtime/21",
+   "system": "boutique",
+   "category": "runtime",
+   "case": "21",
+   "difficulty": "easy"
+  },
+  {
+   "id": "boutique/runtime/3",
+   "system": "boutique",
+   "category": "runtime",
+   "case": "3",
+   "difficulty": "easy"
+  },
+  {
+   "id": "boutique/runtime/4",
+   "system": "boutique",
+   "category": "runtime",
+   "case": "4",
+   "difficulty": "easy"
+  },
+  {
+   "id": "boutique/runtime/5",
+   "system": "boutique",
+   "category": "runtime",
+   "case": "5",
+   "difficulty": "easy"
+  },
+  {
+   "id": "boutique/runtime/6",
+   "system": "boutique",
+   "category": "runtime",
+   "case": "6",
+   "difficulty": "easy"
+  },
+  {
+   "id": "boutique/runtime/7",
+   "system": "boutique",
+   "category": "runtime",
+   "case": "7",
+   "difficulty": "easy"
+  },
+  {
+   "id": "boutique/runtime/8",
+   "system": "boutique",
+   "category": "runtime",
+   "case": "8",
+   "difficulty": "easy"
+  },
+  {
+   "id": "boutique/runtime/9",
+   "system": "boutique",
+   "category": "runtime",
+   "case": "9",
+   "difficulty": "easy"
+  }
+ ]
+}

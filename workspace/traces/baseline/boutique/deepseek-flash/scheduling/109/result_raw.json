@@ -1,0 +1,6 @@
+{
+  "Completed": "{\"key_evidence_summary\": \"recommendationservice pod is Pending. DescribeResource shows Node-Selectors: disktype=ssd and a FailedScheduling event: '0/4 nodes are available: 1 node(s) were unschedulable, 3 node(s) didn't match Pod's node affinity/selector'. GetClusterConfiguration shows worker-01/02/03 are Ready, untainted, but carry label key 'disk-type: ssd' (hyphen) rather than 'disktype: ssd'. The selector key mismatch makes the pod unschedulable on all workers, so recommendationservice has no running instance, causing partial service unreachability.\", \"top_3_predictions\": [{\"rank\": 1, \"fault_object\": \"app/recommendationservice\", \"root_cause\": \"node_selector_mismatch\"}, {\"rank\": 2, \"fault_object\": \"app/recommendationservice\", \"root_cause\": \"node_affinity_mismatch\"}, {\"rank\": 3, \"fault_object\": \"node/master\", \"root_cause\": \"node_cordon_mismatch\"}]}",
+  "finished": true,
+  "stop_reason": "submit",
+  "steps_used": 4
+}

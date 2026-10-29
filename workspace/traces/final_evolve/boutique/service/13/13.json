@@ -1,0 +1,1354 @@
+{
+ "case_id": "boutique/service/13",
+ "system_name": "boutique",
+ "question": "Service Availability Disruption.",
+ "case_path": "/Users/justinwan/work/workspace/cloudops_bench_rsi/repo/benchmark/boutique/service/13",
+ "max_steps": 10,
+ "current_step": 6,
+ "finished": true,
+ "stop_reason": "submit",
+ "final_answer": "{\"key_evidence_summary\": \"Service productcatalogservice targets container port 8081 but the container exposes [3550]\", \"top_3_predictions\": [{\"rank\": 1, \"fault_object\": \"app/productcatalogservice\", \"root_cause\": \"service_port_mapping_mismatch\"}, {\"rank\": 2, \"fault_object\": \"app/productcatalogservice\", \"root_cause\": \"service_port_mapping_mismatch\"}, {\"rank\": 3, \"fault_object\": \"app/productcatalogservice\", \"root_cause\": \"service_port_mapping_mismatch\"}]}",
+ "metadata": {
+  "namespace": "boutique",
+  "query": "Service Availability Disruption.",
+  "fault_category": "service",
+  "model_name": "agentrun-v0.13"
+ },
+ "steps": [
+  {
+   "step_id": 0,
+   "action_type": "tool",
+   "action_name": "GetResources",
+   "action_input": {
+    "namespace": "boutique",
+    "resource_type": "pods",
+    "output_wide": true
+   },
+   "observation": "NAME                                     READY   STATUS    RESTARTS   AGE   IP            NODE        NOMINATED NODE   READINESS GATES\nadservice-84dbdf99d-s7jmh                1/1     Running   0          63s   172.20.1.10   worker-01   <none>           <none>\ncartservice-79b49f5555-m4ckl             1/1     Running   0          63s   172.20.3.29   worker-03   <none>           <none>\ncheckoutservice-8445f8b6cb-b4h4t         1/1     Running   0          62s   172.20.1.11   worker-01   <none>           <none>\ncurrencyservice-75686c9564-zl9rx         1/1     Running   0          62s   172.20.1.12   worker-01   <none>           <none>\nemailservice-b78fc569b-bfgpd             1/1     Running   0          62s   172.20.3.30   worker-03   <none>           <none>\nfrontend-6778bd7b8b-42nrm                1/1     Running   0          62s   172.20.1.13   worker-01   <none>           <none>\npaymentservice-78c5996648-zg78b          1/1     Running   0          62s   172.20.3.31   worker-03   <none>           <none>\nproductcatalogservice-ddb46fc86-cnqvl    1/1     Running   0          61s   172.20.1.16   worker-01   <none>           <none>\nrecommendationservice-7df9c5b676-6mq26   1/1     Running   0          61s   172.20.1.14   worker-01   <none>           <none>\nredis-cart-68db7b6f97-dn7nh              1/1     Running   0          61s   172.20.1.15   worker-01   <none>           <none>\nshippingservice-7cbfcb6d68-fxdlm         1/1     Running   0          61s   172.20.3.32   worker-03   <none>           <none>\n",
+   "error": null,
+   "purpose": "pod readiness census",
+   "tool_latency": null
+  },
+  {
+   "step_id": 1,
+   "action_type": "tool",
+   "action_name": "GetAlerts",
+   "action_input": {},
+   "observation": "No active metric anomalies detected at this time.",
+   "error": null,
+   "purpose": "anomaly signature (routes performance/code families)",
+   "tool_latency": null
+  },
+  {
+   "step_id": 2,
+   "action_type": "tool",
+   "action_name": "GetResources",
+   "action_input": {
+    "namespace": "boutique",
+    "resource_type": "pods",
+    "show_labels": true
+   },
+   "observation": "NAME                                     READY   STATUS    RESTARTS   AGE   LABELS\nadservice-84dbdf99d-s7jmh                1/1     Running   0          63s   app=adservice,pod-template-hash=84dbdf99d\ncartservice-79b49f5555-m4ckl             1/1     Running   0          63s   app=cartservice,pod-template-hash=79b49f5555\ncheckoutservice-8445f8b6cb-b4h4t         1/1     Running   0          62s   app=checkoutservice,pod-template-hash=8445f8b6cb\ncurrencyservice-75686c9564-zl9rx         1/1     Running   0          62s   app=currencyservice,pod-template-hash=75686c9564\nemailservice-b78fc569b-bfgpd             1/1     Running   0          62s   app=emailservice,pod-template-hash=b78fc569b\nfrontend-6778bd7b8b-42nrm                1/1     Running   0          62s   app=frontend,pod-template-hash=6778bd7b8b\npaymentservice-78c5996648-zg78b          1/1     Running   0          62s   app=paymentservice,pod-template-hash=78c5996648\nproductcatalogservice-ddb46fc86-cnqvl    1/1     Running   0          61s   app=productcatalogservice,pod-template-hash=ddb46fc86\nrecommendationservice-7df9c5b676-6mq26   1/1     Running   0          61s   app=recommendationservice,pod-template-hash=7df9c5b676\nredis-cart-68db7b6f97-dn7nh              1/1     Running   0          61s   app=redis-cart,pod-template-hash=68db7b6f97\nshippingservice-7cbfcb6d68-fxdlm         1/1     Running   0          61s   app=shippingservice,pod-template-hash=7cbfcb6d68\n",
+   "error": null,
+   "purpose": "pod labels (service selector check)",
+   "tool_latency": null
+  },
+  {
+   "step_id": 3,
+   "action_type": "tool",
+   "action_name": "GetResources",
+   "action_input": {
+    "namespace": "boutique",
+    "resource_type": "services"
+   },
+   "observation": "NAME                    TYPE        CLUSTER-IP      EXTERNAL-IP   PORT(S)        AGE\nadservice               ClusterIP   10.68.72.149    <none>        9555/TCP       66s\ncartservice             ClusterIP   10.68.90.114    <none>        7070/TCP       66s\ncheckoutservice         ClusterIP   10.68.172.119   <none>        5050/TCP       65s\ncurrencyservice         ClusterIP   10.68.53.219    <none>        7000/TCP       65s\nemailservice            ClusterIP   10.68.189.221   <none>        5000/TCP       65s\nfrontend                ClusterIP   10.68.142.23    <none>        80/TCP         65s\nfrontend-external       NodePort    10.68.174.54    <none>        80:30080/TCP   65s\npaymentservice          ClusterIP   10.68.75.197    <none>        50051/TCP      65s\nproductcatalogservice   ClusterIP   10.68.1.75      <none>        3550/TCP       64s\nrecommendationservice   ClusterIP   10.68.172.72    <none>        8080/TCP       64s\nredis-cart              ClusterIP   10.68.77.223    <none>        6379/TCP       64s\nshippingservice         ClusterIP   10.68.32.111    <none>        50051/TCP      64s\n",
+   "error": null,
+   "purpose": "service ports and selectors",
+   "tool_latency": null
+  },
+  {
+   "step_id": 4,
+   "action_type": "tool",
+   "action_name": "GetErrorLogs",
+   "action_input": {
+    "namespace": "boutique",
+    "service_name": "frontend"
+   },
+   "observation": "{\n  \"total_log_count\": 724,\n  \"total_errors\": 180,\n  \"total_error_ratio\": 0.2486,\n  \"patterns\": [\n    {\n      \"count\": 98,\n      \"ratio\": 0.1354,\n      \"sample\": \"{\\\"error\\\":\\\"could not retrieve products: rpc error: code = Unavailable desc = connection error: desc = \\\\\\\"transport: Error while dialing: dial tcp 10.68.1.75:3550: connect: connection refused\\\\\\\"\\\",\\\"http.req.id\\\":\\\"50b3b9ff-9125-431d-af6a-a57cfe0b4942\\\",\\\"http.req.method\\\":\\\"GET\\\",\\\"http.req.path\\\":\\\"/\\\",\\\"message\\\":\\\"request error\\\",\\\"session\\\":\\\"b943626a-50ff-44ee-b21e-78448371b87a\\\",\\\"severity\\\":\\\"error\\\",\\\"timestamp\\\":\\\"2025-11-11T08:13:22.828995452Z\\\"}\"\n    },\n    {\n      \"count\": 78,\n      \"ratio\": 0.1077,\n      \"sample\": \"{\\\"error\\\":\\\"could not retrieve product: rpc error: code = Unavailable desc = connection error: desc = \\\\\\\"transport: Error while dialing: dial tcp 10.68.1.75:3550: connect: connection refused\\\\\\\"\\\",\\\"http.req.id\\\":\\\"6cde99f4-62a9-413b-a278-d8e92682ca54\\\",\\\"http.req.method\\\":\\\"GET\\\",\\\"http.req.path\\\":\\\"/product/9SIQT8TOJO\\\",\\\"message\\\":\\\"request error\\\",\\\"session\\\":\\\"7dd4ed05-5b4e-402f-978e-073a087f55ef\\\",\\\"severity\\\":\\\"error\\\",\\\"timestamp\\\":\\\"2025-11-11T08:13:22.931763568Z\\\"}\"\n    },\n    {\n      \"count\": 2,\n      \"ratio\": 0.0028,\n      \"sample\": \"{\\\"error\\\":\\\"could not retrieve currencies: rpc error: code = Canceled desc = context canceled\\\",\\\"http.req.id\\\":\\\"5df5268c-66fb-4f8f-985e-ab9f083ec432\\\",\\\"http.req.method\\\":\\\"GET\\\",\\\"http.req.path\\\":\\\"/\\\",\\\"message\\\":\\\"request error\\\",\\\"session\\\":\\\"e19d2a59-979c-4820-a698-9ae9ee8944a0\\\",\\\"severity\\\":\\\"error\\\",\\\"timestamp\\\":\\\"2025-11-11T08:13:23.086160734Z\\\"}\"\n    },\n    {\n      \"count\": 1,\n      \"ratio\": 0.0014,\n      \"sample\": \"{\\\"message\\\":\\\"Failed to fetch the name of the cluster in which the pod is runningmetadata: GCE metadata \\\\\\\"instance/attributes/cluster-name\\\\\\\" not defined\\\",\\\"severity\\\":\\\"error\\\",\\\"timestamp\\\":\\\"2025-11-11T08:12:22.444132452Z\\\"}\"\n    },\n    {\n      \"count\": 1,\n      \"ratio\": 0.0014,\n      \"sample\": \"{\\\"message\\\":\\\"Failed to fetch the Zone of the node where the pod is scheduledmetadata: GCE metadata \\\\\\\"instance/zone\\\\\\\" not defined\\\",\\\"severity\\\":\\\"error\\\",\\\"timestamp\\\":\\\"2025-11-11T08:12:22.455527184Z\\\"}\"\n    }\n  ]\n}",
+   "error": null,
+   "purpose": "entry-service errors: which dependency is failing",
+   "tool_latency": null
+  },
+  {
+   "step_id": 5,
+   "action_type": "tool",
+   "action_name": "GetAppYAML",
+   "action_input": {
+    "app_name": "productcatalogservice"
+   },
+   "observation": "apiVersion: apps/v1\nkind: Deployment\nmetadata:\n  name: productcatalogservice\n  namespace: boutique\n  labels:\n    app: productcatalogservice\nspec:\n  selector:\n    matchLabels:\n      app: productcatalogservice\n  template:\n    metadata:\n      labels:\n        app: productcatalogservice\n    spec:\n      serviceAccountName: productcatalogservice\n      terminationGracePeriodSeconds: 5\n      securityContext:\n        fsGroup: 1000\n        runAsGroup: 1000\n        runAsNonRoot: true\n        runAsUser: 1000\n      containers:\n      - name: server\n        securityContext:\n          allowPrivilegeEscalation: false\n          capabilities:\n            drop:\n              - ALL\n          privileged: false\n          readOnlyRootFilesystem: true\n        image: us-central1-docker.pkg.dev/google-samples/microservices-demo/productcatalogservice:v0.10.3\n        ports:\n        - containerPort: 3550\n        env:\n        - name: PORT\n          value: \"3550\"\n        - name: DISABLE_PROFILER\n          value: \"1\"\n        readinessProbe:\n          initialDelaySeconds: 5\n          grpc:\n            port: 3550\n        livenessProbe:\n          initialDelaySeconds: 5\n          grpc:\n            port: 3550\n        resources:\n          requests:\n            cpu: 100m\n            memory: 64Mi\n          limits:\n            cpu: 200m\n            memory: 128Mi\n---\napiVersion: v1\nkind: Service\nmetadata:\n  name: productcatalogservice\n  namespace: boutique\n  labels:\n    app: productcatalogservice\nspec:\n  type: ClusterIP\n  selector:\n    app: productcatalogservice\n  ports:\n  - name: grpc\n    port: 3550\n    targetPort: 8081\n---\napiVersion: v1\nkind: ServiceAccount\nmetadata:\n  name: productcatalogservice\n  namespace: boutique",
+   "error": null,
+   "purpose": "env wiring of the first mentioned app",
+   "tool_latency": null
+  }
+ ],
+ "agentrun": {
+  "tag": "test",
+  "dsl": "workspace/dsl_versions/v0.13.dsl.txt",
+  "dsl_version": "0.13",
+  "sop": {
+   "sop": "boutique-runtime-rca",
+   "scope": {
+    "system": "boutique",
+    "families": [
+     "runtime",
+     "admission",
+     "scheduling",
+     "startup",
+     "service",
+     "performance",
+     "infrastructure",
+     "codedefect"
+    ],
+    "severity": [
+     "SEV2",
+     "SEV3"
+    ]
+   },
+   "owner": "sre-platform",
+   "approved_by": [
+    "oncall-primary",
+    "sre-lead"
+   ],
+   "reviewed_at": "2026-10-23",
+   "change_ticket": "OPS-1241",
+   "boundaries": "R4 已知：`node_network_delay` 若快照里没有任何 Node 级 retrans 告警（例：performance/25），\n本 SOP 会退回 pod 级判断（当前工具面无法区分 pod 与 node 的延迟注入）。\n只读诊断：本 SOP 不执行任何写操作（重启/回滚/扩缩容），也不做对外播报；\n它回答\"最可能的根因与受害对象\"，处置与沟通由值班按 runbook 人工执行。\n不覆盖 SEV1（需 incident commander 介入）与变更引发的问题（走变更回滚流程）。\n输入是冻结快照：诊断结论对\"快照时刻\"成立，恢复后需重新取证。\nR1 已知边界：PVC 的 requested size / accessMode 在本 benchmark 的工具面不可见，\n因此 pvc_capacity 与 pvc_access_mode 无法区分（同一分数并列，交给 jev 或升级）。\n"
+  },
+  "params": {
+   "cands_cap": 8,
+   "max_waves": 10,
+   "min_waves": 5,
+   "steps_per_wave": 1,
+   "dominance_ratio": 1.5,
+   "conf_min": 0.0,
+   "escalate": true,
+   "escalate_budget": 8,
+   "judge_on_codedefect": true,
+   "jev_route": true,
+   "jev_pick": true,
+   "jev_verify": true,
+   "route_fallback": "runtime"
+  },
+  "nodes_executed": [
+   "anchors:extract_anchors",
+   "census:probes",
+   "route:decide",
+   "plan:build_plan",
+   "probe:probes",
+   "derive:derive_candidates",
+   "pick:decide",
+   "verify:decide",
+   "probe:probes",
+   "derive:derive_candidates",
+   "pick:decide",
+   "verify:decide",
+   "probe:probes",
+   "derive:derive_candidates",
+   "pick:decide",
+   "verify:decide",
+   "probe:probes",
+   "derive:derive_candidates",
+   "pick:decide",
+   "verify:decide",
+   "probe:probes",
+   "derive:derive_candidates",
+   "pick:decide",
+   "verify:decide",
+   "probe:probes",
+   "derive:derive_candidates",
+   "pick:decide",
+   "verify:decide",
+   "probe:probes",
+   "derive:derive_candidates",
+   "pick:decide",
+   "verify:decide",
+   "probe:probes",
+   "derive:derive_candidates",
+   "pick:decide",
+   "verify:decide",
+   "probe:probes",
+   "derive:derive_candidates",
+   "pick:decide",
+   "verify:decide",
+   "probe:probes",
+   "derive:derive_candidates",
+   "pick:decide",
+   "verify:decide",
+   "escalate:escalate",
+   "answer:normalize_answer",
+   "persist:persist_trace"
+  ],
+  "census": [
+   {
+    "step": "pods",
+    "gate": "always"
+   },
+   {
+    "step": "alerts",
+    "gate": "healthy_system"
+   }
+  ],
+  "plan": [
+   {
+    "step": "pods_labels",
+    "gate": "always",
+    "wave": 1
+   },
+   {
+    "step": "services",
+    "gate": "always",
+    "wave": 2
+   },
+   {
+    "step": "error_logs_entry",
+    "gate": "always",
+    "wave": 3
+   },
+   {
+    "step": "resourcequota",
+    "gate": "service_missing_for_pod",
+    "wave": 4
+   },
+   {
+    "step": "app_yaml_c1",
+    "gate": "service_target_found",
+    "wave": 5
+   },
+   {
+    "step": "app_yaml_c2",
+    "gate": "service_target_found | no_candidate_yet",
+    "wave": 6
+   },
+   {
+    "step": "app_yaml_c3",
+    "gate": "service_target_found | no_candidate_yet",
+    "wave": 7
+   },
+   {
+    "step": "deployments",
+    "gate": "no_candidate_yet",
+    "wave": 8
+   },
+   {
+    "step": "connectivity",
+    "gate": "no_candidate_yet",
+    "wave": 9
+   },
+   {
+    "step": "node_kube_proxy",
+    "gate": "connectivity_node_failure",
+    "wave": 10
+   }
+  ],
+  "family": "service",
+  "state_wiring": {
+   "family": "$route.family",
+   "route_probs": "$route.probabilities",
+   "picked": "$pick.picked",
+   "pick_dominant": "$pick.dominant",
+   "verify_status": "$verify.status",
+   "verify_prob": "$verify.confidence"
+  },
+  "bindings": {
+   "anchors": {
+    "anchors": "Anchors(case_id='boutique/service/13', system='boutique', namespace='boutique', query='Service Availability Disruption.', difficulty='medium', symptoms=['unavailable'], mentioned_apps=[], priors={'db_service': '', 'db_port': 0})"
+   },
+   "route": {
+    "family": "service",
+    "probabilities": {},
+    "route_why": "mechanism_mode"
+   },
+   "plan": {
+    "plan": "[{'name': 'pods_labels', 'key': 'pods:labels', 'tool': 'GetResources', 'args': <function _args_pods_labels at 0x10ee43740>, 'purpose': 'pod labels (service selector check)', 'when': <function compile_steps.<locals>.<lambda> at 0x10eecad40>, 'gate': 'always', 'wave': 1}, {'name': 'services', 'key': 'services', 'tool': 'GetResources', 'args': <function _args_services at 0x10ee43d80>, 'purpose': 'service ports and selectors', 'when': <function compile_steps.<locals>.<lambda> at 0x10eecac00>, 'gate': 'always', 'wave': 2}, {'name': 'error_logs_entry', 'key': 'errors:frontend', 'tool': 'GetErrorLogs', 'args': <function _args_error_logs_entry at 0x10ee747c0>, 'purpose': 'entry-service errors: which dependency is failing', 'when': <function compile_steps.<locals>.<lambda> at 0x10eecaca0>, 'gate': 'always', 'wave': 3}, {'name': 'resourcequota', 'key': 'resourcequota', 'tool': 'GetResources', 'args': <function _args_resourcequota at 0x10ee43920>, 'purpose': 'quota headroom', 'when': <function compile_steps.<locals>.<lambda> at 0x10eecab60>, 'gate': 'service_missing_for_pod', 'wave': 4}, {'name': 'app_yaml_c1', 'key': 'appyaml:c1', 'tool': 'GetAppYAML', 'args': <function _app_yaml_args_at.<locals>.resolver at 0x10ee74ae0>, 'purpose': 'env wiring of the first mentioned app', 'when': <function compile_steps.<locals>.<lambda> at 0x10eecb1a0>, 'gate': 'service_target_found', 'wave': 5}, {'name': 'app_yaml_c2', 'key': 'appyaml:c2', 'tool': 'GetAppYAML', 'args': <function _app_yaml_args_at.<locals>.resolver at 0x10ee74b80>, 'purpose': 'env wiring of the second mentioned app', 'when': <function compile_steps.<locals>.<lambda> at 0x10eec9120>, 'gate': 'service_target_found | no_candidate_yet', 'wave': 6}, {'name': 'app_yaml_c3', 'key': 'appyaml:c3', 'tool': 'GetAppYAML', 'args': <function _app_yaml_args_at.<locals>.resolver at 0x10ee74c20>, 'purpose': 'env wiring of the entry service', 'when': <function compile_steps.<locals>.<lambda> at 0x10eec89a0>, 'gate': 'service_target_found | no_candidate_yet', 'wave': 7}, {'name': 'deployments', 'key': 'deployments', 'tool': 'GetResources', 'args': <function _args_deployments at 0x10ee437e0>, 'purpose': 'which deployment never got a pod', 'when': <function compile_steps.<locals>.<lambda> at 0x10eecafc0>, 'gate': 'no_candidate_yet', 'wave': 8}, {'name': 'connectivity', 'key': 'connectivity', 'tool': 'CheckServiceConnectivity', 'args': <function _args_connectivity at 0x10ee74180>, 'purpose': 'in-cluster TCP reachability', 'when': <function compile_steps.<locals>.<lambda> at 0x10eec8b80>, 'gate': 'no_candidate_yet', 'wave': 9}, {'name': 'node_kube_proxy', 'key': 'node:kube-proxy', 'tool': 'CheckNodeServiceStatus', 'args': <function _args_node_kube_proxy at 0x10ee74680>, 'purpose': 'kube-proxy status on the same node', 'when': <function compile_steps.<locals>.<lambda> at 0x10eecb100>, 'gate': 'connectivity_node_failure', 'wave': 10}]"
+   },
+   "derive": {
+    "candidates": "[Candidate(root_cause='service_port_mapping_mismatch', object='app/productcatalogservice', score=0.99, evidence='Service productcatalogservice targets container port 8081 but the container exposes [3550]', rule='service_config')]"
+   },
+   "pick": {
+    "picked": 0,
+    "dominant": true,
+    "pick_why": "no_new_evidence"
+   },
+   "verify": {
+    "status": "verified",
+    "confidence": null,
+    "verify_why": "dominant_candidate"
+   },
+   "escalate": {
+    "answer": null
+   },
+   "answer": {
+    "final": {
+     "key_evidence_summary": "Service productcatalogservice targets container port 8081 but the container exposes [3550]",
+     "top_3_predictions": [
+      {
+       "rank": 1,
+       "fault_object": "app/productcatalogservice",
+       "root_cause": "service_port_mapping_mismatch"
+      },
+      {
+       "rank": 2,
+       "fault_object": "app/productcatalogservice",
+       "root_cause": "service_port_mapping_mismatch"
+      },
+      {
+       "rank": 3,
+       "fault_object": "app/productcatalogservice",
+       "root_cause": "service_port_mapping_mismatch"
+      }
+     ]
+    }
+   }
+  },
+  "picked": {
+   "root_cause": "service_port_mapping_mismatch",
+   "object": "app/productcatalogservice",
+   "score": 0.99,
+   "evidence": "Service productcatalogservice targets container port 8081 but the container exposes [3550]",
+   "rule": "service_config"
+  },
+  "pick_why": "",
+  "verify_prob": null,
+  "verify_verdict": "verified",
+  "verified": true,
+  "escalated": false,
+  "escalate_reason": "",
+  "escalate_steps": 0,
+  "waves": 10,
+  "candidates": [
+   {
+    "root_cause": "service_port_mapping_mismatch",
+    "object": "app/productcatalogservice",
+    "score": 0.99,
+    "evidence": "Service productcatalogservice targets container port 8081 but the container exposes [3550]",
+    "rule": "service_config"
+   }
+  ],
+  "jev": [
+   {
+    "rid": "test:boutique/service/13#route",
+    "kind": "route",
+    "node": "route",
+    "mode": "mechanism",
+    "options": [
+     "service",
+     "infrastructure"
+    ],
+    "status": "mechanical",
+    "guard": "unavailable",
+    "use": "first_option",
+    "choice": "service",
+    "why": "mechanism_mode",
+    "dominant": false,
+    "continue_loop": false,
+    "escalate": false
+   },
+   {
+    "rid": "test:boutique/service/13#pick1",
+    "kind": "pick",
+    "node": "pick",
+    "mode": "mechanism",
+    "options": [],
+    "status": "mechanical",
+    "guard": "no_options",
+    "use": "none",
+    "choice": null,
+    "why": "no_candidates",
+    "dominant": false,
+    "continue_loop": false,
+    "escalate": false
+   },
+   {
+    "rid": "test:boutique/service/13#verify1",
+    "kind": "verify",
+    "node": "verify",
+    "mode": "mechanism",
+    "options": [
+     "supported",
+     "insufficient",
+     "contradicted"
+    ],
+    "status": "mechanical",
+    "guard": "no_pick",
+    "use": "unverified",
+    "choice": "unverified",
+    "why": "nothing_to_verify",
+    "dominant": false,
+    "continue_loop": false,
+    "escalate": false
+   },
+   {
+    "rid": "test:boutique/service/13#pick2",
+    "kind": "pick",
+    "node": "pick",
+    "mode": "mechanism",
+    "options": [],
+    "status": "mechanical",
+    "guard": "no_options",
+    "use": "none",
+    "choice": null,
+    "why": "no_candidates",
+    "dominant": false,
+    "continue_loop": false,
+    "escalate": false
+   },
+   {
+    "rid": "test:boutique/service/13#verify2",
+    "kind": "verify",
+    "node": "verify",
+    "mode": "mechanism",
+    "options": [
+     "supported",
+     "insufficient",
+     "contradicted"
+    ],
+    "status": "mechanical",
+    "guard": "no_pick",
+    "use": "unverified",
+    "choice": "unverified",
+    "why": "nothing_to_verify",
+    "dominant": false,
+    "continue_loop": false,
+    "escalate": false
+   },
+   {
+    "rid": "test:boutique/service/13#pick3",
+    "kind": "pick",
+    "node": "pick",
+    "mode": "mechanism",
+    "options": [],
+    "status": "mechanical",
+    "guard": "no_options",
+    "use": "none",
+    "choice": null,
+    "why": "no_candidates",
+    "dominant": false,
+    "continue_loop": false,
+    "escalate": false
+   },
+   {
+    "rid": "test:boutique/service/13#verify3",
+    "kind": "verify",
+    "node": "verify",
+    "mode": "mechanism",
+    "options": [
+     "supported",
+     "insufficient",
+     "contradicted"
+    ],
+    "status": "mechanical",
+    "guard": "no_pick",
+    "use": "unverified",
+    "choice": "unverified",
+    "why": "nothing_to_verify",
+    "dominant": false,
+    "continue_loop": false,
+    "escalate": false
+   },
+   {
+    "rid": "test:boutique/service/13#pick4",
+    "kind": "pick",
+    "node": "pick",
+    "mode": "mechanism",
+    "options": [],
+    "status": "mechanical",
+    "guard": "no_options",
+    "use": "none",
+    "choice": null,
+    "why": "no_candidates",
+    "dominant": false,
+    "continue_loop": false,
+    "escalate": false
+   },
+   {
+    "rid": "test:boutique/service/13#verify4",
+    "kind": "verify",
+    "node": "verify",
+    "mode": "mechanism",
+    "options": [
+     "supported",
+     "insufficient",
+     "contradicted"
+    ],
+    "status": "mechanical",
+    "guard": "no_pick",
+    "use": "unverified",
+    "choice": "unverified",
+    "why": "nothing_to_verify",
+    "dominant": false,
+    "continue_loop": false,
+    "escalate": false
+   },
+   {
+    "rid": "test:boutique/service/13#pick5",
+    "kind": "pick",
+    "node": "pick",
+    "mode": "mechanism",
+    "options": [
+     "c0"
+    ],
+    "status": "mechanical",
+    "guard": "top_over_second >= $params.dominance_ratio",
+    "use": "first_option",
+    "choice": 0,
+    "why": "dominance",
+    "dominant": true,
+    "continue_loop": false,
+    "escalate": false
+   },
+   {
+    "rid": "test:boutique/service/13#verify5",
+    "kind": "verify",
+    "node": "verify",
+    "mode": "mechanism",
+    "options": [
+     "supported",
+     "insufficient",
+     "contradicted"
+    ],
+    "status": "mechanical",
+    "guard": "$pick.dominant",
+    "use": "verified",
+    "choice": "verified",
+    "why": "dominant_candidate",
+    "dominant": false,
+    "continue_loop": false,
+    "escalate": false
+   },
+   {
+    "rid": "test:boutique/service/13#pick6",
+    "kind": "pick",
+    "node": "pick",
+    "mode": "mechanism",
+    "options": [
+     "c0"
+    ],
+    "status": "mechanical",
+    "guard": "unchanged_since_last",
+    "use": "previous",
+    "choice": 0,
+    "why": "no_new_evidence",
+    "dominant": true,
+    "continue_loop": false,
+    "escalate": false
+   },
+   {
+    "rid": "test:boutique/service/13#verify6",
+    "kind": "verify",
+    "node": "verify",
+    "mode": "mechanism",
+    "options": [
+     "supported",
+     "insufficient",
+     "contradicted"
+    ],
+    "status": "mechanical",
+    "guard": "$pick.dominant",
+    "use": "verified",
+    "choice": "verified",
+    "why": "dominant_candidate",
+    "dominant": false,
+    "continue_loop": false,
+    "escalate": false
+   },
+   {
+    "rid": "test:boutique/service/13#pick7",
+    "kind": "pick",
+    "node": "pick",
+    "mode": "mechanism",
+    "options": [
+     "c0"
+    ],
+    "status": "mechanical",
+    "guard": "unchanged_since_last",
+    "use": "previous",
+    "choice": 0,
+    "why": "no_new_evidence",
+    "dominant": true,
+    "continue_loop": false,
+    "escalate": false
+   },
+   {
+    "rid": "test:boutique/service/13#verify7",
+    "kind": "verify",
+    "node": "verify",
+    "mode": "mechanism",
+    "options": [
+     "supported",
+     "insufficient",
+     "contradicted"
+    ],
+    "status": "mechanical",
+    "guard": "$pick.dominant",
+    "use": "verified",
+    "choice": "verified",
+    "why": "dominant_candidate",
+    "dominant": false,
+    "continue_loop": false,
+    "escalate": false
+   },
+   {
+    "rid": "test:boutique/service/13#pick8",
+    "kind": "pick",
+    "node": "pick",
+    "mode": "mechanism",
+    "options": [
+     "c0"
+    ],
+    "status": "mechanical",
+    "guard": "unchanged_since_last",
+    "use": "previous",
+    "choice": 0,
+    "why": "no_new_evidence",
+    "dominant": true,
+    "continue_loop": false,
+    "escalate": false
+   },
+   {
+    "rid": "test:boutique/service/13#verify8",
+    "kind": "verify",
+    "node": "verify",
+    "mode": "mechanism",
+    "options": [
+     "supported",
+     "insufficient",
+     "contradicted"
+    ],
+    "status": "mechanical",
+    "guard": "$pick.dominant",
+    "use": "verified",
+    "choice": "verified",
+    "why": "dominant_candidate",
+    "dominant": false,
+    "continue_loop": false,
+    "escalate": false
+   },
+   {
+    "rid": "test:boutique/service/13#pick9",
+    "kind": "pick",
+    "node": "pick",
+    "mode": "mechanism",
+    "options": [
+     "c0"
+    ],
+    "status": "mechanical",
+    "guard": "unchanged_since_last",
+    "use": "previous",
+    "choice": 0,
+    "why": "no_new_evidence",
+    "dominant": true,
+    "continue_loop": false,
+    "escalate": false
+   },
+   {
+    "rid": "test:boutique/service/13#verify9",
+    "kind": "verify",
+    "node": "verify",
+    "mode": "mechanism",
+    "options": [
+     "supported",
+     "insufficient",
+     "contradicted"
+    ],
+    "status": "mechanical",
+    "guard": "$pick.dominant",
+    "use": "verified",
+    "choice": "verified",
+    "why": "dominant_candidate",
+    "dominant": false,
+    "continue_loop": false,
+    "escalate": false
+   },
+   {
+    "rid": "test:boutique/service/13#pick10",
+    "kind": "pick",
+    "node": "pick",
+    "mode": "mechanism",
+    "options": [
+     "c0"
+    ],
+    "status": "mechanical",
+    "guard": "unchanged_since_last",
+    "use": "previous",
+    "choice": 0,
+    "why": "no_new_evidence",
+    "dominant": true,
+    "continue_loop": false,
+    "escalate": false
+   },
+   {
+    "rid": "test:boutique/service/13#verify10",
+    "kind": "verify",
+    "node": "verify",
+    "mode": "mechanism",
+    "options": [
+     "supported",
+     "insufficient",
+     "contradicted"
+    ],
+    "status": "mechanical",
+    "guard": "$pick.dominant",
+    "use": "verified",
+    "choice": "verified",
+    "why": "dominant_candidate",
+    "dominant": false,
+    "continue_loop": false,
+    "escalate": false
+   }
+  ],
+  "nodes": [
+   {
+    "node": "code",
+    "id": "anchors",
+    "anchors": {
+     "case_id": "boutique/service/13",
+     "system": "boutique",
+     "namespace": "boutique",
+     "query": "Service Availability Disruption.",
+     "difficulty": "medium",
+     "symptoms": [
+      "unavailable"
+     ],
+     "mentioned_apps": []
+    }
+   },
+   {
+    "node": "probes",
+    "plan": "census",
+    "wave": 0,
+    "executed": 2,
+    "steps": [
+     {
+      "key": "pods",
+      "tool": "GetResources",
+      "arguments": {
+       "namespace": "boutique",
+       "resource_type": "pods",
+       "output_wide": true
+      },
+      "gate": "always"
+     },
+     {
+      "key": "alerts",
+      "tool": "GetAlerts",
+      "arguments": {},
+      "gate": "healthy_system"
+     }
+    ],
+    "skipped": []
+   },
+   {
+    "node": "decide",
+    "id": "route",
+    "rid": "test:boutique/service/13#route",
+    "status": "mechanical",
+    "guard": "unavailable",
+    "use": "first_option",
+    "choice": "service",
+    "dominant": false,
+    "why": "mechanism_mode"
+   },
+   {
+    "node": "code",
+    "id": "plan",
+    "family": "service",
+    "plan": [
+     {
+      "step": "pods_labels",
+      "gate": "always",
+      "wave": 1
+     },
+     {
+      "step": "services",
+      "gate": "always",
+      "wave": 2
+     },
+     {
+      "step": "error_logs_entry",
+      "gate": "always",
+      "wave": 3
+     },
+     {
+      "step": "resourcequota",
+      "gate": "service_missing_for_pod",
+      "wave": 4
+     },
+     {
+      "step": "app_yaml_c1",
+      "gate": "service_target_found",
+      "wave": 5
+     },
+     {
+      "step": "app_yaml_c2",
+      "gate": "service_target_found | no_candidate_yet",
+      "wave": 6
+     },
+     {
+      "step": "app_yaml_c3",
+      "gate": "service_target_found | no_candidate_yet",
+      "wave": 7
+     },
+     {
+      "step": "deployments",
+      "gate": "no_candidate_yet",
+      "wave": 8
+     },
+     {
+      "step": "connectivity",
+      "gate": "no_candidate_yet",
+      "wave": 9
+     },
+     {
+      "step": "node_kube_proxy",
+      "gate": "connectivity_node_failure",
+      "wave": 10
+     }
+    ]
+   },
+   {
+    "node": "probes",
+    "plan": "family",
+    "wave": 1,
+    "executed": 1,
+    "steps": [
+     {
+      "key": "pods:labels",
+      "tool": "GetResources",
+      "arguments": {
+       "namespace": "boutique",
+       "resource_type": "pods",
+       "show_labels": true
+      },
+      "gate": "always"
+     }
+    ],
+    "skipped": []
+   },
+   {
+    "node": "code",
+    "id": "derive",
+    "raw": 0,
+    "kept": 0,
+    "top": []
+   },
+   {
+    "node": "decide",
+    "id": "pick",
+    "rid": "test:boutique/service/13#pick1",
+    "status": "mechanical",
+    "guard": "no_options",
+    "use": "none",
+    "choice": null,
+    "dominant": false,
+    "why": "no_candidates"
+   },
+   {
+    "node": "decide",
+    "id": "verify",
+    "rid": "test:boutique/service/13#verify1",
+    "status": "mechanical",
+    "guard": "no_pick",
+    "use": "unverified",
+    "choice": "unverified",
+    "dominant": false,
+    "why": "nothing_to_verify"
+   },
+   {
+    "node": "probes",
+    "plan": "family",
+    "wave": 2,
+    "executed": 1,
+    "steps": [
+     {
+      "key": "services",
+      "tool": "GetResources",
+      "arguments": {
+       "namespace": "boutique",
+       "resource_type": "services"
+      },
+      "gate": "always"
+     }
+    ],
+    "skipped": []
+   },
+   {
+    "node": "code",
+    "id": "derive",
+    "raw": 0,
+    "kept": 0,
+    "top": []
+   },
+   {
+    "node": "decide",
+    "id": "pick",
+    "rid": "test:boutique/service/13#pick2",
+    "status": "mechanical",
+    "guard": "no_options",
+    "use": "none",
+    "choice": null,
+    "dominant": false,
+    "why": "no_candidates"
+   },
+   {
+    "node": "decide",
+    "id": "verify",
+    "rid": "test:boutique/service/13#verify2",
+    "status": "mechanical",
+    "guard": "no_pick",
+    "use": "unverified",
+    "choice": "unverified",
+    "dominant": false,
+    "why": "nothing_to_verify"
+   },
+   {
+    "node": "probes",
+    "plan": "family",
+    "wave": 3,
+    "executed": 1,
+    "steps": [
+     {
+      "key": "errors:frontend",
+      "tool": "GetErrorLogs",
+      "arguments": {
+       "namespace": "boutique",
+       "service_name": "frontend"
+      },
+      "gate": "always"
+     }
+    ],
+    "skipped": []
+   },
+   {
+    "node": "code",
+    "id": "derive",
+    "raw": 0,
+    "kept": 0,
+    "top": []
+   },
+   {
+    "node": "decide",
+    "id": "pick",
+    "rid": "test:boutique/service/13#pick3",
+    "status": "mechanical",
+    "guard": "no_options",
+    "use": "none",
+    "choice": null,
+    "dominant": false,
+    "why": "no_candidates"
+   },
+   {
+    "node": "decide",
+    "id": "verify",
+    "rid": "test:boutique/service/13#verify3",
+    "status": "mechanical",
+    "guard": "no_pick",
+    "use": "unverified",
+    "choice": "unverified",
+    "dominant": false,
+    "why": "nothing_to_verify"
+   },
+   {
+    "node": "probes",
+    "plan": "family",
+    "wave": 4,
+    "executed": 0,
+    "steps": [],
+    "skipped": [
+     {
+      "step": "resourcequota",
+      "why": "gate service_missing_for_pod"
+     }
+    ]
+   },
+   {
+    "node": "code",
+    "id": "derive",
+    "raw": 0,
+    "kept": 0,
+    "top": []
+   },
+   {
+    "node": "decide",
+    "id": "pick",
+    "rid": "test:boutique/service/13#pick4",
+    "status": "mechanical",
+    "guard": "no_options",
+    "use": "none",
+    "choice": null,
+    "dominant": false,
+    "why": "no_candidates"
+   },
+   {
+    "node": "decide",
+    "id": "verify",
+    "rid": "test:boutique/service/13#verify4",
+    "status": "mechanical",
+    "guard": "no_pick",
+    "use": "unverified",
+    "choice": "unverified",
+    "dominant": false,
+    "why": "nothing_to_verify"
+   },
+   {
+    "node": "probes",
+    "plan": "family",
+    "wave": 5,
+    "executed": 1,
+    "steps": [
+     {
+      "key": "appyaml:c1",
+      "tool": "GetAppYAML",
+      "arguments": {
+       "app_name": "productcatalogservice"
+      },
+      "gate": "service_target_found"
+     }
+    ],
+    "skipped": []
+   },
+   {
+    "node": "code",
+    "id": "derive",
+    "raw": 1,
+    "kept": 1,
+    "top": [
+     {
+      "root_cause": "service_port_mapping_mismatch",
+      "object": "app/productcatalogservice",
+      "score": 0.99,
+      "evidence": "Service productcatalogservice targets container port 8081 but the container exposes [3550]",
+      "rule": "service_config"
+     }
+    ]
+   },
+   {
+    "node": "decide",
+    "id": "pick",
+    "rid": "test:boutique/service/13#pick5",
+    "status": "mechanical",
+    "guard": "top_over_second >= $params.dominance_ratio",
+    "use": "first_option",
+    "choice": 0,
+    "dominant": true,
+    "why": "dominance"
+   },
+   {
+    "node": "decide",
+    "id": "verify",
+    "rid": "test:boutique/service/13#verify5",
+    "status": "mechanical",
+    "guard": "$pick.dominant",
+    "use": "verified",
+    "choice": "verified",
+    "dominant": false,
+    "why": "dominant_candidate"
+   },
+   {
+    "node": "probes",
+    "plan": "family",
+    "wave": 6,
+    "executed": 0,
+    "steps": [],
+    "skipped": [
+     {
+      "step": "app_yaml_c2",
+      "why": "gate service_target_found | no_candidate_yet"
+     }
+    ]
+   },
+   {
+    "node": "code",
+    "id": "derive",
+    "raw": 1,
+    "kept": 1,
+    "top": [
+     {
+      "root_cause": "service_port_mapping_mismatch",
+      "object": "app/productcatalogservice",
+      "score": 0.99,
+      "evidence": "Service productcatalogservice targets container port 8081 but the container exposes [3550]",
+      "rule": "service_config"
+     }
+    ]
+   },
+   {
+    "node": "decide",
+    "id": "pick",
+    "rid": "test:boutique/service/13#pick6",
+    "status": "mechanical",
+    "guard": "unchanged_since_last",
+    "use": "previous",
+    "choice": 0,
+    "dominant": true,
+    "why": "no_new_evidence"
+   },
+   {
+    "node": "decide",
+    "id": "verify",
+    "rid": "test:boutique/service/13#verify6",
+    "status": "mechanical",
+    "guard": "$pick.dominant",
+    "use": "verified",
+    "choice": "verified",
+    "dominant": false,
+    "why": "dominant_candidate"
+   },
+   {
+    "node": "probes",
+    "plan": "family",
+    "wave": 7,
+    "executed": 0,
+    "steps": [],
+    "skipped": [
+     {
+      "step": "app_yaml_c3",
+      "why": "gate service_target_found | no_candidate_yet"
+     }
+    ]
+   },
+   {
+    "node": "code",
+    "id": "derive",
+    "raw": 1,
+    "kept": 1,
+    "top": [
+     {
+      "root_cause": "service_port_mapping_mismatch",
+      "object": "app/productcatalogservice",
+      "score": 0.99,
+      "evidence": "Service productcatalogservice targets container port 8081 but the container exposes [3550]",
+      "rule": "service_config"
+     }
+    ]
+   },
+   {
+    "node": "decide",
+    "id": "pick",
+    "rid": "test:boutique/service/13#pick7",
+    "status": "mechanical",
+    "guard": "unchanged_since_last",
+    "use": "previous",
+    "choice": 0,
+    "dominant": true,
+    "why": "no_new_evidence"
+   },
+   {
+    "node": "decide",
+    "id": "verify",
+    "rid": "test:boutique/service/13#verify7",
+    "status": "mechanical",
+    "guard": "$pick.dominant",
+    "use": "verified",
+    "choice": "verified",
+    "dominant": false,
+    "why": "dominant_candidate"
+   },
+   {
+    "node": "probes",
+    "plan": "family",
+    "wave": 8,
+    "executed": 0,
+    "steps": [],
+    "skipped": [
+     {
+      "step": "deployments",
+      "why": "gate no_candidate_yet"
+     }
+    ]
+   },
+   {
+    "node": "code",
+    "id": "derive",
+    "raw": 1,
+    "kept": 1,
+    "top": [
+     {
+      "root_cause": "service_port_mapping_mismatch",
+      "object": "app/productcatalogservice",
+      "score": 0.99,
+      "evidence": "Service productcatalogservice targets container port 8081 but the container exposes [3550]",
+      "rule": "service_config"
+     }
+    ]
+   },
+   {
+    "node": "decide",
+    "id": "pick",
+    "rid": "test:boutique/service/13#pick8",
+    "status": "mechanical",
+    "guard": "unchanged_since_last",
+    "use": "previous",
+    "choice": 0,
+    "dominant": true,
+    "why": "no_new_evidence"
+   },
+   {
+    "node": "decide",
+    "id": "verify",
+    "rid": "test:boutique/service/13#verify8",
+    "status": "mechanical",
+    "guard": "$pick.dominant",
+    "use": "verified",
+    "choice": "verified",
+    "dominant": false,
+    "why": "dominant_candidate"
+   },
+   {
+    "node": "probes",
+    "plan": "family",
+    "wave": 9,
+    "executed": 0,
+    "steps": [],
+    "skipped": [
+     {
+      "step": "connectivity",
+      "why": "gate no_candidate_yet"
+     }
+    ]
+   },
+   {
+    "node": "code",
+    "id": "derive",
+    "raw": 1,
+    "kept": 1,
+    "top": [
+     {
+      "root_cause": "service_port_mapping_mismatch",
+      "object": "app/productcatalogservice",
+      "score": 0.99,
+      "evidence": "Service productcatalogservice targets container port 8081 but the container exposes [3550]",
+      "rule": "service_config"
+     }
+    ]
+   },
+   {
+    "node": "decide",
+    "id": "pick",
+    "rid": "test:boutique/service/13#pick9",
+    "status": "mechanical",
+    "guard": "unchanged_since_last",
+    "use": "previous",
+    "choice": 0,
+    "dominant": true,
+    "why": "no_new_evidence"
+   },
+   {
+    "node": "decide",
+    "id": "verify",
+    "rid": "test:boutique/service/13#verify9",
+    "status": "mechanical",
+    "guard": "$pick.dominant",
+    "use": "verified",
+    "choice": "verified",
+    "dominant": false,
+    "why": "dominant_candidate"
+   },
+   {
+    "node": "probes",
+    "plan": "family",
+    "wave": 10,
+    "executed": 0,
+    "steps": [],
+    "skipped": [
+     {
+      "step": "node_kube_proxy",
+      "why": "gate connectivity_node_failure"
+     }
+    ]
+   },
+   {
+    "node": "code",
+    "id": "derive",
+    "raw": 1,
+    "kept": 1,
+    "top": [
+     {
+      "root_cause": "service_port_mapping_mismatch",
+      "object": "app/productcatalogservice",
+      "score": 0.99,
+      "evidence": "Service productcatalogservice targets container port 8081 but the container exposes [3550]",
+      "rule": "service_config"
+     }
+    ]
+   },
+   {
+    "node": "decide",
+    "id": "pick",
+    "rid": "test:boutique/service/13#pick10",
+    "status": "mechanical",
+    "guard": "unchanged_since_last",
+    "use": "previous",
+    "choice": 0,
+    "dominant": true,
+    "why": "no_new_evidence"
+   },
+   {
+    "node": "decide",
+    "id": "verify",
+    "rid": "test:boutique/service/13#verify10",
+    "status": "mechanical",
+    "guard": "$pick.dominant",
+    "use": "verified",
+    "choice": "verified",
+    "dominant": false,
+    "why": "dominant_candidate"
+   },
+   {
+    "node": "loop",
+    "id": "waves",
+    "stop": "plan_exhausted",
+    "wave": 10
+   },
+   {
+    "node": "escalate",
+    "id": "escalate",
+    "fired": false,
+    "reasons": [],
+    "why": "no reason"
+   },
+   {
+    "node": "code",
+    "id": "answer",
+    "predictions": [
+     {
+      "rank": 1,
+      "fault_object": "app/productcatalogservice",
+      "root_cause": "service_port_mapping_mismatch"
+     },
+     {
+      "rank": 2,
+      "fault_object": "app/productcatalogservice",
+      "root_cause": "service_port_mapping_mismatch"
+     },
+     {
+      "rank": 3,
+      "fault_object": "app/productcatalogservice",
+      "root_cause": "service_port_mapping_mismatch"
+     }
+    ]
+   },
+   {
+    "node": "artifact",
+    "id": "persist",
+    "persisted": false,
+    "why": "written by the CLI driver"
+   }
+  ],
+  "notes": [],
+  "tool_calls": 6,
+  "model_calls": 0,
+  "tokens_in": 0,
+  "tokens_out": 0,
+  "wall_s": 0.18
+ }
+}

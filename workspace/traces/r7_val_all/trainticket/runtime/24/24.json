@@ -1,0 +1,1225 @@
+{
+ "case_id": "trainticket/runtime/24",
+ "system_name": "trainticket",
+ "question": "Service Availability Disruption.",
+ "case_path": "/Users/justinwan/work/workspace/cloudops_bench_rsi/repo/benchmark/trainticket/runtime/24",
+ "max_steps": 8,
+ "current_step": 10,
+ "finished": true,
+ "stop_reason": "submit",
+ "final_answer": "{\"key_evidence_summary\": \"deployment ts-preserve-service has 0 desired replicas (READY 0/0)\", \"top_3_predictions\": [{\"rank\": 1, \"fault_object\": \"app/ts-preserve-service\", \"root_cause\": \"deployment_zero_replicas\"}, {\"rank\": 2, \"fault_object\": \"app/ts-preserve-service\", \"root_cause\": \"deployment_zero_replicas\"}, {\"rank\": 3, \"fault_object\": \"app/ts-preserve-service\", \"root_cause\": \"deployment_zero_replicas\"}]}",
+ "metadata": {
+  "namespace": "train-ticket",
+  "query": "Service Availability Disruption.",
+  "fault_category": "runtime",
+  "model_name": "agentrun-v0.13"
+ },
+ "steps": [
+  {
+   "step_id": 0,
+   "action_type": "tool",
+   "action_name": "GetResources",
+   "action_input": {
+    "namespace": "train-ticket",
+    "resource_type": "pods",
+    "output_wide": true
+   },
+   "observation": "NAME                                            READY   STATUS    RESTARTS      AGE     IP             NODE        NOMINATED NODE   READINESS GATES\nnacos-0                                         1/1     Running   0             9d      172.20.2.76    worker-02   <none>           <none>\nnacos-1                                         1/1     Running   0             9d      172.20.1.247   worker-01   <none>           <none>\nnacos-2                                         1/1     Running   0             9d      172.20.3.7     worker-03   <none>           <none>\nnacosdb-mysql-0                                 3/3     Running   1 (9d ago)    9d      172.20.2.75    worker-02   <none>           <none>\nnacosdb-mysql-1                                 3/3     Running   2 (9d ago)    9d      172.20.1.246   worker-01   <none>           <none>\nnacosdb-mysql-2                                 3/3     Running   1 (9d ago)    9d      172.20.3.6     worker-03   <none>           <none>\nrabbitmq-57b4f9969c-4cndj                       1/1     Running   0             9d      172.20.2.77    worker-02   <none>           <none>\nts-assurance-service-88f65755-s8qsv             2/2     Running   0             5m26s   172.20.2.199   worker-02   <none>           <none>\nts-auth-service-656fb96d87-lptk9                2/2     Running   0             5m34s   172.20.2.186   worker-02   <none>           <none>\nts-avatar-service-54fb8f5c57-4gf2g              2/2     Running   0             5m31s   172.20.2.192   worker-02   <none>           <none>\nts-basic-service-57fb684696-w7p9t               2/2     Running   0             5m34s   172.20.1.70    worker-01   <none>           <none>\nts-cancel-service-67fb7d5bb4-gznmf              2/2     Running   0             5m33s   172.20.2.188   worker-02   <none>           <none>\nts-config-service-65779cfcd7-nrc4f              2/2     Running   0             5m28s   172.20.3.70    worker-03   <none>           <none>\nts-consign-price-service-b74c79d7-zvs4s         2/2     Running   0             21h     172.20.2.120   worker-02   <none>           <none>\nts-consign-service-846bdf46cc-mxz7v             2/2     Running   0             5m32s   172.20.3.63    worker-03   <none>           <none>\nts-contacts-service-7fc68f4bbc-mh2nk            2/2     Running   0             5m33s   172.20.2.189   worker-02   <none>           <none>\nts-delivery-service-659b5d4f75-rm6kh            2/2     Running   0             5m29s   172.20.3.68    worker-03   <none>           <none>\nts-execute-service-5f7c9df447-q8d7r             2/2     Running   0             5m32s   172.20.1.75    worker-01   <none>           <none>\nts-food-delivery-service-5b898fdbbf-6pr54       2/2     Running   0             5m27s   172.20.1.81    worker-01   <none>           <none>\nts-food-service-59c58c74cc-kp9zw                2/2     Running   0             5m27s   172.20.2.197   worker-02   <none>           <none>\nts-gateway-service-ddc65b886-vxv8b              2/2     Running   0             5m34s   172.20.1.69    worker-01   <none>           <none>\nts-inside-payment-service-5b98976c87-ppbcg      2/2     Running   0             5m31s   172.20.2.193   worker-02   <none>           <none>\nts-news-service-578fd9cd67-zk9gg                2/2     Running   0             5m26s   172.20.1.83    worker-01   <none>           <none>\nts-notification-service-6b579b64d7-nm2gf        2/2     Running   0             5m28s   172.20.2.195   worker-02   <none>           <none>\nts-order-other-service-788d947bdf-t8psx         2/2     Running   0             5m33s   172.20.1.73    worker-01   <none>           <none>\nts-order-service-dd54d5df9-5d7ld                2/2     Running   0             5m30s   172.20.1.77    worker-01   <none>           <none>\nts-payment-service-666d596f87-stpdf             2/2     Running   0             5m26s   172.20.2.198   worker-02   <none>           <none>\nts-preserve-other-service-5f85fdfd7-94nq6       2/2     Running   0             5m31s   172.20.1.76    worker-01   <none>           <none>\nts-price-service-6c4b77845-nhfp5                2/2     Running   0             5m33s   172.20.1.72    worker-01   <none>           <none>\nts-rebook-service-75d676f77b-pw8sm              2/2     Running   0             5m31s   172.20.3.64    worker-03   <none>           <none>\nts-route-plan-service-695f545f8c-hcpss          2/2     Running   0             5m32s   172.20.2.191   worker-02   <none>           <none>\nts-route-service-688dc779fc-hzvvm               2/2     Running   0             5m34s   172.20.1.71    worker-01   <none>           <none>\nts-seat-service-5fc7c67c7f-8b9mb                2/2     Running   0             5m30s   172.20.3.66    worker-03   <none>           <none>\nts-security-service-5fb7f7fbff-rj6bq            2/2     Running   0             5m28s   172.20.2.196   worker-02   <none>           <none>\nts-station-food-service-d99b9b859-phqjz         2/2     Running   0             5m34s   172.20.2.187   worker-02   <none>           <none>\nts-station-service-7cbf6b96c9-f8qsv             2/2     Running   0             5m33s   172.20.3.62    worker-03   <none>           <none>\nts-ticket-office-service-6fd78bd9df-mlzks       2/2     Running   0             5m32s   172.20.1.74    worker-01   <none>           <none>\nts-train-food-service-67cb5bdf99-nm8x5          2/2     Running   0             5m30s   172.20.2.194   worker-02   <none>           <none>\nts-train-service-c4fb58df9-mphnj                2/2     Running   0             5m29s   172.20.1.79    worker-01   <none>           <none>\nts-travel-plan-service-5985cdf6b6-6tfqv         2/2     Running   0             5m31s   172.20.3.65    worker-03   <none>           <none>\nts-travel-service-5b9b99c879-74tjc              2/2     Running   0             5m26s   172.20.3.72    worker-03   <none>           <none>\nts-travel2-service-849bffcb7c-w46bq             2/2     Running   0             5m32s   172.20.2.190   worker-02   <none>           <none>\nts-ui-dashboard-554844f867-gm654                2/2     Running   0             5m29s   172.20.1.78    worker-01   <none>           <none>\nts-user-service-6886cbf9cf-mzlhj                2/2     Running   0             5m27s   172.20.3.71    worker-03   <none>           <none>\nts-verification-code-service-7cbd896f77-lgv5h   2/2     Running   0             5m27s   172.20.1.82    worker-01   <none>           <none>\nts-voucher-service-5ffdd5456c-v6x65             2/2     Running   0             5m29s   172.20.3.67    worker-03   <none>           <none>\nts-wait-order-service-848dbb9dd7-nxjzf          2/2     Running   0             5m28s   172.20.3.69    worker-03   <none>           <none>\ntsdb-mysql-0                                    4/4     Running   1 (21h ago)   22h     172.20.1.214   worker-01   <none>           <none>\ntsdb-mysql-1                                    4/4     Running   1 (21h ago)   22h     172.20.2.116   worker-02   <none>           <none>\ntsdb-mysql-2                                    4/4     Running   1 (21h ago)   22h     172.20.3.235   worker-03   <none>           <none>\n",
+   "error": null,
+   "purpose": "pod readiness census",
+   "tool_latency": null
+  },
+  {
+   "step_id": 1,
+   "action_type": "tool",
+   "action_name": "GetAlerts",
+   "action_input": {},
+   "observation": "{'status': 'has_anomalies', 'alert_count': 2, 'alerts': [{'request_method': 'POST', 'business_action': 'Create ticket order', 'entry_service': 'ts-preserve-service', 'url': '/api/v1/preserveservice/preserve', 'occurrences': 20, 'raw_error': \"HTTPError('503 Server Error: Service Unavailable')\"}, {'request_method': 'POST', 'business_action': 'Process payment', 'entry_service': 'ts-inside-payment-service', 'url': '/api/v1/inside_pay_service/inside_payment', 'occurrences': 2, 'raw_error': \"HTTPError('500 Server Error: Internal Server Error')\"}]}",
+   "error": null,
+   "purpose": "anomaly signature (routes performance/code families)",
+   "tool_latency": null
+  },
+  {
+   "step_id": 2,
+   "action_type": "tool",
+   "action_name": "GetResources",
+   "action_input": {
+    "namespace": "train-ticket",
+    "resource_type": "pods",
+    "show_labels": true
+   },
+   "observation": "NAME                                            READY   STATUS    RESTARTS      AGE     LABELS\nnacos-0                                         1/1     Running   0             9d      app=nacos,apps.kubernetes.io/pod-index=0,controller-revision-hash=nacos-75dd4c6498,statefulset.kubernetes.io/pod-name=nacos-0\nnacos-1                                         1/1     Running   0             9d      app=nacos,apps.kubernetes.io/pod-index=1,controller-revision-hash=nacos-75dd4c6498,statefulset.kubernetes.io/pod-name=nacos-1\nnacos-2                                         1/1     Running   0             9d      app=nacos,apps.kubernetes.io/pod-index=2,controller-revision-hash=nacos-75dd4c6498,statefulset.kubernetes.io/pod-name=nacos-2\nnacosdb-mysql-0                                 3/3     Running   1 (9d ago)    9d      app=nacosdb-mysql,apps.kubernetes.io/pod-index=0,controller-revision-hash=nacosdb-mysql-8655cb47b9,release=nacosdb,role=leader,statefulset.kubernetes.io/pod-name=nacosdb-mysql-0\nnacosdb-mysql-1                                 3/3     Running   2 (9d ago)    9d      app=nacosdb-mysql,apps.kubernetes.io/pod-index=1,controller-revision-hash=nacosdb-mysql-8655cb47b9,release=nacosdb,role=follower,statefulset.kubernetes.io/pod-name=nacosdb-mysql-1\nnacosdb-mysql-2                                 3/3     Running   1 (9d ago)    9d      app=nacosdb-mysql,apps.kubernetes.io/pod-index=2,controller-revision-hash=nacosdb-mysql-8655cb47b9,release=nacosdb,role=follower,statefulset.kubernetes.io/pod-name=nacosdb-mysql-2\nrabbitmq-57b4f9969c-4cndj                       1/1     Running   0             9d      app=rabbitmq,pod-template-hash=57b4f9969c\nts-assurance-service-88f65755-s8qsv             2/2     Running   0             5m26s   app=ts-assurance-service,networking.istio.io/tunnel=http,pod-template-hash=88f65755,security.istio.io/tlsMode=istio,service.istio.io/canonical-name=ts-assurance-service,service.istio.io/canonical-revision=latest\nts-auth-service-656fb96d87-lptk9                2/2     Running   0             5m34s   app=ts-auth-service,networking.istio.io/tunnel=http,pod-template-hash=656fb96d87,security.istio.io/tlsMode=istio,service.istio.io/canonical-name=ts-auth-service,service.istio.io/canonical-revision=latest\nts-avatar-service-54fb8f5c57-4gf2g              2/2     Running   0             5m31s   app=ts-avatar-service,networking.istio.io/tunnel=http,pod-template-hash=54fb8f5c57,security.istio.io/tlsMode=istio,service.istio.io/canonical-name=ts-avatar-service,service.istio.io/canonical-revision=latest\nts-basic-service-57fb684696-w7p9t               2/2     Running   0             5m34s   app=ts-basic-service,networking.istio.io/tunnel=http,pod-template-hash=57fb684696,security.istio.io/tlsMode=istio,service.istio.io/canonical-name=ts-basic-service,service.istio.io/canonical-revision=latest\nts-cancel-service-67fb7d5bb4-gznmf              2/2     Running   0             5m33s   app=ts-cancel-service,networking.istio.io/tunnel=http,pod-template-hash=67fb7d5bb4,security.istio.io/tlsMode=istio,service.istio.io/canonical-name=ts-cancel-service,service.istio.io/canonical-revision=latest\nts-config-service-65779cfcd7-nrc4f              2/2     Running   0             5m28s   app=ts-config-service,networking.istio.io/tunnel=http,pod-template-hash=65779cfcd7,security.istio.io/tlsMode=istio,service.istio.io/canonical-name=ts-config-service,service.istio.io/canonical-revision=latest\nts-consign-price-service-b74c79d7-zvs4s         2/2     Running   0             21h     app=ts-consign-price-service,networking.istio.io/tunnel=http,pod-template-hash=b74c79d7,security.istio.io/tlsMode=istio,service.istio.io/canonical-name=ts-consign-price-service,service.istio.io/canonical-revision=latest\nts-consign-service-846bdf46cc-mxz7v             2/2     Running   0             5m32s   app=ts-consign-service,networking.istio.io/tunnel=http,pod-template-hash=846bdf46cc,security.istio.io/tlsMode=istio,service.istio.io/canonical-name=ts-consign-service,service.istio.io/canonical-revision=latest\nts-contacts-service-7fc68f4bbc-mh2nk            2/2     Running   0             5m33s   app=ts-contacts-service,networking.istio.io/tunnel=http,pod-template-hash=7fc68f4bbc,security.istio.io/tlsMode=istio,service.istio.io/canonical-name=ts-contacts-service,service.istio.io/canonical-revision=latest\nts-delivery-service-659b5d4f75-rm6kh            2/2     Running   0             5m29s   app=ts-delivery-service,networking.istio.io/tunnel=http,pod-template-hash=659b5d4f75,security.istio.io/tlsMode=istio,service.istio.io/canonical-name=ts-delivery-service,service.istio.io/canonical-revision=latest\nts-execute-service-5f7c9df447-q8d7r             2/2     Running   0             5m32s   app=ts-execute-service,networking.istio.io/tunnel=http,pod-template-hash=5f7c9df447,security.istio.io/tlsMode=istio,service.istio.io/canonical-name=ts-execute-service,service.istio.io/canonical-revision=latest\nts-food-delivery-service-5b898fdbbf-6pr54       2/2     Running   0             5m27s   app=ts-food-delivery-service,networking.istio.io/tunnel=http,pod-template-hash=5b898fdbbf,security.istio.io/tlsMode=istio,service.istio.io/canonical-name=ts-food-delivery-service,service.istio.io/canonical-revision=latest\nts-food-service-59c58c74cc-kp9zw                2/2     Running   0             5m27s   app=ts-food-service,networking.istio.io/tunnel=http,pod-template-hash=59c58c74cc,security.istio.io/tlsMode=istio,service.istio.io/canonical-name=ts-food-service,service.istio.io/canonical-revision=latest\nts-gateway-service-ddc65b886-vxv8b              2/2     Running   0             5m34s   app=ts-gateway-service,networking.istio.io/tunnel=http,pod-template-hash=ddc65b886,security.istio.io/tlsMode=istio,service.istio.io/canonical-name=ts-gateway-service,service.istio.io/canonical-revision=latest\nts-inside-payment-service-5b98976c87-ppbcg      2/2     Running   0             5m31s   app=ts-inside-payment-service,networking.istio.io/tunnel=http,pod-template-hash=5b98976c87,security.istio.io/tlsMode=istio,service.istio.io/canonical-name=ts-inside-payment-service,service.istio.io/canonical-revision=latest\nts-news-service-578fd9cd67-zk9gg                2/2     Running   0             5m26s   app=ts-news-service,networking.istio.io/tunnel=http,pod-template-hash=578fd9cd67,security.istio.io/tlsMode=istio,service.istio.io/canonical-name=ts-news-service,service.istio.io/canonical-revision=latest\nts-notification-service-6b579b64d7-nm2gf        2/2     Running   0             5m28s   app=ts-notification-service,networking.istio.io/tunnel=http,pod-template-hash=6b579b64d7,security.istio.io/tlsMode=istio,service.istio.io/canonical-name=ts-notification-service,service.istio.io/canonical-revision=latest\nts-order-other-service-788d947bdf-t8psx         2/2     Running   0             5m33s   app=ts-order-other-service,networking.istio.io/tunnel=http,pod-template-hash=788d947bdf,security.istio.io/tlsMode=istio,service.istio.io/canonical-name=ts-order-other-service,service.istio.io/canonical-revision=latest\nts-order-service-dd54d5df9-5d7ld                2/2     Running   0             5m30s   app=ts-order-service,networking.istio.io/tunnel=http,pod-template-hash=dd54d5df9,security.istio.io/tlsMode=istio,service.istio.io/canonical-name=ts-order-service,service.istio.io/canonical-revision=latest\nts-payment-service-666d596f87-stpdf             2/2     Running   0             5m26s   app=ts-payment-service,networking.istio.io/tunnel=http,pod-template-hash=666d596f87,security.istio.io/tlsMode=istio,service.istio.io/canonical-name=ts-payment-service,service.istio.io/canonical-revision=latest\nts-preserve-other-service-5f85fdfd7-94nq6       2/2     Running   0             5m31s   app=ts-preserve-other-service,networking.istio.io/tunnel=http,pod-template-hash=5f85fdfd7,security.istio.io/tlsMode=istio,service.istio.io/canonical-name=ts-preserve-other-service,service.istio.io/canonical-revision=latest\nts-price-service-6c4b77845-nhfp5                2/2     Running   0             5m33s   app=ts-price-service,networking.istio.io/tunnel=http,pod-template-hash=6c4b77845,security.istio.io/tlsMode=istio,service.istio.io/canonical-name=ts-price-service,service.istio.io/canonical-revision=latest\nts-rebook-service-75d676f77b-pw8sm              2/2     Running   0             5m31s   app=ts-rebook-service,networking.istio.io/tunnel=http,pod-template-hash=75d676f77b,security.istio.io/tlsMode=istio,service.istio.io/canonical-name=ts-rebook-service,service.istio.io/canonical-revision=latest\nts-route-plan-service-695f545f8c-hcpss          2/2     Running   0             5m32s   app=ts-route-plan-service,networking.istio.io/tunnel=http,pod-template-hash=695f545f8c,security.istio.io/tlsMode=istio,service.istio.io/canonical-name=ts-route-plan-service,service.istio.io/canonical-revision=latest\nts-route-service-688dc779fc-hzvvm               2/2     Running   0             5m34s   app=ts-route-service,networking.istio.io/tunnel=http,pod-template-hash=688dc779fc,security.istio.io/tlsMode=istio,service.istio.io/canonical-name=ts-route-service,service.istio.io/canonical-revision=latest\nts-seat-service-5fc7c67c7f-8b9mb                2/2     Running   0             5m30s   app=ts-seat-service,networking.istio.io/tunnel=http,pod-template-hash=5fc7c67c7f,security.istio.io/tlsMode=istio,service.istio.io/canonical-name=ts-seat-service,service.istio.io/canonical-revision=latest\nts-security-service-5fb7f7fbff-rj6bq            2/2     Running   0             5m28s   app=ts-security-service,networking.istio.io/tunnel=http,pod-template-hash=5fb7f7fbff,security.istio.io/tlsMode=istio,service.istio.io/canonical-name=ts-security-service,service.istio.io/canonical-revision=latest\nts-station-food-service-d99b9b859-phqjz         2/2     Running   0             5m34s   app=ts-station-food-service,networking.istio.io/tunnel=http,pod-template-hash=d99b9b859,security.istio.io/tlsMode=istio,service.istio.io/canonical-name=ts-station-food-service,service.istio.io/canonical-revision=latest\nts-station-service-7cbf6b96c9-f8qsv             2/2     Running   0             5m33s   app=ts-station-service,networking.istio.io/tunnel=http,pod-template-hash=7cbf6b96c9,security.istio.io/tlsMode=istio,service.istio.io/canonical-name=ts-station-service,service.istio.io/canonical-revision=latest\nts-ticket-office-service-6fd78bd9df-mlzks       2/2     Running   0             5m32s   app=ts-ticket-office-service,networking.istio.io/tunnel=http,pod-template-hash=6fd78bd9df,security.istio.io/tlsMode=istio,service.istio.io/canonical-name=ts-ticket-office-service,service.istio.io/canonical-revision=latest\nts-train-food-service-67cb5bdf99-nm8x5          2/2     Running   0             5m30s   app=ts-train-food-service,networking.istio.io/tunnel=http,pod-template-hash=67cb5bdf99,security.istio.io/tlsMode=istio,service.istio.io/canonical-name=ts-train-food-service,service.istio.io/canonical-revision=latest\nts-train-service-c4fb58df9-mphnj                2/2     Running   0             5m29s   app=ts-train-service,networking.istio.io/tunnel=http,pod-template-hash=c4fb58df9,security.istio.io/tlsMode=istio,service.istio.io/canonical-name=ts-train-service,service.istio.io/canonical-revision=latest\nts-travel-plan-service-5985cdf6b6-6tfqv         2/2     Running   0             5m31s   app=ts-travel-plan-service,networking.istio.io/tunnel=http,pod-template-hash=5985cdf6b6,security.istio.io/tlsMode=istio,service.istio.io/canonical-name=ts-travel-plan-service,service.istio.io/canonical-revision=latest\nts-travel-service-5b9b99c879-74tjc              2/2     Running   0             5m26s   app=ts-travel-service,networking.istio.io/tunnel=http,pod-template-hash=5b9b99c879,security.istio.io/tlsMode=istio,service.istio.io/canonical-name=ts-travel-service,service.istio.io/canonical-revision=latest\nts-travel2-service-849bffcb7c-w46bq             2/2     Running   0             5m32s   app=ts-travel2-service,networking.istio.io/tunnel=http,pod-template-hash=849bffcb7c,security.istio.io/tlsMode=istio,service.istio.io/canonical-name=ts-travel2-service,service.istio.io/canonical-revision=latest\nts-ui-dashboard-554844f867-gm654                2/2     Running   0             5m29s   app=ts-ui-dashboard,networking.istio.io/tunnel=http,pod-template-hash=554844f867,security.istio.io/tlsMode=istio,service.istio.io/canonical-name=ts-ui-dashboard,service.istio.io/canonical-revision=latest\nts-user-service-6886cbf9cf-mzlhj                2/2     Running   0             5m27s   app=ts-user-service,networking.istio.io/tunnel=http,pod-template-hash=6886cbf9cf,security.istio.io/tlsMode=istio,service.istio.io/canonical-name=ts-user-service,service.istio.io/canonical-revision=latest\nts-verification-code-service-7cbd896f77-lgv5h   2/2     Running   0             5m27s   app=ts-verification-code-service,networking.istio.io/tunnel=http,pod-template-hash=7cbd896f77,security.istio.io/tlsMode=istio,service.istio.io/canonical-name=ts-verification-code-service,service.istio.io/canonical-revision=latest\nts-voucher-service-5ffdd5456c-v6x65             2/2     Running   0             5m29s   app=ts-voucher-service,networking.istio.io/tunnel=http,pod-template-hash=5ffdd5456c,security.istio.io/tlsMode=istio,service.istio.io/canonical-name=ts-voucher-service,service.istio.io/canonical-revision=latest\nts-wait-order-service-848dbb9dd7-nxjzf          2/2     Running   0             5m28s   app=ts-wait-order-service,networking.istio.io/tunnel=http,pod-template-hash=848dbb9dd7,security.istio.io/tlsMode=istio,service.istio.io/canonical-name=ts-wait-order-service,service.istio.io/canonical-revision=latest\ntsdb-mysql-0                                    4/4     Running   1 (21h ago)   22h     app=tsdb-mysql,apps.kubernetes.io/pod-index=0,controller-revision-hash=tsdb-mysql-7f7465b476,networking.istio.io/tunnel=http,release=tsdb,role=follower,security.istio.io/tlsMode=istio,service.istio.io/canonical-name=tsdb-mysql,service.istio.io/canonical-revision=latest,statefulset.kubernetes.io/pod-name=tsdb-mysql-0\ntsdb-mysql-1                                    4/4     Running   1 (21h ago)   22h     app=tsdb-mysql,apps.kubernetes.io/pod-index=1,controller-revision-hash=tsdb-mysql-7f7465b476,networking.istio.io/tunnel=http,release=tsdb,role=follower,security.istio.io/tlsMode=istio,service.istio.io/canonical-name=tsdb-mysql,service.istio.io/canonical-revision=latest,statefulset.kubernetes.io/pod-name=tsdb-mysql-1\ntsdb-mysql-2                                    4/4     Running   1 (21h ago)   22h     app=tsdb-mysql,apps.kubernetes.io/pod-index=2,controller-revision-hash=tsdb-mysql-7f7465b476,networking.istio.io/tunnel=http,release=tsdb,role=leader,security.istio.io/tlsMode=istio,service.istio.io/canonical-name=tsdb-mysql,service.istio.io/canonical-revision=latest,statefulset.kubernetes.io/pod-name=tsdb-mysql-2\n",
+   "error": null,
+   "purpose": "pod labels (service selector check)",
+   "tool_latency": null
+  },
+  {
+   "step_id": 3,
+   "action_type": "tool",
+   "action_name": "GetResources",
+   "action_input": {
+    "namespace": "train-ticket",
+    "resource_type": "services"
+   },
+   "observation": "NAME                           TYPE        CLUSTER-IP      EXTERNAL-IP   PORT(S)                               AGE\nflagd                          ClusterIP   10.68.241.97    <none>        8013/TCP                              2d\nnacos                          NodePort    10.68.184.132   <none>        8848:32506/TCP,7848:32334/TCP         9d\nnacos-headless                 ClusterIP   None            <none>        8848/TCP,9848/TCP,9849/TCP,7848/TCP   9d\nnacosdb-mysql                  ClusterIP   None            <none>        3306/TCP                              9d\nnacosdb-mysql-follower         ClusterIP   10.68.105.32    <none>        3306/TCP                              9d\nnacosdb-mysql-leader           ClusterIP   10.68.174.190   <none>        3306/TCP                              9d\nrabbitmq                       ClusterIP   10.68.202.15    <none>        5672/TCP                              9d\nts-assurance-service           ClusterIP   10.68.6.76      <none>        18888/TCP                             5m42s\nts-auth-service                ClusterIP   10.68.56.144    <none>        12340/TCP                             5m49s\nts-avatar-service              ClusterIP   10.68.236.253   <none>        17001/TCP                             5m46s\nts-basic-service               ClusterIP   10.68.113.182   <none>        15680/TCP                             5m49s\nts-cancel-service              ClusterIP   10.68.57.199    <none>        18885/TCP                             5m48s\nts-config-service              ClusterIP   10.68.152.161   <none>        15679/TCP                             5m43s\nts-consign-price-service       ClusterIP   10.68.147.223   <none>        16110/TCP                             21h\nts-consign-service             ClusterIP   10.68.239.177   <none>        16111/TCP                             5m47s\nts-contacts-service            ClusterIP   10.68.123.15    <none>        12347/TCP                             5m48s\nts-delivery-service            ClusterIP   10.68.251.109   <none>        18808/TCP                             5m45s\nts-execute-service             ClusterIP   10.68.91.229    <none>        12386/TCP                             5m47s\nts-food-service                ClusterIP   10.68.7.22      <none>        18856/TCP                             5m43s\nts-gateway-service             NodePort    10.68.115.150   <none>        18888:30467/TCP                       5m49s\nts-inside-payment-service      ClusterIP   10.68.87.173    <none>        18673/TCP                             5m46s\nts-news-service                ClusterIP   10.68.64.42     <none>        12862/TCP                             5m41s\nts-notification-service        ClusterIP   10.68.250.28    <none>        17853/TCP                             5m44s\nts-order-other-service         ClusterIP   10.68.113.111   <none>        12032/TCP                             5m48s\nts-order-service               ClusterIP   10.68.43.151    <none>        12031/TCP                             5m45s\nts-payment-service             ClusterIP   10.68.180.212   <none>        19001/TCP                             5m42s\nts-preserve-other-service      ClusterIP   10.68.187.165   <none>        14569/TCP                             5m46s\nts-preserve-service            ClusterIP   10.68.44.184    <none>        14568/TCP                             5m44s\nts-price-service               ClusterIP   10.68.203.106   <none>        16579/TCP                             5m48s\nts-rebook-service              ClusterIP   10.68.67.216    <none>        18886/TCP                             5m47s\nts-route-plan-service          ClusterIP   10.68.77.128    <none>        14578/TCP                             5m47s\nts-route-service               ClusterIP   10.68.46.140    <none>        11178/TCP                             5m49s\nts-seat-service                ClusterIP   10.68.86.226    <none>        18898/TCP                             5m46s\nts-security-service            ClusterIP   10.68.165.153   <none>        11188/TCP                             5m44s\nts-station-food-service        ClusterIP   10.68.38.110    <none>        18855/TCP                             5m49s\nts-station-service             ClusterIP   10.68.234.36    <none>        12345/TCP                             5m48s\nts-ticket-office-service       ClusterIP   10.68.66.130    <none>        16108/TCP                             5m47s\nts-train-food-service          ClusterIP   10.68.65.109    <none>        19999/TCP                             5m45s\nts-train-service               ClusterIP   10.68.76.137    <none>        14567/TCP                             5m44s\nts-travel-plan-service         ClusterIP   10.68.228.66    <none>        14322/TCP                             5m46s\nts-travel-service              ClusterIP   10.68.27.250    <none>        12346/TCP                             5m42s\nts-travel2-service             ClusterIP   10.68.190.144   <none>        16346/TCP                             5m47s\nts-ui-dashboard                NodePort    10.68.195.150   <none>        8080:32677/TCP                        6d9h\nts-user-service                ClusterIP   10.68.165.65    <none>        12342/TCP                             5m43s\nts-verification-code-service   ClusterIP   10.68.36.42     <none>        15678/TCP                             5m42s\nts-voucher-service             ClusterIP   10.68.190.28    <none>        16101/TCP                             5m45s\ntsdb-mysql                     ClusterIP   None            <none>        3306/TCP                              22h\ntsdb-mysql-follower            ClusterIP   10.68.46.32     <none>        3306/TCP                              22h\ntsdb-mysql-leader              ClusterIP   10.68.188.173   <none>        3306/TCP                              22h\n",
+   "error": null,
+   "purpose": "service ports and selectors",
+   "tool_latency": null
+  },
+  {
+   "step_id": 4,
+   "action_type": "tool",
+   "action_name": "GetErrorLogs",
+   "action_input": {
+    "namespace": "train-ticket",
+    "service_name": "frontend"
+   },
+   "observation": "Error: Error: GetErrorLogs does not support service 'frontend' for train-ticket. Allowed: ['nacos', 'nacosdb-mysql', 'rabbitmq', 'ts-assurance-service', 'ts-auth-service', 'ts-avatar-service', 'ts-basic-service', 'ts-cancel-service', 'ts-config-service', 'ts-consign-price-service', 'ts-consign-service', 'ts-contacts-service', 'ts-delivery-service', 'ts-execute-service', 'ts-food-delivery-service', 'ts-food-service', 'ts-gateway-service', 'ts-inside-payment-service', 'ts-news-service', 'ts-notification-service', 'ts-order-other-service', 'ts-order-service', 'ts-payment-service', 'ts-preserve-other-service', 'ts-preserve-service', 'ts-price-service', 'ts-rebook-service', 'ts-route-plan-service', 'ts-route-service', 'ts-seat-service', 'ts-security-service', 'ts-station-food-service', 'ts-station-service', 'ts-ticket-office-service', 'ts-train-food-service', 'ts-train-service', 'ts-travel-plan-service', 'ts-travel-service', 'ts-travel2-service', 'ts-ui-dashboard', 'ts-user-service', 'ts-verification-code-service', 'ts-voucher-service', 'ts-wait-order-service', 'tsdb-mysql']",
+   "error": null,
+   "purpose": "entry-service errors: which dependency is failing",
+   "tool_latency": null
+  },
+  {
+   "step_id": 5,
+   "action_type": "tool",
+   "action_name": "GetResources",
+   "action_input": {
+    "namespace": "train-ticket",
+    "resource_type": "resourcequota"
+   },
+   "observation": "No resources found in train-ticket namespace.",
+   "error": null,
+   "purpose": "quota headroom",
+   "tool_latency": null
+  },
+  {
+   "step_id": 6,
+   "action_type": "tool",
+   "action_name": "GetAppYAML",
+   "action_input": {
+    "app_name": "ts-verification-code-service"
+   },
+   "observation": "apiVersion: apps/v1\nkind: Deployment\nmetadata:\n  namespace: train-ticket\n  name: ts-verification-code-service\nspec:\n  selector:\n    matchLabels:\n      app: ts-verification-code-service\n  replicas: 1\n  template:\n    metadata:\n      labels:\n        app: ts-verification-code-service\n    spec:\n      containers:\n      - name: ts-verification-code-service\n        image: ghcr.io/sregym/ts-verification-code-service:latest\n        imagePullPolicy: IfNotPresent\n        env:\n        - name: SPRING_MAIN_ALLOW_CIRCULAR_REFERENCES\n          value: 'true'\n        - name: NODE_IP\n          valueFrom:\n            fieldRef:\n              fieldPath: status.hostIP\n        envFrom:\n        - configMapRef:\n            name: nacos\n        ports:\n        - containerPort: 15678\n        resources:\n          requests:\n            cpu: 200m\n            memory: 350Mi\n          limits:\n            cpu: 500m\n            memory: 512Mi\n        readinessProbe:\n          tcpSocket:\n            port: 15678\n          initialDelaySeconds: 60\n          periodSeconds: 10\n          timeoutSeconds: 5\n---\napiVersion: v1\nkind: Service\nmetadata:\n  namespace: train-ticket\n  name: ts-verification-code-service\nspec:\n  ports:\n  - name: http\n    port: 15678\n  selector:\n    app: ts-verification-code-service\n",
+   "error": null,
+   "purpose": "env wiring of the first mentioned app",
+   "tool_latency": null
+  },
+  {
+   "step_id": 7,
+   "action_type": "tool",
+   "action_name": "GetAppYAML",
+   "action_input": {
+    "app_name": "ts-travel-plan-service"
+   },
+   "observation": "apiVersion: apps/v1\nkind: Deployment\nmetadata:\n  namespace: train-ticket\n  name: ts-travel-plan-service\nspec:\n  selector:\n    matchLabels:\n      app: ts-travel-plan-service\n  replicas: 1\n  template:\n    metadata:\n      labels:\n        app: ts-travel-plan-service\n    spec:\n      containers:\n      - name: ts-travel-plan-service\n        image: ghcr.io/sregym/ts-travel-plan-service:latest\n        imagePullPolicy: IfNotPresent\n        env:\n        - name: SPRING_MAIN_ALLOW_CIRCULAR_REFERENCES\n          value: 'true'\n        - name: NODE_IP\n          valueFrom:\n            fieldRef:\n              fieldPath: status.hostIP\n        envFrom:\n        - configMapRef:\n            name: nacos\n        ports:\n        - containerPort: 14322\n        resources:\n          requests:\n            cpu: 200m\n            memory: 350Mi\n          limits:\n            cpu: 500m\n            memory: 512Mi\n        readinessProbe:\n          tcpSocket:\n            port: 14322\n          initialDelaySeconds: 60\n          periodSeconds: 10\n          timeoutSeconds: 5\n---\napiVersion: v1\nkind: Service\nmetadata:\n  namespace: train-ticket\n  name: ts-travel-plan-service\nspec:\n  ports:\n  - name: http\n    port: 14322\n  selector:\n    app: ts-travel-plan-service\n",
+   "error": null,
+   "purpose": "env wiring of the second mentioned app",
+   "tool_latency": null
+  },
+  {
+   "step_id": 8,
+   "action_type": "tool",
+   "action_name": "GetAppYAML",
+   "action_input": {
+    "app_name": "ts-station-food-service"
+   },
+   "observation": "apiVersion: apps/v1\nkind: Deployment\nmetadata:\n  namespace: train-ticket\n  name: ts-station-food-service\nspec:\n  selector:\n    matchLabels:\n      app: ts-station-food-service\n  replicas: 1\n  template:\n    metadata:\n      labels:\n        app: ts-station-food-service\n    spec:\n      containers:\n      - name: ts-station-food-service\n        image: ghcr.io/sregym/ts-station-food-service:latest\n        imagePullPolicy: IfNotPresent\n        env:\n        - name: SPRING_MAIN_ALLOW_CIRCULAR_REFERENCES\n          value: 'true'\n        - name: NODE_IP\n          valueFrom:\n            fieldRef:\n              fieldPath: status.hostIP\n        envFrom:\n        - secretRef:\n            name: ts-station-food-mysql\n        - configMapRef:\n            name: nacos\n        ports:\n        - containerPort: 18855\n        resources:\n          requests:\n            cpu: 200m\n            memory: 350Mi\n          limits:\n            cpu: 500m\n            memory: 512Mi\n        readinessProbe:\n          tcpSocket:\n            port: 18855\n          initialDelaySeconds: 60\n          periodSeconds: 10\n          timeoutSeconds: 5\n---\napiVersion: v1\nkind: Service\nmetadata:\n  namespace: train-ticket\n  name: ts-station-food-service\nspec:\n  ports:\n  - name: http\n    port: 18855\n  selector:\n    app: ts-station-food-service\n---\napiVersion: v1\nkind: Secret\nmetadata:\n  namespace: train-ticket\n  name: ts-station-food-mysql\ntype: Opaque\nstringData:\n  STATION_FOOD_MYSQL_HOST: tsdb-mysql-leader\n  STATION_FOOD_MYSQL_PORT: '3306'\n  STATION_FOOD_MYSQL_DATABASE: ts\n  STATION_FOOD_MYSQL_USER: ts\n  STATION_FOOD_MYSQL_PASSWORD: Ts_123456\n",
+   "error": null,
+   "purpose": "env wiring of the entry service",
+   "tool_latency": null
+  },
+  {
+   "step_id": 9,
+   "action_type": "tool",
+   "action_name": "GetResources",
+   "action_input": {
+    "namespace": "train-ticket",
+    "resource_type": "deployments"
+   },
+   "observation": "NAME                           READY   UP-TO-DATE   AVAILABLE   AGE\nrabbitmq                       1/1     1            1           9d\nts-assurance-service           1/1     1            1           5m59s\nts-auth-service                1/1     1            1           6m6s\nts-avatar-service              1/1     1            1           6m3s\nts-basic-service               1/1     1            1           6m6s\nts-cancel-service              1/1     1            1           6m6s\nts-config-service              1/1     1            1           6m\nts-consign-price-service       1/1     1            1           21h\nts-consign-service             1/1     1            1           6m4s\nts-contacts-service            1/1     1            1           6m5s\nts-delivery-service            1/1     1            1           6m2s\nts-execute-service             1/1     1            1           6m4s\nts-food-delivery-service       1/1     1            1           6m\nts-food-service                1/1     1            1           6m\nts-gateway-service             1/1     1            1           6m6s\nts-inside-payment-service      1/1     1            1           6m3s\nts-news-service                1/1     1            1           5m58s\nts-notification-service        1/1     1            1           6m1s\nts-order-other-service         1/1     1            1           6m5s\nts-order-service               1/1     1            1           6m2s\nts-payment-service             1/1     1            1           5m59s\nts-preserve-other-service      1/1     1            1           6m3s\nts-preserve-service            0/0     0            0           6m1s\nts-price-service               1/1     1            1           6m5s\nts-rebook-service              1/1     1            1           6m4s\nts-route-plan-service          1/1     1            1           6m4s\nts-route-service               1/1     1            1           6m6s\nts-seat-service                1/1     1            1           6m3s\nts-security-service            1/1     1            1           6m1s\nts-station-food-service        1/1     1            1           6m6s\nts-station-service             1/1     1            1           6m5s\nts-ticket-office-service       1/1     1            1           6m4s\nts-train-food-service          1/1     1            1           6m2s\nts-train-service               1/1     1            1           6m1s\nts-travel-plan-service         1/1     1            1           6m3s\nts-travel-service              1/1     1            1           5m59s\nts-travel2-service             1/1     1            1           6m4s\nts-ui-dashboard                1/1     1            1           6m2s\nts-user-service                1/1     1            1           6m\nts-verification-code-service   1/1     1            1           5m59s\nts-voucher-service             1/1     1            1           6m2s\nts-wait-order-service          1/1     1            1           6m1s\n",
+   "error": null,
+   "purpose": "which deployment never got a pod",
+   "tool_latency": null
+  }
+ ],
+ "agentrun": {
+  "tag": "test",
+  "dsl": "workspace/dsl_versions/v0.13.dsl.txt",
+  "dsl_version": "0.13",
+  "sop": {
+   "sop": "boutique-runtime-rca",
+   "scope": {
+    "system": "boutique",
+    "families": [
+     "runtime",
+     "admission",
+     "scheduling",
+     "startup",
+     "service",
+     "performance",
+     "infrastructure",
+     "codedefect"
+    ],
+    "severity": [
+     "SEV2",
+     "SEV3"
+    ]
+   },
+   "owner": "sre-platform",
+   "approved_by": [
+    "oncall-primary",
+    "sre-lead"
+   ],
+   "reviewed_at": "2026-10-23",
+   "change_ticket": "OPS-1241",
+   "boundaries": "R4 已知：`node_network_delay` 若快照里没有任何 Node 级 retrans 告警（例：performance/25），\n本 SOP 会退回 pod 级判断（当前工具面无法区分 pod 与 node 的延迟注入）。\n只读诊断：本 SOP 不执行任何写操作（重启/回滚/扩缩容），也不做对外播报；\n它回答\"最可能的根因与受害对象\"，处置与沟通由值班按 runbook 人工执行。\n不覆盖 SEV1（需 incident commander 介入）与变更引发的问题（走变更回滚流程）。\n输入是冻结快照：诊断结论对\"快照时刻\"成立，恢复后需重新取证。\nR1 已知边界：PVC 的 requested size / accessMode 在本 benchmark 的工具面不可见，\n因此 pvc_capacity 与 pvc_access_mode 无法区分（同一分数并列，交给 jev 或升级）。\n"
+  },
+  "params": {
+   "cands_cap": 8,
+   "max_waves": 8,
+   "min_waves": 5,
+   "steps_per_wave": 1,
+   "dominance_ratio": 1.5,
+   "conf_min": 0.0,
+   "escalate": true,
+   "escalate_budget": 8,
+   "judge_on_codedefect": true,
+   "jev_route": true,
+   "jev_pick": true,
+   "jev_verify": true,
+   "route_fallback": "runtime"
+  },
+  "nodes_executed": [
+   "anchors:extract_anchors",
+   "census:probes",
+   "route:decide",
+   "plan:build_plan",
+   "probe:probes",
+   "derive:derive_candidates",
+   "pick:decide",
+   "verify:decide",
+   "probe:probes",
+   "derive:derive_candidates",
+   "pick:decide",
+   "verify:decide",
+   "probe:probes",
+   "derive:derive_candidates",
+   "pick:decide",
+   "verify:decide",
+   "probe:probes",
+   "derive:derive_candidates",
+   "pick:decide",
+   "verify:decide",
+   "probe:probes",
+   "derive:derive_candidates",
+   "pick:decide",
+   "verify:decide",
+   "probe:probes",
+   "derive:derive_candidates",
+   "pick:decide",
+   "verify:decide",
+   "probe:probes",
+   "derive:derive_candidates",
+   "pick:decide",
+   "verify:decide",
+   "probe:probes",
+   "derive:derive_candidates",
+   "pick:decide",
+   "verify:decide",
+   "escalate:escalate",
+   "answer:normalize_answer",
+   "persist:persist_trace"
+  ],
+  "census": [
+   {
+    "step": "pods",
+    "gate": "always"
+   },
+   {
+    "step": "alerts",
+    "gate": "healthy_system"
+   }
+  ],
+  "plan": [
+   {
+    "step": "pods_labels",
+    "gate": "always",
+    "wave": 1
+   },
+   {
+    "step": "services",
+    "gate": "always",
+    "wave": 2
+   },
+   {
+    "step": "error_logs_entry",
+    "gate": "always",
+    "wave": 3
+   },
+   {
+    "step": "resourcequota",
+    "gate": "service_missing_for_pod",
+    "wave": 4
+   },
+   {
+    "step": "app_yaml_c1",
+    "gate": "service_target_found",
+    "wave": 5
+   },
+   {
+    "step": "app_yaml_c2",
+    "gate": "service_target_found | no_candidate_yet",
+    "wave": 6
+   },
+   {
+    "step": "app_yaml_c3",
+    "gate": "service_target_found | no_candidate_yet",
+    "wave": 7
+   },
+   {
+    "step": "deployments",
+    "gate": "no_candidate_yet",
+    "wave": 8
+   },
+   {
+    "step": "connectivity",
+    "gate": "no_candidate_yet",
+    "wave": 9
+   },
+   {
+    "step": "node_kube_proxy",
+    "gate": "connectivity_node_failure",
+    "wave": 10
+   }
+  ],
+  "family": "service",
+  "state_wiring": {
+   "family": "$route.family",
+   "route_probs": "$route.probabilities",
+   "picked": "$pick.picked",
+   "pick_dominant": "$pick.dominant",
+   "verify_status": "$verify.status",
+   "verify_prob": "$verify.confidence"
+  },
+  "bindings": {
+   "anchors": {
+    "anchors": "Anchors(case_id='trainticket/runtime/24', system='trainticket', namespace='train-ticket', query='Service Availability Disruption.', difficulty='easy', symptoms=['unavailable'], mentioned_apps=[], priors={'db_service': 'tsdb-mysql-leader', 'db_port': 3306})"
+   },
+   "route": {
+    "family": "service",
+    "probabilities": {},
+    "route_why": "mechanism_mode"
+   },
+   "plan": {
+    "plan": "[{'name': 'pods_labels', 'key': 'pods:labels', 'tool': 'GetResources', 'args': <function _args_pods_labels at 0x1125c77e0>, 'purpose': 'pod labels (service selector check)', 'when': <function compile_steps.<locals>.<lambda> at 0x113c058a0>, 'gate': 'always', 'wave': 1}, {'name': 'services', 'key': 'services', 'tool': 'GetResources', 'args': <function _args_services at 0x1125c7e20>, 'purpose': 'service ports and selectors', 'when': <function compile_steps.<locals>.<lambda> at 0x113c05940>, 'gate': 'always', 'wave': 2}, {'name': 'error_logs_entry', 'key': 'errors:frontend', 'tool': 'GetErrorLogs', 'args': <function _args_error_logs_entry at 0x1125f8860>, 'purpose': 'entry-service errors: which dependency is failing', 'when': <function compile_steps.<locals>.<lambda> at 0x113c059e0>, 'gate': 'always', 'wave': 3}, {'name': 'resourcequota', 'key': 'resourcequota', 'tool': 'GetResources', 'args': <function _args_resourcequota at 0x1125c79c0>, 'purpose': 'quota headroom', 'when': <function compile_steps.<locals>.<lambda> at 0x113c05a80>, 'gate': 'service_missing_for_pod', 'wave': 4}, {'name': 'app_yaml_c1', 'key': 'appyaml:c1', 'tool': 'GetAppYAML', 'args': <function _app_yaml_args_at.<locals>.resolver at 0x1125f8b80>, 'purpose': 'env wiring of the first mentioned app', 'when': <function compile_steps.<locals>.<lambda> at 0x113c05b20>, 'gate': 'service_target_found', 'wave': 5}, {'name': 'app_yaml_c2', 'key': 'appyaml:c2', 'tool': 'GetAppYAML', 'args': <function _app_yaml_args_at.<locals>.resolver at 0x1125f8c20>, 'purpose': 'env wiring of the second mentioned app', 'when': <function compile_steps.<locals>.<lambda> at 0x113c05bc0>, 'gate': 'service_target_found | no_candidate_yet', 'wave': 6}, {'name': 'app_yaml_c3', 'key': 'appyaml:c3', 'tool': 'GetAppYAML', 'args': <function _app_yaml_args_at.<locals>.resolver at 0x1125f8cc0>, 'purpose': 'env wiring of the entry service', 'when': <function compile_steps.<locals>.<lambda> at 0x113c05c60>, 'gate': 'service_target_found | no_candidate_yet', 'wave': 7}, {'name': 'deployments', 'key': 'deployments', 'tool': 'GetResources', 'args': <function _args_deployments at 0x1125c7880>, 'purpose': 'which deployment never got a pod', 'when': <function compile_steps.<locals>.<lambda> at 0x113c05d00>, 'gate': 'no_candidate_yet', 'wave': 8}, {'name': 'connectivity', 'key': 'connectivity', 'tool': 'CheckServiceConnectivity', 'args': <function _args_connectivity at 0x1125f8220>, 'purpose': 'in-cluster TCP reachability', 'when': <function compile_steps.<locals>.<lambda> at 0x113c05da0>, 'gate': 'no_candidate_yet', 'wave': 9}, {'name': 'node_kube_proxy', 'key': 'node:kube-proxy', 'tool': 'CheckNodeServiceStatus', 'args': <function _args_node_kube_proxy at 0x1125f8720>, 'purpose': 'kube-proxy status on the same node', 'when': <function compile_steps.<locals>.<lambda> at 0x113c05e40>, 'gate': 'connectivity_node_failure', 'wave': 10}]"
+   },
+   "derive": {
+    "candidates": "[Candidate(root_cause='deployment_zero_replicas', object='app/ts-preserve-service', score=0.8400000000000001, evidence='deployment ts-preserve-service has 0 desired replicas (READY 0/0)', rule='zero_replicas')]"
+   },
+   "pick": {
+    "picked": 0,
+    "dominant": true,
+    "pick_why": "dominance"
+   },
+   "verify": {
+    "status": "verified",
+    "confidence": null,
+    "verify_why": "dominant_candidate"
+   },
+   "escalate": {
+    "answer": null
+   },
+   "answer": {
+    "final": {
+     "key_evidence_summary": "deployment ts-preserve-service has 0 desired replicas (READY 0/0)",
+     "top_3_predictions": [
+      {
+       "rank": 1,
+       "fault_object": "app/ts-preserve-service",
+       "root_cause": "deployment_zero_replicas"
+      },
+      {
+       "rank": 2,
+       "fault_object": "app/ts-preserve-service",
+       "root_cause": "deployment_zero_replicas"
+      },
+      {
+       "rank": 3,
+       "fault_object": "app/ts-preserve-service",
+       "root_cause": "deployment_zero_replicas"
+      }
+     ]
+    }
+   }
+  },
+  "picked": {
+   "root_cause": "deployment_zero_replicas",
+   "object": "app/ts-preserve-service",
+   "score": 0.84,
+   "evidence": "deployment ts-preserve-service has 0 desired replicas (READY 0/0)",
+   "rule": "zero_replicas"
+  },
+  "pick_why": "",
+  "verify_prob": null,
+  "verify_verdict": "verified",
+  "verified": true,
+  "escalated": false,
+  "escalate_reason": "",
+  "escalate_steps": 0,
+  "waves": 8,
+  "candidates": [
+   {
+    "root_cause": "deployment_zero_replicas",
+    "object": "app/ts-preserve-service",
+    "score": 0.84,
+    "evidence": "deployment ts-preserve-service has 0 desired replicas (READY 0/0)",
+    "rule": "zero_replicas"
+   }
+  ],
+  "jev": [
+   {
+    "rid": "test:trainticket/runtime/24#route",
+    "kind": "route",
+    "node": "route",
+    "mode": "mechanism",
+    "options": [
+     "service",
+     "performance",
+     "infrastructure"
+    ],
+    "status": "mechanical",
+    "guard": "unavailable",
+    "use": "first_option",
+    "choice": "service",
+    "why": "mechanism_mode",
+    "dominant": false,
+    "continue_loop": false,
+    "escalate": false
+   },
+   {
+    "rid": "test:trainticket/runtime/24#pick1",
+    "kind": "pick",
+    "node": "pick",
+    "mode": "mechanism",
+    "options": [],
+    "status": "mechanical",
+    "guard": "no_options",
+    "use": "none",
+    "choice": null,
+    "why": "no_candidates",
+    "dominant": false,
+    "continue_loop": false,
+    "escalate": false
+   },
+   {
+    "rid": "test:trainticket/runtime/24#verify1",
+    "kind": "verify",
+    "node": "verify",
+    "mode": "mechanism",
+    "options": [
+     "supported",
+     "insufficient",
+     "contradicted"
+    ],
+    "status": "mechanical",
+    "guard": "no_pick",
+    "use": "unverified",
+    "choice": "unverified",
+    "why": "nothing_to_verify",
+    "dominant": false,
+    "continue_loop": false,
+    "escalate": false
+   },
+   {
+    "rid": "test:trainticket/runtime/24#pick2",
+    "kind": "pick",
+    "node": "pick",
+    "mode": "mechanism",
+    "options": [],
+    "status": "mechanical",
+    "guard": "no_options",
+    "use": "none",
+    "choice": null,
+    "why": "no_candidates",
+    "dominant": false,
+    "continue_loop": false,
+    "escalate": false
+   },
+   {
+    "rid": "test:trainticket/runtime/24#verify2",
+    "kind": "verify",
+    "node": "verify",
+    "mode": "mechanism",
+    "options": [
+     "supported",
+     "insufficient",
+     "contradicted"
+    ],
+    "status": "mechanical",
+    "guard": "no_pick",
+    "use": "unverified",
+    "choice": "unverified",
+    "why": "nothing_to_verify",
+    "dominant": false,
+    "continue_loop": false,
+    "escalate": false
+   },
+   {
+    "rid": "test:trainticket/runtime/24#pick3",
+    "kind": "pick",
+    "node": "pick",
+    "mode": "mechanism",
+    "options": [],
+    "status": "mechanical",
+    "guard": "no_options",
+    "use": "none",
+    "choice": null,
+    "why": "no_candidates",
+    "dominant": false,
+    "continue_loop": false,
+    "escalate": false
+   },
+   {
+    "rid": "test:trainticket/runtime/24#verify3",
+    "kind": "verify",
+    "node": "verify",
+    "mode": "mechanism",
+    "options": [
+     "supported",
+     "insufficient",
+     "contradicted"
+    ],
+    "status": "mechanical",
+    "guard": "no_pick",
+    "use": "unverified",
+    "choice": "unverified",
+    "why": "nothing_to_verify",
+    "dominant": false,
+    "continue_loop": false,
+    "escalate": false
+   },
+   {
+    "rid": "test:trainticket/runtime/24#pick4",
+    "kind": "pick",
+    "node": "pick",
+    "mode": "mechanism",
+    "options": [],
+    "status": "mechanical",
+    "guard": "no_options",
+    "use": "none",
+    "choice": null,
+    "why": "no_candidates",
+    "dominant": false,
+    "continue_loop": false,
+    "escalate": false
+   },
+   {
+    "rid": "test:trainticket/runtime/24#verify4",
+    "kind": "verify",
+    "node": "verify",
+    "mode": "mechanism",
+    "options": [
+     "supported",
+     "insufficient",
+     "contradicted"
+    ],
+    "status": "mechanical",
+    "guard": "no_pick",
+    "use": "unverified",
+    "choice": "unverified",
+    "why": "nothing_to_verify",
+    "dominant": false,
+    "continue_loop": false,
+    "escalate": false
+   },
+   {
+    "rid": "test:trainticket/runtime/24#pick5",
+    "kind": "pick",
+    "node": "pick",
+    "mode": "mechanism",
+    "options": [],
+    "status": "mechanical",
+    "guard": "no_options",
+    "use": "none",
+    "choice": null,
+    "why": "no_candidates",
+    "dominant": false,
+    "continue_loop": false,
+    "escalate": false
+   },
+   {
+    "rid": "test:trainticket/runtime/24#verify5",
+    "kind": "verify",
+    "node": "verify",
+    "mode": "mechanism",
+    "options": [
+     "supported",
+     "insufficient",
+     "contradicted"
+    ],
+    "status": "mechanical",
+    "guard": "no_pick",
+    "use": "unverified",
+    "choice": "unverified",
+    "why": "nothing_to_verify",
+    "dominant": false,
+    "continue_loop": false,
+    "escalate": false
+   },
+   {
+    "rid": "test:trainticket/runtime/24#pick6",
+    "kind": "pick",
+    "node": "pick",
+    "mode": "mechanism",
+    "options": [],
+    "status": "mechanical",
+    "guard": "no_options",
+    "use": "none",
+    "choice": null,
+    "why": "no_candidates",
+    "dominant": false,
+    "continue_loop": false,
+    "escalate": false
+   },
+   {
+    "rid": "test:trainticket/runtime/24#verify6",
+    "kind": "verify",
+    "node": "verify",
+    "mode": "mechanism",
+    "options": [
+     "supported",
+     "insufficient",
+     "contradicted"
+    ],
+    "status": "mechanical",
+    "guard": "no_pick",
+    "use": "unverified",
+    "choice": "unverified",
+    "why": "nothing_to_verify",
+    "dominant": false,
+    "continue_loop": false,
+    "escalate": false
+   },
+   {
+    "rid": "test:trainticket/runtime/24#pick7",
+    "kind": "pick",
+    "node": "pick",
+    "mode": "mechanism",
+    "options": [],
+    "status": "mechanical",
+    "guard": "no_options",
+    "use": "none",
+    "choice": null,
+    "why": "no_candidates",
+    "dominant": false,
+    "continue_loop": false,
+    "escalate": false
+   },
+   {
+    "rid": "test:trainticket/runtime/24#verify7",
+    "kind": "verify",
+    "node": "verify",
+    "mode": "mechanism",
+    "options": [
+     "supported",
+     "insufficient",
+     "contradicted"
+    ],
+    "status": "mechanical",
+    "guard": "no_pick",
+    "use": "unverified",
+    "choice": "unverified",
+    "why": "nothing_to_verify",
+    "dominant": false,
+    "continue_loop": false,
+    "escalate": false
+   },
+   {
+    "rid": "test:trainticket/runtime/24#pick8",
+    "kind": "pick",
+    "node": "pick",
+    "mode": "mechanism",
+    "options": [
+     "c0"
+    ],
+    "status": "mechanical",
+    "guard": "top_over_second >= $params.dominance_ratio",
+    "use": "first_option",
+    "choice": 0,
+    "why": "dominance",
+    "dominant": true,
+    "continue_loop": false,
+    "escalate": false
+   },
+   {
+    "rid": "test:trainticket/runtime/24#verify8",
+    "kind": "verify",
+    "node": "verify",
+    "mode": "mechanism",
+    "options": [
+     "supported",
+     "insufficient",
+     "contradicted"
+    ],
+    "status": "mechanical",
+    "guard": "$pick.dominant",
+    "use": "verified",
+    "choice": "verified",
+    "why": "dominant_candidate",
+    "dominant": false,
+    "continue_loop": false,
+    "escalate": false
+   }
+  ],
+  "nodes": [
+   {
+    "node": "code",
+    "id": "anchors",
+    "anchors": {
+     "case_id": "trainticket/runtime/24",
+     "system": "trainticket",
+     "namespace": "train-ticket",
+     "query": "Service Availability Disruption.",
+     "difficulty": "easy",
+     "symptoms": [
+      "unavailable"
+     ],
+     "mentioned_apps": []
+    }
+   },
+   {
+    "node": "probes",
+    "plan": "census",
+    "wave": 0,
+    "executed": 2,
+    "steps": [
+     {
+      "key": "pods",
+      "tool": "GetResources",
+      "arguments": {
+       "namespace": "train-ticket",
+       "resource_type": "pods",
+       "output_wide": true
+      },
+      "gate": "always"
+     },
+     {
+      "key": "alerts",
+      "tool": "GetAlerts",
+      "arguments": {},
+      "gate": "healthy_system"
+     }
+    ],
+    "skipped": []
+   },
+   {
+    "node": "decide",
+    "id": "route",
+    "rid": "test:trainticket/runtime/24#route",
+    "status": "mechanical",
+    "guard": "unavailable",
+    "use": "first_option",
+    "choice": "service",
+    "dominant": false,
+    "why": "mechanism_mode"
+   },
+   {
+    "node": "code",
+    "id": "plan",
+    "family": "service",
+    "plan": [
+     {
+      "step": "pods_labels",
+      "gate": "always",
+      "wave": 1
+     },
+     {
+      "step": "services",
+      "gate": "always",
+      "wave": 2
+     },
+     {
+      "step": "error_logs_entry",
+      "gate": "always",
+      "wave": 3
+     },
+     {
+      "step": "resourcequota",
+      "gate": "service_missing_for_pod",
+      "wave": 4
+     },
+     {
+      "step": "app_yaml_c1",
+      "gate": "service_target_found",
+      "wave": 5
+     },
+     {
+      "step": "app_yaml_c2",
+      "gate": "service_target_found | no_candidate_yet",
+      "wave": 6
+     },
+     {
+      "step": "app_yaml_c3",
+      "gate": "service_target_found | no_candidate_yet",
+      "wave": 7
+     },
+     {
+      "step": "deployments",
+      "gate": "no_candidate_yet",
+      "wave": 8
+     },
+     {
+      "step": "connectivity",
+      "gate": "no_candidate_yet",
+      "wave": 9
+     },
+     {
+      "step": "node_kube_proxy",
+      "gate": "connectivity_node_failure",
+      "wave": 10
+     }
+    ]
+   },
+   {
+    "node": "probes",
+    "plan": "family",
+    "wave": 1,
+    "executed": 1,
+    "steps": [
+     {
+      "key": "pods:labels",
+      "tool": "GetResources",
+      "arguments": {
+       "namespace": "train-ticket",
+       "resource_type": "pods",
+       "show_labels": true
+      },
+      "gate": "always"
+     }
+    ],
+    "skipped": []
+   },
+   {
+    "node": "code",
+    "id": "derive",
+    "raw": 0,
+    "kept": 0,
+    "top": []
+   },
+   {
+    "node": "decide",
+    "id": "pick",
+    "rid": "test:trainticket/runtime/24#pick1",
+    "status": "mechanical",
+    "guard": "no_options",
+    "use": "none",
+    "choice": null,
+    "dominant": false,
+    "why": "no_candidates"
+   },
+   {
+    "node": "decide",
+    "id": "verify",
+    "rid": "test:trainticket/runtime/24#verify1",
+    "status": "mechanical",
+    "guard": "no_pick",
+    "use": "unverified",
+    "choice": "unverified",
+    "dominant": false,
+    "why": "nothing_to_verify"
+   },
+   {
+    "node": "probes",
+    "plan": "family",
+    "wave": 2,
+    "executed": 1,
+    "steps": [
+     {
+      "key": "services",
+      "tool": "GetResources",
+      "arguments": {
+       "namespace": "train-ticket",
+       "resource_type": "services"
+      },
+      "gate": "always"
+     }
+    ],
+    "skipped": []
+   },
+   {
+    "node": "code",
+    "id": "derive",
+    "raw": 0,
+    "kept": 0,
+    "top": []
+   },
+   {
+    "node": "decide",
+    "id": "pick",
+    "rid": "test:trainticket/runtime/24#pick2",
+    "status": "mechanical",
+    "guard": "no_options",
+    "use": "none",
+    "choice": null,
+    "dominant": false,
+    "why": "no_candidates"
+   },
+   {
+    "node": "decide",
+    "id": "verify",
+    "rid": "test:trainticket/runtime/24#verify2",
+    "status": "mechanical",
+    "guard": "no_pick",
+    "use": "unverified",
+    "choice": "unverified",
+    "dominant": false,
+    "why": "nothing_to_verify"
+   },
+   {
+    "node": "probe_error",
+    "step": "error_logs_entry",
+    "tool": "GetErrorLogs",
+    "arguments": {
+     "namespace": "train-ticket",
+     "service_name": "frontend"
+    },
+    "error": "Error: Error: GetErrorLogs does not support service 'frontend' for train-ticket. Allowed: ['nacos', 'nacosdb-mysql', 'rabbitmq', 'ts-assurance-service', 'ts-auth-service', 'ts-avatar-service', 'ts-bas"
+   },
+   {
+    "node": "probes",
+    "plan": "family",
+    "wave": 3,
+    "executed": 1,
+    "steps": [
+     {
+      "key": "errors:frontend",
+      "tool": "GetErrorLogs",
+      "arguments": {
+       "namespace": "train-ticket",
+       "service_name": "frontend"
+      },
+      "gate": "always"
+     }
+    ],
+    "skipped": []
+   },
+   {
+    "node": "code",
+    "id": "derive",
+    "raw": 0,
+    "kept": 0,
+    "top": []
+   },
+   {
+    "node": "decide",
+    "id": "pick",
+    "rid": "test:trainticket/runtime/24#pick3",
+    "status": "mechanical",
+    "guard": "no_options",
+    "use": "none",
+    "choice": null,
+    "dominant": false,
+    "why": "no_candidates"
+   },
+   {
+    "node": "decide",
+    "id": "verify",
+    "rid": "test:trainticket/runtime/24#verify3",
+    "status": "mechanical",
+    "guard": "no_pick",
+    "use": "unverified",
+    "choice": "unverified",
+    "dominant": false,
+    "why": "nothing_to_verify"
+   },
+   {
+    "node": "probes",
+    "plan": "family",
+    "wave": 4,
+    "executed": 1,
+    "steps": [
+     {
+      "key": "resourcequota",
+      "tool": "GetResources",
+      "arguments": {
+       "namespace": "train-ticket",
+       "resource_type": "resourcequota"
+      },
+      "gate": "service_missing_for_pod"
+     }
+    ],
+    "skipped": []
+   },
+   {
+    "node": "code",
+    "id": "derive",
+    "raw": 0,
+    "kept": 0,
+    "top": []
+   },
+   {
+    "node": "decide",
+    "id": "pick",
+    "rid": "test:trainticket/runtime/24#pick4",
+    "status": "mechanical",
+    "guard": "no_options",
+    "use": "none",
+    "choice": null,
+    "dominant": false,
+    "why": "no_candidates"
+   },
+   {
+    "node": "decide",
+    "id": "verify",
+    "rid": "test:trainticket/runtime/24#verify4",
+    "status": "mechanical",
+    "guard": "no_pick",
+    "use": "unverified",
+    "choice": "unverified",
+    "dominant": false,
+    "why": "nothing_to_verify"
+   },
+   {
+    "node": "probes",
+    "plan": "family",
+    "wave": 5,
+    "executed": 1,
+    "steps": [
+     {
+      "key": "appyaml:c1",
+      "tool": "GetAppYAML",
+      "arguments": {
+       "app_name": "ts-verification-code-service"
+      },
+      "gate": "service_target_found"
+     }
+    ],
+    "skipped": []
+   },
+   {
+    "node": "code",
+    "id": "derive",
+    "raw": 0,
+    "kept": 0,
+    "top": []
+   },
+   {
+    "node": "decide",
+    "id": "pick",
+    "rid": "test:trainticket/runtime/24#pick5",
+    "status": "mechanical",
+    "guard": "no_options",
+    "use": "none",
+    "choice": null,
+    "dominant": false,
+    "why": "no_candidates"
+   },
+   {
+    "node": "decide",
+    "id": "verify",
+    "rid": "test:trainticket/runtime/24#verify5",
+    "status": "mechanical",
+    "guard": "no_pick",
+    "use": "unverified",
+    "choice": "unverified",
+    "dominant": false,
+    "why": "nothing_to_verify"
+   },
+   {
+    "node": "probes",
+    "plan": "family",
+    "wave": 6,
+    "executed": 1,
+    "steps": [
+     {
+      "key": "appyaml:c2",
+      "tool": "GetAppYAML",
+      "arguments": {
+       "app_name": "ts-travel-plan-service"
+      },
+      "gate": "service_target_found | no_candidate_yet"
+     }
+    ],
+    "skipped": []
+   },
+   {
+    "node": "code",
+    "id": "derive",
+    "raw": 0,
+    "kept": 0,
+    "top": []
+   },
+   {
+    "node": "decide",
+    "id": "pick",
+    "rid": "test:trainticket/runtime/24#pick6",
+    "status": "mechanical",
+    "guard": "no_options",
+    "use": "none",
+    "choice": null,
+    "dominant": false,
+    "why": "no_candidates"
+   },
+   {
+    "node": "decide",
+    "id": "verify",
+    "rid": "test:trainticket/runtime/24#verify6",
+    "status": "mechanical",
+    "guard": "no_pick",
+    "use": "unverified",
+    "choice": "unverified",
+    "dominant": false,
+    "why": "nothing_to_verify"
+   },
+   {
+    "node": "probes",
+    "plan": "family",
+    "wave": 7,
+    "executed": 1,
+    "steps": [
+     {
+      "key": "appyaml:c3",
+      "tool": "GetAppYAML",
+      "arguments": {
+       "app_name": "ts-station-food-service"
+      },
+      "gate": "service_target_found | no_candidate_yet"
+     }
+    ],
+    "skipped": []
+   },
+   {
+    "node": "code",
+    "id": "derive",
+    "raw": 0,
+    "kept": 0,
+    "top": []
+   },
+   {
+    "node": "decide",
+    "id": "pick",
+    "rid": "test:trainticket/runtime/24#pick7",
+    "status": "mechanical",
+    "guard": "no_options",
+    "use": "none",
+    "choice": null,
+    "dominant": false,
+    "why": "no_candidates"
+   },
+   {
+    "node": "decide",
+    "id": "verify",
+    "rid": "test:trainticket/runtime/24#verify7",
+    "status": "mechanical",
+    "guard": "no_pick",
+    "use": "unverified",
+    "choice": "unverified",
+    "dominant": false,
+    "why": "nothing_to_verify"
+   },
+   {
+    "node": "probes",
+    "plan": "family",
+    "wave": 8,
+    "executed": 1,
+    "steps": [
+     {
+      "key": "deployments",
+      "tool": "GetResources",
+      "arguments": {
+       "namespace": "train-ticket",
+       "resource_type": "deployments"
+      },
+      "gate": "no_candidate_yet"
+     }
+    ],
+    "skipped": []
+   },
+   {
+    "node": "code",
+    "id": "derive",
+    "raw": 2,
+    "kept": 1,
+    "top": [
+     {
+      "root_cause": "deployment_zero_replicas",
+      "object": "app/ts-preserve-service",
+      "score": 0.84,
+      "evidence": "deployment ts-preserve-service has 0 desired replicas (READY 0/0)",
+      "rule": "zero_replicas"
+     }
+    ]
+   },
+   {
+    "node": "decide",
+    "id": "pick",
+    "rid": "test:trainticket/runtime/24#pick8",
+    "status": "mechanical",
+    "guard": "top_over_second >= $params.dominance_ratio",
+    "use": "first_option",
+    "choice": 0,
+    "dominant": true,
+    "why": "dominance"
+   },
+   {
+    "node": "decide",
+    "id": "verify",
+    "rid": "test:trainticket/runtime/24#verify8",
+    "status": "mechanical",
+    "guard": "$pick.dominant",
+    "use": "verified",
+    "choice": "verified",
+    "dominant": false,
+    "why": "dominant_candidate"
+   },
+   {
+    "node": "loop",
+    "id": "waves",
+    "stop": "max_waves",
+    "wave": 8
+   },
+   {
+    "node": "escalate",
+    "id": "escalate",
+    "fired": false,
+    "reasons": [],
+    "why": "no reason"
+   },
+   {
+    "node": "code",
+    "id": "answer",
+    "predictions": [
+     {
+      "rank": 1,
+      "fault_object": "app/ts-preserve-service",
+      "root_cause": "deployment_zero_replicas"
+     },
+     {
+      "rank": 2,
+      "fault_object": "app/ts-preserve-service",
+      "root_cause": "deployment_zero_replicas"
+     },
+     {
+      "rank": 3,
+      "fault_object": "app/ts-preserve-service",
+      "root_cause": "deployment_zero_replicas"
+     }
+    ]
+   },
+   {
+    "node": "artifact",
+    "id": "persist",
+    "persisted": false,
+    "why": "written by the CLI driver"
+   }
+  ],
+  "notes": [
+   "tool_error GetErrorLogs {'namespace': 'train-ticket', 'service_name': 'frontend'}: Error: Error: GetErrorLogs does not support service 'frontend' for train-ticket. Allowed: ['nacos', 'nacosdb-mysql', 'ra"
+  ],
+  "tool_calls": 10,
+  "model_calls": 0,
+  "tokens_in": 0,
+  "tokens_out": 0,
+  "wall_s": 0.16
+ }
+}

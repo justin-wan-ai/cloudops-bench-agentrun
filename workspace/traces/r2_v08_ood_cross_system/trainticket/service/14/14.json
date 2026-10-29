@@ -1,0 +1,654 @@
+{
+ "case_id": "trainticket/service/14",
+ "system_name": "trainticket",
+ "question": "Service Availability Disruption.",
+ "case_path": "/Users/justinwan/work/workspace/cloudops_bench_rsi/repo/benchmark/trainticket/service/14",
+ "max_steps": 8,
+ "current_step": 4,
+ "finished": true,
+ "stop_reason": "submit",
+ "final_answer": "{\"key_evidence_summary\": \"no evidence-grounded hypothesis\", \"top_3_predictions\": []}",
+ "metadata": {
+  "namespace": "train-ticket",
+  "query": "Service Availability Disruption.",
+  "fault_category": "service",
+  "model_name": "agentrun-v0.8"
+ },
+ "steps": [
+  {
+   "step_id": 0,
+   "action_type": "tool",
+   "action_name": "GetResources",
+   "action_input": {
+    "namespace": "train-ticket",
+    "resource_type": "pods",
+    "output_wide": true
+   },
+   "observation": "NAME                                            READY   STATUS    RESTARTS        AGE     IP             NODE        NOMINATED NODE   READINESS GATES\nnacos-0                                         1/1     Running   0               9d      172.20.2.76    worker-02   <none>           <none>\nnacos-1                                         1/1     Running   0               9d      172.20.1.247   worker-01   <none>           <none>\nnacos-2                                         1/1     Running   0               9d      172.20.3.7     worker-03   <none>           <none>\nnacosdb-mysql-0                                 3/3     Running   1 (9d ago)      9d      172.20.2.75    worker-02   <none>           <none>\nnacosdb-mysql-1                                 3/3     Running   2 (9d ago)      9d      172.20.1.246   worker-01   <none>           <none>\nnacosdb-mysql-2                                 3/3     Running   1 (9d ago)      9d      172.20.3.6     worker-03   <none>           <none>\nrabbitmq-57b4f9969c-4cndj                       1/1     Running   0               9d      172.20.2.77    worker-02   <none>           <none>\nts-assurance-service-88f65755-v7596             2/2     Running   0               5m6s    172.20.3.113   worker-03   <none>           <none>\nts-auth-service-656fb96d87-9fhpj                2/2     Running   0               5m14s   172.20.1.24    worker-01   <none>           <none>\nts-avatar-service-54fb8f5c57-rmvh5              2/2     Running   0               5m11s   172.20.3.105   worker-03   <none>           <none>\nts-basic-service-57fb684696-p2fkp               2/2     Running   0               5m14s   172.20.2.151   worker-02   <none>           <none>\nts-cancel-service-67fb7d5bb4-5jwhw              2/2     Running   0               5m13s   172.20.1.26    worker-01   <none>           <none>\nts-config-service-65779cfcd7-4nxxk              2/2     Running   0               5m7s    172.20.1.35    worker-01   <none>           <none>\nts-consign-price-service-b74c79d7-zvs4s         2/2     Running   0               17h     172.20.2.120   worker-02   <none>           <none>\nts-consign-service-846bdf46cc-mfs4p             2/2     Running   0               5m12s   172.20.3.102   worker-03   <none>           <none>\nts-contacts-service-7fc68f4bbc-5rgf8            2/2     Running   0               5m13s   172.20.1.27    worker-01   <none>           <none>\nts-delivery-service-659b5d4f75-qfm9g            2/2     Running   0               5m9s    172.20.1.33    worker-01   <none>           <none>\nts-execute-service-5f7c9df447-zgb5w             2/2     Running   0               5m11s   172.20.2.156   worker-02   <none>           <none>\nts-food-delivery-service-5b898fdbbf-2zmpq       2/2     Running   0               5m7s    172.20.3.111   worker-03   <none>           <none>\nts-food-service-59c58c74cc-k4rnk                2/2     Running   0               5m7s    172.20.2.162   worker-02   <none>           <none>\nts-gateway-service-88868597f-mmw5q              2/2     Running   0               5m5s    172.20.1.38    worker-01   <none>           <none>\nts-inside-payment-service-5b98976c87-gprxl      2/2     Running   0               5m10s   172.20.3.106   worker-03   <none>           <none>\nts-news-service-578fd9cd67-d4w54                2/2     Running   0               5m5s    172.20.2.164   worker-02   <none>           <none>\nts-notification-service-6b579b64d7-8tlmd        2/2     Running   0               5m8s    172.20.3.109   worker-03   <none>           <none>\nts-order-other-service-788d947bdf-bnh5b         2/2     Running   0               5m13s   172.20.2.154   worker-02   <none>           <none>\nts-order-service-dd54d5df9-c4xb4                2/2     Running   0               5m10s   172.20.3.107   worker-03   <none>           <none>\nts-payment-service-666d596f87-xfxsc             2/2     Running   0               5m6s    172.20.3.112   worker-03   <none>           <none>\nts-preserve-other-service-5f85fdfd7-4nj58       2/2     Running   0               5m11s   172.20.2.157   worker-02   <none>           <none>\nts-preserve-service-6bccdc5454-xrkv9            2/2     Running   0               5m8s    172.20.3.110   worker-03   <none>           <none>\nts-price-service-6c4b77845-28blp                2/2     Running   0               5m13s   172.20.2.153   worker-02   <none>           <none>\nts-rebook-service-75d676f77b-p7ccm              2/2     Running   0               5m11s   172.20.1.30    worker-01   <none>           <none>\nts-route-plan-service-695f545f8c-zc7qm          2/2     Running   0               5m12s   172.20.1.29    worker-01   <none>           <none>\nts-route-service-688dc779fc-cxddw               2/2     Running   0               5m13s   172.20.2.152   worker-02   <none>           <none>\nts-seat-service-5fc7c67c7f-69sqp                2/2     Running   0               5m10s   172.20.2.158   worker-02   <none>           <none>\nts-security-service-5fb7f7fbff-9gmdv            2/2     Running   0               5m8s    172.20.2.161   worker-02   <none>           <none>\nts-station-food-service-d99b9b859-qq86c         2/2     Running   0               5m14s   172.20.1.25    worker-01   <none>           <none>\nts-station-service-7cbf6b96c9-p42mk             2/2     Running   0               5m12s   172.20.1.28    worker-01   <none>           <none>\nts-ticket-office-service-6fd78bd9df-96mpp       2/2     Running   0               5m12s   172.20.3.101   worker-03   <none>           <none>\nts-train-food-service-67cb5bdf99-9mhcx          2/2     Running   0               5m10s   172.20.1.32    worker-01   <none>           <none>\nts-train-service-c4fb58df9-9mddx                2/2     Running   0               5m9s    172.20.2.160   worker-02   <none>           <none>\nts-travel-plan-service-5985cdf6b6-7kh28         2/2     Running   0               5m10s   172.20.1.31    worker-01   <none>           <none>\nts-travel-service-5b9b99c879-hhxqx              2/2     Running   0               5m6s    172.20.1.37    worker-01   <none>           <none>\nts-travel2-service-849bffcb7c-l6qmp             2/2     Running   0               5m12s   172.20.2.155   worker-02   <none>           <none>\nts-ui-dashboard-554844f867-jwhmd                2/2     Running   3 (4m48s ago)   5m9s    172.20.2.159   worker-02   <none>           <none>\nts-user-service-6886cbf9cf-hpzzs                2/2     Running   0               5m7s    172.20.1.36    worker-01   <none>           <none>\nts-verification-code-service-7cbd896f77-kz96n   2/2     Running   0               5m6s    172.20.2.163   worker-02   <none>           <none>\nts-voucher-service-5ffdd5456c-r28dl             2/2     Running   1 (5m7s ago)    5m9s    172.20.3.108   worker-03   <none>           <none>\nts-wait-order-service-848dbb9dd7-jbvlh          2/2     Running   0               5m8s    172.20.1.34    worker-01   <none>           <none>\ntsdb-mysql-0                                    4/4     Running   1 (17h ago)     17h     172.20.1.214   worker-01   <none>           <none>\ntsdb-mysql-1                                    4/4     Running   1 (17h ago)     17h     172.20.2.116   worker-02   <none>           <none>\ntsdb-mysql-2                                    4/4     Running   1 (17h ago)     17h     172.20.3.235   worker-03   <none>           <none>\n",
+   "error": null,
+   "purpose": "pod readiness census",
+   "tool_latency": null
+  },
+  {
+   "step_id": 1,
+   "action_type": "tool",
+   "action_name": "GetAlerts",
+   "action_input": {},
+   "observation": "{'status': 'has_anomalies', 'alert_count': 1, 'alerts': [{'request_method': 'POST', 'business_action': 'Process payment', 'entry_service': 'ts-inside-payment-service', 'url': '/api/v1/inside_pay_service/inside_payment', 'occurrences': 5, 'raw_error': \"HTTPError('500 Server Error: Internal Server Error')\"}]}",
+   "error": null,
+   "purpose": "anomaly signature (routes performance/code families)",
+   "tool_latency": null
+  },
+  {
+   "step_id": 2,
+   "action_type": "tool",
+   "action_name": "GetRecentLogs",
+   "action_input": {
+    "namespace": "train-ticket",
+    "service_name": "ts-inside-payment-service"
+   },
+   "observation": "['From ts-inside-payment-service logs:', '2026-03-17T16:38:14.884279629+08:00 \\tat org.apache.catalina.core.ApplicationFilterChain.doFilter(ApplicationFilterChain.java:153) ~[tomcat-embed-core-9.0.83.jar!/:na]', '2026-03-17T16:38:14.884281508+08:00 \\tat org.springframework.web.filter.RequestContextFilter.doFilterInternal(RequestContextFilter.java:100) ~[spring-web-5.3.31.jar!/:5.3.31]', '2026-03-17T16:38:14.884283348+08:00 \\tat org.springframework.web.filter.OncePerRequestFilter.doFilter(OncePerRequestFilter.java:117) ~[spring-web-5.3.31.jar!/:5.3.31]', '2026-03-17T16:38:14.884285613+08:00 \\tat org.apache.catalina.core.ApplicationFilterChain.internalDoFilter(ApplicationFilterChain.java:178) ~[tomcat-embed-core-9.0.83.jar!/:na]', '2026-03-17T16:38:14.884287422+08:00 \\tat org.apache.catalina.core.ApplicationFilterChain.doFilter(ApplicationFilterChain.java:153) ~[tomcat-embed-core-9.0.83.jar!/:na]', '2026-03-17T16:38:14.884289298+08:00 \\tat org.springframework.web.filter.FormContentFilter.doFilterInternal(FormContentFilter.java:93) ~[spring-web-5.3.31.jar!/:5.3.31]', '2026-03-17T16:38:14.884291092+08:00 \\tat org.springframework.web.filter.OncePerRequestFilter.doFilter(OncePerRequestFilter.java:117) ~[spring-web-5.3.31.jar!/:5.3.31]', '2026-03-17T16:38:14.884292989+08:00 \\tat org.apache.catalina.core.ApplicationFilterChain.internalDoFilter(ApplicationFilterChain.java:178) ~[tomcat-embed-core-9.0.83.jar!/:na]', '2026-03-17T16:38:14.884294917+08:00 \\tat org.apache.catalina.core.ApplicationFilterChain.doFilter(ApplicationFilterChain.java:153) ~[tomcat-embed-core-9.0.83.jar!/:na]', '2026-03-17T16:38:14.884309991+08:00 \\tat org.springframework.boot.actuate.metrics.web.servlet.WebMvcMetricsFilter.doFilterInternal(WebMvcMetricsFilter.java:96) ~[spring-boot-actuator-2.7.18.jar!/:2.7.18]', '2026-03-17T16:38:14.884312177+08:00 \\tat org.springframework.web.filter.OncePerRequestFilter.doFilter(OncePerRequestFilter.java:117) ~[spring-web-5.3.31.jar!/:5.3.31]', '2026-03-17T16:38:14.884313995+08:00 \\tat org.apache.catalina.core.ApplicationFilterChain.internalDoFilter(ApplicationFilterChain.java:178) ~[tomcat-embed-core-9.0.83.jar!/:na]', '2026-03-17T16:38:14.884315935+08:00 \\tat org.apache.catalina.core.ApplicationFilterChain.doFilter(ApplicationFilterChain.java:153) ~[tomcat-embed-core-9.0.83.jar!/:na]', '2026-03-17T16:38:14.884317821+08:00 \\tat org.springframework.web.filter.CharacterEncodingFilter.doFilterInternal(CharacterEncodingFilter.java:201) ~[spring-web-5.3.31.jar!/:5.3.31]', '2026-03-17T16:38:14.884319734+08:00 \\tat org.springframework.web.filter.OncePerRequestFilter.doFilter(OncePerRequestFilter.java:117) ~[spring-web-5.3.31.jar!/:5.3.31]', '2026-03-17T16:38:14.884321556+08:00 \\tat org.apache.catalina.core.ApplicationFilterChain.internalDoFilter(ApplicationFilterChain.java:178) ~[tomcat-embed-core-9.0.83.jar!/:na]', '2026-03-17T16:38:14.884323404+08:00 \\tat org.apache.catalina.core.ApplicationFilterChain.doFilter(ApplicationFilterChain.java:153) ~[tomcat-embed-core-9.0.83.jar!/:na]', '2026-03-17T16:38:14.884325294+08:00 \\tat org.apache.catalina.core.StandardWrapperValve.invoke(StandardWrapperValve.java:168) ~[tomcat-embed-core-9.0.83.jar!/:na]', '2026-03-17T16:38:14.884327148+08:00 \\tat org.apache.catalina.core.StandardContextValve.invoke(StandardContextValve.java:90) [tomcat-embed-core-9.0.83.jar!/:na]', '2026-03-17T16:38:14.884328985+08:00 \\tat org.apache.catalina.authenticator.AuthenticatorBase.invoke(AuthenticatorBase.java:481) [tomcat-embed-core-9.0.83.jar!/:na]', '2026-03-17T16:38:14.884330962+08:00 \\tat org.apache.catalina.core.StandardHostValve.invoke(StandardHostValve.java:130) [tomcat-embed-core-9.0.83.jar!/:na]', '2026-03-17T16:38:14.884332987+08:00 \\tat org.apache.catalina.valves.ErrorReportValve.invoke(ErrorReportValve.java:93) [tomcat-embed-core-9.0.83.jar!/:na]', '2026-03-17T16:38:14.884334822+08:00 \\tat org.apache.catalina.core.StandardEngineValve.invoke(StandardEngineValve.java:74) [tomcat-embed-core-9.0.83.jar!/:na]', '2026-03-17T16:38:14.884336691+08:00 \\tat org.apache.catalina.valves.RemoteIpValve.invoke(RemoteIpValve.java:765) [tomcat-embed-core-9.0.83.jar!/:na]', '2026-03-17T16:38:14.884338755+08:00 \\tat org.apache.catalina.connector.CoyoteAdapter.service(CoyoteAdapter.java:342) [tomcat-embed-core-9.0.83.jar!/:na]', '2026-03-17T16:38:14.884340563+08:00 \\tat org.apache.coyote.http11.Http11Processor.service(Http11Processor.java:390) [tomcat-embed-core-9.0.83.jar!/:na]', '2026-03-17T16:38:14.884342429+08:00 \\tat org.apache.coyote.AbstractProcessorLight.process(AbstractProcessorLight.java:63) [tomcat-embed-core-9.0.83.jar!/:na]', '2026-03-17T16:38:14.884344224+08:00 \\tat org.apache.coyote.AbstractProtocol$ConnectionHandler.process(AbstractProtocol.java:928) [tomcat-embed-core-9.0.83.jar!/:na]', '2026-03-17T16:38:14.884346131+08:00 \\tat org.apache.tomcat.util.net.NioEndpoint$SocketProcessor.doRun(NioEndpoint.java:1794) [tomcat-embed-core-9.0.83.jar!/:na]', '2026-03-17T16:38:14.884348030+08:00 \\tat org.apache.tomcat.util.net.SocketProcessorBase.run(SocketProcessorBase.java:52) [tomcat-embed-core-9.0.83.jar!/:na]', '2026-03-17T16:38:14.884349908+08:00 \\tat org.apache.tomcat.util.threads.ThreadPoolExecutor.runWorker(ThreadPoolExecutor.java:1191) [tomcat-embed-core-9.0.83.jar!/:na]', '2026-03-17T16:38:14.884351891+08:00 \\tat org.apache.tomcat.util.threads.ThreadPoolExecutor$Worker.run(ThreadPoolExecutor.java:659) [tomcat-embed-core-9.0.83.jar!/:na]', '2026-03-17T16:38:14.884353728+08:00 \\tat org.apache.tomcat.util.threads.TaskThread$WrappingRunnable.run(TaskThread.java:61) [tomcat-embed-core-9.0.83.jar!/:na]', '2026-03-17T16:38:14.884358566+08:00 \\tat java.lang.Thread.run(Thread.java:750) [na:1.8.0_482]', '2026-03-17T16:38:14.884360339+08:00 ', '2026-03-17T16:38:19.732767927+08:00 2026-03-17 08:38:19.732  INFO 1 --- [io-18673-exec-8] i.controller.InsidePaymentController     : [drawBack][draw back payment][userId: 4d2a46c7-71cb-4cf1-b5bb-b68406d9da6f, money: 200.00]', '2026-03-17T16:38:19.782920481+08:00 2026-03-17 08:38:19.782  INFO 1 --- [io-18673-exec-3] i.controller.InsidePaymentController     : [drawBack][draw back payment][userId: 4d2a46c7-71cb-4cf1-b5bb-b68406d9da6f, money: 200.00]', '2026-03-17T16:38:19.782945398+08:00 2026-03-17 08:38:19.782  INFO 1 --- [io-18673-exec-9] i.controller.InsidePaymentController     : [drawBack][draw back payment][userId: 4d2a46c7-71cb-4cf1-b5bb-b68406d9da6f, money: 200.00]', '2026-03-17T16:38:19.783173394+08:00 2026-03-17 08:38:19.782  INFO 1 --- [io-18673-exec-4] i.controller.InsidePaymentController     : [drawBack][draw back payment][userId: 4d2a46c7-71cb-4cf1-b5bb-b68406d9da6f, money: 200.00]', '2026-03-17T16:38:19.885400167+08:00 2026-03-17 08:38:19.885  INFO 1 --- [io-18673-exec-5] i.controller.InsidePaymentController     : [drawBack][draw back payment][userId: 4d2a46c7-71cb-4cf1-b5bb-b68406d9da6f, money: 200.00]', '2026-03-17T16:38:20.186690034+08:00 2026-03-17 08:38:20.186  INFO 1 --- [io-18673-exec-1] i.controller.InsidePaymentController     : [drawBack][draw back payment][userId: 4d2a46c7-71cb-4cf1-b5bb-b68406d9da6f, money: 200.00]', '2026-03-17T16:38:20.186865688+08:00 2026-03-17 08:38:20.186  INFO 1 --- [io-18673-exec-7] i.controller.InsidePaymentController     : [drawBack][draw back payment][userId: 4d2a46c7-71cb-4cf1-b5bb-b68406d9da6f, money: 200.00]', '2026-03-17T16:38:20.285564202+08:00 2026-03-17 08:38:20.285  INFO 1 --- [io-18673-exec-2] i.controller.InsidePaymentController     : [drawBack][draw back payment][userId: 4d2a46c7-71cb-4cf1-b5bb-b68406d9da6f, money: 200.00]', '2026-03-17T16:38:20.286118460+08:00 2026-03-17 08:38:20.285  INFO 1 --- [o-18673-exec-10] i.controller.InsidePaymentController     : [drawBack][draw back payment][userId: 4d2a46c7-71cb-4cf1-b5bb-b68406d9da6f, money: 200.00]', '2026-03-17T16:38:20.286470663+08:00 2026-03-17 08:38:20.285  INFO 1 --- [io-18673-exec-6] i.controller.InsidePaymentController     : [drawBack][draw back payment][userId: 4d2a46c7-71cb-4cf1-b5bb-b68406d9da6f, money: 200.00]', '2026-03-17T16:38:20.725825583+08:00 2026-03-17 08:38:20.725  INFO 1 --- [io-18673-exec-9] i.controller.InsidePaymentController     : [drawBack][draw back payment][userId: 4d2a46c7-71cb-4cf1-b5bb-b68406d9da6f, money: 40.00]', '2026-03-17T16:38:20.786401688+08:00 2026-03-17 08:38:20.785  INFO 1 --- [io-18673-exec-8] i.controller.InsidePaymentController     : [drawBack][draw back payment][userId: 4d2a46c7-71cb-4cf1-b5bb-b68406d9da6f, money: 40.00]', '2026-03-17T16:38:20.885620196+08:00 2026-03-17 08:38:20.885  INFO 1 --- [io-18673-exec-3] i.controller.InsidePaymentController     : [drawBack][draw back payment][userId: 4d2a46c7-71cb-4cf1-b5bb-b68406d9da6f, money: 40.00]', '2026-03-17T16:38:20.885632827+08:00 2026-03-17 08:38:20.885  INFO 1 --- [io-18673-exec-5] i.controller.InsidePaymentController     : [drawBack][draw back payment][userId: 4d2a46c7-71cb-4cf1-b5bb-b68406d9da6f, money: 40.00]', '2026-03-17T16:38:20.887961253+08:00 2026-03-17 08:38:20.887  INFO 1 --- [io-18673-exec-4] i.controller.InsidePaymentController     : [drawBack][draw back payment][userId: 4d2a46c7-71cb-4cf1-b5bb-b68406d9da6f, money: 40.00]', '', 'From previous container logs:', 'Error: Error from server (BadRequest): previous terminated container \"ts-inside-payment-service\" in pod \"ts-inside-payment-service-5b98976c87-gprxl\" not found', '', 'From istio-proxy logs:', '2026-03-17T08:34:20.675507Z\\tinfo\\tFLAG: --proxyLogLevel=\"warning\"', '2026-03-17T08:34:20.675509Z\\tinfo\\tFLAG: --serviceCluster=\"istio-proxy\"', '2026-03-17T08:34:20.675511Z\\tinfo\\tFLAG: --stsPort=\"0\"', '2026-03-17T08:34:20.675513Z\\tinfo\\tFLAG: --templateFile=\"\"', '2026-03-17T08:34:20.675514Z\\tinfo\\tFLAG: --tokenManagerPlugin=\"\"', '2026-03-17T08:34:20.675517Z\\tinfo\\tFLAG: --vklog=\"0\"', '2026-03-17T08:34:20.675519Z\\tinfo\\tVersion 1.27.3-df538c2279a633544e6c0961a03ab772729933be-Clean', '2026-03-17T08:34:20.675700Z\\tinfo\\tProxy role\\tips=[172.20.3.106] type=sidecar id=ts-inside-payment-service-5b98976c87-gprxl.train-ticket domain=train-ticket.svc.cluster.local', '2026-03-17T08:34:20.675737Z\\tinfo\\tApply proxy config from env {\"proxyMetadata\":{\"ISTIO_META_ENABLE_HBONE\":\"true\"},\"image\":{\"imageType\":\"distroless\"}}', '2026-03-17T08:34:20.676942Z\\tinfo\\tcpu limit detected as 2, setting concurrency', '2026-03-17T08:34:20.677188Z\\tinfo\\tEffective config: binaryPath: /usr/local/bin/envoy', 'concurrency: 2', 'configPath: ./etc/istio/proxy', 'controlPlaneAuthPolicy: MUTUAL_TLS', 'discoveryAddress: istiod.istio-system.svc:15012', 'drainDuration: 45s', 'image:', '  imageType: distroless', 'proxyAdminPort: 15000', 'proxyMetadata:', '  ISTIO_META_ENABLE_HBONE: \"true\"', 'serviceCluster: istio-proxy', 'statNameLength: 189', 'statusPort: 15020', 'terminationDrainDuration: 5s', '2026-03-17T08:34:20.677201Z\\tinfo\\tJWT policy is third-party-jwt', '2026-03-17T08:34:20.677204Z\\tinfo\\tusing credential fetcher of JWT type in cluster.local trust domain', '2026-03-17T08:34:20.724708Z\\tinfo\\tStarting default Istio SDS Server', '2026-03-17T08:34:20.724777Z\\tinfo\\tCA Endpoint istiod.istio-system.svc:15012, provider Citadel', '2026-03-17T08:34:20.724800Z\\tinfo\\tUsing CA istiod.istio-system.svc:15012 cert with certs: var/run/secrets/istio/root-cert.pem', '2026-03-17T08:34:20.725331Z\\tinfo\\tOpening status port 15020', '2026-03-17T08:34:20.726861Z\\tinfo\\txdsproxy\\tInitializing with upstream address \"istiod.istio-system.svc:15012\" and cluster \"Kubernetes\"', '2026-03-17T08:34:20.728572Z\\tinfo\\tPilot SAN: [istiod.istio-system.svc]', '2026-03-17T08:34:20.750158Z\\tinfo\\tsds\\tStarting SDS grpc server', '2026-03-17T08:34:20.750201Z\\tinfo\\tsds\\tStarting SDS server for workload certificates, will listen on \"var/run/secrets/workload-spiffe-uds/socket\"', '2026-03-17T08:34:20.750285Z\\tinfo\\tStarting proxy agent', '2026-03-17T08:34:20.750317Z\\tinfo\\tEnvoy command: [-c etc/istio/proxy/envoy-rev.json --drain-time-s 45 --drain-strategy immediate --local-address-ip-version v4 --file-flush-interval-msec 1000 --disable-hot-restart --allow-unknown-static-fields -l warning --component-log-level misc:error --skip-deprecated-logs --concurrency 2]', '2026-03-17T08:34:20.815503Z\\twarning\\tenvoy main external/envoy/source/server/server.cc:905\\tUsage of the deprecated runtime key overload.global_downstream_max_connections, consider switching to `envoy.resource_monitors.global_downstream_max_connections` instead.This runtime key will be removed in future.\\tthread=14', '2026-03-17T08:34:20.818683Z\\twarning\\tenvoy main external/envoy/source/server/server.cc:1001\\tThere is no configured limit to the number of allowed active downstream connections. Configure a limit in `envoy.resource_monitors.global_downstream_max_connections` resource monitor.\\tthread=14', '2026-03-17T08:34:20.823752Z\\tinfo\\txdsproxy\\tconnected to delta upstream XDS server: istiod.istio-system.svc:15012\\tid=1', '2026-03-17T08:34:20.872236Z\\tinfo\\tads\\tADS: new connection for node:1', '2026-03-17T08:34:20.872732Z\\tinfo\\tads\\tADS: new connection for node:2', '2026-03-17T08:34:21.466073Z\\tinfo\\tcache\\tgenerated new workload certificate\\tresourceName=default latency=717.081095ms ttl=23h59m59.533932696s', '2026-03-17T08:34:21.466112Z\\tinfo\\tcache\\tRoot cert has changed, start rotating root cert', '2026-03-17T08:34:21.466146Z\\tinfo\\tcache\\treturned workload certificate from cache\\tttl=23h59m59.53385965s', '2026-03-17T08:34:21.466159Z\\tinfo\\tcache\\treturned workload trust anchor from cache\\tttl=23h59m59.533841638s', '2026-03-17T08:34:21.466253Z\\tinfo\\tcache\\treturned workload trust anchor from cache\\tttl=23h59m59.533746854s', '2026-03-17T08:34:21.466608Z\\tinfo\\tcache\\treturned workload trust anchor from cache\\tttl=23h59m59.533392576s', '2026-03-17T08:34:22.603009Z\\tinfo\\tReadiness succeeded in 1.930074088s', '2026-03-17T08:34:22.603273Z\\tinfo\\tEnvoy proxy is ready']",
+   "error": null,
+   "purpose": "request latency / saturation logs",
+   "tool_latency": null
+  },
+  {
+   "step_id": 3,
+   "action_type": "tool",
+   "action_name": "GetServiceDependencies",
+   "action_input": {
+    "service_name": "ts-inside-payment-service"
+   },
+   "observation": "[Service]: ts-inside-payment-service\n[Upstream (Called By)]: ts-gateway-service, ts-cancel-service, ts-rebook-service\n[Downstream (Calls)]:\nts-inside-payment-service\n├── ts-payment-service\n├── ts-order-service\n└── ts-order-other-service",
+   "error": null,
+   "purpose": "upstream/downstream call graph",
+   "tool_latency": null
+  }
+ ],
+ "agentrun": {
+  "tag": "test",
+  "dsl": "workspace/dsl_versions/v0.8.dsl.txt",
+  "dsl_version": "0.8",
+  "sop": {
+   "sop": "boutique-runtime-rca",
+   "scope": {
+    "system": "boutique",
+    "families": [
+     "runtime",
+     "admission",
+     "scheduling",
+     "startup",
+     "service",
+     "performance",
+     "infrastructure",
+     "codedefect"
+    ],
+    "severity": [
+     "SEV2",
+     "SEV3"
+    ]
+   },
+   "owner": "sre-platform",
+   "approved_by": [
+    "oncall-primary",
+    "sre-lead"
+   ],
+   "reviewed_at": "2026-10-23",
+   "change_ticket": "OPS-1236",
+   "boundaries": "只读诊断：本 SOP 不执行任何写操作（重启/回滚/扩缩容），也不做对外播报；\n它回答\"最可能的根因与受害对象\"，处置与沟通由值班按 runbook 人工执行。\n不覆盖 SEV1（需 incident commander 介入）与变更引发的问题（走变更回滚流程）。\n输入是冻结快照：诊断结论对\"快照时刻\"成立，恢复后需重新取证。\nR1 已知边界：PVC 的 requested size / accessMode 在本 benchmark 的工具面不可见，\n因此 pvc_capacity 与 pvc_access_mode 无法区分（同一分数并列，交给 jev 或升级）。\n"
+  },
+  "params": {
+   "cands_cap": 8,
+   "max_waves": 8,
+   "min_waves": 5,
+   "steps_per_wave": 1,
+   "dominance_ratio": 1.5,
+   "conf_min": 0.0,
+   "escalate": true,
+   "escalate_budget": 8,
+   "judge_on_codedefect": true,
+   "jev_route": true,
+   "jev_pick": true,
+   "jev_verify": true,
+   "route_fallback": "runtime"
+  },
+  "nodes_executed": [
+   "anchors:extract_anchors",
+   "census:probes",
+   "route:decide",
+   "plan:build_plan",
+   "probe:probes",
+   "derive:derive_candidates",
+   "pick:decide",
+   "verify:decide",
+   "probe:probes",
+   "derive:derive_candidates",
+   "pick:decide",
+   "verify:decide",
+   "probe:probes",
+   "derive:derive_candidates",
+   "pick:decide",
+   "verify:decide",
+   "probe:probes",
+   "derive:derive_candidates",
+   "pick:decide",
+   "verify:decide",
+   "escalate:escalate",
+   "answer:normalize_answer",
+   "persist:persist_trace"
+  ],
+  "census": [
+   {
+    "step": "pods",
+    "gate": "always"
+   },
+   {
+    "step": "alerts",
+    "gate": "healthy_system"
+   }
+  ],
+  "plan": [
+   {
+    "step": "recent_logs",
+    "gate": "always",
+    "wave": 1
+   },
+   {
+    "step": "describe_pod",
+    "gate": "weak",
+    "wave": 2
+   },
+   {
+    "step": "deps",
+    "gate": "weak",
+    "wave": 3
+   }
+  ],
+  "family": "performance",
+  "state_wiring": {
+   "family": "$route.family",
+   "route_probs": "$route.probabilities",
+   "picked": "$pick.picked",
+   "pick_dominant": "$pick.dominant",
+   "verify_status": "$verify.status",
+   "verify_prob": "$verify.confidence"
+  },
+  "bindings": {
+   "anchors": {
+    "anchors": "Anchors(case_id='trainticket/service/14', system='trainticket', namespace='train-ticket', query='Service Availability Disruption.', difficulty='medium', symptoms=[], mentioned_apps=[], priors={'db_service': 'tsdb-mysql-leader', 'db_port': 3306})"
+   },
+   "route": {
+    "family": "performance",
+    "probabilities": {},
+    "route_why": "mechanism_mode"
+   },
+   "plan": {
+    "plan": "[{'name': 'recent_logs', 'key': 'recent', 'tool': 'GetRecentLogs', 'args': <function _args_error_logs at 0x107ddb740>, 'purpose': 'request latency / saturation logs', 'when': <function compile_steps.<locals>.<lambda> at 0x1080deb60>, 'gate': 'always', 'wave': 1}, {'name': 'describe_pod', 'key': 'describe:pod', 'tool': 'DescribeResource', 'args': <function _args_describe_pod at 0x107ddb560>, 'purpose': 'probe config, container state, restart reasons, scheduler events', 'when': <function compile_steps.<locals>.<lambda> at 0x1080dec00>, 'gate': 'weak', 'wave': 2}, {'name': 'deps', 'key': 'deps', 'tool': 'GetServiceDependencies', 'args': <function _args_deps at 0x107ddbe20>, 'purpose': 'upstream/downstream call graph', 'when': <function compile_steps.<locals>.<lambda> at 0x1080de980>, 'gate': 'weak', 'wave': 3}]"
+   },
+   "derive": {
+    "candidates": "[]"
+   },
+   "pick": {
+    "picked": null,
+    "dominant": false,
+    "pick_why": "no_candidates"
+   },
+   "verify": {
+    "status": "unverified",
+    "confidence": null,
+    "verify_why": "nothing_to_verify"
+   },
+   "escalate": {
+    "answer": null
+   },
+   "answer": {
+    "final": {
+     "key_evidence_summary": "no evidence-grounded hypothesis",
+     "top_3_predictions": []
+    }
+   }
+  },
+  "picked": null,
+  "pick_why": "",
+  "verify_prob": null,
+  "verify_verdict": "unverified",
+  "verified": false,
+  "escalated": false,
+  "escalate_reason": "no_candidates",
+  "escalate_steps": 0,
+  "waves": 4,
+  "candidates": [],
+  "jev": [
+   {
+    "rid": "test:trainticket/service/14#route",
+    "kind": "route",
+    "node": "route",
+    "mode": "mechanism",
+    "options": [
+     "performance",
+     "infrastructure"
+    ],
+    "status": "mechanical",
+    "guard": "unavailable",
+    "use": "first_option",
+    "choice": "performance",
+    "why": "mechanism_mode",
+    "dominant": false,
+    "continue_loop": false,
+    "escalate": false
+   },
+   {
+    "rid": "test:trainticket/service/14#pick1",
+    "kind": "pick",
+    "node": "pick",
+    "mode": "mechanism",
+    "options": [],
+    "status": "mechanical",
+    "guard": "no_options",
+    "use": "none",
+    "choice": null,
+    "why": "no_candidates",
+    "dominant": false,
+    "continue_loop": false,
+    "escalate": false
+   },
+   {
+    "rid": "test:trainticket/service/14#verify1",
+    "kind": "verify",
+    "node": "verify",
+    "mode": "mechanism",
+    "options": [
+     "supported",
+     "insufficient",
+     "contradicted"
+    ],
+    "status": "mechanical",
+    "guard": "no_pick",
+    "use": "unverified",
+    "choice": "unverified",
+    "why": "nothing_to_verify",
+    "dominant": false,
+    "continue_loop": false,
+    "escalate": false
+   },
+   {
+    "rid": "test:trainticket/service/14#pick2",
+    "kind": "pick",
+    "node": "pick",
+    "mode": "mechanism",
+    "options": [],
+    "status": "mechanical",
+    "guard": "no_options",
+    "use": "none",
+    "choice": null,
+    "why": "no_candidates",
+    "dominant": false,
+    "continue_loop": false,
+    "escalate": false
+   },
+   {
+    "rid": "test:trainticket/service/14#verify2",
+    "kind": "verify",
+    "node": "verify",
+    "mode": "mechanism",
+    "options": [
+     "supported",
+     "insufficient",
+     "contradicted"
+    ],
+    "status": "mechanical",
+    "guard": "no_pick",
+    "use": "unverified",
+    "choice": "unverified",
+    "why": "nothing_to_verify",
+    "dominant": false,
+    "continue_loop": false,
+    "escalate": false
+   },
+   {
+    "rid": "test:trainticket/service/14#pick3",
+    "kind": "pick",
+    "node": "pick",
+    "mode": "mechanism",
+    "options": [],
+    "status": "mechanical",
+    "guard": "no_options",
+    "use": "none",
+    "choice": null,
+    "why": "no_candidates",
+    "dominant": false,
+    "continue_loop": false,
+    "escalate": false
+   },
+   {
+    "rid": "test:trainticket/service/14#verify3",
+    "kind": "verify",
+    "node": "verify",
+    "mode": "mechanism",
+    "options": [
+     "supported",
+     "insufficient",
+     "contradicted"
+    ],
+    "status": "mechanical",
+    "guard": "no_pick",
+    "use": "unverified",
+    "choice": "unverified",
+    "why": "nothing_to_verify",
+    "dominant": false,
+    "continue_loop": false,
+    "escalate": false
+   },
+   {
+    "rid": "test:trainticket/service/14#pick4",
+    "kind": "pick",
+    "node": "pick",
+    "mode": "mechanism",
+    "options": [],
+    "status": "mechanical",
+    "guard": "no_options",
+    "use": "none",
+    "choice": null,
+    "why": "no_candidates",
+    "dominant": false,
+    "continue_loop": false,
+    "escalate": false
+   },
+   {
+    "rid": "test:trainticket/service/14#verify4",
+    "kind": "verify",
+    "node": "verify",
+    "mode": "mechanism",
+    "options": [
+     "supported",
+     "insufficient",
+     "contradicted"
+    ],
+    "status": "mechanical",
+    "guard": "no_pick",
+    "use": "unverified",
+    "choice": "unverified",
+    "why": "nothing_to_verify",
+    "dominant": false,
+    "continue_loop": false,
+    "escalate": false
+   }
+  ],
+  "nodes": [
+   {
+    "node": "code",
+    "id": "anchors",
+    "anchors": {
+     "case_id": "trainticket/service/14",
+     "system": "trainticket",
+     "namespace": "train-ticket",
+     "query": "Service Availability Disruption.",
+     "difficulty": "medium",
+     "symptoms": [],
+     "mentioned_apps": []
+    }
+   },
+   {
+    "node": "probes",
+    "plan": "census",
+    "wave": 0,
+    "executed": 2,
+    "steps": [
+     {
+      "key": "pods",
+      "tool": "GetResources",
+      "arguments": {
+       "namespace": "train-ticket",
+       "resource_type": "pods",
+       "output_wide": true
+      },
+      "gate": "always"
+     },
+     {
+      "key": "alerts",
+      "tool": "GetAlerts",
+      "arguments": {},
+      "gate": "healthy_system"
+     }
+    ],
+    "skipped": []
+   },
+   {
+    "node": "decide",
+    "id": "route",
+    "rid": "test:trainticket/service/14#route",
+    "status": "mechanical",
+    "guard": "unavailable",
+    "use": "first_option",
+    "choice": "performance",
+    "dominant": false,
+    "why": "mechanism_mode"
+   },
+   {
+    "node": "code",
+    "id": "plan",
+    "family": "performance",
+    "plan": [
+     {
+      "step": "recent_logs",
+      "gate": "always",
+      "wave": 1
+     },
+     {
+      "step": "describe_pod",
+      "gate": "weak",
+      "wave": 2
+     },
+     {
+      "step": "deps",
+      "gate": "weak",
+      "wave": 3
+     }
+    ]
+   },
+   {
+    "node": "probes",
+    "plan": "family",
+    "wave": 1,
+    "executed": 1,
+    "steps": [
+     {
+      "key": "recent",
+      "tool": "GetRecentLogs",
+      "arguments": {
+       "namespace": "train-ticket",
+       "service_name": "ts-inside-payment-service"
+      },
+      "gate": "always"
+     }
+    ],
+    "skipped": []
+   },
+   {
+    "node": "code",
+    "id": "derive",
+    "raw": 0,
+    "kept": 0,
+    "top": []
+   },
+   {
+    "node": "decide",
+    "id": "pick",
+    "rid": "test:trainticket/service/14#pick1",
+    "status": "mechanical",
+    "guard": "no_options",
+    "use": "none",
+    "choice": null,
+    "dominant": false,
+    "why": "no_candidates"
+   },
+   {
+    "node": "decide",
+    "id": "verify",
+    "rid": "test:trainticket/service/14#verify1",
+    "status": "mechanical",
+    "guard": "no_pick",
+    "use": "unverified",
+    "choice": "unverified",
+    "dominant": false,
+    "why": "nothing_to_verify"
+   },
+   {
+    "node": "probes",
+    "plan": "family",
+    "wave": 2,
+    "executed": 0,
+    "steps": [],
+    "skipped": [
+     {
+      "step": "describe_pod",
+      "why": "args not applicable"
+     }
+    ]
+   },
+   {
+    "node": "code",
+    "id": "derive",
+    "raw": 0,
+    "kept": 0,
+    "top": []
+   },
+   {
+    "node": "decide",
+    "id": "pick",
+    "rid": "test:trainticket/service/14#pick2",
+    "status": "mechanical",
+    "guard": "no_options",
+    "use": "none",
+    "choice": null,
+    "dominant": false,
+    "why": "no_candidates"
+   },
+   {
+    "node": "decide",
+    "id": "verify",
+    "rid": "test:trainticket/service/14#verify2",
+    "status": "mechanical",
+    "guard": "no_pick",
+    "use": "unverified",
+    "choice": "unverified",
+    "dominant": false,
+    "why": "nothing_to_verify"
+   },
+   {
+    "node": "probes",
+    "plan": "family",
+    "wave": 3,
+    "executed": 1,
+    "steps": [
+     {
+      "key": "deps",
+      "tool": "GetServiceDependencies",
+      "arguments": {
+       "service_name": "ts-inside-payment-service"
+      },
+      "gate": "weak"
+     }
+    ],
+    "skipped": []
+   },
+   {
+    "node": "code",
+    "id": "derive",
+    "raw": 0,
+    "kept": 0,
+    "top": []
+   },
+   {
+    "node": "decide",
+    "id": "pick",
+    "rid": "test:trainticket/service/14#pick3",
+    "status": "mechanical",
+    "guard": "no_options",
+    "use": "none",
+    "choice": null,
+    "dominant": false,
+    "why": "no_candidates"
+   },
+   {
+    "node": "decide",
+    "id": "verify",
+    "rid": "test:trainticket/service/14#verify3",
+    "status": "mechanical",
+    "guard": "no_pick",
+    "use": "unverified",
+    "choice": "unverified",
+    "dominant": false,
+    "why": "nothing_to_verify"
+   },
+   {
+    "node": "probes",
+    "plan": "family",
+    "wave": 4,
+    "executed": 0,
+    "why": "plan exhausted"
+   },
+   {
+    "node": "code",
+    "id": "derive",
+    "raw": 0,
+    "kept": 0,
+    "top": []
+   },
+   {
+    "node": "decide",
+    "id": "pick",
+    "rid": "test:trainticket/service/14#pick4",
+    "status": "mechanical",
+    "guard": "no_options",
+    "use": "none",
+    "choice": null,
+    "dominant": false,
+    "why": "no_candidates"
+   },
+   {
+    "node": "decide",
+    "id": "verify",
+    "rid": "test:trainticket/service/14#verify4",
+    "status": "mechanical",
+    "guard": "no_pick",
+    "use": "unverified",
+    "choice": "unverified",
+    "dominant": false,
+    "why": "nothing_to_verify"
+   },
+   {
+    "node": "loop",
+    "id": "waves",
+    "stop": "plan_exhausted",
+    "wave": 4
+   },
+   {
+    "node": "escalate",
+    "id": "escalate",
+    "fired": true,
+    "reasons": [
+     "no_candidates"
+    ],
+    "skipped": "mode=mechanism"
+   },
+   {
+    "node": "code",
+    "id": "answer",
+    "predictions": []
+   },
+   {
+    "node": "artifact",
+    "id": "persist",
+    "persisted": false,
+    "why": "written by the CLI driver"
+   }
+  ],
+  "notes": [],
+  "tool_calls": 4,
+  "model_calls": 0,
+  "tokens_in": 0,
+  "tokens_out": 0,
+  "wall_s": 0.07
+ }
+}

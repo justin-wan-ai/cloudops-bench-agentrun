@@ -1,0 +1,811 @@
+{
+ "split": "evolve",
+ "n": 115,
+ "cases": [
+  {
+   "id": "boutique/codedefect/97",
+   "system": "boutique",
+   "category": "codedefect",
+   "case": "97",
+   "difficulty": "hard"
+  },
+  {
+   "id": "boutique/codedefect/84",
+   "system": "boutique",
+   "category": "codedefect",
+   "case": "84",
+   "difficulty": "hard"
+  },
+  {
+   "id": "boutique/codedefect/83",
+   "system": "boutique",
+   "category": "codedefect",
+   "case": "83",
+   "difficulty": "hard"
+  },
+  {
+   "id": "boutique/runtime/22",
+   "system": "boutique",
+   "category": "runtime",
+   "case": "22",
+   "difficulty": "easy"
+  },
+  {
+   "id": "boutique/runtime/25",
+   "system": "boutique",
+   "category": "runtime",
+   "case": "25",
+   "difficulty": "easy"
+  },
+  {
+   "id": "boutique/runtime/27",
+   "system": "boutique",
+   "category": "runtime",
+   "case": "27",
+   "difficulty": "easy"
+  },
+  {
+   "id": "boutique/infrastructure/1",
+   "system": "boutique",
+   "category": "infrastructure",
+   "case": "1",
+   "difficulty": "medium"
+  },
+  {
+   "id": "boutique/infrastructure/4",
+   "system": "boutique",
+   "category": "infrastructure",
+   "case": "4",
+   "difficulty": "medium"
+  },
+  {
+   "id": "boutique/infrastructure/3",
+   "system": "boutique",
+   "category": "infrastructure",
+   "case": "3",
+   "difficulty": "medium"
+  },
+  {
+   "id": "boutique/scheduling/21",
+   "system": "boutique",
+   "category": "scheduling",
+   "case": "21",
+   "difficulty": "easy"
+  },
+  {
+   "id": "boutique/scheduling/34",
+   "system": "boutique",
+   "category": "scheduling",
+   "case": "34",
+   "difficulty": "easy"
+  },
+  {
+   "id": "boutique/scheduling/26",
+   "system": "boutique",
+   "category": "scheduling",
+   "case": "26",
+   "difficulty": "easy"
+  },
+  {
+   "id": "boutique/startup/9",
+   "system": "boutique",
+   "category": "startup",
+   "case": "9",
+   "difficulty": "easy"
+  },
+  {
+   "id": "boutique/startup/10",
+   "system": "boutique",
+   "category": "startup",
+   "case": "10",
+   "difficulty": "easy"
+  },
+  {
+   "id": "boutique/startup/12",
+   "system": "boutique",
+   "category": "startup",
+   "case": "12",
+   "difficulty": "easy"
+  },
+  {
+   "id": "boutique/startup/29",
+   "system": "boutique",
+   "category": "startup",
+   "case": "29",
+   "difficulty": "easy"
+  },
+  {
+   "id": "boutique/startup/18",
+   "system": "boutique",
+   "category": "startup",
+   "case": "18",
+   "difficulty": "easy"
+  },
+  {
+   "id": "boutique/startup/15",
+   "system": "boutique",
+   "category": "startup",
+   "case": "15",
+   "difficulty": "easy"
+  },
+  {
+   "id": "boutique/infrastructure/14",
+   "system": "boutique",
+   "category": "infrastructure",
+   "case": "14",
+   "difficulty": "medium"
+  },
+  {
+   "id": "boutique/infrastructure/17",
+   "system": "boutique",
+   "category": "infrastructure",
+   "case": "17",
+   "difficulty": "medium"
+  },
+  {
+   "id": "boutique/infrastructure/13",
+   "system": "boutique",
+   "category": "infrastructure",
+   "case": "13",
+   "difficulty": "medium"
+  },
+  {
+   "id": "boutique/infrastructure/19",
+   "system": "boutique",
+   "category": "infrastructure",
+   "case": "19",
+   "difficulty": "medium"
+  },
+  {
+   "id": "boutique/infrastructure/26",
+   "system": "boutique",
+   "category": "infrastructure",
+   "case": "26",
+   "difficulty": "medium"
+  },
+  {
+   "id": "boutique/infrastructure/25",
+   "system": "boutique",
+   "category": "infrastructure",
+   "case": "25",
+   "difficulty": "medium"
+  },
+  {
+   "id": "boutique/infrastructure/30",
+   "system": "boutique",
+   "category": "infrastructure",
+   "case": "30",
+   "difficulty": "medium"
+  },
+  {
+   "id": "boutique/infrastructure/31",
+   "system": "boutique",
+   "category": "infrastructure",
+   "case": "31",
+   "difficulty": "medium"
+  },
+  {
+   "id": "boutique/infrastructure/37",
+   "system": "boutique",
+   "category": "infrastructure",
+   "case": "37",
+   "difficulty": "medium"
+  },
+  {
+   "id": "boutique/scheduling/48",
+   "system": "boutique",
+   "category": "scheduling",
+   "case": "48",
+   "difficulty": "easy"
+  },
+  {
+   "id": "boutique/scheduling/39",
+   "system": "boutique",
+   "category": "scheduling",
+   "case": "39",
+   "difficulty": "easy"
+  },
+  {
+   "id": "boutique/scheduling/40",
+   "system": "boutique",
+   "category": "scheduling",
+   "case": "40",
+   "difficulty": "easy"
+  },
+  {
+   "id": "boutique/startup/45",
+   "system": "boutique",
+   "category": "startup",
+   "case": "45",
+   "difficulty": "easy"
+  },
+  {
+   "id": "boutique/startup/56",
+   "system": "boutique",
+   "category": "startup",
+   "case": "56",
+   "difficulty": "easy"
+  },
+  {
+   "id": "boutique/startup/46",
+   "system": "boutique",
+   "category": "startup",
+   "case": "46",
+   "difficulty": "easy"
+  },
+  {
+   "id": "boutique/admission/4",
+   "system": "boutique",
+   "category": "admission",
+   "case": "4",
+   "difficulty": "medium"
+  },
+  {
+   "id": "boutique/admission/3",
+   "system": "boutique",
+   "category": "admission",
+   "case": "3",
+   "difficulty": "medium"
+  },
+  {
+   "id": "boutique/admission/1",
+   "system": "boutique",
+   "category": "admission",
+   "case": "1",
+   "difficulty": "medium"
+  },
+  {
+   "id": "boutique/admission/21",
+   "system": "boutique",
+   "category": "admission",
+   "case": "21",
+   "difficulty": "medium"
+  },
+  {
+   "id": "boutique/admission/14",
+   "system": "boutique",
+   "category": "admission",
+   "case": "14",
+   "difficulty": "medium"
+  },
+  {
+   "id": "boutique/admission/15",
+   "system": "boutique",
+   "category": "admission",
+   "case": "15",
+   "difficulty": "medium"
+  },
+  {
+   "id": "boutique/admission/24",
+   "system": "boutique",
+   "category": "admission",
+   "case": "24",
+   "difficulty": "medium"
+  },
+  {
+   "id": "boutique/admission/26",
+   "system": "boutique",
+   "category": "admission",
+   "case": "26",
+   "difficulty": "medium"
+  },
+  {
+   "id": "boutique/admission/27",
+   "system": "boutique",
+   "category": "admission",
+   "case": "27",
+   "difficulty": "medium"
+  },
+  {
+   "id": "boutique/admission/34",
+   "system": "boutique",
+   "category": "admission",
+   "case": "34",
+   "difficulty": "medium"
+  },
+  {
+   "id": "boutique/admission/35",
+   "system": "boutique",
+   "category": "admission",
+   "case": "35",
+   "difficulty": "medium"
+  },
+  {
+   "id": "boutique/admission/33",
+   "system": "boutique",
+   "category": "admission",
+   "case": "33",
+   "difficulty": "medium"
+  },
+  {
+   "id": "boutique/admission/53",
+   "system": "boutique",
+   "category": "admission",
+   "case": "53",
+   "difficulty": "medium"
+  },
+  {
+   "id": "boutique/admission/45",
+   "system": "boutique",
+   "category": "admission",
+   "case": "45",
+   "difficulty": "medium"
+  },
+  {
+   "id": "boutique/admission/50",
+   "system": "boutique",
+   "category": "admission",
+   "case": "50",
+   "difficulty": "medium"
+  },
+  {
+   "id": "boutique/admission/58",
+   "system": "boutique",
+   "category": "admission",
+   "case": "58",
+   "difficulty": "medium"
+  },
+  {
+   "id": "boutique/admission/57",
+   "system": "boutique",
+   "category": "admission",
+   "case": "57",
+   "difficulty": "medium"
+  },
+  {
+   "id": "boutique/scheduling/56",
+   "system": "boutique",
+   "category": "scheduling",
+   "case": "56",
+   "difficulty": "easy"
+  },
+  {
+   "id": "boutique/scheduling/60",
+   "system": "boutique",
+   "category": "scheduling",
+   "case": "60",
+   "difficulty": "easy"
+  },
+  {
+   "id": "boutique/scheduling/73",
+   "system": "boutique",
+   "category": "scheduling",
+   "case": "73",
+   "difficulty": "easy"
+  },
+  {
+   "id": "boutique/scheduling/3",
+   "system": "boutique",
+   "category": "scheduling",
+   "case": "3",
+   "difficulty": "easy"
+  },
+  {
+   "id": "boutique/scheduling/12",
+   "system": "boutique",
+   "category": "scheduling",
+   "case": "12",
+   "difficulty": "easy"
+  },
+  {
+   "id": "boutique/scheduling/11",
+   "system": "boutique",
+   "category": "scheduling",
+   "case": "11",
+   "difficulty": "easy"
+  },
+  {
+   "id": "boutique/performance/25",
+   "system": "boutique",
+   "category": "performance",
+   "case": "25",
+   "difficulty": "hard"
+  },
+  {
+   "id": "boutique/performance/23",
+   "system": "boutique",
+   "category": "performance",
+   "case": "23",
+   "difficulty": "hard"
+  },
+  {
+   "id": "boutique/performance/28",
+   "system": "boutique",
+   "category": "performance",
+   "case": "28",
+   "difficulty": "hard"
+  },
+  {
+   "id": "boutique/performance/27",
+   "system": "boutique",
+   "category": "performance",
+   "case": "27",
+   "difficulty": "hard"
+  },
+  {
+   "id": "boutique/scheduling/89",
+   "system": "boutique",
+   "category": "scheduling",
+   "case": "89",
+   "difficulty": "easy"
+  },
+  {
+   "id": "boutique/scheduling/80",
+   "system": "boutique",
+   "category": "scheduling",
+   "case": "80",
+   "difficulty": "easy"
+  },
+  {
+   "id": "boutique/scheduling/107",
+   "system": "boutique",
+   "category": "scheduling",
+   "case": "107",
+   "difficulty": "easy"
+  },
+  {
+   "id": "boutique/scheduling/115",
+   "system": "boutique",
+   "category": "scheduling",
+   "case": "115",
+   "difficulty": "easy"
+  },
+  {
+   "id": "boutique/scheduling/127",
+   "system": "boutique",
+   "category": "scheduling",
+   "case": "127",
+   "difficulty": "easy"
+  },
+  {
+   "id": "boutique/scheduling/121",
+   "system": "boutique",
+   "category": "scheduling",
+   "case": "121",
+   "difficulty": "easy"
+  },
+  {
+   "id": "boutique/performance/11",
+   "system": "boutique",
+   "category": "performance",
+   "case": "11",
+   "difficulty": "hard"
+  },
+  {
+   "id": "boutique/performance/2",
+   "system": "boutique",
+   "category": "performance",
+   "case": "2",
+   "difficulty": "hard"
+  },
+  {
+   "id": "boutique/performance/3",
+   "system": "boutique",
+   "category": "performance",
+   "case": "3",
+   "difficulty": "hard"
+  },
+  {
+   "id": "boutique/performance/13",
+   "system": "boutique",
+   "category": "performance",
+   "case": "13",
+   "difficulty": "hard"
+  },
+  {
+   "id": "boutique/performance/15",
+   "system": "boutique",
+   "category": "performance",
+   "case": "15",
+   "difficulty": "hard"
+  },
+  {
+   "id": "boutique/performance/16",
+   "system": "boutique",
+   "category": "performance",
+   "case": "16",
+   "difficulty": "hard"
+  },
+  {
+   "id": "boutique/scheduling/140",
+   "system": "boutique",
+   "category": "scheduling",
+   "case": "140",
+   "difficulty": "easy"
+  },
+  {
+   "id": "boutique/scheduling/139",
+   "system": "boutique",
+   "category": "scheduling",
+   "case": "139",
+   "difficulty": "easy"
+  },
+  {
+   "id": "boutique/scheduling/129",
+   "system": "boutique",
+   "category": "scheduling",
+   "case": "129",
+   "difficulty": "easy"
+  },
+  {
+   "id": "boutique/scheduling/54",
+   "system": "boutique",
+   "category": "scheduling",
+   "case": "54",
+   "difficulty": "easy"
+  },
+  {
+   "id": "boutique/scheduling/133",
+   "system": "boutique",
+   "category": "scheduling",
+   "case": "133",
+   "difficulty": "easy"
+  },
+  {
+   "id": "boutique/scheduling/135",
+   "system": "boutique",
+   "category": "scheduling",
+   "case": "135",
+   "difficulty": "easy"
+  },
+  {
+   "id": "boutique/runtime/45",
+   "system": "boutique",
+   "category": "runtime",
+   "case": "45",
+   "difficulty": "easy"
+  },
+  {
+   "id": "boutique/runtime/39",
+   "system": "boutique",
+   "category": "runtime",
+   "case": "39",
+   "difficulty": "easy"
+  },
+  {
+   "id": "boutique/runtime/43",
+   "system": "boutique",
+   "category": "runtime",
+   "case": "43",
+   "difficulty": "easy"
+  },
+  {
+   "id": "boutique/runtime/33",
+   "system": "boutique",
+   "category": "runtime",
+   "case": "33",
+   "difficulty": "easy"
+  },
+  {
+   "id": "boutique/runtime/35",
+   "system": "boutique",
+   "category": "runtime",
+   "case": "35",
+   "difficulty": "easy"
+  },
+  {
+   "id": "boutique/runtime/36",
+   "system": "boutique",
+   "category": "runtime",
+   "case": "36",
+   "difficulty": "easy"
+  },
+  {
+   "id": "boutique/service/5",
+   "system": "boutique",
+   "category": "service",
+   "case": "5",
+   "difficulty": "medium"
+  },
+  {
+   "id": "boutique/service/4",
+   "system": "boutique",
+   "category": "service",
+   "case": "4",
+   "difficulty": "medium"
+  },
+  {
+   "id": "boutique/service/7",
+   "system": "boutique",
+   "category": "service",
+   "case": "7",
+   "difficulty": "medium"
+  },
+  {
+   "id": "boutique/service/17",
+   "system": "boutique",
+   "category": "service",
+   "case": "17",
+   "difficulty": "medium"
+  },
+  {
+   "id": "boutique/service/20",
+   "system": "boutique",
+   "category": "service",
+   "case": "20",
+   "difficulty": "medium"
+  },
+  {
+   "id": "boutique/service/13",
+   "system": "boutique",
+   "category": "service",
+   "case": "13",
+   "difficulty": "medium"
+  },
+  {
+   "id": "boutique/service/26",
+   "system": "boutique",
+   "category": "service",
+   "case": "26",
+   "difficulty": "medium"
+  },
+  {
+   "id": "boutique/service/24",
+   "system": "boutique",
+   "category": "service",
+   "case": "24",
+   "difficulty": "medium"
+  },
+  {
+   "id": "boutique/service/28",
+   "system": "boutique",
+   "category": "service",
+   "case": "28",
+   "difficulty": "medium"
+  },
+  {
+   "id": "boutique/service/32",
+   "system": "boutique",
+   "category": "service",
+   "case": "32",
+   "difficulty": "medium"
+  },
+  {
+   "id": "boutique/service/38",
+   "system": "boutique",
+   "category": "service",
+   "case": "38",
+   "difficulty": "medium"
+  },
+  {
+   "id": "boutique/service/48",
+   "system": "boutique",
+   "category": "service",
+   "case": "48",
+   "difficulty": "medium"
+  },
+  {
+   "id": "boutique/scheduling/155",
+   "system": "boutique",
+   "category": "scheduling",
+   "case": "155",
+   "difficulty": "easy"
+  },
+  {
+   "id": "boutique/scheduling/142",
+   "system": "boutique",
+   "category": "scheduling",
+   "case": "142",
+   "difficulty": "easy"
+  },
+  {
+   "id": "boutique/scheduling/146",
+   "system": "boutique",
+   "category": "scheduling",
+   "case": "146",
+   "difficulty": "easy"
+  },
+  {
+   "id": "boutique/startup/60",
+   "system": "boutique",
+   "category": "startup",
+   "case": "60",
+   "difficulty": "easy"
+  },
+  {
+   "id": "trainticket/runtime/26",
+   "system": "trainticket",
+   "category": "runtime",
+   "case": "26",
+   "difficulty": "easy"
+  },
+  {
+   "id": "trainticket/runtime/21",
+   "system": "trainticket",
+   "category": "runtime",
+   "case": "21",
+   "difficulty": "easy"
+  },
+  {
+   "id": "trainticket/runtime/30",
+   "system": "trainticket",
+   "category": "runtime",
+   "case": "30",
+   "difficulty": "easy"
+  },
+  {
+   "id": "trainticket/startup/10",
+   "system": "trainticket",
+   "category": "startup",
+   "case": "10",
+   "difficulty": "easy"
+  },
+  {
+   "id": "trainticket/startup/1",
+   "system": "trainticket",
+   "category": "startup",
+   "case": "1",
+   "difficulty": "easy"
+  },
+  {
+   "id": "trainticket/startup/6",
+   "system": "trainticket",
+   "category": "startup",
+   "case": "6",
+   "difficulty": "easy"
+  },
+  {
+   "id": "trainticket/runtime/38",
+   "system": "trainticket",
+   "category": "runtime",
+   "case": "38",
+   "difficulty": "easy"
+  },
+  {
+   "id": "trainticket/runtime/33",
+   "system": "trainticket",
+   "category": "runtime",
+   "case": "33",
+   "difficulty": "easy"
+  },
+  {
+   "id": "trainticket/runtime/51",
+   "system": "trainticket",
+   "category": "runtime",
+   "case": "51",
+   "difficulty": "easy"
+  },
+  {
+   "id": "trainticket/runtime/73",
+   "system": "trainticket",
+   "category": "runtime",
+   "case": "73",
+   "difficulty": "easy"
+  },
+  {
+   "id": "trainticket/runtime/71",
+   "system": "trainticket",
+   "category": "runtime",
+   "case": "71",
+   "difficulty": "easy"
+  },
+  {
+   "id": "trainticket/runtime/77",
+   "system": "trainticket",
+   "category": "runtime",
+   "case": "77",
+   "difficulty": "easy"
+  },
+  {
+   "id": "trainticket/runtime/84",
+   "system": "trainticket",
+   "category": "runtime",
+   "case": "84",
+   "difficulty": "easy"
+  },
+  {
+   "id": "trainticket/runtime/87",
+   "system": "trainticket",
+   "category": "runtime",
+   "case": "87",
+   "difficulty": "easy"
+  },
+  {
+   "id": "trainticket/runtime/86",
+   "system": "trainticket",
+   "category": "runtime",
+   "case": "86",
+   "difficulty": "easy"
+  }
+ ]
+}

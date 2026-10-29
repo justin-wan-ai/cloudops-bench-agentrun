@@ -1,0 +1,6 @@
+{
+  "Completed": "{\"key_evidence_summary\": \"Only ts-delivery-service is unhealthy (CrashLoopBackOff). Its logs show HikariPool/JDBC 'Connection refused' to MySQL on startup, causing app startup failure. The service's Secret ts-delivery-mysql sets DELIVERY_MYSQL_PORT='34006', but the target Service tsdb-mysql-leader exposes port 3306. The port mismatch produces the refused connections and repeated crashes.\", \"top_3_predictions\": [{\"rank\": 1, \"fault_object\": \"app/ts-delivery-service\", \"root_cause\": \"mysql_invalid_port\"}, {\"rank\": 2, \"fault_object\": \"app/ts-delivery-service\", \"root_cause\": \"service_port_mapping_mismatch\"}, {\"rank\": 3, \"fault_object\": \"app/ts-delivery-service\", \"root_cause\": \"missing_secret_binding\"}]}",
+  "finished": true,
+  "stop_reason": "submit",
+  "steps_used": 5
+}

@@ -1,0 +1,126 @@
+{
+ "n": 17,
+ "cases": [
+  {
+   "id": "boutique/admission/1",
+   "system": "boutique",
+   "category": "admission",
+   "case": "1",
+   "difficulty": "medium"
+  },
+  {
+   "id": "boutique/admission/14",
+   "system": "boutique",
+   "category": "admission",
+   "case": "14",
+   "difficulty": "medium"
+  },
+  {
+   "id": "boutique/admission/15",
+   "system": "boutique",
+   "category": "admission",
+   "case": "15",
+   "difficulty": "medium"
+  },
+  {
+   "id": "boutique/admission/21",
+   "system": "boutique",
+   "category": "admission",
+   "case": "21",
+   "difficulty": "medium"
+  },
+  {
+   "id": "boutique/admission/24",
+   "system": "boutique",
+   "category": "admission",
+   "case": "24",
+   "difficulty": "medium"
+  },
+  {
+   "id": "boutique/admission/26",
+   "system": "boutique",
+   "category": "admission",
+   "case": "26",
+   "difficulty": "medium"
+  },
+  {
+   "id": "boutique/admission/27",
+   "system": "boutique",
+   "category": "admission",
+   "case": "27",
+   "difficulty": "medium"
+  },
+  {
+   "id": "boutique/admission/3",
+   "system": "boutique",
+   "category": "admission",
+   "case": "3",
+   "difficulty": "medium"
+  },
+  {
+   "id": "boutique/admission/33",
+   "system": "boutique",
+   "category": "admission",
+   "case": "33",
+   "difficulty": "medium"
+  },
+  {
+   "id": "boutique/admission/34",
+   "system": "boutique",
+   "category": "admission",
+   "case": "34",
+   "difficulty": "medium"
+  },
+  {
+   "id": "boutique/admission/35",
+   "system": "boutique",
+   "category": "admission",
+   "case": "35",
+   "difficulty": "medium"
+  },
+  {
+   "id": "boutique/admission/4",
+   "system": "boutique",
+   "category": "admission",
+   "case": "4",
+   "difficulty": "medium"
+  },
+  {
+   "id": "boutique/admission/45",
+   "system": "boutique",
+   "category": "admission",
+   "case": "45",
+   "difficulty": "medium"
+  },
+  {
+   "id": "boutique/admission/50",
+   "system": "boutique",
+   "category": "admission",
+   "case": "50",
+   "difficulty": "medium"
+  },
+  {
+   "id": "boutique/admission/53",
+   "system": "boutique",
+   "category": "admission",
+   "case": "53",
+   "difficulty": "medium"
+  },
+  {
+   "id": "boutique/admission/57",
+   "system": "boutique",
+   "category": "admission",
+   "case": "57",
+   "difficulty": "medium"
+  },
+  {
+   "id": "boutique/admission/58",
+   "system": "boutique",
+   "category": "admission",
+   "case": "58",
+   "difficulty": "medium"
+  }
+ ],
+ "round": "admission",
+ "split": "evolve"
+}

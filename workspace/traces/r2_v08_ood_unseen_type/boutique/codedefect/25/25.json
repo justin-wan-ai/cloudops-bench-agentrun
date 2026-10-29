@@ -1,0 +1,654 @@
+{
+ "case_id": "boutique/codedefect/25",
+ "system_name": "boutique",
+ "question": "Service Availability Disruption.",
+ "case_path": "/Users/justinwan/work/workspace/cloudops_bench_rsi/repo/benchmark/boutique/codedefect/25",
+ "max_steps": 8,
+ "current_step": 4,
+ "finished": true,
+ "stop_reason": "submit",
+ "final_answer": "{\"key_evidence_summary\": \"no evidence-grounded hypothesis\", \"top_3_predictions\": []}",
+ "metadata": {
+  "namespace": "boutique",
+  "query": "Service Availability Disruption.",
+  "fault_category": "codedefect",
+  "model_name": "agentrun-v0.8"
+ },
+ "steps": [
+  {
+   "step_id": 0,
+   "action_type": "tool",
+   "action_name": "GetResources",
+   "action_input": {
+    "namespace": "boutique",
+    "resource_type": "pods",
+    "output_wide": true
+   },
+   "observation": "NAME                                     READY   STATUS    RESTARTS   AGE     IP             NODE        NOMINATED NODE   READINESS GATES\nadservice-6f89c99b76-l4wtz               2/2     Running   0          5m52s   172.20.2.66    worker-02   <none>           <none>\ncartservice-7c5f46fc47-x8w2d             2/2     Running   0          5m52s   172.20.1.215   worker-01   <none>           <none>\ncheckoutservice-5bd966485c-wpmrn         2/2     Running   0          2m31s   172.20.1.220   worker-01   <none>           <none>\ncurrencyservice-5bc9dbdf66-8d6t9         2/2     Running   0          5m52s   172.20.1.216   worker-01   <none>           <none>\nemailservice-c86b9b8f6-bpnjj             2/2     Running   0          5m52s   172.20.2.68    worker-02   <none>           <none>\nfrontend-79bb68d59d-qzxsx                2/2     Running   0          5m51s   172.20.1.217   worker-01   <none>           <none>\npaymentservice-64b6c744b5-dl5wv          2/2     Running   0          5m51s   172.20.2.69    worker-02   <none>           <none>\nproductcatalogservice-5677b598bd-dwdgz   2/2     Running   0          5m51s   172.20.1.218   worker-01   <none>           <none>\nrecommendationservice-786899779d-j48nc   2/2     Running   0          5m51s   172.20.2.70    worker-02   <none>           <none>\nredis-cart-64b9db6f79-mxzcx              2/2     Running   0          5m50s   172.20.1.219   worker-01   <none>           <none>\nshippingservice-799cbfbc76-mbl2h         2/2     Running   0          5m50s   172.20.2.71    worker-02   <none>           <none>",
+   "error": null,
+   "purpose": "pod readiness census",
+   "tool_latency": null
+  },
+  {
+   "step_id": 1,
+   "action_type": "tool",
+   "action_name": "GetAlerts",
+   "action_input": {},
+   "observation": "{'status': 'has_anomalies', 'alert_count': 2, 'alerts': [{'type': 'Service', 'name': 'emailservice', 'time_range': '2026-05-18 16:55:45 ~ 2026-05-18 16:58:20', 'status': 'ABNORMAL', 'evidence': ['AVAILABILITY_MISSING [Data Loss] | success_rate vanished']}, {'request_method': 'POST', 'business_action': 'Checkout order', 'entry_service': 'frontend', 'url': '/cart/checkout', 'occurrences': 179, 'raw_error': \"HTTPError('500 Server Error: Internal Server Error')\"}]}",
+   "error": null,
+   "purpose": "anomaly signature (routes performance/code families)",
+   "tool_latency": null
+  },
+  {
+   "step_id": 2,
+   "action_type": "tool",
+   "action_name": "GetRecentLogs",
+   "action_input": {
+    "namespace": "boutique",
+    "service_name": "emailservice"
+   },
+   "observation": "['From emailservice logs:', '2026-05-18T16:55:15.739273698+08:00 {\"timestamp\": 1779094515.739094, \"severity\": \"INFO\", \"name\": \"emailservice-server\", \"message\": \"A request to send order confirmation email to paul17@example.net has been received.\", \"taskName\": null}', '2026-05-18T16:55:15.833165037+08:00 {\"timestamp\": 1779094515.8329773, \"severity\": \"INFO\", \"name\": \"emailservice-server\", \"message\": \"A request to send order confirmation email to linda68@example.org has been received.\", \"taskName\": null}', '2026-05-18T16:55:15.998157593+08:00 {\"timestamp\": 1779094515.9979749, \"severity\": \"INFO\", \"name\": \"emailservice-server\", \"message\": \"A request to send order confirmation email to lisa89@example.net has been received.\", \"taskName\": null}', '2026-05-18T16:55:16.784235954+08:00 {\"timestamp\": 1779094516.784073, \"severity\": \"INFO\", \"name\": \"emailservice-server\", \"message\": \"A request to send order confirmation email to marissa04@example.org has been received.\", \"taskName\": null}', '2026-05-18T16:55:17.153905604+08:00 {\"timestamp\": 1779094517.153733, \"severity\": \"INFO\", \"name\": \"emailservice-server\", \"message\": \"A request to send order confirmation email to ycobb@example.net has been received.\", \"taskName\": null}', '2026-05-18T16:55:18.006558540+08:00 {\"timestamp\": 1779094518.0063827, \"severity\": \"INFO\", \"name\": \"emailservice-server\", \"message\": \"A request to send order confirmation email to vguzman@example.net has been received.\", \"taskName\": null}', '2026-05-18T16:55:19.146215933+08:00 {\"timestamp\": 1779094519.146041, \"severity\": \"INFO\", \"name\": \"emailservice-server\", \"message\": \"A request to send order confirmation email to markfigueroa@example.org has been received.\", \"taskName\": null}', '2026-05-18T16:55:20.672633267+08:00 {\"timestamp\": 1779094520.672458, \"severity\": \"INFO\", \"name\": \"emailservice-server\", \"message\": \"A request to send order confirmation email to nbradley@example.net has been received.\", \"taskName\": null}', '2026-05-18T16:55:20.906252963+08:00 {\"timestamp\": 1779094520.9060795, \"severity\": \"INFO\", \"name\": \"emailservice-server\", \"message\": \"A request to send order confirmation email to rtorres@example.org has been received.\", \"taskName\": null}', '2026-05-18T16:55:21.233477055+08:00 {\"timestamp\": 1779094521.2332692, \"severity\": \"INFO\", \"name\": \"emailservice-server\", \"message\": \"A request to send order confirmation email to kellybaxter@example.com has been received.\", \"taskName\": null}', '2026-05-18T16:55:21.554757913+08:00 {\"timestamp\": 1779094521.5545673, \"severity\": \"INFO\", \"name\": \"emailservice-server\", \"message\": \"A request to send order confirmation email to wallaceshawn@example.org has been received.\", \"taskName\": null}', '2026-05-18T16:55:22.026889185+08:00 {\"timestamp\": 1779094522.0267315, \"severity\": \"INFO\", \"name\": \"emailservice-server\", \"message\": \"A request to send order confirmation email to felicia97@example.net has been received.\", \"taskName\": null}', '2026-05-18T16:55:28.658003471+08:00 {\"timestamp\": 1779094528.6578221, \"severity\": \"INFO\", \"name\": \"emailservice-server\", \"message\": \"A request to send order confirmation email to katherinesmith@example.net has been received.\", \"taskName\": null}', '2026-05-18T16:55:29.483876451+08:00 {\"timestamp\": 1779094529.4837034, \"severity\": \"INFO\", \"name\": \"emailservice-server\", \"message\": \"A request to send order confirmation email to chadsanchez@example.net has been received.\", \"taskName\": null}', '2026-05-18T16:55:29.486065114+08:00 {\"timestamp\": 1779094529.4858763, \"severity\": \"INFO\", \"name\": \"emailservice-server\", \"message\": \"A request to send order confirmation email to amandahoffman@example.net has been received.\", \"taskName\": null}', '2026-05-18T16:55:29.634235943+08:00 {\"timestamp\": 1779094529.6340618, \"severity\": \"INFO\", \"name\": \"emailservice-server\", \"message\": \"A request to send order confirmation email to zleonard@example.net has been received.\", \"taskName\": null}', '2026-05-18T16:55:30.750451442+08:00 {\"timestamp\": 1779094530.7502515, \"severity\": \"INFO\", \"name\": \"emailservice-server\", \"message\": \"A request to send order confirmation email to tonyarobinson@example.net has been received.\", \"taskName\": null}', '2026-05-18T16:55:30.942717730+08:00 {\"timestamp\": 1779094530.942542, \"severity\": \"INFO\", \"name\": \"emailservice-server\", \"message\": \"A request to send order confirmation email to iespinoza@example.org has been received.\", \"taskName\": null}', '2026-05-18T16:55:32.628450835+08:00 {\"timestamp\": 1779094532.6282635, \"severity\": \"INFO\", \"name\": \"emailservice-server\", \"message\": \"A request to send order confirmation email to stacey03@example.net has been received.\", \"taskName\": null}', '2026-05-18T16:55:33.226032560+08:00 {\"timestamp\": 1779094533.2258549, \"severity\": \"INFO\", \"name\": \"emailservice-server\", \"message\": \"A request to send order confirmation email to hchristensen@example.org has been received.\", \"taskName\": null}', '2026-05-18T16:55:33.309157390+08:00 {\"timestamp\": 1779094533.308955, \"severity\": \"INFO\", \"name\": \"emailservice-server\", \"message\": \"A request to send order confirmation email to bookernicholas@example.org has been received.\", \"taskName\": null}', '2026-05-18T16:55:34.475870154+08:00 {\"timestamp\": 1779094534.4757018, \"severity\": \"INFO\", \"name\": \"emailservice-server\", \"message\": \"A request to send order confirmation email to mitchellpriscilla@example.org has been received.\", \"taskName\": null}', '2026-05-18T16:55:35.116659971+08:00 {\"timestamp\": 1779094535.1164742, \"severity\": \"INFO\", \"name\": \"emailservice-server\", \"message\": \"A request to send order confirmation email to paige54@example.com has been received.\", \"taskName\": null}', '2026-05-18T16:55:35.348274087+08:00 {\"timestamp\": 1779094535.348102, \"severity\": \"INFO\", \"name\": \"emailservice-server\", \"message\": \"A request to send order confirmation email to odonnellalejandro@example.com has been received.\", \"taskName\": null}', '2026-05-18T16:55:35.868644257+08:00 {\"timestamp\": 1779094535.8684714, \"severity\": \"INFO\", \"name\": \"emailservice-server\", \"message\": \"A request to send order confirmation email to xclark@example.org has been received.\", \"taskName\": null}', '2026-05-18T16:55:35.994842409+08:00 {\"timestamp\": 1779094535.9946587, \"severity\": \"INFO\", \"name\": \"emailservice-server\", \"message\": \"A request to send order confirmation email to wwashington@example.net has been received.\", \"taskName\": null}', '2026-05-18T16:55:36.458923524+08:00 {\"timestamp\": 1779094536.4587512, \"severity\": \"INFO\", \"name\": \"emailservice-server\", \"message\": \"A request to send order confirmation email to meltonanthony@example.com has been received.\", \"taskName\": null}', '2026-05-18T16:55:36.566284166+08:00 {\"timestamp\": 1779094536.5661037, \"severity\": \"INFO\", \"name\": \"emailservice-server\", \"message\": \"A request to send order confirmation email to michael31@example.com has been received.\", \"taskName\": null}', '2026-05-18T16:55:38.093062298+08:00 {\"timestamp\": 1779094538.092863, \"severity\": \"INFO\", \"name\": \"emailservice-server\", \"message\": \"A request to send order confirmation email to jasminealvarez@example.org has been received.\", \"taskName\": null}', '2026-05-18T16:55:40.982305350+08:00 {\"timestamp\": 1779094540.9821236, \"severity\": \"INFO\", \"name\": \"emailservice-server\", \"message\": \"A request to send order confirmation email to pmiller@example.net has been received.\", \"taskName\": null}', '2026-05-18T16:55:41.504309955+08:00 {\"timestamp\": 1779094541.5041428, \"severity\": \"INFO\", \"name\": \"emailservice-server\", \"message\": \"A request to send order confirmation email to shawn32@example.com has been received.\", \"taskName\": null}', '2026-05-18T16:55:44.286533563+08:00 {\"timestamp\": 1779094544.2863514, \"severity\": \"INFO\", \"name\": \"emailservice-server\", \"message\": \"A request to send order confirmation email to juliafowler@example.net has been received.\", \"taskName\": null}', '2026-05-18T16:55:46.382004028+08:00 {\"timestamp\": 1779094546.381825, \"severity\": \"INFO\", \"name\": \"emailservice-server\", \"message\": \"A request to send order confirmation email to michele64@example.com has been received.\", \"taskName\": null}', '2026-05-18T16:55:46.856176966+08:00 {\"timestamp\": 1779094546.856006, \"severity\": \"INFO\", \"name\": \"emailservice-server\", \"message\": \"A request to send order confirmation email to ortizmichael@example.net has been received.\", \"taskName\": null}', '2026-05-18T16:55:46.940324933+08:00 {\"timestamp\": 1779094546.9401598, \"severity\": \"INFO\", \"name\": \"emailservice-server\", \"message\": \"A request to send order confirmation email to deborahwhite@example.com has been received.\", \"taskName\": null}', '2026-05-18T16:55:47.773374275+08:00 {\"timestamp\": 1779094547.7732031, \"severity\": \"INFO\", \"name\": \"emailservice-server\", \"message\": \"A request to send order confirmation email to sarahdaniels@example.com has been received.\", \"taskName\": null}', '2026-05-18T16:55:48.612907626+08:00 {\"timestamp\": 1779094548.6127353, \"severity\": \"INFO\", \"name\": \"emailservice-server\", \"message\": \"A request to send order confirmation email to paul37@example.net has been received.\", \"taskName\": null}', '2026-05-18T16:55:49.638769630+08:00 {\"timestamp\": 1779094549.6385884, \"severity\": \"INFO\", \"name\": \"emailservice-server\", \"message\": \"A request to send order confirmation email to keithbernard@example.org has been received.\", \"taskName\": null}', '2026-05-18T16:55:49.833290488+08:00 {\"timestamp\": 1779094549.8331082, \"severity\": \"INFO\", \"name\": \"emailservice-server\", \"message\": \"A request to send order confirmation email to qwilliams@example.net has been received.\", \"taskName\": null}', '2026-05-18T16:55:49.853661306+08:00 {\"timestamp\": 1779094549.8534906, \"severity\": \"INFO\", \"name\": \"emailservice-server\", \"message\": \"A request to send order confirmation email to carolbailey@example.net has been received.\", \"taskName\": null}', '2026-05-18T16:55:51.482866624+08:00 {\"timestamp\": 1779094551.48268, \"severity\": \"INFO\", \"name\": \"emailservice-server\", \"message\": \"A request to send order confirmation email to matthew55@example.com has been received.\", \"taskName\": null}', '2026-05-18T16:55:52.155043135+08:00 {\"timestamp\": 1779094552.154859, \"severity\": \"INFO\", \"name\": \"emailservice-server\", \"message\": \"A request to send order confirmation email to john77@example.net has been received.\", \"taskName\": null}', '2026-05-18T16:55:52.451319347+08:00 {\"timestamp\": 1779094552.4511385, \"severity\": \"INFO\", \"name\": \"emailservice-server\", \"message\": \"A request to send order confirmation email to jonesjacqueline@example.net has been received.\", \"taskName\": null}', '2026-05-18T16:55:54.094998811+08:00 {\"timestamp\": 1779094554.0948215, \"severity\": \"INFO\", \"name\": \"emailservice-server\", \"message\": \"A request to send order confirmation email to holderjohn@example.com has been received.\", \"taskName\": null}', '2026-05-18T16:55:54.960751794+08:00 {\"timestamp\": 1779094554.9605672, \"severity\": \"INFO\", \"name\": \"emailservice-server\", \"message\": \"A request to send order confirmation email to halldavid@example.org has been received.\", \"taskName\": null}', '2026-05-18T16:55:55.496630276+08:00 {\"timestamp\": 1779094555.496445, \"severity\": \"INFO\", \"name\": \"emailservice-server\", \"message\": \"A request to send order confirmation email to zmorales@example.com has been received.\", \"taskName\": null}', '2026-05-18T16:55:56.467399746+08:00 {\"timestamp\": 1779094556.4672246, \"severity\": \"INFO\", \"name\": \"emailservice-server\", \"message\": \"A request to send order confirmation email to tyler20@example.org has been received.\", \"taskName\": null}', '2026-05-18T16:55:59.101973035+08:00 {\"timestamp\": 1779094559.1017933, \"severity\": \"INFO\", \"name\": \"emailservice-server\", \"message\": \"A request to send order confirmation email to courtney33@example.org has been received.\", \"taskName\": null}', '2026-05-18T16:55:59.943581599+08:00 {\"timestamp\": 1779094559.943401, \"severity\": \"INFO\", \"name\": \"emailservice-server\", \"message\": \"A request to send order confirmation email to taylormichael@example.org has been received.\", \"taskName\": null}', '2026-05-18T16:56:00.230977074+08:00 {\"timestamp\": 1779094560.2308025, \"severity\": \"INFO\", \"name\": \"emailservice-server\", \"message\": \"A request to send order confirmation email to william58@example.net has been received.\", \"taskName\": null}', '', 'From istio-proxy logs:', '2026-05-18T08:52:30.684565Z\\tinfo\\tFLAG: --proxyLogLevel=\"warning\"', '2026-05-18T08:52:30.684567Z\\tinfo\\tFLAG: --serviceCluster=\"istio-proxy\"', '2026-05-18T08:52:30.684569Z\\tinfo\\tFLAG: --stsPort=\"0\"', '2026-05-18T08:52:30.684571Z\\tinfo\\tFLAG: --templateFile=\"\"', '2026-05-18T08:52:30.684576Z\\tinfo\\tFLAG: --tokenManagerPlugin=\"\"', '2026-05-18T08:52:30.684583Z\\tinfo\\tFLAG: --vklog=\"0\"', '2026-05-18T08:52:30.684586Z\\tinfo\\tVersion 1.27.3-df538c2279a633544e6c0961a03ab772729933be-Clean', '2026-05-18T08:52:30.684729Z\\tinfo\\tProxy role\\tips=[172.20.2.68] type=sidecar id=emailservice-c86b9b8f6-bpnjj.boutique domain=boutique.svc.cluster.local', '2026-05-18T08:52:30.684781Z\\tinfo\\tApply proxy config from env {\"proxyMetadata\":{\"ISTIO_META_ENABLE_HBONE\":\"true\"},\"image\":{\"imageType\":\"distroless\"}}', '2026-05-18T08:52:30.686927Z\\tinfo\\tcpu limit detected as 2, setting concurrency', '2026-05-18T08:52:30.687135Z\\tinfo\\tEffective config: binaryPath: /usr/local/bin/envoy', 'concurrency: 2', 'configPath: ./etc/istio/proxy', 'controlPlaneAuthPolicy: MUTUAL_TLS', 'discoveryAddress: istiod.istio-system.svc:15012', 'drainDuration: 45s', 'image:', 'imageType: distroless', 'proxyAdminPort: 15000', 'proxyMetadata:', 'ISTIO_META_ENABLE_HBONE: \"true\"', 'serviceCluster: istio-proxy', 'statNameLength: 189', 'statusPort: 15020', 'terminationDrainDuration: 5s', '2026-05-18T08:52:30.687146Z\\tinfo\\tJWT policy is third-party-jwt', '2026-05-18T08:52:30.687149Z\\tinfo\\tusing credential fetcher of JWT type in cluster.local trust domain', '2026-05-18T08:52:30.721127Z\\tinfo\\tStarting default Istio SDS Server', '2026-05-18T08:52:30.721155Z\\tinfo\\tCA Endpoint istiod.istio-system.svc:15012, provider Citadel', '2026-05-18T08:52:30.721170Z\\tinfo\\tUsing CA istiod.istio-system.svc:15012 cert with certs: var/run/secrets/istio/root-cert.pem', '2026-05-18T08:52:30.721333Z\\tinfo\\tOpening status port 15020', '2026-05-18T08:52:30.722128Z\\tinfo\\txdsproxy\\tInitializing with upstream address \"istiod.istio-system.svc:15012\" and cluster \"Kubernetes\"', '2026-05-18T08:52:30.723383Z\\tinfo\\tPilot SAN: [istiod.istio-system.svc]', '2026-05-18T08:52:30.723730Z\\tinfo\\tsds\\tStarting SDS grpc server', '2026-05-18T08:52:30.723752Z\\tinfo\\tsds\\tStarting SDS server for workload certificates, will listen on \"var/run/secrets/workload-spiffe-uds/socket\"', '2026-05-18T08:52:30.724261Z\\tinfo\\tStarting proxy agent', '2026-05-18T08:52:30.724305Z\\tinfo\\tEnvoy command: [-c etc/istio/proxy/envoy-rev.json --drain-time-s 45 --drain-strategy immediate --local-address-ip-version v4 --file-flush-interval-msec 1000 --disable-hot-restart --allow-unknown-static-fields -l warning --component-log-level misc:error --skip-deprecated-logs --concurrency 2]', '2026-05-18T08:52:30.788716Z\\twarning\\tenvoy main external/envoy/source/server/server.cc:905\\tUsage of the deprecated runtime key overload.global_downstream_max_connections, consider switching to `envoy.resource_monitors.global_downstream_max_connections` instead.This runtime key will be removed in future.\\tthread=15', '2026-05-18T08:52:30.789776Z\\twarning\\tenvoy main external/envoy/source/server/server.cc:1001\\tThere is no configured limit to the number of allowed active downstream connections. Configure a limit in `envoy.resource_monitors.global_downstream_max_connections` resource monitor.\\tthread=15', '2026-05-18T08:52:30.795361Z\\tinfo\\txdsproxy\\tconnected to delta upstream XDS server: istiod.istio-system.svc:15012\\tid=1', '2026-05-18T08:52:30.835589Z\\tinfo\\tads\\tADS: new connection for node:1', '2026-05-18T08:52:30.836227Z\\tinfo\\tads\\tADS: new connection for node:2', '2026-05-18T08:52:30.965969Z\\tinfo\\tcache\\tgenerated new workload certificate\\tresourceName=default latency=242.121932ms ttl=23h59m59.034035616s', '2026-05-18T08:52:30.966014Z\\tinfo\\tcache\\tRoot cert has changed, start rotating root cert', '2026-05-18T08:52:30.966054Z\\tinfo\\tcache\\treturned workload trust anchor from cache\\tttl=23h59m59.033945978s', '2026-05-18T08:52:30.966064Z\\tinfo\\tcache\\treturned workload certificate from cache\\tttl=23h59m59.03393643s', '2026-05-18T08:52:30.966185Z\\tinfo\\tcache\\treturned workload trust anchor from cache\\tttl=23h59m59.0338181s', '2026-05-18T08:52:30.966408Z\\tinfo\\tcache\\treturned workload trust anchor from cache\\tttl=23h59m59.033593686s', '2026-05-18T08:52:32.162200Z\\tinfo\\tReadiness succeeded in 1.481196139s', '2026-05-18T08:52:32.162469Z\\tinfo\\tEnvoy proxy is ready']",
+   "error": null,
+   "purpose": "request latency / saturation logs",
+   "tool_latency": null
+  },
+  {
+   "step_id": 3,
+   "action_type": "tool",
+   "action_name": "GetServiceDependencies",
+   "action_input": {
+    "service_name": "emailservice"
+   },
+   "observation": "[Service]: emailservice\n[Upstream (Called By)]: checkoutservice\n[Downstream (Calls)]:\n(None - Leaf Service)",
+   "error": null,
+   "purpose": "upstream/downstream call graph",
+   "tool_latency": null
+  }
+ ],
+ "agentrun": {
+  "tag": "test",
+  "dsl": "workspace/dsl_versions/v0.8.dsl.txt",
+  "dsl_version": "0.8",
+  "sop": {
+   "sop": "boutique-runtime-rca",
+   "scope": {
+    "system": "boutique",
+    "families": [
+     "runtime",
+     "admission",
+     "scheduling",
+     "startup",
+     "service",
+     "performance",
+     "infrastructure",
+     "codedefect"
+    ],
+    "severity": [
+     "SEV2",
+     "SEV3"
+    ]
+   },
+   "owner": "sre-platform",
+   "approved_by": [
+    "oncall-primary",
+    "sre-lead"
+   ],
+   "reviewed_at": "2026-10-23",
+   "change_ticket": "OPS-1236",
+   "boundaries": "只读诊断：本 SOP 不执行任何写操作（重启/回滚/扩缩容），也不做对外播报；\n它回答\"最可能的根因与受害对象\"，处置与沟通由值班按 runbook 人工执行。\n不覆盖 SEV1（需 incident commander 介入）与变更引发的问题（走变更回滚流程）。\n输入是冻结快照：诊断结论对\"快照时刻\"成立，恢复后需重新取证。\nR1 已知边界：PVC 的 requested size / accessMode 在本 benchmark 的工具面不可见，\n因此 pvc_capacity 与 pvc_access_mode 无法区分（同一分数并列，交给 jev 或升级）。\n"
+  },
+  "params": {
+   "cands_cap": 8,
+   "max_waves": 8,
+   "min_waves": 5,
+   "steps_per_wave": 1,
+   "dominance_ratio": 1.5,
+   "conf_min": 0.0,
+   "escalate": true,
+   "escalate_budget": 8,
+   "judge_on_codedefect": true,
+   "jev_route": true,
+   "jev_pick": true,
+   "jev_verify": true,
+   "route_fallback": "runtime"
+  },
+  "nodes_executed": [
+   "anchors:extract_anchors",
+   "census:probes",
+   "route:decide",
+   "plan:build_plan",
+   "probe:probes",
+   "derive:derive_candidates",
+   "pick:decide",
+   "verify:decide",
+   "probe:probes",
+   "derive:derive_candidates",
+   "pick:decide",
+   "verify:decide",
+   "probe:probes",
+   "derive:derive_candidates",
+   "pick:decide",
+   "verify:decide",
+   "probe:probes",
+   "derive:derive_candidates",
+   "pick:decide",
+   "verify:decide",
+   "escalate:escalate",
+   "answer:normalize_answer",
+   "persist:persist_trace"
+  ],
+  "census": [
+   {
+    "step": "pods",
+    "gate": "always"
+   },
+   {
+    "step": "alerts",
+    "gate": "healthy_system"
+   }
+  ],
+  "plan": [
+   {
+    "step": "recent_logs",
+    "gate": "always",
+    "wave": 1
+   },
+   {
+    "step": "describe_pod",
+    "gate": "weak",
+    "wave": 2
+   },
+   {
+    "step": "deps",
+    "gate": "weak",
+    "wave": 3
+   }
+  ],
+  "family": "performance",
+  "state_wiring": {
+   "family": "$route.family",
+   "route_probs": "$route.probabilities",
+   "picked": "$pick.picked",
+   "pick_dominant": "$pick.dominant",
+   "verify_status": "$verify.status",
+   "verify_prob": "$verify.confidence"
+  },
+  "bindings": {
+   "anchors": {
+    "anchors": "Anchors(case_id='boutique/codedefect/25', system='boutique', namespace='boutique', query='Service Availability Disruption.', difficulty='hard', symptoms=[], mentioned_apps=[], priors={'db_service': '', 'db_port': 0})"
+   },
+   "route": {
+    "family": "performance",
+    "probabilities": {},
+    "route_why": "mechanism_mode"
+   },
+   "plan": {
+    "plan": "[{'name': 'recent_logs', 'key': 'recent', 'tool': 'GetRecentLogs', 'args': <function _args_error_logs at 0x10c64b740>, 'purpose': 'request latency / saturation logs', 'when': <function compile_steps.<locals>.<lambda> at 0x10ceecb80>, 'gate': 'always', 'wave': 1}, {'name': 'describe_pod', 'key': 'describe:pod', 'tool': 'DescribeResource', 'args': <function _args_describe_pod at 0x10c64b560>, 'purpose': 'probe config, container state, restart reasons, scheduler events', 'when': <function compile_steps.<locals>.<lambda> at 0x10ceeca40>, 'gate': 'weak', 'wave': 2}, {'name': 'deps', 'key': 'deps', 'tool': 'GetServiceDependencies', 'args': <function _args_deps at 0x10c64be20>, 'purpose': 'upstream/downstream call graph', 'when': <function compile_steps.<locals>.<lambda> at 0x10ceec9a0>, 'gate': 'weak', 'wave': 3}]"
+   },
+   "derive": {
+    "candidates": "[]"
+   },
+   "pick": {
+    "picked": null,
+    "dominant": false,
+    "pick_why": "no_candidates"
+   },
+   "verify": {
+    "status": "unverified",
+    "confidence": null,
+    "verify_why": "nothing_to_verify"
+   },
+   "escalate": {
+    "answer": null
+   },
+   "answer": {
+    "final": {
+     "key_evidence_summary": "no evidence-grounded hypothesis",
+     "top_3_predictions": []
+    }
+   }
+  },
+  "picked": null,
+  "pick_why": "",
+  "verify_prob": null,
+  "verify_verdict": "unverified",
+  "verified": false,
+  "escalated": false,
+  "escalate_reason": "no_candidates",
+  "escalate_steps": 0,
+  "waves": 4,
+  "candidates": [],
+  "jev": [
+   {
+    "rid": "test:boutique/codedefect/25#route",
+    "kind": "route",
+    "node": "route",
+    "mode": "mechanism",
+    "options": [
+     "performance",
+     "infrastructure"
+    ],
+    "status": "mechanical",
+    "guard": "unavailable",
+    "use": "first_option",
+    "choice": "performance",
+    "why": "mechanism_mode",
+    "dominant": false,
+    "continue_loop": false,
+    "escalate": false
+   },
+   {
+    "rid": "test:boutique/codedefect/25#pick1",
+    "kind": "pick",
+    "node": "pick",
+    "mode": "mechanism",
+    "options": [],
+    "status": "mechanical",
+    "guard": "no_options",
+    "use": "none",
+    "choice": null,
+    "why": "no_candidates",
+    "dominant": false,
+    "continue_loop": false,
+    "escalate": false
+   },
+   {
+    "rid": "test:boutique/codedefect/25#verify1",
+    "kind": "verify",
+    "node": "verify",
+    "mode": "mechanism",
+    "options": [
+     "supported",
+     "insufficient",
+     "contradicted"
+    ],
+    "status": "mechanical",
+    "guard": "no_pick",
+    "use": "unverified",
+    "choice": "unverified",
+    "why": "nothing_to_verify",
+    "dominant": false,
+    "continue_loop": false,
+    "escalate": false
+   },
+   {
+    "rid": "test:boutique/codedefect/25#pick2",
+    "kind": "pick",
+    "node": "pick",
+    "mode": "mechanism",
+    "options": [],
+    "status": "mechanical",
+    "guard": "no_options",
+    "use": "none",
+    "choice": null,
+    "why": "no_candidates",
+    "dominant": false,
+    "continue_loop": false,
+    "escalate": false
+   },
+   {
+    "rid": "test:boutique/codedefect/25#verify2",
+    "kind": "verify",
+    "node": "verify",
+    "mode": "mechanism",
+    "options": [
+     "supported",
+     "insufficient",
+     "contradicted"
+    ],
+    "status": "mechanical",
+    "guard": "no_pick",
+    "use": "unverified",
+    "choice": "unverified",
+    "why": "nothing_to_verify",
+    "dominant": false,
+    "continue_loop": false,
+    "escalate": false
+   },
+   {
+    "rid": "test:boutique/codedefect/25#pick3",
+    "kind": "pick",
+    "node": "pick",
+    "mode": "mechanism",
+    "options": [],
+    "status": "mechanical",
+    "guard": "no_options",
+    "use": "none",
+    "choice": null,
+    "why": "no_candidates",
+    "dominant": false,
+    "continue_loop": false,
+    "escalate": false
+   },
+   {
+    "rid": "test:boutique/codedefect/25#verify3",
+    "kind": "verify",
+    "node": "verify",
+    "mode": "mechanism",
+    "options": [
+     "supported",
+     "insufficient",
+     "contradicted"
+    ],
+    "status": "mechanical",
+    "guard": "no_pick",
+    "use": "unverified",
+    "choice": "unverified",
+    "why": "nothing_to_verify",
+    "dominant": false,
+    "continue_loop": false,
+    "escalate": false
+   },
+   {
+    "rid": "test:boutique/codedefect/25#pick4",
+    "kind": "pick",
+    "node": "pick",
+    "mode": "mechanism",
+    "options": [],
+    "status": "mechanical",
+    "guard": "no_options",
+    "use": "none",
+    "choice": null,
+    "why": "no_candidates",
+    "dominant": false,
+    "continue_loop": false,
+    "escalate": false
+   },
+   {
+    "rid": "test:boutique/codedefect/25#verify4",
+    "kind": "verify",
+    "node": "verify",
+    "mode": "mechanism",
+    "options": [
+     "supported",
+     "insufficient",
+     "contradicted"
+    ],
+    "status": "mechanical",
+    "guard": "no_pick",
+    "use": "unverified",
+    "choice": "unverified",
+    "why": "nothing_to_verify",
+    "dominant": false,
+    "continue_loop": false,
+    "escalate": false
+   }
+  ],
+  "nodes": [
+   {
+    "node": "code",
+    "id": "anchors",
+    "anchors": {
+     "case_id": "boutique/codedefect/25",
+     "system": "boutique",
+     "namespace": "boutique",
+     "query": "Service Availability Disruption.",
+     "difficulty": "hard",
+     "symptoms": [],
+     "mentioned_apps": []
+    }
+   },
+   {
+    "node": "probes",
+    "plan": "census",
+    "wave": 0,
+    "executed": 2,
+    "steps": [
+     {
+      "key": "pods",
+      "tool": "GetResources",
+      "arguments": {
+       "namespace": "boutique",
+       "resource_type": "pods",
+       "output_wide": true
+      },
+      "gate": "always"
+     },
+     {
+      "key": "alerts",
+      "tool": "GetAlerts",
+      "arguments": {},
+      "gate": "healthy_system"
+     }
+    ],
+    "skipped": []
+   },
+   {
+    "node": "decide",
+    "id": "route",
+    "rid": "test:boutique/codedefect/25#route",
+    "status": "mechanical",
+    "guard": "unavailable",
+    "use": "first_option",
+    "choice": "performance",
+    "dominant": false,
+    "why": "mechanism_mode"
+   },
+   {
+    "node": "code",
+    "id": "plan",
+    "family": "performance",
+    "plan": [
+     {
+      "step": "recent_logs",
+      "gate": "always",
+      "wave": 1
+     },
+     {
+      "step": "describe_pod",
+      "gate": "weak",
+      "wave": 2
+     },
+     {
+      "step": "deps",
+      "gate": "weak",
+      "wave": 3
+     }
+    ]
+   },
+   {
+    "node": "probes",
+    "plan": "family",
+    "wave": 1,
+    "executed": 1,
+    "steps": [
+     {
+      "key": "recent",
+      "tool": "GetRecentLogs",
+      "arguments": {
+       "namespace": "boutique",
+       "service_name": "emailservice"
+      },
+      "gate": "always"
+     }
+    ],
+    "skipped": []
+   },
+   {
+    "node": "code",
+    "id": "derive",
+    "raw": 0,
+    "kept": 0,
+    "top": []
+   },
+   {
+    "node": "decide",
+    "id": "pick",
+    "rid": "test:boutique/codedefect/25#pick1",
+    "status": "mechanical",
+    "guard": "no_options",
+    "use": "none",
+    "choice": null,
+    "dominant": false,
+    "why": "no_candidates"
+   },
+   {
+    "node": "decide",
+    "id": "verify",
+    "rid": "test:boutique/codedefect/25#verify1",
+    "status": "mechanical",
+    "guard": "no_pick",
+    "use": "unverified",
+    "choice": "unverified",
+    "dominant": false,
+    "why": "nothing_to_verify"
+   },
+   {
+    "node": "probes",
+    "plan": "family",
+    "wave": 2,
+    "executed": 0,
+    "steps": [],
+    "skipped": [
+     {
+      "step": "describe_pod",
+      "why": "args not applicable"
+     }
+    ]
+   },
+   {
+    "node": "code",
+    "id": "derive",
+    "raw": 0,
+    "kept": 0,
+    "top": []
+   },
+   {
+    "node": "decide",
+    "id": "pick",
+    "rid": "test:boutique/codedefect/25#pick2",
+    "status": "mechanical",
+    "guard": "no_options",
+    "use": "none",
+    "choice": null,
+    "dominant": false,
+    "why": "no_candidates"
+   },
+   {
+    "node": "decide",
+    "id": "verify",
+    "rid": "test:boutique/codedefect/25#verify2",
+    "status": "mechanical",
+    "guard": "no_pick",
+    "use": "unverified",
+    "choice": "unverified",
+    "dominant": false,
+    "why": "nothing_to_verify"
+   },
+   {
+    "node": "probes",
+    "plan": "family",
+    "wave": 3,
+    "executed": 1,
+    "steps": [
+     {
+      "key": "deps",
+      "tool": "GetServiceDependencies",
+      "arguments": {
+       "service_name": "emailservice"
+      },
+      "gate": "weak"
+     }
+    ],
+    "skipped": []
+   },
+   {
+    "node": "code",
+    "id": "derive",
+    "raw": 0,
+    "kept": 0,
+    "top": []
+   },
+   {
+    "node": "decide",
+    "id": "pick",
+    "rid": "test:boutique/codedefect/25#pick3",
+    "status": "mechanical",
+    "guard": "no_options",
+    "use": "none",
+    "choice": null,
+    "dominant": false,
+    "why": "no_candidates"
+   },
+   {
+    "node": "decide",
+    "id": "verify",
+    "rid": "test:boutique/codedefect/25#verify3",
+    "status": "mechanical",
+    "guard": "no_pick",
+    "use": "unverified",
+    "choice": "unverified",
+    "dominant": false,
+    "why": "nothing_to_verify"
+   },
+   {
+    "node": "probes",
+    "plan": "family",
+    "wave": 4,
+    "executed": 0,
+    "why": "plan exhausted"
+   },
+   {
+    "node": "code",
+    "id": "derive",
+    "raw": 0,
+    "kept": 0,
+    "top": []
+   },
+   {
+    "node": "decide",
+    "id": "pick",
+    "rid": "test:boutique/codedefect/25#pick4",
+    "status": "mechanical",
+    "guard": "no_options",
+    "use": "none",
+    "choice": null,
+    "dominant": false,
+    "why": "no_candidates"
+   },
+   {
+    "node": "decide",
+    "id": "verify",
+    "rid": "test:boutique/codedefect/25#verify4",
+    "status": "mechanical",
+    "guard": "no_pick",
+    "use": "unverified",
+    "choice": "unverified",
+    "dominant": false,
+    "why": "nothing_to_verify"
+   },
+   {
+    "node": "loop",
+    "id": "waves",
+    "stop": "plan_exhausted",
+    "wave": 4
+   },
+   {
+    "node": "escalate",
+    "id": "escalate",
+    "fired": true,
+    "reasons": [
+     "no_candidates"
+    ],
+    "skipped": "mode=mechanism"
+   },
+   {
+    "node": "code",
+    "id": "answer",
+    "predictions": []
+   },
+   {
+    "node": "artifact",
+    "id": "persist",
+    "persisted": false,
+    "why": "written by the CLI driver"
+   }
+  ],
+  "notes": [],
+  "tool_calls": 4,
+  "model_calls": 0,
+  "tokens_in": 0,
+  "tokens_out": 0,
+  "wall_s": 0.07
+ }
+}

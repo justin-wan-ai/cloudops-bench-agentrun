@@ -1,0 +1,252 @@
+{
+ "n": 35,
+ "cases": [
+  {
+   "id": "boutique/admission/10",
+   "system": "boutique",
+   "category": "admission",
+   "case": "10",
+   "difficulty": "medium"
+  },
+  {
+   "id": "boutique/admission/11",
+   "system": "boutique",
+   "category": "admission",
+   "case": "11",
+   "difficulty": "medium"
+  },
+  {
+   "id": "boutique/admission/12",
+   "system": "boutique",
+   "category": "admission",
+   "case": "12",
+   "difficulty": "medium"
+  },
+  {
+   "id": "boutique/admission/13",
+   "system": "boutique",
+   "category": "admission",
+   "case": "13",
+   "difficulty": "medium"
+  },
+  {
+   "id": "boutique/admission/16",
+   "system": "boutique",
+   "category": "admission",
+   "case": "16",
+   "difficulty": "medium"
+  },
+  {
+   "id": "boutique/admission/17",
+   "system": "boutique",
+   "category": "admission",
+   "case": "17",
+   "difficulty": "medium"
+  },
+  {
+   "id": "boutique/admission/19",
+   "system": "boutique",
+   "category": "admission",
+   "case": "19",
+   "difficulty": "medium"
+  },
+  {
+   "id": "boutique/admission/2",
+   "system": "boutique",
+   "category": "admission",
+   "case": "2",
+   "difficulty": "medium"
+  },
+  {
+   "id": "boutique/admission/20",
+   "system": "boutique",
+   "category": "admission",
+   "case": "20",
+   "difficulty": "medium"
+  },
+  {
+   "id": "boutique/admission/22",
+   "system": "boutique",
+   "category": "admission",
+   "case": "22",
+   "difficulty": "medium"
+  },
+  {
+   "id": "boutique/admission/25",
+   "system": "boutique",
+   "category": "admission",
+   "case": "25",
+   "difficulty": "medium"
+  },
+  {
+   "id": "boutique/admission/28",
+   "system": "boutique",
+   "category": "admission",
+   "case": "28",
+   "difficulty": "medium"
+  },
+  {
+   "id": "boutique/admission/29",
+   "system": "boutique",
+   "category": "admission",
+   "case": "29",
+   "difficulty": "medium"
+  },
+  {
+   "id": "boutique/admission/30",
+   "system": "boutique",
+   "category": "admission",
+   "case": "30",
+   "difficulty": "medium"
+  },
+  {
+   "id": "boutique/admission/31",
+   "system": "boutique",
+   "category": "admission",
+   "case": "31",
+   "difficulty": "medium"
+  },
+  {
+   "id": "boutique/admission/32",
+   "system": "boutique",
+   "category": "admission",
+   "case": "32",
+   "difficulty": "medium"
+  },
+  {
+   "id": "boutique/admission/36",
+   "system": "boutique",
+   "category": "admission",
+   "case": "36",
+   "difficulty": "medium"
+  },
+  {
+   "id": "boutique/admission/37",
+   "system": "boutique",
+   "category": "admission",
+   "case": "37",
+   "difficulty": "medium"
+  },
+  {
+   "id": "boutique/admission/38",
+   "system": "boutique",
+   "category": "admission",
+   "case": "38",
+   "difficulty": "medium"
+  },
+  {
+   "id": "boutique/admission/39",
+   "system": "boutique",
+   "category": "admission",
+   "case": "39",
+   "difficulty": "medium"
+  },
+  {
+   "id": "boutique/admission/40",
+   "system": "boutique",
+   "category": "admission",
+   "case": "40",
+   "difficulty": "medium"
+  },
+  {
+   "id": "boutique/admission/41",
+   "system": "boutique",
+   "category": "admission",
+   "case": "41",
+   "difficulty": "medium"
+  },
+  {
+   "id": "boutique/admission/42",
+   "system": "boutique",
+   "category": "admission",
+   "case": "42",
+   "difficulty": "medium"
+  },
+  {
+   "id": "boutique/admission/44",
+   "system": "boutique",
+   "category": "admission",
+   "case": "44",
+   "difficulty": "medium"
+  },
+  {
+   "id": "boutique/admission/46",
+   "system": "boutique",
+   "category": "admission",
+   "case": "46",
+   "difficulty": "medium"
+  },
+  {
+   "id": "boutique/admission/47",
+   "system": "boutique",
+   "category": "admission",
+   "case": "47",
+   "difficulty": "medium"
+  },
+  {
+   "id": "boutique/admission/48",
+   "system": "boutique",
+   "category": "admission",
+   "case": "48",
+   "difficulty": "medium"
+  },
+  {
+   "id": "boutique/admission/49",
+   "system": "boutique",
+   "category": "admission",
+   "case": "49",
+   "difficulty": "medium"
+  },
+  {
+   "id": "boutique/admission/5",
+   "system": "boutique",
+   "category": "admission",
+   "case": "5",
+   "difficulty": "medium"
+  },
+  {
+   "id": "boutique/admission/51",
+   "system": "boutique",
+   "category": "admission",
+   "case": "51",
+   "difficulty": "medium"
+  },
+  {
+   "id": "boutique/admission/52",
+   "system": "boutique",
+   "category": "admission",
+   "case": "52",
+   "difficulty": "medium"
+  },
+  {
+   "id": "boutique/admission/56",
+   "system": "boutique",
+   "category": "admission",
+   "case": "56",
+   "difficulty": "medium"
+  },
+  {
+   "id": "boutique/admission/6",
+   "system": "boutique",
+   "category": "admission",
+   "case": "6",
+   "difficulty": "medium"
+  },
+  {
+   "id": "boutique/admission/7",
+   "system": "boutique",
+   "category": "admission",
+   "case": "7",
+   "difficulty": "medium"
+  },
+  {
+   "id": "boutique/admission/9",
+   "system": "boutique",
+   "category": "admission",
+   "case": "9",
+   "difficulty": "medium"
+  }
+ ],
+ "round": "admission",
+ "split": "sealed"
+}

@@ -1,0 +1,111 @@
+{
+  "dsl": "workspace/dsl_versions/v0.13.dsl.txt",
+  "version": "0.13",
+  "params": {
+    "cands_cap": 8,
+    "max_waves": 10,
+    "min_waves": 5,
+    "steps_per_wave": 1,
+    "dominance_ratio": 1.5,
+    "conf_min": 0.0,
+    "escalate": true,
+    "escalate_budget": 8,
+    "judge_on_codedefect": true,
+    "jev_route": true,
+    "jev_pick": true,
+    "jev_verify": true,
+    "route_fallback": "runtime"
+  },
+  "jev_mode": "live",
+  "jev_usage": {
+    "calls": 7,
+    "input_tokens": 1155,
+    "model_latency_ms": 413.8
+  },
+  "cases": [
+    {
+      "id": "boutique/codedefect/10",
+      "family": "performance",
+      "tool_calls": 3,
+      "model_calls": 1,
+      "tokens_in": 141,
+      "tokens_out": 0,
+      "wall_s": 0.5,
+      "escalated": false,
+      "verified": true,
+      "verify_prob": null
+    },
+    {
+      "id": "boutique/codedefect/34",
+      "family": "performance",
+      "tool_calls": 3,
+      "model_calls": 1,
+      "tokens_in": 157,
+      "tokens_out": 0,
+      "wall_s": 0.33,
+      "escalated": false,
+      "verified": true,
+      "verify_prob": null
+    },
+    {
+      "id": "boutique/codedefect/20",
+      "family": "performance",
+      "tool_calls": 3,
+      "model_calls": 1,
+      "tokens_in": 150,
+      "tokens_out": 0,
+      "wall_s": 0.33,
+      "escalated": false,
+      "verified": true,
+      "verify_prob": null
+    },
+    {
+      "id": "boutique/codedefect/11",
+      "family": "runtime",
+      "tool_calls": 4,
+      "model_calls": 1,
+      "tokens_in": 164,
+      "tokens_out": 0,
+      "wall_s": 0.33,
+      "escalated": false,
+      "verified": true,
+      "verify_prob": null
+    },
+    {
+      "id": "boutique/codedefect/12",
+      "family": "service",
+      "tool_calls": 6,
+      "model_calls": 1,
+      "tokens_in": 181,
+      "tokens_out": 0,
+      "wall_s": 0.36,
+      "escalated": false,
+      "verified": true,
+      "verify_prob": null
+    },
+    {
+      "id": "boutique/codedefect/1",
+      "family": "service",
+      "tool_calls": 6,
+      "model_calls": 1,
+      "tokens_in": 181,
+      "tokens_out": 0,
+      "wall_s": 0.32,
+      "escalated": false,
+      "verified": true,
+      "verify_prob": null
+    },
+    {
+      "id": "boutique/codedefect/24",
+      "family": "service",
+      "tool_calls": 6,
+      "model_calls": 1,
+      "tokens_in": 181,
+      "tokens_out": 0,
+      "wall_s": 0.44,
+      "escalated": false,
+      "verified": true,
+      "verify_prob": null
+    }
+  ]
+}

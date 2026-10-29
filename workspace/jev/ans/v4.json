@@ -1,0 +1,13 @@
+{
+  "route": {
+    "test:trainticket/runtime/61#route": "runtime",
+    "test:boutique/codedefect/60#route": "codedefect",
+    "test:boutique/admission/32#route": "admission",
+    "test:boutique/scheduling/109#route": "scheduling",
+    "test:boutique/runtime/32#route": "runtime"
+  },
+  "pick": {
+    "test:boutique/codedefect/60#pick1": 0
+  },
+  "verify": {}
+}

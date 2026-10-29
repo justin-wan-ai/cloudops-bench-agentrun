@@ -1,0 +1,1012 @@
+{
+ "case_id": "boutique/infrastructure/22",
+ "system_name": "boutique",
+ "question": "Partial Service Unreachability.",
+ "case_path": "/Users/justinwan/work/workspace/cloudops_bench_rsi/repo/benchmark/boutique/infrastructure/22",
+ "max_steps": 8,
+ "current_step": 4,
+ "finished": true,
+ "stop_reason": "submit",
+ "final_answer": "{\"key_evidence_summary\": \"kube-scheduler.service is inactive on master\", \"top_3_predictions\": [{\"rank\": 1, \"fault_object\": \"node/master\", \"root_cause\": \"kube_scheduler_unavailable\"}, {\"rank\": 2, \"fault_object\": \"node/master\", \"root_cause\": \"kube_scheduler_unavailable\"}, {\"rank\": 3, \"fault_object\": \"node/master\", \"root_cause\": \"kube_scheduler_unavailable\"}]}",
+ "metadata": {
+  "namespace": "boutique",
+  "query": "Partial Service Unreachability.",
+  "fault_category": "infrastructure",
+  "model_name": "agentrun-v0.8"
+ },
+ "steps": [
+  {
+   "step_id": 0,
+   "action_type": "tool",
+   "action_name": "GetResources",
+   "action_input": {
+    "namespace": "boutique",
+    "resource_type": "pods",
+    "output_wide": true
+   },
+   "observation": "NAME                                     READY   STATUS    RESTARTS   AGE   IP             NODE        NOMINATED NODE   READINESS GATES\nadservice-64ddc5c766-ph7h5               1/1     Running   0          99s   172.20.2.62    worker-02   <none>           <none>\ncartservice-79b49f5555-w5ft7             1/1     Running   0          99s   172.20.1.215   worker-01   <none>           <none>\ncheckoutservice-8445f8b6cb-wd8jl         1/1     Running   0          98s   172.20.1.216   worker-01   <none>           <none>\ncurrencyservice-5c6fdf7ccb-tc4gk         0/1     Pending   0          82s   <none>         <none>      <none>           <none>\nemailservice-c86b9b8f6-v5wqt             1/1     Running   0          98s   172.20.2.63    worker-02   <none>           <none>\nfrontend-657dd795f-96gfn                 1/1     Running   0          98s   172.20.1.217   worker-01   <none>           <none>\npaymentservice-78c5996648-srhcl          1/1     Running   0          98s   172.20.2.64    worker-02   <none>           <none>\nproductcatalogservice-ddb46fc86-d99p9    1/1     Running   0          98s   172.20.1.218   worker-01   <none>           <none>\nrecommendationservice-7bf5b7d9b8-nhrtk   1/1     Running   0          97s   172.20.2.65    worker-02   <none>           <none>\nredis-cart-589d486f78-sld6s              1/1     Running   0          97s   172.20.1.219   worker-01   <none>           <none>\nshippingservice-7ff54bf6b6-jmzvh         1/1     Running   0          97s   172.20.2.66    worker-02   <none>           <none>\n",
+   "error": null,
+   "purpose": "pod readiness census",
+   "tool_latency": null
+  },
+  {
+   "step_id": 1,
+   "action_type": "tool",
+   "action_name": "DescribeResource",
+   "action_input": {
+    "namespace": "boutique",
+    "resource_type": "pods",
+    "name": "currencyservice-5c6fdf7ccb-tc4gk"
+   },
+   "observation": "Name:             currencyservice-5c6fdf7ccb-tc4gk\nNamespace:        boutique\nPriority:         0\nService Account:  currencyservice\nNode:             <none>\nLabels:           app=currencyservice\n                  pod-template-hash=5c6fdf7ccb\nAnnotations:      <none>\nStatus:           Pending\nIP:               \nIPs:              <none>\nControlled By:    ReplicaSet/currencyservice-5c6fdf7ccb\nContainers:\n  server:\n    Image:      us-central1-docker.pkg.dev/google-samples/microservices-demo/currencyservice:v0.10.3\n    Port:       7000/TCP\n    Host Port:  0/TCP\n    Limits:\n      cpu:     200m\n      memory:  128Mi\n    Requests:\n      cpu:      100m\n      memory:   64Mi\n    Liveness:   grpc <pod>:7000  delay=5s timeout=1s period=10s #success=1 #failure=3\n    Readiness:  grpc <pod>:7000  delay=5s timeout=1s period=10s #success=1 #failure=3\n    Environment:\n      PORT:              7000\n      DISABLE_PROFILER:  1\n    Mounts:\n      /var/run/secrets/kubernetes.io/serviceaccount from kube-api-access-j7vjj (ro)\nVolumes:\n  kube-api-access-j7vjj:\n    Type:                    Projected (a volume that contains injected data from multiple sources)\n    TokenExpirationSeconds:  3607\n    ConfigMapName:           kube-root-ca.crt\n    ConfigMapOptional:       <nil>\n    DownwardAPI:             true\nQoS Class:                   Burstable\nNode-Selectors:              <none>\nTolerations:                 node.kubernetes.io/not-ready:NoExecute op=Exists for 300s\n                             node.kubernetes.io/unreachable:NoExecute op=Exists for 300s\nEvents:                      <none>\n",
+   "error": null,
+   "purpose": "probe config, container state, restart reasons, scheduler events",
+   "tool_latency": null
+  },
+  {
+   "step_id": 2,
+   "action_type": "tool",
+   "action_name": "GetClusterConfiguration",
+   "action_input": {},
+   "observation": "{'node_count': 4, 'nodes': [{'name': 'master', 'role': 'worker', 'status': 'Ready', 'conditions': {'MemoryPressure': 'False', 'DiskPressure': 'False', 'PIDPressure': 'False'}, 'taints': ['node.kubernetes.io/unschedulable:NoSchedule'], 'labels': {'beta.kubernetes.io/arch': 'amd64', 'beta.kubernetes.io/os': 'linux', 'kubernetes.io/arch': 'amd64', 'kubernetes.io/hostname': 'master', 'kubernetes.io/os': 'linux', 'kubernetes.io/role': 'master'}, 'allocatable_resources': {'cpu': '8', 'memory': '15671352Ki'}}, {'name': 'worker-01', 'role': 'worker', 'status': 'Ready', 'conditions': {'MemoryPressure': 'False', 'DiskPressure': 'False', 'PIDPressure': 'False'}, 'taints': [], 'labels': {'beta.kubernetes.io/arch': 'amd64', 'beta.kubernetes.io/os': 'linux', 'kubernetes.io/arch': 'amd64', 'kubernetes.io/hostname': 'worker-01', 'kubernetes.io/os': 'linux', 'kubernetes.io/role': 'node'}, 'allocatable_resources': {'cpu': '8', 'memory': '15671348Ki'}}, {'name': 'worker-02', 'role': 'worker', 'status': 'Ready', 'conditions': {'MemoryPressure': 'False', 'DiskPressure': 'False', 'PIDPressure': 'False'}, 'taints': [], 'labels': {'beta.kubernetes.io/arch': 'amd64', 'beta.kubernetes.io/os': 'linux', 'kubernetes.io/arch': 'amd64', 'kubernetes.io/hostname': 'worker-02', 'kubernetes.io/os': 'linux', 'kubernetes.io/role': 'node'}, 'allocatable_resources': {'cpu': '8', 'memory': '15671356Ki'}}, {'name': 'worker-03', 'role': 'worker', 'status': 'Ready', 'conditions': {'MemoryPressure': 'False', 'DiskPressure': 'False', 'PIDPressure': 'False'}, 'taints': [], 'labels': {'beta.kubernetes.io/arch': 'amd64', 'beta.kubernetes.io/os': 'linux', 'kubernetes.io/arch': 'amd64', 'kubernetes.io/hostname': 'worker-03', 'kubernetes.io/os': 'linux', 'kubernetes.io/role': 'node'}, 'allocatable_resources': {'cpu': '8', 'memory': '15671344Ki'}}]}",
+   "error": null,
+   "purpose": "cluster-wide node state",
+   "tool_latency": null
+  },
+  {
+   "step_id": 3,
+   "action_type": "tool",
+   "action_name": "CheckNodeServiceStatus",
+   "action_input": {
+    "node_name": "master",
+    "service_name": "kube-scheduler"
+   },
+   "observation": "Service: kube-scheduler\nNode: master\nStatus: ○ kube-scheduler.service - Kubernetes Scheduler\n     Loaded: loaded (/etc/systemd/system/kube-scheduler.service; enabled; vendor preset: enabled)\n     Active: inactive (dead) since Tue 2025-12-02 21:20:00 CST; 1min 50s ago\n       Docs: https://github.com/GoogleCloudPlatform/kubernetes\n    Process: 1289440 ExecStart=/opt/kube/bin/kube-scheduler --authentication-kubeconfig=/etc/kubernetes/kube-scheduler.kubeconfig --authorization-kubeconfig=/etc/kubernetes/kube-scheduler.kubeconfig --bind-address=0.0.0.0 --kubeconfig=/etc/kubernetes/kube-scheduler.kubeconfig --leader-elect=true --v=2 (code=exited, status=0/SUCCESS)\n   Main PID: 1289440 (code=exited, status=0/SUCCESS)\n        CPU: 1.038s\n\nDec 02 21:20:00 master kube-scheduler[1289440]: I1202 21:20:00.511157 1289440 scheduling_queue.go:952] \"Scheduling queue is closed\"\nDec 02 21:20:00 master kube-scheduler[1289440]: I1202 21:20:00.511223 1289440 secure_serving.go:258] Stopped listening on [::]:10259\nDec 02 21:20:00 master kube-scheduler[1289440]: I1202 21:20:00.511359 1289440 configmap_cafile_content.go:226] \"Shutting down controller\" name=\"client-ca::kube-system::extension-apiserver-authentication::requestheader-client-ca-file\"\nDec 02 21:20:00 master kube-scheduler[1289440]: I1202 21:20:00.511377 1289440 configmap_cafile_content.go:226] \"Shutting down controller\" name=\"client-ca::kube-system::extension-apiserver-authentication::client-ca-file\"\nDec 02 21:20:00 master kube-scheduler[1289440]: I1202 21:20:00.511404 1289440 requestheader_controller.go:186] Shutting down RequestHeaderAuthRequestController\nDec 02 21:20:00 master kube-scheduler[1289440]: E1202 21:20:00.516254 1289440 event.go:464] \"Unable to record event (will not retry!)\" err=\"broadcaster already stopped\"\nDec 02 21:20:00 master kube-scheduler[1289440]: I1202 21:20:00.516272 1289440 server.go:295] \"Requested to terminate, exiting\"\nDec 02 21:20:00 master systemd[1]: kube-scheduler.service: Deactivated successfully.\nDec 02 21:20:00 master systemd[1]: Stopped Kubernetes Scheduler.\nDec 02 21:20:00 master systemd[1]: kube-scheduler.service: Consumed 1.038s CPU time.",
+   "error": null,
+   "purpose": "kube-scheduler status on master",
+   "tool_latency": null
+  }
+ ],
+ "agentrun": {
+  "tag": "test",
+  "dsl": "workspace/dsl_versions/v0.8.dsl.txt",
+  "dsl_version": "0.8",
+  "sop": {
+   "sop": "boutique-runtime-rca",
+   "scope": {
+    "system": "boutique",
+    "families": [
+     "runtime",
+     "admission",
+     "scheduling",
+     "startup",
+     "service",
+     "performance",
+     "infrastructure",
+     "codedefect"
+    ],
+    "severity": [
+     "SEV2",
+     "SEV3"
+    ]
+   },
+   "owner": "sre-platform",
+   "approved_by": [
+    "oncall-primary",
+    "sre-lead"
+   ],
+   "reviewed_at": "2026-10-23",
+   "change_ticket": "OPS-1236",
+   "boundaries": "只读诊断：本 SOP 不执行任何写操作（重启/回滚/扩缩容），也不做对外播报；\n它回答\"最可能的根因与受害对象\"，处置与沟通由值班按 runbook 人工执行。\n不覆盖 SEV1（需 incident commander 介入）与变更引发的问题（走变更回滚流程）。\n输入是冻结快照：诊断结论对\"快照时刻\"成立，恢复后需重新取证。\nR1 已知边界：PVC 的 requested size / accessMode 在本 benchmark 的工具面不可见，\n因此 pvc_capacity 与 pvc_access_mode 无法区分（同一分数并列，交给 jev 或升级）。\n"
+  },
+  "params": {
+   "cands_cap": 8,
+   "max_waves": 8,
+   "min_waves": 5,
+   "steps_per_wave": 1,
+   "dominance_ratio": 1.5,
+   "conf_min": 0.0,
+   "escalate": true,
+   "escalate_budget": 8,
+   "judge_on_codedefect": true,
+   "jev_route": true,
+   "jev_pick": true,
+   "jev_verify": true,
+   "route_fallback": "runtime"
+  },
+  "nodes_executed": [
+   "anchors:extract_anchors",
+   "census:probes",
+   "route:decide",
+   "plan:build_plan",
+   "probe:probes",
+   "derive:derive_candidates",
+   "pick:decide",
+   "verify:decide",
+   "probe:probes",
+   "derive:derive_candidates",
+   "pick:decide",
+   "verify:decide",
+   "probe:probes",
+   "derive:derive_candidates",
+   "pick:decide",
+   "verify:decide",
+   "probe:probes",
+   "derive:derive_candidates",
+   "pick:decide",
+   "verify:decide",
+   "probe:probes",
+   "derive:derive_candidates",
+   "pick:decide",
+   "verify:decide",
+   "probe:probes",
+   "derive:derive_candidates",
+   "pick:decide",
+   "verify:decide",
+   "probe:probes",
+   "derive:derive_candidates",
+   "pick:decide",
+   "verify:decide",
+   "escalate:escalate",
+   "answer:normalize_answer",
+   "persist:persist_trace"
+  ],
+  "census": [
+   {
+    "step": "pods",
+    "gate": "always"
+   },
+   {
+    "step": "alerts",
+    "gate": "healthy_system"
+   }
+  ],
+  "plan": [
+   {
+    "step": "describe_pod",
+    "gate": "always",
+    "wave": 1
+   },
+   {
+    "step": "cluster_config",
+    "gate": "always",
+    "wave": 2
+   },
+   {
+    "step": "pvcs",
+    "gate": "volume_evidence",
+    "wave": 3
+   },
+   {
+    "step": "pvs",
+    "gate": "pending_claim",
+    "wave": 4
+   },
+   {
+    "step": "storage_classes",
+    "gate": "pending_claim",
+    "wave": 5
+   },
+   {
+    "step": "node_scheduler",
+    "gate": "unscheduled_without_events",
+    "wave": 6
+   },
+   {
+    "step": "node_kubelet",
+    "gate": "node_reported_unreachable",
+    "wave": 7
+   }
+  ],
+  "family": "scheduling",
+  "state_wiring": {
+   "family": "$route.family",
+   "route_probs": "$route.probabilities",
+   "picked": "$pick.picked",
+   "pick_dominant": "$pick.dominant",
+   "verify_status": "$verify.status",
+   "verify_prob": "$verify.confidence"
+  },
+  "bindings": {
+   "anchors": {
+    "anchors": "Anchors(case_id='boutique/infrastructure/22', system='boutique', namespace='boutique', query='Partial Service Unreachability.', difficulty='medium', symptoms=['unavailable'], mentioned_apps=[], priors={'db_service': '', 'db_port': 0})"
+   },
+   "route": {
+    "family": "scheduling",
+    "probabilities": {},
+    "route_why": "mechanism_mode"
+   },
+   "plan": {
+    "plan": "[{'name': 'describe_pod', 'key': 'describe:pod', 'tool': 'DescribeResource', 'args': <function _args_describe_pod at 0x105baf560>, 'purpose': 'probe config, container state, restart reasons, scheduler events', 'when': <function compile_steps.<locals>.<lambda> at 0x105d64f40>, 'gate': 'always', 'wave': 1}, {'name': 'cluster_config', 'key': 'cluster', 'tool': 'GetClusterConfiguration', 'args': {}, 'purpose': 'cluster-wide node state', 'when': <function compile_steps.<locals>.<lambda> at 0x105d64fe0>, 'gate': 'always', 'wave': 2}, {'name': 'pvcs', 'key': 'pvcs', 'tool': 'GetResources', 'args': <function _args_pvcs at 0x105baf100>, 'purpose': 'PVC status/capacity/class table', 'when': <function compile_steps.<locals>.<lambda> at 0x105d65080>, 'gate': 'volume_evidence', 'wave': 3}, {'name': 'pvs', 'key': 'pvs', 'tool': 'GetResources', 'args': <function _args_pvs at 0x105baf1a0>, 'purpose': 'PV capacity/access modes/claim binding', 'when': <function compile_steps.<locals>.<lambda> at 0x105d65120>, 'gate': 'pending_claim', 'wave': 4}, {'name': 'storage_classes', 'key': 'storage_classes', 'tool': 'GetResources', 'args': <function _args_storage_classes at 0x105baf240>, 'purpose': 'existing StorageClasses', 'when': <function compile_steps.<locals>.<lambda> at 0x105d651c0>, 'gate': 'pending_claim', 'wave': 5}, {'name': 'node_scheduler', 'key': 'node:kube-scheduler', 'tool': 'CheckNodeServiceStatus', 'args': <function _args_node_scheduler at 0x105bafd80>, 'purpose': 'kube-scheduler status on master', 'when': <function compile_steps.<locals>.<lambda> at 0x105d65260>, 'gate': 'unscheduled_without_events', 'wave': 6}, {'name': 'node_kubelet', 'key': 'node:kubelet', 'tool': 'CheckNodeServiceStatus', 'args': <function _args_node_kubelet at 0x105bafba0>, 'purpose': 'kubelet status on the node hosting the stalled pod', 'when': <function compile_steps.<locals>.<lambda> at 0x105d65300>, 'gate': 'node_reported_unreachable', 'wave': 7}]"
+   },
+   "derive": {
+    "candidates": "[Candidate(root_cause='kube_scheduler_unavailable', object='node/master', score=0.87, evidence='kube-scheduler.service is inactive on master', rule='node_component')]"
+   },
+   "pick": {
+    "picked": 0,
+    "dominant": true,
+    "pick_why": "no_new_evidence"
+   },
+   "verify": {
+    "status": "verified",
+    "confidence": null,
+    "verify_why": "dominant_candidate"
+   },
+   "escalate": {
+    "answer": null
+   },
+   "answer": {
+    "final": {
+     "key_evidence_summary": "kube-scheduler.service is inactive on master",
+     "top_3_predictions": [
+      {
+       "rank": 1,
+       "fault_object": "node/master",
+       "root_cause": "kube_scheduler_unavailable"
+      },
+      {
+       "rank": 2,
+       "fault_object": "node/master",
+       "root_cause": "kube_scheduler_unavailable"
+      },
+      {
+       "rank": 3,
+       "fault_object": "node/master",
+       "root_cause": "kube_scheduler_unavailable"
+      }
+     ]
+    }
+   }
+  },
+  "picked": {
+   "root_cause": "kube_scheduler_unavailable",
+   "object": "node/master",
+   "score": 0.87,
+   "evidence": "kube-scheduler.service is inactive on master",
+   "rule": "node_component"
+  },
+  "pick_why": "",
+  "verify_prob": null,
+  "verify_verdict": "verified",
+  "verified": true,
+  "escalated": false,
+  "escalate_reason": "",
+  "escalate_steps": 0,
+  "waves": 7,
+  "candidates": [
+   {
+    "root_cause": "kube_scheduler_unavailable",
+    "object": "node/master",
+    "score": 0.87,
+    "evidence": "kube-scheduler.service is inactive on master",
+    "rule": "node_component"
+   }
+  ],
+  "jev": [
+   {
+    "rid": "test:boutique/infrastructure/22#route",
+    "kind": "route",
+    "node": "route",
+    "mode": "mechanism",
+    "options": [
+     "scheduling",
+     "runtime",
+     "infrastructure"
+    ],
+    "status": "mechanical",
+    "guard": "unavailable",
+    "use": "first_option",
+    "choice": "scheduling",
+    "why": "mechanism_mode",
+    "dominant": false,
+    "continue_loop": false,
+    "escalate": false
+   },
+   {
+    "rid": "test:boutique/infrastructure/22#pick1",
+    "kind": "pick",
+    "node": "pick",
+    "mode": "mechanism",
+    "options": [],
+    "status": "mechanical",
+    "guard": "no_options",
+    "use": "none",
+    "choice": null,
+    "why": "no_candidates",
+    "dominant": false,
+    "continue_loop": false,
+    "escalate": false
+   },
+   {
+    "rid": "test:boutique/infrastructure/22#verify1",
+    "kind": "verify",
+    "node": "verify",
+    "mode": "mechanism",
+    "options": [
+     "supported",
+     "insufficient",
+     "contradicted"
+    ],
+    "status": "mechanical",
+    "guard": "no_pick",
+    "use": "unverified",
+    "choice": "unverified",
+    "why": "nothing_to_verify",
+    "dominant": false,
+    "continue_loop": false,
+    "escalate": false
+   },
+   {
+    "rid": "test:boutique/infrastructure/22#pick2",
+    "kind": "pick",
+    "node": "pick",
+    "mode": "mechanism",
+    "options": [],
+    "status": "mechanical",
+    "guard": "no_options",
+    "use": "none",
+    "choice": null,
+    "why": "no_candidates",
+    "dominant": false,
+    "continue_loop": false,
+    "escalate": false
+   },
+   {
+    "rid": "test:boutique/infrastructure/22#verify2",
+    "kind": "verify",
+    "node": "verify",
+    "mode": "mechanism",
+    "options": [
+     "supported",
+     "insufficient",
+     "contradicted"
+    ],
+    "status": "mechanical",
+    "guard": "no_pick",
+    "use": "unverified",
+    "choice": "unverified",
+    "why": "nothing_to_verify",
+    "dominant": false,
+    "continue_loop": false,
+    "escalate": false
+   },
+   {
+    "rid": "test:boutique/infrastructure/22#pick3",
+    "kind": "pick",
+    "node": "pick",
+    "mode": "mechanism",
+    "options": [],
+    "status": "mechanical",
+    "guard": "no_options",
+    "use": "none",
+    "choice": null,
+    "why": "no_candidates",
+    "dominant": false,
+    "continue_loop": false,
+    "escalate": false
+   },
+   {
+    "rid": "test:boutique/infrastructure/22#verify3",
+    "kind": "verify",
+    "node": "verify",
+    "mode": "mechanism",
+    "options": [
+     "supported",
+     "insufficient",
+     "contradicted"
+    ],
+    "status": "mechanical",
+    "guard": "no_pick",
+    "use": "unverified",
+    "choice": "unverified",
+    "why": "nothing_to_verify",
+    "dominant": false,
+    "continue_loop": false,
+    "escalate": false
+   },
+   {
+    "rid": "test:boutique/infrastructure/22#pick4",
+    "kind": "pick",
+    "node": "pick",
+    "mode": "mechanism",
+    "options": [],
+    "status": "mechanical",
+    "guard": "no_options",
+    "use": "none",
+    "choice": null,
+    "why": "no_candidates",
+    "dominant": false,
+    "continue_loop": false,
+    "escalate": false
+   },
+   {
+    "rid": "test:boutique/infrastructure/22#verify4",
+    "kind": "verify",
+    "node": "verify",
+    "mode": "mechanism",
+    "options": [
+     "supported",
+     "insufficient",
+     "contradicted"
+    ],
+    "status": "mechanical",
+    "guard": "no_pick",
+    "use": "unverified",
+    "choice": "unverified",
+    "why": "nothing_to_verify",
+    "dominant": false,
+    "continue_loop": false,
+    "escalate": false
+   },
+   {
+    "rid": "test:boutique/infrastructure/22#pick5",
+    "kind": "pick",
+    "node": "pick",
+    "mode": "mechanism",
+    "options": [],
+    "status": "mechanical",
+    "guard": "no_options",
+    "use": "none",
+    "choice": null,
+    "why": "no_candidates",
+    "dominant": false,
+    "continue_loop": false,
+    "escalate": false
+   },
+   {
+    "rid": "test:boutique/infrastructure/22#verify5",
+    "kind": "verify",
+    "node": "verify",
+    "mode": "mechanism",
+    "options": [
+     "supported",
+     "insufficient",
+     "contradicted"
+    ],
+    "status": "mechanical",
+    "guard": "no_pick",
+    "use": "unverified",
+    "choice": "unverified",
+    "why": "nothing_to_verify",
+    "dominant": false,
+    "continue_loop": false,
+    "escalate": false
+   },
+   {
+    "rid": "test:boutique/infrastructure/22#pick6",
+    "kind": "pick",
+    "node": "pick",
+    "mode": "mechanism",
+    "options": [
+     "c0"
+    ],
+    "status": "mechanical",
+    "guard": "top_over_second >= $params.dominance_ratio",
+    "use": "first_option",
+    "choice": 0,
+    "why": "dominance",
+    "dominant": true,
+    "continue_loop": false,
+    "escalate": false
+   },
+   {
+    "rid": "test:boutique/infrastructure/22#verify6",
+    "kind": "verify",
+    "node": "verify",
+    "mode": "mechanism",
+    "options": [
+     "supported",
+     "insufficient",
+     "contradicted"
+    ],
+    "status": "mechanical",
+    "guard": "$pick.dominant",
+    "use": "verified",
+    "choice": "verified",
+    "why": "dominant_candidate",
+    "dominant": false,
+    "continue_loop": false,
+    "escalate": false
+   },
+   {
+    "rid": "test:boutique/infrastructure/22#pick7",
+    "kind": "pick",
+    "node": "pick",
+    "mode": "mechanism",
+    "options": [
+     "c0"
+    ],
+    "status": "mechanical",
+    "guard": "unchanged_since_last",
+    "use": "previous",
+    "choice": 0,
+    "why": "no_new_evidence",
+    "dominant": true,
+    "continue_loop": false,
+    "escalate": false
+   },
+   {
+    "rid": "test:boutique/infrastructure/22#verify7",
+    "kind": "verify",
+    "node": "verify",
+    "mode": "mechanism",
+    "options": [
+     "supported",
+     "insufficient",
+     "contradicted"
+    ],
+    "status": "mechanical",
+    "guard": "$pick.dominant",
+    "use": "verified",
+    "choice": "verified",
+    "why": "dominant_candidate",
+    "dominant": false,
+    "continue_loop": false,
+    "escalate": false
+   }
+  ],
+  "nodes": [
+   {
+    "node": "code",
+    "id": "anchors",
+    "anchors": {
+     "case_id": "boutique/infrastructure/22",
+     "system": "boutique",
+     "namespace": "boutique",
+     "query": "Partial Service Unreachability.",
+     "difficulty": "medium",
+     "symptoms": [
+      "unavailable"
+     ],
+     "mentioned_apps": []
+    }
+   },
+   {
+    "node": "probes",
+    "plan": "census",
+    "wave": 0,
+    "executed": 1,
+    "steps": [
+     {
+      "key": "pods",
+      "tool": "GetResources",
+      "arguments": {
+       "namespace": "boutique",
+       "resource_type": "pods",
+       "output_wide": true
+      },
+      "gate": "always"
+     }
+    ],
+    "skipped": [
+     {
+      "step": "alerts",
+      "why": "gate healthy_system"
+     }
+    ]
+   },
+   {
+    "node": "decide",
+    "id": "route",
+    "rid": "test:boutique/infrastructure/22#route",
+    "status": "mechanical",
+    "guard": "unavailable",
+    "use": "first_option",
+    "choice": "scheduling",
+    "dominant": false,
+    "why": "mechanism_mode"
+   },
+   {
+    "node": "code",
+    "id": "plan",
+    "family": "scheduling",
+    "plan": [
+     {
+      "step": "describe_pod",
+      "gate": "always",
+      "wave": 1
+     },
+     {
+      "step": "cluster_config",
+      "gate": "always",
+      "wave": 2
+     },
+     {
+      "step": "pvcs",
+      "gate": "volume_evidence",
+      "wave": 3
+     },
+     {
+      "step": "pvs",
+      "gate": "pending_claim",
+      "wave": 4
+     },
+     {
+      "step": "storage_classes",
+      "gate": "pending_claim",
+      "wave": 5
+     },
+     {
+      "step": "node_scheduler",
+      "gate": "unscheduled_without_events",
+      "wave": 6
+     },
+     {
+      "step": "node_kubelet",
+      "gate": "node_reported_unreachable",
+      "wave": 7
+     }
+    ]
+   },
+   {
+    "node": "probes",
+    "plan": "family",
+    "wave": 1,
+    "executed": 1,
+    "steps": [
+     {
+      "key": "describe:pod",
+      "tool": "DescribeResource",
+      "arguments": {
+       "namespace": "boutique",
+       "resource_type": "pods",
+       "name": "currencyservice-5c6fdf7ccb-tc4gk"
+      },
+      "gate": "always"
+     }
+    ],
+    "skipped": []
+   },
+   {
+    "node": "code",
+    "id": "derive",
+    "raw": 0,
+    "kept": 0,
+    "top": []
+   },
+   {
+    "node": "decide",
+    "id": "pick",
+    "rid": "test:boutique/infrastructure/22#pick1",
+    "status": "mechanical",
+    "guard": "no_options",
+    "use": "none",
+    "choice": null,
+    "dominant": false,
+    "why": "no_candidates"
+   },
+   {
+    "node": "decide",
+    "id": "verify",
+    "rid": "test:boutique/infrastructure/22#verify1",
+    "status": "mechanical",
+    "guard": "no_pick",
+    "use": "unverified",
+    "choice": "unverified",
+    "dominant": false,
+    "why": "nothing_to_verify"
+   },
+   {
+    "node": "probes",
+    "plan": "family",
+    "wave": 2,
+    "executed": 1,
+    "steps": [
+     {
+      "key": "cluster",
+      "tool": "GetClusterConfiguration",
+      "arguments": {},
+      "gate": "always"
+     }
+    ],
+    "skipped": []
+   },
+   {
+    "node": "code",
+    "id": "derive",
+    "raw": 0,
+    "kept": 0,
+    "top": []
+   },
+   {
+    "node": "decide",
+    "id": "pick",
+    "rid": "test:boutique/infrastructure/22#pick2",
+    "status": "mechanical",
+    "guard": "no_options",
+    "use": "none",
+    "choice": null,
+    "dominant": false,
+    "why": "no_candidates"
+   },
+   {
+    "node": "decide",
+    "id": "verify",
+    "rid": "test:boutique/infrastructure/22#verify2",
+    "status": "mechanical",
+    "guard": "no_pick",
+    "use": "unverified",
+    "choice": "unverified",
+    "dominant": false,
+    "why": "nothing_to_verify"
+   },
+   {
+    "node": "probes",
+    "plan": "family",
+    "wave": 3,
+    "executed": 0,
+    "steps": [],
+    "skipped": [
+     {
+      "step": "pvcs",
+      "why": "gate volume_evidence"
+     }
+    ]
+   },
+   {
+    "node": "code",
+    "id": "derive",
+    "raw": 0,
+    "kept": 0,
+    "top": []
+   },
+   {
+    "node": "decide",
+    "id": "pick",
+    "rid": "test:boutique/infrastructure/22#pick3",
+    "status": "mechanical",
+    "guard": "no_options",
+    "use": "none",
+    "choice": null,
+    "dominant": false,
+    "why": "no_candidates"
+   },
+   {
+    "node": "decide",
+    "id": "verify",
+    "rid": "test:boutique/infrastructure/22#verify3",
+    "status": "mechanical",
+    "guard": "no_pick",
+    "use": "unverified",
+    "choice": "unverified",
+    "dominant": false,
+    "why": "nothing_to_verify"
+   },
+   {
+    "node": "probes",
+    "plan": "family",
+    "wave": 4,
+    "executed": 0,
+    "steps": [],
+    "skipped": [
+     {
+      "step": "pvs",
+      "why": "gate pending_claim"
+     }
+    ]
+   },
+   {
+    "node": "code",
+    "id": "derive",
+    "raw": 0,
+    "kept": 0,
+    "top": []
+   },
+   {
+    "node": "decide",
+    "id": "pick",
+    "rid": "test:boutique/infrastructure/22#pick4",
+    "status": "mechanical",
+    "guard": "no_options",
+    "use": "none",
+    "choice": null,
+    "dominant": false,
+    "why": "no_candidates"
+   },
+   {
+    "node": "decide",
+    "id": "verify",
+    "rid": "test:boutique/infrastructure/22#verify4",
+    "status": "mechanical",
+    "guard": "no_pick",
+    "use": "unverified",
+    "choice": "unverified",
+    "dominant": false,
+    "why": "nothing_to_verify"
+   },
+   {
+    "node": "probes",
+    "plan": "family",
+    "wave": 5,
+    "executed": 0,
+    "steps": [],
+    "skipped": [
+     {
+      "step": "storage_classes",
+      "why": "gate pending_claim"
+     }
+    ]
+   },
+   {
+    "node": "code",
+    "id": "derive",
+    "raw": 0,
+    "kept": 0,
+    "top": []
+   },
+   {
+    "node": "decide",
+    "id": "pick",
+    "rid": "test:boutique/infrastructure/22#pick5",
+    "status": "mechanical",
+    "guard": "no_options",
+    "use": "none",
+    "choice": null,
+    "dominant": false,
+    "why": "no_candidates"
+   },
+   {
+    "node": "decide",
+    "id": "verify",
+    "rid": "test:boutique/infrastructure/22#verify5",
+    "status": "mechanical",
+    "guard": "no_pick",
+    "use": "unverified",
+    "choice": "unverified",
+    "dominant": false,
+    "why": "nothing_to_verify"
+   },
+   {
+    "node": "probes",
+    "plan": "family",
+    "wave": 6,
+    "executed": 1,
+    "steps": [
+     {
+      "key": "node:kube-scheduler",
+      "tool": "CheckNodeServiceStatus",
+      "arguments": {
+       "node_name": "master",
+       "service_name": "kube-scheduler"
+      },
+      "gate": "unscheduled_without_events"
+     }
+    ],
+    "skipped": []
+   },
+   {
+    "node": "code",
+    "id": "derive",
+    "raw": 1,
+    "kept": 1,
+    "top": [
+     {
+      "root_cause": "kube_scheduler_unavailable",
+      "object": "node/master",
+      "score": 0.87,
+      "evidence": "kube-scheduler.service is inactive on master",
+      "rule": "node_component"
+     }
+    ]
+   },
+   {
+    "node": "decide",
+    "id": "pick",
+    "rid": "test:boutique/infrastructure/22#pick6",
+    "status": "mechanical",
+    "guard": "top_over_second >= $params.dominance_ratio",
+    "use": "first_option",
+    "choice": 0,
+    "dominant": true,
+    "why": "dominance"
+   },
+   {
+    "node": "decide",
+    "id": "verify",
+    "rid": "test:boutique/infrastructure/22#verify6",
+    "status": "mechanical",
+    "guard": "$pick.dominant",
+    "use": "verified",
+    "choice": "verified",
+    "dominant": false,
+    "why": "dominant_candidate"
+   },
+   {
+    "node": "probes",
+    "plan": "family",
+    "wave": 7,
+    "executed": 0,
+    "steps": [],
+    "skipped": [
+     {
+      "step": "node_kubelet",
+      "why": "gate node_reported_unreachable"
+     }
+    ]
+   },
+   {
+    "node": "code",
+    "id": "derive",
+    "raw": 1,
+    "kept": 1,
+    "top": [
+     {
+      "root_cause": "kube_scheduler_unavailable",
+      "object": "node/master",
+      "score": 0.87,
+      "evidence": "kube-scheduler.service is inactive on master",
+      "rule": "node_component"
+     }
+    ]
+   },
+   {
+    "node": "decide",
+    "id": "pick",
+    "rid": "test:boutique/infrastructure/22#pick7",
+    "status": "mechanical",
+    "guard": "unchanged_since_last",
+    "use": "previous",
+    "choice": 0,
+    "dominant": true,
+    "why": "no_new_evidence"
+   },
+   {
+    "node": "decide",
+    "id": "verify",
+    "rid": "test:boutique/infrastructure/22#verify7",
+    "status": "mechanical",
+    "guard": "$pick.dominant",
+    "use": "verified",
+    "choice": "verified",
+    "dominant": false,
+    "why": "dominant_candidate"
+   },
+   {
+    "node": "loop",
+    "id": "waves",
+    "stop": "plan_exhausted",
+    "wave": 7
+   },
+   {
+    "node": "escalate",
+    "id": "escalate",
+    "fired": false,
+    "reasons": [],
+    "why": "no reason"
+   },
+   {
+    "node": "code",
+    "id": "answer",
+    "predictions": [
+     {
+      "rank": 1,
+      "fault_object": "node/master",
+      "root_cause": "kube_scheduler_unavailable"
+     },
+     {
+      "rank": 2,
+      "fault_object": "node/master",
+      "root_cause": "kube_scheduler_unavailable"
+     },
+     {
+      "rank": 3,
+      "fault_object": "node/master",
+      "root_cause": "kube_scheduler_unavailable"
+     }
+    ]
+   },
+   {
+    "node": "artifact",
+    "id": "persist",
+    "persisted": false,
+    "why": "written by the CLI driver"
+   }
+  ],
+  "notes": [],
+  "tool_calls": 4,
+  "model_calls": 0,
+  "tokens_in": 0,
+  "tokens_out": 0,
+  "wall_s": 0.03
+ }
+}

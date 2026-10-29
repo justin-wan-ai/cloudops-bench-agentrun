@@ -1,0 +1,56 @@
+{
+ "n": 7,
+ "cases": [
+  {
+   "id": "boutique/runtime/28",
+   "system": "boutique",
+   "category": "runtime",
+   "case": "28",
+   "difficulty": "easy"
+  },
+  {
+   "id": "boutique/runtime/38",
+   "system": "boutique",
+   "category": "runtime",
+   "case": "38",
+   "difficulty": "easy"
+  },
+  {
+   "id": "boutique/runtime/40",
+   "system": "boutique",
+   "category": "runtime",
+   "case": "40",
+   "difficulty": "easy"
+  },
+  {
+   "id": "trainticket/runtime/24",
+   "system": "trainticket",
+   "category": "runtime",
+   "case": "24",
+   "difficulty": "easy"
+  },
+  {
+   "id": "trainticket/runtime/52",
+   "system": "trainticket",
+   "category": "runtime",
+   "case": "52",
+   "difficulty": "easy"
+  },
+  {
+   "id": "trainticket/runtime/67",
+   "system": "trainticket",
+   "category": "runtime",
+   "case": "67",
+   "difficulty": "easy"
+  },
+  {
+   "id": "trainticket/runtime/95",
+   "system": "trainticket",
+   "category": "runtime",
+   "case": "95",
+   "difficulty": "easy"
+  }
+ ],
+ "round": "runtime",
+ "split": "val"
+}

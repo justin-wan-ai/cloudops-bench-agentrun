@@ -1,0 +1,115 @@
+[
+  {
+    "rid": "test:trainticket/runtime/61#route",
+    "kind": "route",
+    "status": "ans",
+    "choice": "runtime",
+    "prob": null,
+    "mode": "live",
+    "usage": {
+      "input_tokens": 173
+    }
+  },
+  {
+    "rid": "test:trainticket/runtime/61#pick3",
+    "kind": "pick",
+    "status": "mechanical",
+    "choice": 0,
+    "prob": null,
+    "mode": "live",
+    "usage": null
+  },
+  {
+    "rid": "test:boutique/codedefect/60#route",
+    "kind": "route",
+    "status": "abstain",
+    "choice": "codedefect",
+    "prob": null,
+    "mode": "live",
+    "usage": {
+      "input_tokens": 226
+    }
+  },
+  {
+    "rid": "test:boutique/codedefect/60#pick1",
+    "kind": "pick",
+    "status": "ans",
+    "choice": 0,
+    "prob": null,
+    "mode": "live",
+    "usage": {
+      "input_tokens": 242
+    }
+  },
+  {
+    "rid": "test:boutique/codedefect/60#verify1",
+    "kind": "verify",
+    "status": "ans",
+    "choice": null,
+    "prob": 0.15,
+    "mode": "live",
+    "usage": {
+      "input_tokens": 469
+    }
+  },
+  {
+    "rid": "test:boutique/admission/32#route",
+    "kind": "route",
+    "status": "abstain",
+    "choice": "admission",
+    "prob": null,
+    "mode": "live",
+    "usage": {
+      "input_tokens": 154
+    }
+  },
+  {
+    "rid": "test:boutique/admission/32#pick2",
+    "kind": "pick",
+    "status": "mechanical",
+    "choice": 0,
+    "prob": null,
+    "mode": "live",
+    "usage": null
+  },
+  {
+    "rid": "test:boutique/scheduling/109#route",
+    "kind": "route",
+    "status": "abstain",
+    "choice": "scheduling",
+    "prob": null,
+    "mode": "live",
+    "usage": {
+      "input_tokens": 231
+    }
+  },
+  {
+    "rid": "test:boutique/scheduling/109#pick1",
+    "kind": "pick",
+    "status": "mechanical",
+    "choice": 0,
+    "prob": null,
+    "mode": "live",
+    "usage": null
+  },
+  {
+    "rid": "test:boutique/runtime/32#route",
+    "kind": "route",
+    "status": "abstain",
+    "choice": "runtime",
+    "prob": null,
+    "mode": "live",
+    "usage": {
+      "input_tokens": 163
+    }
+  },
+  {
+    "rid": "test:boutique/runtime/32#pick1",
+    "kind": "pick",
+    "status": "mechanical",
+    "choice": 0,
+    "prob": null,
+    "mode": "live",
+    "usage": null
+  }
+]

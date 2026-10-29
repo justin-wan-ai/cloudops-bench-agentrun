@@ -1,0 +1,845 @@
+{
+ "case_id": "trainticket/runtime/51",
+ "system_name": "trainticket",
+ "question": "Service Availability Disruption.",
+ "case_path": "/Users/justinwan/work/workspace/cloudops_bench_rsi/repo/benchmark/trainticket/runtime/51",
+ "max_steps": 10,
+ "current_step": 4,
+ "finished": true,
+ "stop_reason": "submit",
+ "final_answer": "{\"key_evidence_summary\": \"MySQL rejected the credentials\", \"top_3_predictions\": [{\"rank\": 1, \"fault_object\": \"app/ts-train-food-service\", \"root_cause\": \"mysql_invalid_credentials\"}, {\"rank\": 2, \"fault_object\": \"app/ts-train-food-service\", \"root_cause\": \"mysql_invalid_credentials\"}, {\"rank\": 3, \"fault_object\": \"app/ts-train-food-service\", \"root_cause\": \"mysql_invalid_credentials\"}]}",
+ "metadata": {
+  "namespace": "train-ticket",
+  "query": "Service Availability Disruption.",
+  "fault_category": "runtime",
+  "model_name": "agentrun-v0.13"
+ },
+ "steps": [
+  {
+   "step_id": 0,
+   "action_type": "tool",
+   "action_name": "GetResources",
+   "action_input": {
+    "namespace": "train-ticket",
+    "resource_type": "pods",
+    "output_wide": true
+   },
+   "observation": "NAME                                            READY   STATUS             RESTARTS      AGE     IP             NODE        NOMINATED NODE   READINESS GATES\nnacos-0                                         1/1     Running            0             4d      172.20.2.76    worker-02   <none>           <none>\nnacos-1                                         1/1     Running            0             4d      172.20.1.247   worker-01   <none>           <none>\nnacos-2                                         1/1     Running            0             4d      172.20.3.7     worker-03   <none>           <none>\nnacosdb-mysql-0                                 3/3     Running            1 (4d ago)    4d      172.20.2.75    worker-02   <none>           <none>\nnacosdb-mysql-1                                 3/3     Running            2 (4d ago)    4d      172.20.1.246   worker-01   <none>           <none>\nnacosdb-mysql-2                                 3/3     Running            1 (4d ago)    4d      172.20.3.6     worker-03   <none>           <none>\nrabbitmq-57b4f9969c-4cndj                       1/1     Running            0             4d      172.20.2.77    worker-02   <none>           <none>\nts-assurance-service-85577d9b4d-6h9g9           1/1     Running            0             4m55s   172.20.2.188   worker-02   <none>           <none>\nts-auth-service-7689b8d556-v88qf                1/1     Running            0             5m3s    172.20.2.176   worker-02   <none>           <none>\nts-avatar-service-5c7d494dcd-4x57n              1/1     Running            0             5m      172.20.2.182   worker-02   <none>           <none>\nts-basic-service-7695b48fbc-jnwmk               1/1     Running            0             5m3s    172.20.1.40    worker-01   <none>           <none>\nts-cancel-service-5f94cbd655-mwcgd              1/1     Running            0             5m2s    172.20.2.178   worker-02   <none>           <none>\nts-config-service-778646698d-xw95k              1/1     Running            0             4m57s   172.20.2.186   worker-02   <none>           <none>\nts-consign-price-service-9dbb69844-4q9km        1/1     Running            0             19h     172.20.1.213   worker-01   <none>           <none>\nts-consign-service-7b6f69669d-d9sgh             1/1     Running            0             5m1s    172.20.1.44    worker-01   <none>           <none>\nts-contacts-service-878884888-hg5d4             1/1     Running            0             5m2s    172.20.2.179   worker-02   <none>           <none>\nts-delivery-service-787cbf858d-k7fgj            1/1     Running            0             4m58s   172.20.1.48    worker-01   <none>           <none>\nts-execute-service-84bddf7bb4-rfsxc             1/1     Running            0             5m      172.20.3.65    worker-03   <none>           <none>\nts-food-delivery-service-d7f948cf4-rt49d        1/1     Running            0             4m56s   172.20.2.187   worker-02   <none>           <none>\nts-food-service-6bdb8b7ddb-b5xgg                1/1     Running            0             4m57s   172.20.1.51    worker-01   <none>           <none>\nts-gateway-service-f8d94c6b5-865ck              1/1     Running            0             5m3s    172.20.2.175   worker-02   <none>           <none>\nts-inside-payment-service-5d5bd5c84d-wc8bb      1/1     Running            0             4m59s   172.20.1.46    worker-01   <none>           <none>\nts-news-service-85787d567b-mmcvp                1/1     Running            0             4m55s   172.20.1.53    worker-01   <none>           <none>\nts-notification-service-675d7d65b4-m9bct        1/1     Running            0             4m58s   172.20.3.70    worker-03   <none>           <none>\nts-order-other-service-77f574b58b-4pzbj         1/1     Running            0             5m2s    172.20.1.43    worker-01   <none>           <none>\nts-order-service-57d9f6ffbd-8jh7s               1/1     Running            0             4m59s   172.20.3.68    worker-03   <none>           <none>\nts-payment-service-76d7d44b5b-8q7tp             1/1     Running            0             4m56s   172.20.1.52    worker-01   <none>           <none>\nts-preserve-other-service-76d474789b-r8ffv      1/1     Running            0             5m      172.20.1.45    worker-01   <none>           <none>\nts-preserve-service-77b4fcb95c-mpddn            1/1     Running            0             4m57s   172.20.1.50    worker-01   <none>           <none>\nts-price-service-69f84bfbc4-h58ct               1/1     Running            0             5m2s    172.20.1.42    worker-01   <none>           <none>\nts-rebook-service-6556f4bdff-zqm6m              1/1     Running            0             5m      172.20.3.66    worker-03   <none>           <none>\nts-route-plan-service-5db7d84bf6-xjq99          1/1     Running            0             5m1s    172.20.3.64    worker-03   <none>           <none>\nts-route-service-84fdb67598-6nlgh               1/1     Running            0             5m3s    172.20.1.41    worker-01   <none>           <none>\nts-seat-service-79bf884688-bzh6h                1/1     Running            0             4m59s   172.20.2.183   worker-02   <none>           <none>\nts-security-service-64cb5fb74d-f4c2v            1/1     Running            0             4m57s   172.20.2.185   worker-02   <none>           <none>\nts-station-food-service-68497bf65b-xxcvl        1/1     Running            0             5m3s    172.20.2.177   worker-02   <none>           <none>\nts-station-service-fd984464d-87lms              1/1     Running            0             5m2s    172.20.2.180   worker-02   <none>           <none>\nts-ticket-office-service-588b66bc4b-dvhds       1/1     Running            0             5m1s    172.20.2.181   worker-02   <none>           <none>\nts-train-food-service-54754ff6f6-t6sj2          0/1     CrashLoopBackOff   4 (62s ago)   4m55s   172.20.3.85    worker-03   <none>           <none>\nts-train-service-79b45885dd-zfgsm               1/1     Running            0             4m58s   172.20.1.49    worker-01   <none>           <none>\nts-travel-plan-service-684f8495b5-4bmbp         1/1     Running            0             5m      172.20.3.67    worker-03   <none>           <none>\nts-travel-service-55fd6fc94d-zk9rd              1/1     Running            0             4m55s   172.20.3.73    worker-03   <none>           <none>\nts-travel2-service-c56664fd-5dp7x               1/1     Running            0             5m1s    172.20.3.63    worker-03   <none>           <none>\nts-ui-dashboard-554844f867-q269p                1/1     Running            0             4m59s   172.20.1.47    worker-01   <none>           <none>\nts-user-service-b795844f6-kszg2                 1/1     Running            0             4m56s   172.20.3.71    worker-03   <none>           <none>\nts-verification-code-service-7b984b7994-przm6   1/1     Running            0             4m56s   172.20.3.72    worker-03   <none>           <none>\nts-voucher-service-5b8bd94c88-xm247             1/1     Running            0             4m59s   172.20.3.69    worker-03   <none>           <none>\nts-wait-order-service-79c76dff8d-rn9tr          1/1     Running            0             4m58s   172.20.2.184   worker-02   <none>           <none>\ntsdb-mysql-0                                    3/3     Running            1 (19h ago)   19h     172.20.2.54    worker-02   <none>           <none>\ntsdb-mysql-1                                    3/3     Running            1 (19h ago)   19h     172.20.1.212   worker-01   <none>           <none>\ntsdb-mysql-2                                    3/3     Running            1 (19h ago)   19h     172.20.3.100   worker-03   <none>           <none>\n",
+   "error": null,
+   "purpose": "pod readiness census",
+   "tool_latency": null
+  },
+  {
+   "step_id": 1,
+   "action_type": "tool",
+   "action_name": "DescribeResource",
+   "action_input": {
+    "namespace": "train-ticket",
+    "resource_type": "pods",
+    "name": "ts-train-food-service-54754ff6f6-t6sj2"
+   },
+   "observation": "Name:             ts-train-food-service-54754ff6f6-t6sj2\nNamespace:        train-ticket\nPriority:         0\nService Account:  default\nNode:             worker-03/192.168.0.174\nStart Time:       Thu, 12 Mar 2026 16:09:22 +0800\nLabels:           app=ts-train-food-service\n                  pod-template-hash=54754ff6f6\nAnnotations:      <none>\nStatus:           Running\nIP:               172.20.3.85\nIPs:\n  IP:           172.20.3.85\nControlled By:  ReplicaSet/ts-train-food-service-54754ff6f6\nContainers:\n  ts-train-food-service:\n    Container ID:   containerd://0788057dea8af58bad395fb5c5deb2217573d9c7607893c243285940df12b761\n    Image:          ghcr.io/sregym/ts-train-food-service:latest\n    Image ID:       ghcr.io/sregym/ts-train-food-service@sha256:7750bfb1ad830081241c0ef93b05c9b5dde176e953acaf51fac2a6f43e160195\n    Port:           19999/TCP\n    Host Port:      0/TCP\n    State:          Waiting\n      Reason:       CrashLoopBackOff\n    Last State:     Terminated\n      Reason:       Error\n      Exit Code:    1\n      Started:      Thu, 12 Mar 2026 16:12:46 +0800\n      Finished:     Thu, 12 Mar 2026 16:13:15 +0800\n    Ready:          False\n    Restart Count:  4\n    Limits:\n      cpu:     500m\n      memory:  2000Mi\n    Requests:\n      cpu:      300m\n      memory:   400Mi\n    Readiness:  tcp-socket :19999 delay=60s timeout=5s period=10s #success=1 #failure=3\n    Environment Variables from:\n      ts-train-food-mysql  Secret     Optional: false\n      nacos                ConfigMap  Optional: false\n    Environment:\n      SPRING_MAIN_ALLOW_CIRCULAR_REFERENCES:  true\n      NODE_IP:                                 (v1:status.hostIP)\n    Mounts:\n      /var/run/secrets/kubernetes.io/serviceaccount from kube-api-access-l6dhj (ro)\nConditions:\n  Type                        Status\n  PodReadyToStartContainers   True \n  Initialized                 True \n  Ready                       False \n  ContainersReady             False \n  PodScheduled                True \nVolumes:\n  kube-api-access-l6dhj:\n    Type:                    Projected (a volume that contains injected data from multiple sources)\n    TokenExpirationSeconds:  3607\n    ConfigMapName:           kube-root-ca.crt\n    ConfigMapOptional:       <nil>\n    DownwardAPI:             true\nQoS Class:                   Burstable\nNode-Selectors:              <none>\nTolerations:                 node.kubernetes.io/not-ready:NoExecute op=Exists for 300s\n                             node.kubernetes.io/unreachable:NoExecute op=Exists for 300s\nEvents:\n  Type     Reason     Age                  From               Message\n  ----     ------     ----                 ----               -------\n  Normal   Scheduled  5m6s                 default-scheduler  Successfully assigned train-ticket/ts-train-food-service-54754ff6f6-t6sj2 to worker-03\n  Normal   Pulled     102s (x5 over 5m5s)  kubelet            Container image \"ghcr.io/sregym/ts-train-food-service:latest\" already present on machine\n  Normal   Created    102s (x5 over 5m5s)  kubelet            Created container ts-train-food-service\n  Normal   Started    102s (x5 over 5m5s)  kubelet            Started container ts-train-food-service\n  Warning  BackOff    34s (x10 over 4m2s)  kubelet            Back-off restarting failed container ts-train-food-service in pod ts-train-food-service-54754ff6f6-t6sj2_train-ticket(982482cc-cc1d-4449-a1e9-2dfd9cc17ef0)\n",
+   "error": null,
+   "purpose": "probe config, container state, restart reasons, scheduler events",
+   "tool_latency": null
+  },
+  {
+   "step_id": 2,
+   "action_type": "tool",
+   "action_name": "GetAppYAML",
+   "action_input": {
+    "app_name": "ts-train-food-service"
+   },
+   "observation": "apiVersion: apps/v1\nkind: Deployment\nmetadata:\n  namespace: train-ticket\n  name: ts-train-food-service\nspec:\n  selector:\n    matchLabels:\n      app: ts-train-food-service\n  replicas: 1\n  template:\n    metadata:\n      labels:\n        app: ts-train-food-service\n    spec:\n      containers:\n      - name: ts-train-food-service\n        image: ghcr.io/sregym/ts-train-food-service:latest\n        imagePullPolicy: IfNotPresent\n        env:\n        - name: SPRING_MAIN_ALLOW_CIRCULAR_REFERENCES\n          value: 'true'\n        - name: NODE_IP\n          valueFrom:\n            fieldRef:\n              fieldPath: status.hostIP\n        envFrom:\n        - secretRef:\n            name: ts-train-food-mysql\n        - configMapRef:\n            name: nacos\n        ports:\n        - containerPort: 19999\n        resources:\n          requests:\n            cpu: 300m\n            memory: 400Mi\n          limits:\n            cpu: 500m\n            memory: 2000Mi\n        readinessProbe:\n          tcpSocket:\n            port: 19999\n          initialDelaySeconds: 60\n          periodSeconds: 10\n          timeoutSeconds: 5\n---\napiVersion: v1\nkind: Service\nmetadata:\n  namespace: train-ticket\n  name: ts-train-food-service\nspec:\n  ports:\n  - name: http\n    port: 19999\n  selector:\n    app: ts-train-food-service\n---\napiVersion: v1\nkind: Secret\nmetadata:\n  namespace: train-ticket\n  name: ts-train-food-mysql\ntype: Opaque\nstringData:\n  TRAIN_FOOD_MYSQL_HOST: tsdb-mysql-leader\n  TRAIN_FOOD_MYSQL_PORT: '3306'\n  TRAIN_FOOD_MYSQL_DATABASE: ts\n  TRAIN_FOOD_MYSQL_USER: ts\n  TRAIN_FOOD_MYSQL_PASSWORD: Ayawigppa329\n",
+   "error": null,
+   "purpose": "declared probes / limits / image / env",
+   "tool_latency": null
+  },
+  {
+   "step_id": 3,
+   "action_type": "tool",
+   "action_name": "GetErrorLogs",
+   "action_input": {
+    "namespace": "train-ticket",
+    "service_name": "ts-train-food-service"
+   },
+   "observation": "{\n  \"app\": [\n    \"2026-03-12T16:15:10.116713511+08:00 2026-03-12 16:15:10.116 ERROR 1 --- [           main] com.zaxxer.hikari.pool.HikariPool        : HikariPool-1 - Exception during pool initialization.\\n2026-03-12T16:15:10.116728906+08:00 \",\n    \"2026-03-12T16:15:10.116731734+08:00 java.sql.SQLException: Access denied for user 'ts'@'172.20.3.85' (using password: YES)\\n2026-03-12T16:15:10.116734150+08:00 \\tat com.mysql.cj.jdbc.exceptions.SQLError.createSQLException(SQLError.java:130) ~[mysql-connector-j-8.0.33.jar!/:8.0.33]\\n2026-03-12T16:15:10.116736521+08:00 \\tat com.mysql.cj.jdbc.exceptions.SQLExceptionsMapping.translateException(SQLExceptionsMapping.java:122) ~[mysql-connector-j-8.0.33.jar!/:8.0.33]\\n2026-03-12T16:15:10.116738763+08:00 \\tat com.mysql.cj.jdbc.ConnectionImpl.createNewIO(ConnectionImpl.java:825) ~[mysql-connector-j-8.0.33.jar!/:8.0.33]\\n2026-03-12T16:15:10.116741238+08:00 \\tat com.mysql.cj.jdbc.ConnectionImpl.<init>(ConnectionImpl.java:446) ~[mysql-connector-j-8.0.33.jar!/:8.0.33]\",\n    \"2026-03-12T16:15:10.117510926+08:00 java.sql.SQLException: Access denied for user 'ts'@'172.20.3.85' (using password: YES)\\n2026-03-12T16:15:10.117513135+08:00 \\tat com.mysql.cj.jdbc.exceptions.SQLError.createSQLException(SQLError.java:130) ~[mysql-connector-j-8.0.33.jar!/:8.0.33]\\n2026-03-12T16:15:10.117517838+08:00 \\tat com.mysql.cj.jdbc.exceptions.SQLExceptionsMapping.translateException(SQLExceptionsMapping.java:122) ~[mysql-connector-j-8.0.33.jar!/:8.0.33]\\n2026-03-12T16:15:10.117519849+08:00 \\tat com.mysql.cj.jdbc.ConnectionImpl.createNewIO(ConnectionImpl.java:825) ~[mysql-connector-j-8.0.33.jar!/:8.0.33]\\n2026-03-12T16:15:10.117521765+08:00 \\tat com.mysql.cj.jdbc.ConnectionImpl.<init>(ConnectionImpl.java:446) ~[mysql-connector-j-8.0.33.jar!/:8.0.33]\",\n    \"2026-03-12T16:15:13.086519276+08:00 2026-03-12 16:15:13.086 ERROR 1 --- [           main] com.zaxxer.hikari.pool.HikariPool        : HikariPool-1 - Exception during pool initialization.\\n2026-03-12T16:15:13.086539340+08:00 \",\n    \"2026-03-12T16:15:13.086542205+08:00 java.sql.SQLException: Access denied for user 'ts'@'172.20.3.85' (using password: YES)\\n2026-03-12T16:15:13.086545186+08:00 \\tat com.mysql.cj.jdbc.exceptions.SQLError.createSQLException(SQLError.java:130) ~[mysql-connector-j-8.0.33.jar!/:8.0.33]\\n2026-03-12T16:15:13.086547678+08:00 \\tat com.mysql.cj.jdbc.exceptions.SQLExceptionsMapping.translateException(SQLExceptionsMapping.java:122) ~[mysql-connector-j-8.0.33.jar!/:8.0.33]\\n2026-03-12T16:15:13.086549914+08:00 \\tat com.mysql.cj.jdbc.ConnectionImpl.createNewIO(ConnectionImpl.java:825) ~[mysql-connector-j-8.0.33.jar!/:8.0.33]\\n2026-03-12T16:15:13.086587431+08:00 \\tat com.mysql.cj.jdbc.ConnectionImpl.<init>(ConnectionImpl.java:446) ~[mysql-connector-j-8.0.33.jar!/:8.0.33]\",\n    \"2026-03-12T16:15:13.087521106+08:00 2026-03-12 16:15:13.087  WARN 1 --- [           main] o.h.engine.jdbc.spi.SqlExceptionHelper   : SQL Error: 1045, SQLState: 28000\",\n    \"2026-03-12T16:15:13.087629711+08:00 2026-03-12 16:15:13.087 ERROR 1 --- [           main] o.h.engine.jdbc.spi.SqlExceptionHelper   : Access denied for user 'ts'@'172.20.3.85' (using password: YES)\",\n    \"2026-03-12T16:15:13.092282099+08:00 2026-03-12 16:15:13.092 ERROR 1 --- [           main] j.LocalContainerEntityManagerFactoryBean : Failed to initialize JPA EntityManagerFactory: [PersistenceUnit: default] Unable to build Hibernate SessionFactory; nested exception is org.hibernate.exception.GenericJDBCException: Unable to open JDBC Connection for DDL execution\",\n    \"2026-03-12T16:15:13.092692932+08:00 2026-03-12 16:15:13.092  WARN 1 --- [           main] ConfigServletWebServerApplicationContext : Exception encountered during context initialization - cancelling refresh attempt: org.springframework.beans.factory.BeanCreationException: Error creating bean with name 'entityManagerFactory' defined in class path resource [org/springframework/boot/autoconfigure/orm/jpa/HibernateJpaConfiguration.class]: Invocation of init method failed; nested exception is javax.persistence.PersistenceException: [PersistenceUnit: default] Unable to build Hibernate SessionFactory; nested exception is org.hibernate.exception.GenericJDBCException: Unable to open JDBC Connection for DDL execution\",\n    \"2026-03-12T16:15:13.185626532+08:00 Error starting ApplicationContext. To display the conditions report re-run your application with 'debug' enabled.\",\n    \"2026-03-12T16:15:13.294293707+08:00 2026-03-12 16:15:13.293 ERROR 1 --- [           main] o.s.boot.SpringApplication               : Application run failed\\n2026-03-12T16:15:13.294312235+08:00 \",\n    \"2026-03-12T16:15:13.294317306+08:00 org.springframework.beans.factory.BeanCreationException: Error creating bean with name 'entityManagerFactory' defined in class path resource [org/springframework/boot/autoconfigure/orm/jpa/HibernateJpaConfiguration.class]: Invocation of init method failed; nested exception is javax.persistence.PersistenceException: [PersistenceUnit: default] Unable to build Hibernate SessionFactory; nested exception is org.hibernate.exception.GenericJDBCException: Unable to open JDBC Connection for DDL execution\\n2026-03-12T16:15:13.294385186+08:00 Caused by: javax.persistence.PersistenceException: [PersistenceUnit: default] Unable to build Hibernate SessionFactory; nested exception is org.hibernate.exception.GenericJDBCException: Unable to open JDBC Connection for DDL execution\\n2026-03-12T16:15:13.294408798+08:00 Caused by: org.hibernate.exception.GenericJDBCException: Unable to open JDBC Connection for DDL execution\\n2026-03-12T16:15:13.294465873+08:00 Caused by: java.sql.SQLException: Access denied for user 'ts'@'172.20.3.85' (using password: YES)\\n2026-03-12T16:15:13.294319965+08:00 \\tat org.springframework.beans.factory.support.AbstractAutowireCapableBeanFact...\"\n  ],\n  \"previous\": [\n    \"2026-03-12 16:15:10.116 ERROR 1 --- [           main] com.zaxxer.hikari.pool.HikariPool        : HikariPool-1 - Exception during pool initialization.\\nCaused by: javax.persistence.PersistenceException: [PersistenceUnit: default] Unable to build Hibernate SessionFactory; nested exception is org.hibernate.exception.GenericJDBCException: Unable to open JDBC Connection for DDL execution\\nCaused by: org.hibernate.exception.GenericJDBCException: Unable to open JDBC Connection for DDL execution\\nCaused by: java.sql.SQLException: Access denied for user 'ts'@'172.20.3.85' (using password: YES)\\n\\tat com.mysql.cj.jdbc.exceptions.SQLError.createSQLException(SQLError.java:130) ~[mysql-connector-j-8.0.33.jar!/:8.0.33]\\n\\tat com.mysql.cj.jdbc.exceptions.SQLExceptionsMapping.translateException(SQLExceptionsMapping.java:122) ~[mysql-connector-j-8.0.33.jar!/:8.0.33]\\n\\tat com.mysql.cj.jdbc.ConnectionImpl.createNewIO(ConnectionImpl.java:825) ~[mysql-connector-j-8.0.33.jar!/:8.0.33]\\n\\tat com.mysql.cj.jdbc.ConnectionImpl.<init>(ConnectionImpl.java:446) ~[mysql-connector-j-8.0.33.jar!/:8.0.33]\"\n  ]\n}",
+   "error": null,
+   "purpose": "application error logs",
+   "tool_latency": null
+  }
+ ],
+ "agentrun": {
+  "tag": "test",
+  "dsl": "workspace/dsl_versions/v0.13.dsl.txt",
+  "dsl_version": "0.13",
+  "sop": {
+   "sop": "boutique-runtime-rca",
+   "scope": {
+    "system": "boutique",
+    "families": [
+     "runtime",
+     "admission",
+     "scheduling",
+     "startup",
+     "service",
+     "performance",
+     "infrastructure",
+     "codedefect"
+    ],
+    "severity": [
+     "SEV2",
+     "SEV3"
+    ]
+   },
+   "owner": "sre-platform",
+   "approved_by": [
+    "oncall-primary",
+    "sre-lead"
+   ],
+   "reviewed_at": "2026-10-23",
+   "change_ticket": "OPS-1241",
+   "boundaries": "R4 已知：`node_network_delay` 若快照里没有任何 Node 级 retrans 告警（例：performance/25），\n本 SOP 会退回 pod 级判断（当前工具面无法区分 pod 与 node 的延迟注入）。\n只读诊断：本 SOP 不执行任何写操作（重启/回滚/扩缩容），也不做对外播报；\n它回答\"最可能的根因与受害对象\"，处置与沟通由值班按 runbook 人工执行。\n不覆盖 SEV1（需 incident commander 介入）与变更引发的问题（走变更回滚流程）。\n输入是冻结快照：诊断结论对\"快照时刻\"成立，恢复后需重新取证。\nR1 已知边界：PVC 的 requested size / accessMode 在本 benchmark 的工具面不可见，\n因此 pvc_capacity 与 pvc_access_mode 无法区分（同一分数并列，交给 jev 或升级）。\n"
+  },
+  "params": {
+   "cands_cap": 8,
+   "max_waves": 10,
+   "min_waves": 5,
+   "steps_per_wave": 1,
+   "dominance_ratio": 1.5,
+   "conf_min": 0.0,
+   "escalate": true,
+   "escalate_budget": 8,
+   "judge_on_codedefect": true,
+   "jev_route": true,
+   "jev_pick": true,
+   "jev_verify": true,
+   "route_fallback": "runtime"
+  },
+  "nodes_executed": [
+   "anchors:extract_anchors",
+   "census:probes",
+   "route:decide",
+   "plan:build_plan",
+   "probe:probes",
+   "derive:derive_candidates",
+   "pick:decide",
+   "verify:decide",
+   "probe:probes",
+   "derive:derive_candidates",
+   "pick:decide",
+   "verify:decide",
+   "probe:probes",
+   "derive:derive_candidates",
+   "pick:decide",
+   "verify:decide",
+   "probe:probes",
+   "derive:derive_candidates",
+   "pick:decide",
+   "verify:decide",
+   "probe:probes",
+   "derive:derive_candidates",
+   "pick:decide",
+   "verify:decide",
+   "escalate:escalate",
+   "answer:normalize_answer",
+   "persist:persist_trace"
+  ],
+  "census": [
+   {
+    "step": "pods",
+    "gate": "always"
+   },
+   {
+    "step": "alerts",
+    "gate": "healthy_system"
+   }
+  ],
+  "plan": [
+   {
+    "step": "describe_pod",
+    "gate": "always",
+    "wave": 1
+   },
+   {
+    "step": "app_yaml",
+    "gate": "probe_or_restart_or_weak",
+    "wave": 2
+   },
+   {
+    "step": "error_logs",
+    "gate": "restart_or_weak_strong",
+    "wave": 3
+   },
+   {
+    "step": "node_kubelet",
+    "gate": "runtime_stall",
+    "wave": 4
+   },
+   {
+    "step": "node_containerd",
+    "gate": "runtime_stall | node_all_healthy",
+    "wave": 5
+   }
+  ],
+  "family": "runtime",
+  "state_wiring": {
+   "family": "$route.family",
+   "route_probs": "$route.probabilities",
+   "picked": "$pick.picked",
+   "pick_dominant": "$pick.dominant",
+   "verify_status": "$verify.status",
+   "verify_prob": "$verify.confidence"
+  },
+  "bindings": {
+   "anchors": {
+    "anchors": "Anchors(case_id='trainticket/runtime/51', system='trainticket', namespace='train-ticket', query='Service Availability Disruption.', difficulty='easy', symptoms=['unavailable'], mentioned_apps=[], priors={'db_service': 'tsdb-mysql-leader', 'db_port': 3306})"
+   },
+   "route": {
+    "family": "runtime",
+    "probabilities": {},
+    "route_why": "mechanism_mode"
+   },
+   "plan": {
+    "plan": "[{'name': 'describe_pod', 'key': 'describe:pod', 'tool': 'DescribeResource', 'args': <function _args_describe_pod at 0x10ee43ec0>, 'purpose': 'probe config, container state, restart reasons, scheduler events', 'when': <function compile_steps.<locals>.<lambda> at 0x110ac8860>, 'gate': 'always', 'wave': 1}, {'name': 'app_yaml', 'key': 'appyaml', 'tool': 'GetAppYAML', 'args': <function _args_app_yaml at 0x10ee74040>, 'purpose': 'declared probes / limits / image / env', 'when': <function compile_steps.<locals>.<lambda> at 0x110ac8900>, 'gate': 'probe_or_restart_or_weak', 'wave': 2}, {'name': 'error_logs', 'key': 'errors', 'tool': 'GetErrorLogs', 'args': <function _args_error_logs at 0x10ee740e0>, 'purpose': 'application error logs', 'when': <function compile_steps.<locals>.<lambda> at 0x110ac89a0>, 'gate': 'restart_or_weak_strong', 'wave': 3}, {'name': 'node_kubelet', 'key': 'node:kubelet', 'tool': 'CheckNodeServiceStatus', 'args': <function _args_node_kubelet at 0x10ee74540>, 'purpose': 'kubelet status on the node hosting the stalled pod', 'when': <function compile_steps.<locals>.<lambda> at 0x110ac8a40>, 'gate': 'runtime_stall', 'wave': 4}, {'name': 'node_containerd', 'key': 'node:containerd', 'tool': 'CheckNodeServiceStatus', 'args': <function _args_node_containerd at 0x10ee745e0>, 'purpose': 'container runtime status on the same node', 'when': <function compile_steps.<locals>.<lambda> at 0x110ac8ae0>, 'gate': 'runtime_stall | node_all_healthy', 'wave': 5}]"
+   },
+   "derive": {
+    "candidates": "[Candidate(root_cause='mysql_invalid_credentials', object='app/ts-train-food-service', score=0.99, evidence='MySQL rejected the credentials', rule='db_auth')]"
+   },
+   "pick": {
+    "picked": 0,
+    "dominant": true,
+    "pick_why": "no_new_evidence"
+   },
+   "verify": {
+    "status": "verified",
+    "confidence": null,
+    "verify_why": "dominant_candidate"
+   },
+   "escalate": {
+    "answer": null
+   },
+   "answer": {
+    "final": {
+     "key_evidence_summary": "MySQL rejected the credentials",
+     "top_3_predictions": [
+      {
+       "rank": 1,
+       "fault_object": "app/ts-train-food-service",
+       "root_cause": "mysql_invalid_credentials"
+      },
+      {
+       "rank": 2,
+       "fault_object": "app/ts-train-food-service",
+       "root_cause": "mysql_invalid_credentials"
+      },
+      {
+       "rank": 3,
+       "fault_object": "app/ts-train-food-service",
+       "root_cause": "mysql_invalid_credentials"
+      }
+     ]
+    }
+   }
+  },
+  "picked": {
+   "root_cause": "mysql_invalid_credentials",
+   "object": "app/ts-train-food-service",
+   "score": 0.99,
+   "evidence": "MySQL rejected the credentials",
+   "rule": "db_auth"
+  },
+  "pick_why": "",
+  "verify_prob": null,
+  "verify_verdict": "verified",
+  "verified": true,
+  "escalated": false,
+  "escalate_reason": "",
+  "escalate_steps": 0,
+  "waves": 5,
+  "candidates": [
+   {
+    "root_cause": "mysql_invalid_credentials",
+    "object": "app/ts-train-food-service",
+    "score": 0.99,
+    "evidence": "MySQL rejected the credentials",
+    "rule": "db_auth"
+   }
+  ],
+  "jev": [
+   {
+    "rid": "test:trainticket/runtime/51#route",
+    "kind": "route",
+    "node": "route",
+    "mode": "mechanism",
+    "options": [
+     "runtime",
+     "infrastructure"
+    ],
+    "status": "mechanical",
+    "guard": "unavailable",
+    "use": "first_option",
+    "choice": "runtime",
+    "why": "mechanism_mode",
+    "dominant": false,
+    "continue_loop": false,
+    "escalate": false
+   },
+   {
+    "rid": "test:trainticket/runtime/51#pick1",
+    "kind": "pick",
+    "node": "pick",
+    "mode": "mechanism",
+    "options": [],
+    "status": "mechanical",
+    "guard": "no_options",
+    "use": "none",
+    "choice": null,
+    "why": "no_candidates",
+    "dominant": false,
+    "continue_loop": false,
+    "escalate": false
+   },
+   {
+    "rid": "test:trainticket/runtime/51#verify1",
+    "kind": "verify",
+    "node": "verify",
+    "mode": "mechanism",
+    "options": [
+     "supported",
+     "insufficient",
+     "contradicted"
+    ],
+    "status": "mechanical",
+    "guard": "no_pick",
+    "use": "unverified",
+    "choice": "unverified",
+    "why": "nothing_to_verify",
+    "dominant": false,
+    "continue_loop": false,
+    "escalate": false
+   },
+   {
+    "rid": "test:trainticket/runtime/51#pick2",
+    "kind": "pick",
+    "node": "pick",
+    "mode": "mechanism",
+    "options": [],
+    "status": "mechanical",
+    "guard": "no_options",
+    "use": "none",
+    "choice": null,
+    "why": "no_candidates",
+    "dominant": false,
+    "continue_loop": false,
+    "escalate": false
+   },
+   {
+    "rid": "test:trainticket/runtime/51#verify2",
+    "kind": "verify",
+    "node": "verify",
+    "mode": "mechanism",
+    "options": [
+     "supported",
+     "insufficient",
+     "contradicted"
+    ],
+    "status": "mechanical",
+    "guard": "no_pick",
+    "use": "unverified",
+    "choice": "unverified",
+    "why": "nothing_to_verify",
+    "dominant": false,
+    "continue_loop": false,
+    "escalate": false
+   },
+   {
+    "rid": "test:trainticket/runtime/51#pick3",
+    "kind": "pick",
+    "node": "pick",
+    "mode": "mechanism",
+    "options": [
+     "c0"
+    ],
+    "status": "mechanical",
+    "guard": "top_over_second >= $params.dominance_ratio",
+    "use": "first_option",
+    "choice": 0,
+    "why": "dominance",
+    "dominant": true,
+    "continue_loop": false,
+    "escalate": false
+   },
+   {
+    "rid": "test:trainticket/runtime/51#verify3",
+    "kind": "verify",
+    "node": "verify",
+    "mode": "mechanism",
+    "options": [
+     "supported",
+     "insufficient",
+     "contradicted"
+    ],
+    "status": "mechanical",
+    "guard": "$pick.dominant",
+    "use": "verified",
+    "choice": "verified",
+    "why": "dominant_candidate",
+    "dominant": false,
+    "continue_loop": false,
+    "escalate": false
+   },
+   {
+    "rid": "test:trainticket/runtime/51#pick4",
+    "kind": "pick",
+    "node": "pick",
+    "mode": "mechanism",
+    "options": [
+     "c0"
+    ],
+    "status": "mechanical",
+    "guard": "unchanged_since_last",
+    "use": "previous",
+    "choice": 0,
+    "why": "no_new_evidence",
+    "dominant": true,
+    "continue_loop": false,
+    "escalate": false
+   },
+   {
+    "rid": "test:trainticket/runtime/51#verify4",
+    "kind": "verify",
+    "node": "verify",
+    "mode": "mechanism",
+    "options": [
+     "supported",
+     "insufficient",
+     "contradicted"
+    ],
+    "status": "mechanical",
+    "guard": "$pick.dominant",
+    "use": "verified",
+    "choice": "verified",
+    "why": "dominant_candidate",
+    "dominant": false,
+    "continue_loop": false,
+    "escalate": false
+   },
+   {
+    "rid": "test:trainticket/runtime/51#pick5",
+    "kind": "pick",
+    "node": "pick",
+    "mode": "mechanism",
+    "options": [
+     "c0"
+    ],
+    "status": "mechanical",
+    "guard": "unchanged_since_last",
+    "use": "previous",
+    "choice": 0,
+    "why": "no_new_evidence",
+    "dominant": true,
+    "continue_loop": false,
+    "escalate": false
+   },
+   {
+    "rid": "test:trainticket/runtime/51#verify5",
+    "kind": "verify",
+    "node": "verify",
+    "mode": "mechanism",
+    "options": [
+     "supported",
+     "insufficient",
+     "contradicted"
+    ],
+    "status": "mechanical",
+    "guard": "$pick.dominant",
+    "use": "verified",
+    "choice": "verified",
+    "why": "dominant_candidate",
+    "dominant": false,
+    "continue_loop": false,
+    "escalate": false
+   }
+  ],
+  "nodes": [
+   {
+    "node": "code",
+    "id": "anchors",
+    "anchors": {
+     "case_id": "trainticket/runtime/51",
+     "system": "trainticket",
+     "namespace": "train-ticket",
+     "query": "Service Availability Disruption.",
+     "difficulty": "easy",
+     "symptoms": [
+      "unavailable"
+     ],
+     "mentioned_apps": []
+    }
+   },
+   {
+    "node": "probes",
+    "plan": "census",
+    "wave": 0,
+    "executed": 1,
+    "steps": [
+     {
+      "key": "pods",
+      "tool": "GetResources",
+      "arguments": {
+       "namespace": "train-ticket",
+       "resource_type": "pods",
+       "output_wide": true
+      },
+      "gate": "always"
+     }
+    ],
+    "skipped": [
+     {
+      "step": "alerts",
+      "why": "gate healthy_system"
+     }
+    ]
+   },
+   {
+    "node": "decide",
+    "id": "route",
+    "rid": "test:trainticket/runtime/51#route",
+    "status": "mechanical",
+    "guard": "unavailable",
+    "use": "first_option",
+    "choice": "runtime",
+    "dominant": false,
+    "why": "mechanism_mode"
+   },
+   {
+    "node": "code",
+    "id": "plan",
+    "family": "runtime",
+    "plan": [
+     {
+      "step": "describe_pod",
+      "gate": "always",
+      "wave": 1
+     },
+     {
+      "step": "app_yaml",
+      "gate": "probe_or_restart_or_weak",
+      "wave": 2
+     },
+     {
+      "step": "error_logs",
+      "gate": "restart_or_weak_strong",
+      "wave": 3
+     },
+     {
+      "step": "node_kubelet",
+      "gate": "runtime_stall",
+      "wave": 4
+     },
+     {
+      "step": "node_containerd",
+      "gate": "runtime_stall | node_all_healthy",
+      "wave": 5
+     }
+    ]
+   },
+   {
+    "node": "probes",
+    "plan": "family",
+    "wave": 1,
+    "executed": 1,
+    "steps": [
+     {
+      "key": "describe:pod",
+      "tool": "DescribeResource",
+      "arguments": {
+       "namespace": "train-ticket",
+       "resource_type": "pods",
+       "name": "ts-train-food-service-54754ff6f6-t6sj2"
+      },
+      "gate": "always"
+     }
+    ],
+    "skipped": []
+   },
+   {
+    "node": "code",
+    "id": "derive",
+    "raw": 0,
+    "kept": 0,
+    "top": []
+   },
+   {
+    "node": "decide",
+    "id": "pick",
+    "rid": "test:trainticket/runtime/51#pick1",
+    "status": "mechanical",
+    "guard": "no_options",
+    "use": "none",
+    "choice": null,
+    "dominant": false,
+    "why": "no_candidates"
+   },
+   {
+    "node": "decide",
+    "id": "verify",
+    "rid": "test:trainticket/runtime/51#verify1",
+    "status": "mechanical",
+    "guard": "no_pick",
+    "use": "unverified",
+    "choice": "unverified",
+    "dominant": false,
+    "why": "nothing_to_verify"
+   },
+   {
+    "node": "probes",
+    "plan": "family",
+    "wave": 2,
+    "executed": 1,
+    "steps": [
+     {
+      "key": "appyaml",
+      "tool": "GetAppYAML",
+      "arguments": {
+       "app_name": "ts-train-food-service"
+      },
+      "gate": "probe_or_restart_or_weak"
+     }
+    ],
+    "skipped": []
+   },
+   {
+    "node": "code",
+    "id": "derive",
+    "raw": 0,
+    "kept": 0,
+    "top": []
+   },
+   {
+    "node": "decide",
+    "id": "pick",
+    "rid": "test:trainticket/runtime/51#pick2",
+    "status": "mechanical",
+    "guard": "no_options",
+    "use": "none",
+    "choice": null,
+    "dominant": false,
+    "why": "no_candidates"
+   },
+   {
+    "node": "decide",
+    "id": "verify",
+    "rid": "test:trainticket/runtime/51#verify2",
+    "status": "mechanical",
+    "guard": "no_pick",
+    "use": "unverified",
+    "choice": "unverified",
+    "dominant": false,
+    "why": "nothing_to_verify"
+   },
+   {
+    "node": "probes",
+    "plan": "family",
+    "wave": 3,
+    "executed": 1,
+    "steps": [
+     {
+      "key": "errors",
+      "tool": "GetErrorLogs",
+      "arguments": {
+       "namespace": "train-ticket",
+       "service_name": "ts-train-food-service"
+      },
+      "gate": "restart_or_weak_strong"
+     }
+    ],
+    "skipped": []
+   },
+   {
+    "node": "code",
+    "id": "derive",
+    "raw": 1,
+    "kept": 1,
+    "top": [
+     {
+      "root_cause": "mysql_invalid_credentials",
+      "object": "app/ts-train-food-service",
+      "score": 0.99,
+      "evidence": "MySQL rejected the credentials",
+      "rule": "db_auth"
+     }
+    ]
+   },
+   {
+    "node": "decide",
+    "id": "pick",
+    "rid": "test:trainticket/runtime/51#pick3",
+    "status": "mechanical",
+    "guard": "top_over_second >= $params.dominance_ratio",
+    "use": "first_option",
+    "choice": 0,
+    "dominant": true,
+    "why": "dominance"
+   },
+   {
+    "node": "decide",
+    "id": "verify",
+    "rid": "test:trainticket/runtime/51#verify3",
+    "status": "mechanical",
+    "guard": "$pick.dominant",
+    "use": "verified",
+    "choice": "verified",
+    "dominant": false,
+    "why": "dominant_candidate"
+   },
+   {
+    "node": "probes",
+    "plan": "family",
+    "wave": 4,
+    "executed": 0,
+    "steps": [],
+    "skipped": [
+     {
+      "step": "node_kubelet",
+      "why": "gate runtime_stall"
+     }
+    ]
+   },
+   {
+    "node": "code",
+    "id": "derive",
+    "raw": 1,
+    "kept": 1,
+    "top": [
+     {
+      "root_cause": "mysql_invalid_credentials",
+      "object": "app/ts-train-food-service",
+      "score": 0.99,
+      "evidence": "MySQL rejected the credentials",
+      "rule": "db_auth"
+     }
+    ]
+   },
+   {
+    "node": "decide",
+    "id": "pick",
+    "rid": "test:trainticket/runtime/51#pick4",
+    "status": "mechanical",
+    "guard": "unchanged_since_last",
+    "use": "previous",
+    "choice": 0,
+    "dominant": true,
+    "why": "no_new_evidence"
+   },
+   {
+    "node": "decide",
+    "id": "verify",
+    "rid": "test:trainticket/runtime/51#verify4",
+    "status": "mechanical",
+    "guard": "$pick.dominant",
+    "use": "verified",
+    "choice": "verified",
+    "dominant": false,
+    "why": "dominant_candidate"
+   },
+   {
+    "node": "probes",
+    "plan": "family",
+    "wave": 5,
+    "executed": 0,
+    "steps": [],
+    "skipped": [
+     {
+      "step": "node_containerd",
+      "why": "gate runtime_stall | node_all_healthy"
+     }
+    ]
+   },
+   {
+    "node": "code",
+    "id": "derive",
+    "raw": 1,
+    "kept": 1,
+    "top": [
+     {
+      "root_cause": "mysql_invalid_credentials",
+      "object": "app/ts-train-food-service",
+      "score": 0.99,
+      "evidence": "MySQL rejected the credentials",
+      "rule": "db_auth"
+     }
+    ]
+   },
+   {
+    "node": "decide",
+    "id": "pick",
+    "rid": "test:trainticket/runtime/51#pick5",
+    "status": "mechanical",
+    "guard": "unchanged_since_last",
+    "use": "previous",
+    "choice": 0,
+    "dominant": true,
+    "why": "no_new_evidence"
+   },
+   {
+    "node": "decide",
+    "id": "verify",
+    "rid": "test:trainticket/runtime/51#verify5",
+    "status": "mechanical",
+    "guard": "$pick.dominant",
+    "use": "verified",
+    "choice": "verified",
+    "dominant": false,
+    "why": "dominant_candidate"
+   },
+   {
+    "node": "loop",
+    "id": "waves",
+    "stop": "plan_exhausted",
+    "wave": 5
+   },
+   {
+    "node": "escalate",
+    "id": "escalate",
+    "fired": false,
+    "reasons": [],
+    "why": "no reason"
+   },
+   {
+    "node": "code",
+    "id": "answer",
+    "predictions": [
+     {
+      "rank": 1,
+      "fault_object": "app/ts-train-food-service",
+      "root_cause": "mysql_invalid_credentials"
+     },
+     {
+      "rank": 2,
+      "fault_object": "app/ts-train-food-service",
+      "root_cause": "mysql_invalid_credentials"
+     },
+     {
+      "rank": 3,
+      "fault_object": "app/ts-train-food-service",
+      "root_cause": "mysql_invalid_credentials"
+     }
+    ]
+   },
+   {
+    "node": "artifact",
+    "id": "persist",
+    "persisted": false,
+    "why": "written by the CLI driver"
+   }
+  ],
+  "notes": [],
+  "tool_calls": 4,
+  "model_calls": 0,
+  "tokens_in": 0,
+  "tokens_out": 0,
+  "wall_s": 0.14
+ }
+}

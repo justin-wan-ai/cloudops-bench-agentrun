@@ -1,0 +1,42 @@
+{
+ "n": 5,
+ "cases": [
+  {
+   "id": "boutique/startup/11",
+   "system": "boutique",
+   "category": "startup",
+   "case": "11",
+   "difficulty": "easy"
+  },
+  {
+   "id": "boutique/startup/25",
+   "system": "boutique",
+   "category": "startup",
+   "case": "25",
+   "difficulty": "easy"
+  },
+  {
+   "id": "boutique/startup/51",
+   "system": "boutique",
+   "category": "startup",
+   "case": "51",
+   "difficulty": "easy"
+  },
+  {
+   "id": "boutique/startup/61",
+   "system": "boutique",
+   "category": "startup",
+   "case": "61",
+   "difficulty": "easy"
+  },
+  {
+   "id": "trainticket/startup/18",
+   "system": "trainticket",
+   "category": "startup",
+   "case": "18",
+   "difficulty": "easy"
+  }
+ ],
+ "round": "startup",
+ "split": "val"
+}

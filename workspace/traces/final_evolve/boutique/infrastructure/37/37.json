@@ -1,0 +1,1086 @@
+{
+ "case_id": "boutique/infrastructure/37",
+ "system_name": "boutique",
+ "question": "Partial Service Unreachability.",
+ "case_path": "/Users/justinwan/work/workspace/cloudops_bench_rsi/repo/benchmark/boutique/infrastructure/37",
+ "max_steps": 10,
+ "current_step": 4,
+ "finished": true,
+ "stop_reason": "submit",
+ "final_answer": "{\"key_evidence_summary\": \"kubelet.service is inactive on worker-01\", \"top_3_predictions\": [{\"rank\": 1, \"fault_object\": \"node/worker-01\", \"root_cause\": \"kubelet_unavailable\"}, {\"rank\": 2, \"fault_object\": \"node/worker-01\", \"root_cause\": \"kubelet_unavailable\"}, {\"rank\": 3, \"fault_object\": \"node/worker-01\", \"root_cause\": \"kubelet_unavailable\"}]}",
+ "metadata": {
+  "namespace": "boutique",
+  "query": "Partial Service Unreachability.",
+  "fault_category": "infrastructure",
+  "model_name": "agentrun-v0.13"
+ },
+ "steps": [
+  {
+   "step_id": 0,
+   "action_type": "tool",
+   "action_name": "GetResources",
+   "action_input": {
+    "namespace": "boutique",
+    "resource_type": "pods",
+    "output_wide": true
+   },
+   "observation": "NAME                                     READY   STATUS    RESTARTS   AGE    IP             NODE        NOMINATED NODE   READINESS GATES\nadservice-64ddc5c766-q5ss8               1/1     Running   0          2m9s   172.20.2.156   worker-02   <none>           <none>\ncartservice-79b49f5555-kr8xw             1/1     Running   0          2m9s   172.20.1.58    worker-01   <none>           <none>\ncheckoutservice-8445f8b6cb-jwsfn         1/1     Running   0          2m9s   172.20.1.59    worker-01   <none>           <none>\ncurrencyservice-5c6fdf7ccb-lh4sl         1/1     Running   0          2m9s   172.20.2.157   worker-02   <none>           <none>\nemailservice-c86b9b8f6-dz9jm             1/1     Running   0          2m9s   172.20.2.158   worker-02   <none>           <none>\nfrontend-657dd795f-jbcgs                 1/1     Running   0          2m8s   172.20.1.60    worker-01   <none>           <none>\npaymentservice-78c5996648-vrhk7          1/1     Running   0          2m8s   172.20.2.159   worker-02   <none>           <none>\nproductcatalogservice-84d997fd97-kzfpn   0/1     Pending   0          62s    <none>         <none>      <none>           <none>\nrecommendationservice-7bf5b7d9b8-s2ftz   1/1     Running   0          2m8s   172.20.1.61    worker-01   <none>           <none>\nredis-cart-589d486f78-cv249              1/1     Running   0          2m7s   172.20.1.62    worker-01   <none>           <none>\nshippingservice-7ff54bf6b6-gsskn         1/1     Running   0          2m7s   172.20.2.160   worker-02   <none>           <none>\n",
+   "error": null,
+   "purpose": "pod readiness census",
+   "tool_latency": null
+  },
+  {
+   "step_id": 1,
+   "action_type": "tool",
+   "action_name": "DescribeResource",
+   "action_input": {
+    "namespace": "boutique",
+    "resource_type": "pods",
+    "name": "productcatalogservice-84d997fd97-kzfpn"
+   },
+   "observation": "Name:             productcatalogservice-84d997fd97-kzfpn\nNamespace:        boutique\nPriority:         0\nService Account:  productcatalogservice\nNode:             <none>\nLabels:           app=productcatalogservice\n                  pod-template-hash=84d997fd97\nAnnotations:      <none>\nStatus:           Pending\nIP:               \nIPs:              <none>\nControlled By:    ReplicaSet/productcatalogservice-84d997fd97\nContainers:\n  server:\n    Image:      us-central1-docker.pkg.dev/google-samples/microservices-demo/productcatalogservice:v0.10.3\n    Port:       3550/TCP\n    Host Port:  0/TCP\n    Limits:\n      cpu:     200m\n      memory:  128Mi\n    Requests:\n      cpu:      100m\n      memory:   64Mi\n    Liveness:   grpc <pod>:3550  delay=5s timeout=1s period=10s #success=1 #failure=3\n    Readiness:  grpc <pod>:3550  delay=5s timeout=1s period=10s #success=1 #failure=3\n    Environment:\n      PORT:              3550\n      DISABLE_PROFILER:  1\n    Mounts:\n      /var/run/secrets/kubernetes.io/serviceaccount from kube-api-access-qqgr5 (ro)\nConditions:\n  Type           Status\n  PodScheduled   False \nVolumes:\n  kube-api-access-qqgr5:\n    Type:                    Projected (a volume that contains injected data from multiple sources)\n    TokenExpirationSeconds:  3607\n    ConfigMapName:           kube-root-ca.crt\n    ConfigMapOptional:       <nil>\n    DownwardAPI:             true\nQoS Class:                   Burstable\nNode-Selectors:              kubernetes.io/hostname=worker-01\nTolerations:                 node.kubernetes.io/not-ready:NoExecute op=Exists for 300s\n                             node.kubernetes.io/unreachable:NoExecute op=Exists for 300s\nEvents:\n  Type     Reason            Age   From               Message\n  ----     ------            ----  ----               -------\n  Warning  FailedScheduling  63s   default-scheduler  0/4 nodes are available: 1 node(s) had untolerated taint {node.kubernetes.io/unreachable: }, 1 node(s) were unschedulable, 2 node(s) didn't match Pod's node affinity/selector. preemption: 0/4 nodes are available: 4 Preemption is not helpful for scheduling.\n",
+   "error": null,
+   "purpose": "probe config, container state, restart reasons, scheduler events",
+   "tool_latency": null
+  },
+  {
+   "step_id": 2,
+   "action_type": "tool",
+   "action_name": "GetClusterConfiguration",
+   "action_input": {},
+   "observation": "{'node_count': 4, 'nodes': [{'name': 'master', 'role': 'worker', 'status': 'Ready', 'conditions': {'MemoryPressure': 'False', 'DiskPressure': 'False', 'PIDPressure': 'False'}, 'taints': ['node.kubernetes.io/unschedulable:NoSchedule'], 'labels': {'beta.kubernetes.io/arch': 'amd64', 'beta.kubernetes.io/os': 'linux', 'kubernetes.io/arch': 'amd64', 'kubernetes.io/hostname': 'master', 'kubernetes.io/os': 'linux', 'kubernetes.io/role': 'master'}, 'allocatable_resources': {'cpu': '8', 'memory': '15671352Ki'}}, {'name': 'worker-01', 'role': 'worker', 'status': 'Unknown', 'conditions': {'MemoryPressure': 'Unknown', 'DiskPressure': 'Unknown', 'PIDPressure': 'Unknown'}, 'taints': ['node.kubernetes.io/unreachable:NoSchedule', 'node.kubernetes.io/unreachable:NoExecute'], 'labels': {'beta.kubernetes.io/arch': 'amd64', 'beta.kubernetes.io/os': 'linux', 'kubernetes.io/arch': 'amd64', 'kubernetes.io/hostname': 'worker-01', 'kubernetes.io/os': 'linux', 'kubernetes.io/role': 'node'}, 'allocatable_resources': {'cpu': '8', 'memory': '15671352Ki'}}, {'name': 'worker-02', 'role': 'worker', 'status': 'Ready', 'conditions': {'MemoryPressure': 'False', 'DiskPressure': 'False', 'PIDPressure': 'False'}, 'taints': [], 'labels': {'beta.kubernetes.io/arch': 'amd64', 'beta.kubernetes.io/os': 'linux', 'kubernetes.io/arch': 'amd64', 'kubernetes.io/hostname': 'worker-02', 'kubernetes.io/os': 'linux', 'kubernetes.io/role': 'node'}, 'allocatable_resources': {'cpu': '8', 'memory': '15671340Ki'}}, {'name': 'worker-03', 'role': 'worker', 'status': 'Ready', 'conditions': {'MemoryPressure': 'False', 'DiskPressure': 'False', 'PIDPressure': 'False'}, 'taints': [], 'labels': {'beta.kubernetes.io/arch': 'amd64', 'beta.kubernetes.io/os': 'linux', 'kubernetes.io/arch': 'amd64', 'kubernetes.io/hostname': 'worker-03', 'kubernetes.io/os': 'linux', 'kubernetes.io/role': 'node'}, 'allocatable_resources': {'cpu': '8', 'memory': '15671344Ki'}}]}",
+   "error": null,
+   "purpose": "cluster-wide node state",
+   "tool_latency": null
+  },
+  {
+   "step_id": 3,
+   "action_type": "tool",
+   "action_name": "CheckNodeServiceStatus",
+   "action_input": {
+    "node_name": "worker-01",
+    "service_name": "kubelet"
+   },
+   "observation": "Service: kubelet\nNode: worker-01\nStatus: ○ kubelet.service - Kubernetes Kubelet\n     Loaded: loaded (/etc/systemd/system/kubelet.service; enabled; vendor preset: enabled)\n     Active: inactive (dead) since Fri 2025-12-05 15:48:23 CST; 2min 23s ago\n       Docs: https://github.com/GoogleCloudPlatform/kubernetes\n    Process: 100876 ExecStartPre=/bin/mount -o remount,rw /sys/fs/cgroup (code=exited, status=0/SUCCESS)\n    Process: 100877 ExecStart=/opt/kube/bin/kubelet --config=/var/lib/kubelet/config.yaml --container-runtime-endpoint=unix:///run/containerd/containerd.sock --hostname-override=worker-01 --kubeconfig=/etc/kubernetes/kubelet.kubeconfig --root-dir=/var/lib/kubelet --v=2 (code=exited, status=0/SUCCESS)\n   Main PID: 100877 (code=exited, status=0/SUCCESS)\n        CPU: 2.267s\n\nDec 05 15:48:08 worker-01 kubelet[100877]: I1205 15:48:08.711454  100877 pod_startup_latency_tracker.go:104] \"Observed pod startup duration\" pod=\"boutique/redis-cart-589d486f78-cv249\" podStartSLOduration=0.711449404 podStartE2EDuration=\"711.449404ms\" podCreationTimestamp=\"2025-12-05 15:48:08 +0800 CST\" firstStartedPulling=\"0001-01-01 00:00:00 +0000 UTC\" lastFinishedPulling=\"0001-01-01 00:00:00 +0000 UTC\" observedRunningTime=\"2025-12-05 15:48:08.702535675 +0800 CST m=+111.301077530\" watchObservedRunningTime=\"2025-12-05 15:48:08.711449404 +0800 CST m=+111.309991260\"\nDec 05 15:48:16 worker-01 kubelet[100877]: I1205 15:48:16.904500  100877 kubelet.go:2528] \"SyncLoop (probe)\" probe=\"readiness\" status=\"ready\" pod=\"boutique/checkoutservice-8445f8b6cb-jwsfn\"\nDec 05 15:48:16 worker-01 kubelet[100877]: I1205 15:48:16.915939  100877 pod_startup_latency_tracker.go:104] \"Observed pod startup duration\" pod=\"boutique/frontend-657dd795f-jbcgs\" podStartSLOduration=9.915925991 podStartE2EDuration=\"9.915925991s\" podCreationTimestamp=\"2025-12-05 15:48:07 +0800 CST\" firstStartedPulling=\"0001-01-01 00:00:00 +0000 UTC\" lastFinishedPulling=\"0001-01-01 00:00:00 +0000 UTC\" observedRunningTime=\"2025-12-05 15:48:08.719855425 +0800 CST m=+111.318397281\" watchObservedRunningTime=\"2025-12-05 15:48:16.915925991 +0800 CST m=+119.514467846\"\nDec 05 15:48:17 worker-01 kubelet[100877]: I1205 15:48:17.621728  100877 kubelet.go:2528] \"SyncLoop (probe)\" probe=\"readiness\" status=\"ready\" pod=\"boutique/frontend-657dd795f-jbcgs\"\nDec 05 15:48:18 worker-01 kubelet[100877]: I1205 15:48:18.027314  100877 kubelet.go:2528] \"SyncLoop (probe)\" probe=\"readiness\" status=\"ready\" pod=\"boutique/recommendationservice-7bf5b7d9b8-s2ftz\"\nDec 05 15:48:18 worker-01 kubelet[100877]: I1205 15:48:18.319431  100877 kubelet.go:2528] \"SyncLoop (probe)\" probe=\"readiness\" status=\"ready\" pod=\"boutique/redis-cart-589d486f78-cv249\"\nDec 05 15:48:23 worker-01 systemd[1]: Stopping Kubernetes Kubelet...\nDec 05 15:48:23 worker-01 systemd[1]: kubelet.service: Deactivated successfully.\nDec 05 15:48:23 worker-01 systemd[1]: Stopped Kubernetes Kubelet.\nDec 05 15:48:23 worker-01 systemd[1]: kubelet.service: Consumed 2.267s CPU time.",
+   "error": null,
+   "purpose": "kubelet status on the node hosting the stalled pod",
+   "tool_latency": null
+  }
+ ],
+ "agentrun": {
+  "tag": "test",
+  "dsl": "workspace/dsl_versions/v0.13.dsl.txt",
+  "dsl_version": "0.13",
+  "sop": {
+   "sop": "boutique-runtime-rca",
+   "scope": {
+    "system": "boutique",
+    "families": [
+     "runtime",
+     "admission",
+     "scheduling",
+     "startup",
+     "service",
+     "performance",
+     "infrastructure",
+     "codedefect"
+    ],
+    "severity": [
+     "SEV2",
+     "SEV3"
+    ]
+   },
+   "owner": "sre-platform",
+   "approved_by": [
+    "oncall-primary",
+    "sre-lead"
+   ],
+   "reviewed_at": "2026-10-23",
+   "change_ticket": "OPS-1241",
+   "boundaries": "R4 已知：`node_network_delay` 若快照里没有任何 Node 级 retrans 告警（例：performance/25），\n本 SOP 会退回 pod 级判断（当前工具面无法区分 pod 与 node 的延迟注入）。\n只读诊断：本 SOP 不执行任何写操作（重启/回滚/扩缩容），也不做对外播报；\n它回答\"最可能的根因与受害对象\"，处置与沟通由值班按 runbook 人工执行。\n不覆盖 SEV1（需 incident commander 介入）与变更引发的问题（走变更回滚流程）。\n输入是冻结快照：诊断结论对\"快照时刻\"成立，恢复后需重新取证。\nR1 已知边界：PVC 的 requested size / accessMode 在本 benchmark 的工具面不可见，\n因此 pvc_capacity 与 pvc_access_mode 无法区分（同一分数并列，交给 jev 或升级）。\n"
+  },
+  "params": {
+   "cands_cap": 8,
+   "max_waves": 10,
+   "min_waves": 5,
+   "steps_per_wave": 1,
+   "dominance_ratio": 1.5,
+   "conf_min": 0.0,
+   "escalate": true,
+   "escalate_budget": 8,
+   "judge_on_codedefect": true,
+   "jev_route": true,
+   "jev_pick": true,
+   "jev_verify": true,
+   "route_fallback": "runtime"
+  },
+  "nodes_executed": [
+   "anchors:extract_anchors",
+   "census:probes",
+   "route:decide",
+   "plan:build_plan",
+   "probe:probes",
+   "derive:derive_candidates",
+   "pick:decide",
+   "verify:decide",
+   "probe:probes",
+   "derive:derive_candidates",
+   "pick:decide",
+   "verify:decide",
+   "probe:probes",
+   "derive:derive_candidates",
+   "pick:decide",
+   "verify:decide",
+   "probe:probes",
+   "derive:derive_candidates",
+   "pick:decide",
+   "verify:decide",
+   "probe:probes",
+   "derive:derive_candidates",
+   "pick:decide",
+   "verify:decide",
+   "probe:probes",
+   "derive:derive_candidates",
+   "pick:decide",
+   "verify:decide",
+   "probe:probes",
+   "derive:derive_candidates",
+   "pick:decide",
+   "verify:decide",
+   "probe:probes",
+   "derive:derive_candidates",
+   "pick:decide",
+   "verify:decide",
+   "escalate:escalate",
+   "answer:normalize_answer",
+   "persist:persist_trace"
+  ],
+  "census": [
+   {
+    "step": "pods",
+    "gate": "always"
+   },
+   {
+    "step": "alerts",
+    "gate": "healthy_system"
+   }
+  ],
+  "plan": [
+   {
+    "step": "describe_pod",
+    "gate": "always",
+    "wave": 1
+   },
+   {
+    "step": "cluster_config",
+    "gate": "always",
+    "wave": 2
+   },
+   {
+    "step": "pvcs",
+    "gate": "volume_evidence",
+    "wave": 3
+   },
+   {
+    "step": "pvs",
+    "gate": "pending_claim",
+    "wave": 4
+   },
+   {
+    "step": "storage_classes",
+    "gate": "pending_claim",
+    "wave": 5
+   },
+   {
+    "step": "node_scheduler",
+    "gate": "unscheduled_without_events",
+    "wave": 6
+   },
+   {
+    "step": "node_kubelet",
+    "gate": "node_reported_unreachable",
+    "wave": 7
+   }
+  ],
+  "family": "scheduling",
+  "state_wiring": {
+   "family": "$route.family",
+   "route_probs": "$route.probabilities",
+   "picked": "$pick.picked",
+   "pick_dominant": "$pick.dominant",
+   "verify_status": "$verify.status",
+   "verify_prob": "$verify.confidence"
+  },
+  "bindings": {
+   "anchors": {
+    "anchors": "Anchors(case_id='boutique/infrastructure/37', system='boutique', namespace='boutique', query='Partial Service Unreachability.', difficulty='medium', symptoms=['unavailable'], mentioned_apps=[], priors={'db_service': '', 'db_port': 0})"
+   },
+   "route": {
+    "family": "scheduling",
+    "probabilities": {},
+    "route_why": "mechanism_mode"
+   },
+   "plan": {
+    "plan": "[{'name': 'describe_pod', 'key': 'describe:pod', 'tool': 'DescribeResource', 'args': <function _args_describe_pod at 0x10ee43ec0>, 'purpose': 'probe config, container state, restart reasons, scheduler events', 'when': <function compile_steps.<locals>.<lambda> at 0x10ef2f380>, 'gate': 'always', 'wave': 1}, {'name': 'cluster_config', 'key': 'cluster', 'tool': 'GetClusterConfiguration', 'args': {}, 'purpose': 'cluster-wide node state', 'when': <function compile_steps.<locals>.<lambda> at 0x10ef2f2e0>, 'gate': 'always', 'wave': 2}, {'name': 'pvcs', 'key': 'pvcs', 'tool': 'GetResources', 'args': <function _args_pvcs at 0x10ee43a60>, 'purpose': 'PVC status/capacity/class table', 'when': <function compile_steps.<locals>.<lambda> at 0x10ef2f240>, 'gate': 'volume_evidence', 'wave': 3}, {'name': 'pvs', 'key': 'pvs', 'tool': 'GetResources', 'args': <function _args_pvs at 0x10ee43b00>, 'purpose': 'PV capacity/access modes/claim binding', 'when': <function compile_steps.<locals>.<lambda> at 0x10ef2f1a0>, 'gate': 'pending_claim', 'wave': 4}, {'name': 'storage_classes', 'key': 'storage_classes', 'tool': 'GetResources', 'args': <function _args_storage_classes at 0x10ee43ba0>, 'purpose': 'existing StorageClasses', 'when': <function compile_steps.<locals>.<lambda> at 0x10ef2f100>, 'gate': 'pending_claim', 'wave': 5}, {'name': 'node_scheduler', 'key': 'node:kube-scheduler', 'tool': 'CheckNodeServiceStatus', 'args': <function _args_node_scheduler at 0x10ee74720>, 'purpose': 'kube-scheduler status on master', 'when': <function compile_steps.<locals>.<lambda> at 0x10ef2f060>, 'gate': 'unscheduled_without_events', 'wave': 6}, {'name': 'node_kubelet', 'key': 'node:kubelet', 'tool': 'CheckNodeServiceStatus', 'args': <function _args_node_kubelet at 0x10ee74540>, 'purpose': 'kubelet status on the node hosting the stalled pod', 'when': <function compile_steps.<locals>.<lambda> at 0x10ef2efc0>, 'gate': 'node_reported_unreachable', 'wave': 7}]"
+   },
+   "derive": {
+    "candidates": "[Candidate(root_cause='kubelet_unavailable', object='node/worker-01', score=0.87, evidence='kubelet.service is inactive on worker-01', rule='node_component')]"
+   },
+   "pick": {
+    "picked": 0,
+    "dominant": true,
+    "pick_why": "no_new_evidence"
+   },
+   "verify": {
+    "status": "verified",
+    "confidence": null,
+    "verify_why": "dominant_candidate"
+   },
+   "escalate": {
+    "answer": null
+   },
+   "answer": {
+    "final": {
+     "key_evidence_summary": "kubelet.service is inactive on worker-01",
+     "top_3_predictions": [
+      {
+       "rank": 1,
+       "fault_object": "node/worker-01",
+       "root_cause": "kubelet_unavailable"
+      },
+      {
+       "rank": 2,
+       "fault_object": "node/worker-01",
+       "root_cause": "kubelet_unavailable"
+      },
+      {
+       "rank": 3,
+       "fault_object": "node/worker-01",
+       "root_cause": "kubelet_unavailable"
+      }
+     ]
+    }
+   }
+  },
+  "picked": {
+   "root_cause": "kubelet_unavailable",
+   "object": "node/worker-01",
+   "score": 0.87,
+   "evidence": "kubelet.service is inactive on worker-01",
+   "rule": "node_component"
+  },
+  "pick_why": "",
+  "verify_prob": null,
+  "verify_verdict": "verified",
+  "verified": true,
+  "escalated": false,
+  "escalate_reason": "",
+  "escalate_steps": 0,
+  "waves": 8,
+  "candidates": [
+   {
+    "root_cause": "kubelet_unavailable",
+    "object": "node/worker-01",
+    "score": 0.87,
+    "evidence": "kubelet.service is inactive on worker-01",
+    "rule": "node_component"
+   }
+  ],
+  "jev": [
+   {
+    "rid": "test:boutique/infrastructure/37#route",
+    "kind": "route",
+    "node": "route",
+    "mode": "mechanism",
+    "options": [
+     "scheduling",
+     "runtime",
+     "infrastructure"
+    ],
+    "status": "mechanical",
+    "guard": "unavailable",
+    "use": "first_option",
+    "choice": "scheduling",
+    "why": "mechanism_mode",
+    "dominant": false,
+    "continue_loop": false,
+    "escalate": false
+   },
+   {
+    "rid": "test:boutique/infrastructure/37#pick1",
+    "kind": "pick",
+    "node": "pick",
+    "mode": "mechanism",
+    "options": [],
+    "status": "mechanical",
+    "guard": "no_options",
+    "use": "none",
+    "choice": null,
+    "why": "no_candidates",
+    "dominant": false,
+    "continue_loop": false,
+    "escalate": false
+   },
+   {
+    "rid": "test:boutique/infrastructure/37#verify1",
+    "kind": "verify",
+    "node": "verify",
+    "mode": "mechanism",
+    "options": [
+     "supported",
+     "insufficient",
+     "contradicted"
+    ],
+    "status": "mechanical",
+    "guard": "no_pick",
+    "use": "unverified",
+    "choice": "unverified",
+    "why": "nothing_to_verify",
+    "dominant": false,
+    "continue_loop": false,
+    "escalate": false
+   },
+   {
+    "rid": "test:boutique/infrastructure/37#pick2",
+    "kind": "pick",
+    "node": "pick",
+    "mode": "mechanism",
+    "options": [],
+    "status": "mechanical",
+    "guard": "no_options",
+    "use": "none",
+    "choice": null,
+    "why": "no_candidates",
+    "dominant": false,
+    "continue_loop": false,
+    "escalate": false
+   },
+   {
+    "rid": "test:boutique/infrastructure/37#verify2",
+    "kind": "verify",
+    "node": "verify",
+    "mode": "mechanism",
+    "options": [
+     "supported",
+     "insufficient",
+     "contradicted"
+    ],
+    "status": "mechanical",
+    "guard": "no_pick",
+    "use": "unverified",
+    "choice": "unverified",
+    "why": "nothing_to_verify",
+    "dominant": false,
+    "continue_loop": false,
+    "escalate": false
+   },
+   {
+    "rid": "test:boutique/infrastructure/37#pick3",
+    "kind": "pick",
+    "node": "pick",
+    "mode": "mechanism",
+    "options": [],
+    "status": "mechanical",
+    "guard": "no_options",
+    "use": "none",
+    "choice": null,
+    "why": "no_candidates",
+    "dominant": false,
+    "continue_loop": false,
+    "escalate": false
+   },
+   {
+    "rid": "test:boutique/infrastructure/37#verify3",
+    "kind": "verify",
+    "node": "verify",
+    "mode": "mechanism",
+    "options": [
+     "supported",
+     "insufficient",
+     "contradicted"
+    ],
+    "status": "mechanical",
+    "guard": "no_pick",
+    "use": "unverified",
+    "choice": "unverified",
+    "why": "nothing_to_verify",
+    "dominant": false,
+    "continue_loop": false,
+    "escalate": false
+   },
+   {
+    "rid": "test:boutique/infrastructure/37#pick4",
+    "kind": "pick",
+    "node": "pick",
+    "mode": "mechanism",
+    "options": [],
+    "status": "mechanical",
+    "guard": "no_options",
+    "use": "none",
+    "choice": null,
+    "why": "no_candidates",
+    "dominant": false,
+    "continue_loop": false,
+    "escalate": false
+   },
+   {
+    "rid": "test:boutique/infrastructure/37#verify4",
+    "kind": "verify",
+    "node": "verify",
+    "mode": "mechanism",
+    "options": [
+     "supported",
+     "insufficient",
+     "contradicted"
+    ],
+    "status": "mechanical",
+    "guard": "no_pick",
+    "use": "unverified",
+    "choice": "unverified",
+    "why": "nothing_to_verify",
+    "dominant": false,
+    "continue_loop": false,
+    "escalate": false
+   },
+   {
+    "rid": "test:boutique/infrastructure/37#pick5",
+    "kind": "pick",
+    "node": "pick",
+    "mode": "mechanism",
+    "options": [],
+    "status": "mechanical",
+    "guard": "no_options",
+    "use": "none",
+    "choice": null,
+    "why": "no_candidates",
+    "dominant": false,
+    "continue_loop": false,
+    "escalate": false
+   },
+   {
+    "rid": "test:boutique/infrastructure/37#verify5",
+    "kind": "verify",
+    "node": "verify",
+    "mode": "mechanism",
+    "options": [
+     "supported",
+     "insufficient",
+     "contradicted"
+    ],
+    "status": "mechanical",
+    "guard": "no_pick",
+    "use": "unverified",
+    "choice": "unverified",
+    "why": "nothing_to_verify",
+    "dominant": false,
+    "continue_loop": false,
+    "escalate": false
+   },
+   {
+    "rid": "test:boutique/infrastructure/37#pick6",
+    "kind": "pick",
+    "node": "pick",
+    "mode": "mechanism",
+    "options": [],
+    "status": "mechanical",
+    "guard": "no_options",
+    "use": "none",
+    "choice": null,
+    "why": "no_candidates",
+    "dominant": false,
+    "continue_loop": false,
+    "escalate": false
+   },
+   {
+    "rid": "test:boutique/infrastructure/37#verify6",
+    "kind": "verify",
+    "node": "verify",
+    "mode": "mechanism",
+    "options": [
+     "supported",
+     "insufficient",
+     "contradicted"
+    ],
+    "status": "mechanical",
+    "guard": "no_pick",
+    "use": "unverified",
+    "choice": "unverified",
+    "why": "nothing_to_verify",
+    "dominant": false,
+    "continue_loop": false,
+    "escalate": false
+   },
+   {
+    "rid": "test:boutique/infrastructure/37#pick7",
+    "kind": "pick",
+    "node": "pick",
+    "mode": "mechanism",
+    "options": [
+     "c0"
+    ],
+    "status": "mechanical",
+    "guard": "top_over_second >= $params.dominance_ratio",
+    "use": "first_option",
+    "choice": 0,
+    "why": "dominance",
+    "dominant": true,
+    "continue_loop": false,
+    "escalate": false
+   },
+   {
+    "rid": "test:boutique/infrastructure/37#verify7",
+    "kind": "verify",
+    "node": "verify",
+    "mode": "mechanism",
+    "options": [
+     "supported",
+     "insufficient",
+     "contradicted"
+    ],
+    "status": "mechanical",
+    "guard": "$pick.dominant",
+    "use": "verified",
+    "choice": "verified",
+    "why": "dominant_candidate",
+    "dominant": false,
+    "continue_loop": false,
+    "escalate": false
+   },
+   {
+    "rid": "test:boutique/infrastructure/37#pick8",
+    "kind": "pick",
+    "node": "pick",
+    "mode": "mechanism",
+    "options": [
+     "c0"
+    ],
+    "status": "mechanical",
+    "guard": "unchanged_since_last",
+    "use": "previous",
+    "choice": 0,
+    "why": "no_new_evidence",
+    "dominant": true,
+    "continue_loop": false,
+    "escalate": false
+   },
+   {
+    "rid": "test:boutique/infrastructure/37#verify8",
+    "kind": "verify",
+    "node": "verify",
+    "mode": "mechanism",
+    "options": [
+     "supported",
+     "insufficient",
+     "contradicted"
+    ],
+    "status": "mechanical",
+    "guard": "$pick.dominant",
+    "use": "verified",
+    "choice": "verified",
+    "why": "dominant_candidate",
+    "dominant": false,
+    "continue_loop": false,
+    "escalate": false
+   }
+  ],
+  "nodes": [
+   {
+    "node": "code",
+    "id": "anchors",
+    "anchors": {
+     "case_id": "boutique/infrastructure/37",
+     "system": "boutique",
+     "namespace": "boutique",
+     "query": "Partial Service Unreachability.",
+     "difficulty": "medium",
+     "symptoms": [
+      "unavailable"
+     ],
+     "mentioned_apps": []
+    }
+   },
+   {
+    "node": "probes",
+    "plan": "census",
+    "wave": 0,
+    "executed": 1,
+    "steps": [
+     {
+      "key": "pods",
+      "tool": "GetResources",
+      "arguments": {
+       "namespace": "boutique",
+       "resource_type": "pods",
+       "output_wide": true
+      },
+      "gate": "always"
+     }
+    ],
+    "skipped": [
+     {
+      "step": "alerts",
+      "why": "gate healthy_system"
+     }
+    ]
+   },
+   {
+    "node": "decide",
+    "id": "route",
+    "rid": "test:boutique/infrastructure/37#route",
+    "status": "mechanical",
+    "guard": "unavailable",
+    "use": "first_option",
+    "choice": "scheduling",
+    "dominant": false,
+    "why": "mechanism_mode"
+   },
+   {
+    "node": "code",
+    "id": "plan",
+    "family": "scheduling",
+    "plan": [
+     {
+      "step": "describe_pod",
+      "gate": "always",
+      "wave": 1
+     },
+     {
+      "step": "cluster_config",
+      "gate": "always",
+      "wave": 2
+     },
+     {
+      "step": "pvcs",
+      "gate": "volume_evidence",
+      "wave": 3
+     },
+     {
+      "step": "pvs",
+      "gate": "pending_claim",
+      "wave": 4
+     },
+     {
+      "step": "storage_classes",
+      "gate": "pending_claim",
+      "wave": 5
+     },
+     {
+      "step": "node_scheduler",
+      "gate": "unscheduled_without_events",
+      "wave": 6
+     },
+     {
+      "step": "node_kubelet",
+      "gate": "node_reported_unreachable",
+      "wave": 7
+     }
+    ]
+   },
+   {
+    "node": "probes",
+    "plan": "family",
+    "wave": 1,
+    "executed": 1,
+    "steps": [
+     {
+      "key": "describe:pod",
+      "tool": "DescribeResource",
+      "arguments": {
+       "namespace": "boutique",
+       "resource_type": "pods",
+       "name": "productcatalogservice-84d997fd97-kzfpn"
+      },
+      "gate": "always"
+     }
+    ],
+    "skipped": []
+   },
+   {
+    "node": "code",
+    "id": "derive",
+    "raw": 0,
+    "kept": 0,
+    "top": []
+   },
+   {
+    "node": "decide",
+    "id": "pick",
+    "rid": "test:boutique/infrastructure/37#pick1",
+    "status": "mechanical",
+    "guard": "no_options",
+    "use": "none",
+    "choice": null,
+    "dominant": false,
+    "why": "no_candidates"
+   },
+   {
+    "node": "decide",
+    "id": "verify",
+    "rid": "test:boutique/infrastructure/37#verify1",
+    "status": "mechanical",
+    "guard": "no_pick",
+    "use": "unverified",
+    "choice": "unverified",
+    "dominant": false,
+    "why": "nothing_to_verify"
+   },
+   {
+    "node": "probes",
+    "plan": "family",
+    "wave": 2,
+    "executed": 1,
+    "steps": [
+     {
+      "key": "cluster",
+      "tool": "GetClusterConfiguration",
+      "arguments": {},
+      "gate": "always"
+     }
+    ],
+    "skipped": []
+   },
+   {
+    "node": "code",
+    "id": "derive",
+    "raw": 0,
+    "kept": 0,
+    "top": []
+   },
+   {
+    "node": "decide",
+    "id": "pick",
+    "rid": "test:boutique/infrastructure/37#pick2",
+    "status": "mechanical",
+    "guard": "no_options",
+    "use": "none",
+    "choice": null,
+    "dominant": false,
+    "why": "no_candidates"
+   },
+   {
+    "node": "decide",
+    "id": "verify",
+    "rid": "test:boutique/infrastructure/37#verify2",
+    "status": "mechanical",
+    "guard": "no_pick",
+    "use": "unverified",
+    "choice": "unverified",
+    "dominant": false,
+    "why": "nothing_to_verify"
+   },
+   {
+    "node": "probes",
+    "plan": "family",
+    "wave": 3,
+    "executed": 0,
+    "steps": [],
+    "skipped": [
+     {
+      "step": "pvcs",
+      "why": "gate volume_evidence"
+     }
+    ]
+   },
+   {
+    "node": "code",
+    "id": "derive",
+    "raw": 0,
+    "kept": 0,
+    "top": []
+   },
+   {
+    "node": "decide",
+    "id": "pick",
+    "rid": "test:boutique/infrastructure/37#pick3",
+    "status": "mechanical",
+    "guard": "no_options",
+    "use": "none",
+    "choice": null,
+    "dominant": false,
+    "why": "no_candidates"
+   },
+   {
+    "node": "decide",
+    "id": "verify",
+    "rid": "test:boutique/infrastructure/37#verify3",
+    "status": "mechanical",
+    "guard": "no_pick",
+    "use": "unverified",
+    "choice": "unverified",
+    "dominant": false,
+    "why": "nothing_to_verify"
+   },
+   {
+    "node": "probes",
+    "plan": "family",
+    "wave": 4,
+    "executed": 0,
+    "steps": [],
+    "skipped": [
+     {
+      "step": "pvs",
+      "why": "gate pending_claim"
+     }
+    ]
+   },
+   {
+    "node": "code",
+    "id": "derive",
+    "raw": 0,
+    "kept": 0,
+    "top": []
+   },
+   {
+    "node": "decide",
+    "id": "pick",
+    "rid": "test:boutique/infrastructure/37#pick4",
+    "status": "mechanical",
+    "guard": "no_options",
+    "use": "none",
+    "choice": null,
+    "dominant": false,
+    "why": "no_candidates"
+   },
+   {
+    "node": "decide",
+    "id": "verify",
+    "rid": "test:boutique/infrastructure/37#verify4",
+    "status": "mechanical",
+    "guard": "no_pick",
+    "use": "unverified",
+    "choice": "unverified",
+    "dominant": false,
+    "why": "nothing_to_verify"
+   },
+   {
+    "node": "probes",
+    "plan": "family",
+    "wave": 5,
+    "executed": 0,
+    "steps": [],
+    "skipped": [
+     {
+      "step": "storage_classes",
+      "why": "gate pending_claim"
+     }
+    ]
+   },
+   {
+    "node": "code",
+    "id": "derive",
+    "raw": 0,
+    "kept": 0,
+    "top": []
+   },
+   {
+    "node": "decide",
+    "id": "pick",
+    "rid": "test:boutique/infrastructure/37#pick5",
+    "status": "mechanical",
+    "guard": "no_options",
+    "use": "none",
+    "choice": null,
+    "dominant": false,
+    "why": "no_candidates"
+   },
+   {
+    "node": "decide",
+    "id": "verify",
+    "rid": "test:boutique/infrastructure/37#verify5",
+    "status": "mechanical",
+    "guard": "no_pick",
+    "use": "unverified",
+    "choice": "unverified",
+    "dominant": false,
+    "why": "nothing_to_verify"
+   },
+   {
+    "node": "probes",
+    "plan": "family",
+    "wave": 6,
+    "executed": 0,
+    "steps": [],
+    "skipped": [
+     {
+      "step": "node_scheduler",
+      "why": "gate unscheduled_without_events"
+     }
+    ]
+   },
+   {
+    "node": "code",
+    "id": "derive",
+    "raw": 0,
+    "kept": 0,
+    "top": []
+   },
+   {
+    "node": "decide",
+    "id": "pick",
+    "rid": "test:boutique/infrastructure/37#pick6",
+    "status": "mechanical",
+    "guard": "no_options",
+    "use": "none",
+    "choice": null,
+    "dominant": false,
+    "why": "no_candidates"
+   },
+   {
+    "node": "decide",
+    "id": "verify",
+    "rid": "test:boutique/infrastructure/37#verify6",
+    "status": "mechanical",
+    "guard": "no_pick",
+    "use": "unverified",
+    "choice": "unverified",
+    "dominant": false,
+    "why": "nothing_to_verify"
+   },
+   {
+    "node": "probes",
+    "plan": "family",
+    "wave": 7,
+    "executed": 1,
+    "steps": [
+     {
+      "key": "node:kubelet",
+      "tool": "CheckNodeServiceStatus",
+      "arguments": {
+       "node_name": "worker-01",
+       "service_name": "kubelet"
+      },
+      "gate": "node_reported_unreachable"
+     }
+    ],
+    "skipped": []
+   },
+   {
+    "node": "code",
+    "id": "derive",
+    "raw": 1,
+    "kept": 1,
+    "top": [
+     {
+      "root_cause": "kubelet_unavailable",
+      "object": "node/worker-01",
+      "score": 0.87,
+      "evidence": "kubelet.service is inactive on worker-01",
+      "rule": "node_component"
+     }
+    ]
+   },
+   {
+    "node": "decide",
+    "id": "pick",
+    "rid": "test:boutique/infrastructure/37#pick7",
+    "status": "mechanical",
+    "guard": "top_over_second >= $params.dominance_ratio",
+    "use": "first_option",
+    "choice": 0,
+    "dominant": true,
+    "why": "dominance"
+   },
+   {
+    "node": "decide",
+    "id": "verify",
+    "rid": "test:boutique/infrastructure/37#verify7",
+    "status": "mechanical",
+    "guard": "$pick.dominant",
+    "use": "verified",
+    "choice": "verified",
+    "dominant": false,
+    "why": "dominant_candidate"
+   },
+   {
+    "node": "probes",
+    "plan": "family",
+    "wave": 8,
+    "executed": 0,
+    "why": "plan exhausted"
+   },
+   {
+    "node": "code",
+    "id": "derive",
+    "raw": 1,
+    "kept": 1,
+    "top": [
+     {
+      "root_cause": "kubelet_unavailable",
+      "object": "node/worker-01",
+      "score": 0.87,
+      "evidence": "kubelet.service is inactive on worker-01",
+      "rule": "node_component"
+     }
+    ]
+   },
+   {
+    "node": "decide",
+    "id": "pick",
+    "rid": "test:boutique/infrastructure/37#pick8",
+    "status": "mechanical",
+    "guard": "unchanged_since_last",
+    "use": "previous",
+    "choice": 0,
+    "dominant": true,
+    "why": "no_new_evidence"
+   },
+   {
+    "node": "decide",
+    "id": "verify",
+    "rid": "test:boutique/infrastructure/37#verify8",
+    "status": "mechanical",
+    "guard": "$pick.dominant",
+    "use": "verified",
+    "choice": "verified",
+    "dominant": false,
+    "why": "dominant_candidate"
+   },
+   {
+    "node": "loop",
+    "id": "waves",
+    "stop": "plan_exhausted",
+    "wave": 8
+   },
+   {
+    "node": "escalate",
+    "id": "escalate",
+    "fired": false,
+    "reasons": [],
+    "why": "no reason"
+   },
+   {
+    "node": "code",
+    "id": "answer",
+    "predictions": [
+     {
+      "rank": 1,
+      "fault_object": "node/worker-01",
+      "root_cause": "kubelet_unavailable"
+     },
+     {
+      "rank": 2,
+      "fault_object": "node/worker-01",
+      "root_cause": "kubelet_unavailable"
+     },
+     {
+      "rank": 3,
+      "fault_object": "node/worker-01",
+      "root_cause": "kubelet_unavailable"
+     }
+    ]
+   },
+   {
+    "node": "artifact",
+    "id": "persist",
+    "persisted": false,
+    "why": "written by the CLI driver"
+   }
+  ],
+  "notes": [],
+  "tool_calls": 4,
+  "model_calls": 0,
+  "tokens_in": 0,
+  "tokens_out": 0,
+  "wall_s": 0.05
+ }
+}

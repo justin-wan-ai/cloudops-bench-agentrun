@@ -1,0 +1,75 @@
+{
+  "dsl": "workspace/dsl_versions/v0.13.dsl.txt",
+  "version": "0.13",
+  "params": {
+    "cands_cap": 8,
+    "max_waves": 10,
+    "min_waves": 5,
+    "steps_per_wave": 1,
+    "dominance_ratio": 1.5,
+    "conf_min": 0.0,
+    "escalate": true,
+    "escalate_budget": 8,
+    "judge_on_codedefect": true,
+    "jev_route": true,
+    "jev_pick": true,
+    "jev_verify": true,
+    "route_fallback": "runtime"
+  },
+  "jev_mode": "live",
+  "jev_usage": {
+    "calls": 4,
+    "input_tokens": 584,
+    "model_latency_ms": 247.0
+  },
+  "cases": [
+    {
+      "id": "boutique/service/1",
+      "family": "service",
+      "tool_calls": 13,
+      "model_calls": 9,
+      "tokens_in": 41385,
+      "tokens_out": 5525,
+      "wall_s": 43.54,
+      "escalated": true,
+      "verified": false,
+      "verify_prob": null
+    },
+    {
+      "id": "boutique/service/10",
+      "family": "service",
+      "tool_calls": 6,
+      "model_calls": 1,
+      "tokens_in": 146,
+      "tokens_out": 0,
+      "wall_s": 0.34,
+      "escalated": false,
+      "verified": true,
+      "verify_prob": null
+    },
+    {
+      "id": "boutique/service/29",
+      "family": "service",
+      "tool_calls": 6,
+      "model_calls": 1,
+      "tokens_in": 146,
+      "tokens_out": 0,
+      "wall_s": 0.3,
+      "escalated": false,
+      "verified": true,
+      "verify_prob": null
+    },
+    {
+      "id": "boutique/service/35",
+      "family": "service",
+      "tool_calls": 6,
+      "model_calls": 1,
+      "tokens_in": 146,
+      "tokens_out": 0,
+      "wall_s": 0.31,
+      "escalated": false,
+      "verified": true,
+      "verify_prob": null
+    }
+  ]
+}

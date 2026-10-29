@@ -1,0 +1,865 @@
+{
+ "case_id": "trainticket/startup/10",
+ "system_name": "trainticket",
+ "question": "Partial Service Unreachability.",
+ "case_path": "/Users/justinwan/work/workspace/cloudops_bench_rsi/repo/benchmark/trainticket/startup/10",
+ "max_steps": 10,
+ "current_step": 4,
+ "finished": true,
+ "stop_reason": "submit",
+ "final_answer": "{\"key_evidence_summary\": \"pod references a Secret that cannot be mounted\", \"top_3_predictions\": [{\"rank\": 1, \"fault_object\": \"app/ts-order-other-service\", \"root_cause\": \"missing_secret_binding\"}, {\"rank\": 2, \"fault_object\": \"app/ts-order-other-service\", \"root_cause\": \"missing_secret_binding\"}, {\"rank\": 3, \"fault_object\": \"app/ts-order-other-service\", \"root_cause\": \"missing_secret_binding\"}]}",
+ "metadata": {
+  "namespace": "train-ticket",
+  "query": "Partial Service Unreachability.",
+  "fault_category": "startup",
+  "model_name": "agentrun-v0.13"
+ },
+ "steps": [
+  {
+   "step_id": 0,
+   "action_type": "tool",
+   "action_name": "GetResources",
+   "action_input": {
+    "namespace": "train-ticket",
+    "resource_type": "pods",
+    "output_wide": true
+   },
+   "observation": "NAME                                            READY   STATUS                       RESTARTS        AGE     IP             NODE        NOMINATED NODE   READINESS GATES\nnacos-0                                         1/1     Running                      0               3d9h    172.20.2.76    worker-02   <none>           <none>\nnacos-1                                         1/1     Running                      0               3d9h    172.20.1.247   worker-01   <none>           <none>\nnacos-2                                         1/1     Running                      0               3d9h    172.20.3.7     worker-03   <none>           <none>\nnacosdb-mysql-0                                 3/3     Running                      1 (3d9h ago)    3d9h    172.20.2.75    worker-02   <none>           <none>\nnacosdb-mysql-1                                 3/3     Running                      2 (3d9h ago)    3d9h    172.20.1.246   worker-01   <none>           <none>\nnacosdb-mysql-2                                 3/3     Running                      1 (3d9h ago)    3d9h    172.20.3.6     worker-03   <none>           <none>\nrabbitmq-57b4f9969c-4cndj                       1/1     Running                      0               3d9h    172.20.2.77    worker-02   <none>           <none>\nts-assurance-service-85577d9b4d-56q8h           1/1     Running                      0               4m56s   172.20.2.21    worker-02   <none>           <none>\nts-auth-service-7689b8d556-dx9d6                1/1     Running                      0               5m4s    172.20.2.8     worker-02   <none>           <none>\nts-avatar-service-5c7d494dcd-p75p5              1/1     Running                      0               5m1s    172.20.2.15    worker-02   <none>           <none>\nts-basic-service-7695b48fbc-c7w4k               1/1     Running                      0               5m3s    172.20.1.144   worker-01   <none>           <none>\nts-cancel-service-5f94cbd655-grjmg              1/1     Running                      0               5m3s    172.20.2.11    worker-02   <none>           <none>\nts-config-service-778646698d-66qpr              1/1     Running                      0               4m58s   172.20.2.19    worker-02   <none>           <none>\nts-consign-price-service-9dbb69844-4q9km        1/1     Running                      0               4h14m   172.20.1.213   worker-01   <none>           <none>\nts-consign-service-7b6f69669d-npwm2             1/1     Running                      0               5m1s    172.20.1.148   worker-01   <none>           <none>\nts-contacts-service-878884888-hvk9q             1/1     Running                      0               5m2s    172.20.2.12    worker-02   <none>           <none>\nts-delivery-service-787cbf858d-kkg8w            1/1     Running                      0               4m59s   172.20.1.152   worker-01   <none>           <none>\nts-execute-service-84bddf7bb4-6kzlv             1/1     Running                      0               5m1s    172.20.2.14    worker-02   <none>           <none>\nts-food-delivery-service-d7f948cf4-xxfpc        1/1     Running                      0               4m57s   172.20.2.20    worker-02   <none>           <none>\nts-food-service-6bdb8b7ddb-pb2fh                1/1     Running                      0               4m57s   172.20.1.155   worker-01   <none>           <none>\nts-gateway-service-f8d94c6b5-nsdbd              1/1     Running                      0               5m4s    172.20.2.7     worker-02   <none>           <none>\nts-inside-payment-service-5d5bd5c84d-lvbrj      1/1     Running                      0               5m      172.20.1.150   worker-01   <none>           <none>\nts-news-service-85787d567b-zhsj5                1/1     Running                      0               4m55s   172.20.1.157   worker-01   <none>           <none>\nts-notification-service-675d7d65b4-5ck29        1/1     Running                      0               4m58s   172.20.3.253   worker-03   <none>           <none>\nts-order-other-service-5fdd56f7f9-r5kch         0/1     CreateContainerConfigError   0               4m55s   172.20.2.22    worker-02   <none>           <none>\nts-order-service-57d9f6ffbd-xnltb               1/1     Running                      0               5m      172.20.2.16    worker-02   <none>           <none>\nts-payment-service-76d7d44b5b-tfb9g             1/1     Running                      0               4m56s   172.20.1.156   worker-01   <none>           <none>\nts-preserve-other-service-76d474789b-9hzr2      1/1     Running                      0               5m1s    172.20.1.149   worker-01   <none>           <none>\nts-preserve-service-77b4fcb95c-4mv2g            1/1     Running                      0               4m58s   172.20.1.154   worker-01   <none>           <none>\nts-price-service-69f84bfbc4-94bgr               1/1     Running                      0               5m3s    172.20.1.146   worker-01   <none>           <none>\nts-rebook-service-6556f4bdff-7g95h              1/1     Running                      0               5m1s    172.20.3.248   worker-03   <none>           <none>\nts-route-plan-service-5db7d84bf6-6n2k6          1/1     Running                      0               5m2s    172.20.3.247   worker-03   <none>           <none>\nts-route-service-84fdb67598-54fqj               1/1     Running                      0               5m3s    172.20.1.145   worker-01   <none>           <none>\nts-seat-service-79bf884688-ptmxx                1/1     Running                      0               5m      172.20.3.250   worker-03   <none>           <none>\nts-security-service-64cb5fb74d-jt5lf            1/1     Running                      0               4m58s   172.20.2.18    worker-02   <none>           <none>\nts-station-food-service-68497bf65b-k8pgr        1/1     Running                      0               5m3s    172.20.2.9     worker-02   <none>           <none>\nts-station-service-fd984464d-sqgr6              1/1     Running                      0               5m2s    172.20.1.147   worker-01   <none>           <none>\nts-ticket-office-service-588b66bc4b-xjsxj       1/1     Running                      0               5m2s    172.20.2.13    worker-02   <none>           <none>\nts-train-food-service-54754ff6f6-t92ht          1/1     Running                      0               4m59s   172.20.3.251   worker-03   <none>           <none>\nts-train-service-79b45885dd-cw584               1/1     Running                      0               4m59s   172.20.1.153   worker-01   <none>           <none>\nts-travel-plan-service-684f8495b5-7zqfw         1/1     Running                      0               5m      172.20.3.249   worker-03   <none>           <none>\nts-travel-service-55fd6fc94d-8h6gk              1/1     Running                      0               4m56s   172.20.3.3     worker-03   <none>           <none>\nts-travel2-service-c56664fd-f6ssd               1/1     Running                      0               5m2s    172.20.3.246   worker-03   <none>           <none>\nts-ui-dashboard-554844f867-lqkvb                1/1     Running                      0               4m59s   172.20.1.151   worker-01   <none>           <none>\nts-user-service-b795844f6-fx4rr                 1/1     Running                      0               4m57s   172.20.3.254   worker-03   <none>           <none>\nts-verification-code-service-7b984b7994-gr5kg   1/1     Running                      0               4m56s   172.20.3.2     worker-03   <none>           <none>\nts-voucher-service-5b8bd94c88-t8jkh             1/1     Running                      0               4m59s   172.20.3.252   worker-03   <none>           <none>\nts-wait-order-service-79c76dff8d-wbv9p          1/1     Running                      0               4m58s   172.20.2.17    worker-02   <none>           <none>\ntsdb-mysql-0                                    3/3     Running                      1 (4h17m ago)   4h21m   172.20.2.54    worker-02   <none>           <none>\ntsdb-mysql-1                                    3/3     Running                      1 (4h17m ago)   4h19m   172.20.1.212   worker-01   <none>           <none>\ntsdb-mysql-2                                    3/3     Running                      1 (4h17m ago)   4h18m   172.20.3.100   worker-03   <none>           <none>\n",
+   "error": null,
+   "purpose": "pod readiness census",
+   "tool_latency": null
+  },
+  {
+   "step_id": 1,
+   "action_type": "tool",
+   "action_name": "DescribeResource",
+   "action_input": {
+    "namespace": "train-ticket",
+    "resource_type": "pods",
+    "name": "ts-order-other-service-5fdd56f7f9-r5kch"
+   },
+   "observation": "Name:             ts-order-other-service-5fdd56f7f9-r5kch\nNamespace:        train-ticket\nPriority:         0\nService Account:  default\nNode:             worker-02/192.168.0.53\nStart Time:       Thu, 12 Mar 2026 00:48:25 +0800\nLabels:           app=ts-order-other-service\n                  pod-template-hash=5fdd56f7f9\nAnnotations:      <none>\nStatus:           Pending\nIP:               172.20.2.22\nIPs:\n  IP:           172.20.2.22\nControlled By:  ReplicaSet/ts-order-other-service-5fdd56f7f9\nContainers:\n  ts-order-other-service:\n    Container ID:   \n    Image:          ghcr.io/sregym/ts-order-other-service:latest\n    Image ID:       \n    Port:           12032/TCP\n    Host Port:      0/TCP\n    State:          Waiting\n      Reason:       CreateContainerConfigError\n    Ready:          False\n    Restart Count:  0\n    Limits:\n      cpu:     500m\n      memory:  2000Mi\n    Requests:\n      cpu:      100m\n      memory:   300Mi\n    Readiness:  tcp-socket :12032 delay=60s timeout=5s period=10s #success=1 #failure=3\n    Environment Variables from:\n      ts-order-other-mysql1  Secret     Optional: false\n      nacos                  ConfigMap  Optional: false\n      rabbitmq               ConfigMap  Optional: false\n    Environment:\n      SPRING_MAIN_ALLOW_CIRCULAR_REFERENCES:  true\n      NODE_IP:                                 (v1:status.hostIP)\n    Mounts:\n      /var/run/secrets/kubernetes.io/serviceaccount from kube-api-access-gxbzq (ro)\nConditions:\n  Type                        Status\n  PodReadyToStartContainers   True \n  Initialized                 True \n  Ready                       False \n  ContainersReady             False \n  PodScheduled                True \nVolumes:\n  kube-api-access-gxbzq:\n    Type:                    Projected (a volume that contains injected data from multiple sources)\n    TokenExpirationSeconds:  3607\n    ConfigMapName:           kube-root-ca.crt\n    ConfigMapOptional:       <nil>\n    DownwardAPI:             true\nQoS Class:                   Burstable\nNode-Selectors:              <none>\nTolerations:                 node.kubernetes.io/not-ready:NoExecute op=Exists for 300s\n                             node.kubernetes.io/unreachable:NoExecute op=Exists for 300s\nEvents:\n  Type     Reason     Age                    From               Message\n  ----     ------     ----                   ----               -------\n  Normal   Scheduled  5m2s                   default-scheduler  Successfully assigned train-ticket/ts-order-other-service-5fdd56f7f9-r5kch to worker-02\n  Warning  Failed     2m46s (x12 over 5m1s)  kubelet            Error: secret \"ts-order-other-mysql1\" not found\n  Normal   Pulled     0s (x25 over 5m1s)     kubelet            Container image \"ghcr.io/sregym/ts-order-other-service:latest\" already present on machine\n",
+   "error": null,
+   "purpose": "probe config, container state, restart reasons, scheduler events",
+   "tool_latency": null
+  },
+  {
+   "step_id": 2,
+   "action_type": "tool",
+   "action_name": "GetAppYAML",
+   "action_input": {
+    "app_name": "ts-order-other-service"
+   },
+   "observation": "apiVersion: apps/v1\nkind: Deployment\nmetadata:\n  namespace: train-ticket\n  name: ts-order-other-service\nspec:\n  selector:\n    matchLabels:\n      app: ts-order-other-service\n  replicas: 1\n  template:\n    metadata:\n      labels:\n        app: ts-order-other-service\n    spec:\n      containers:\n      - name: ts-order-other-service\n        image: ghcr.io/sregym/ts-order-other-service:latest\n        imagePullPolicy: IfNotPresent\n        env:\n        - name: SPRING_MAIN_ALLOW_CIRCULAR_REFERENCES\n          value: 'true'\n        - name: NODE_IP\n          valueFrom:\n            fieldRef:\n              fieldPath: status.hostIP\n        envFrom:\n        - secretRef:\n            name: ts-order-other-mysql1\n        - configMapRef:\n            name: nacos\n        - configMapRef:\n            name: rabbitmq\n        ports:\n        - containerPort: 12032\n        resources:\n          requests:\n            cpu: 100m\n            memory: 300Mi\n          limits:\n            cpu: 500m\n            memory: 2000Mi\n        readinessProbe:\n          tcpSocket:\n            port: 12032\n          initialDelaySeconds: 60\n          periodSeconds: 10\n          timeoutSeconds: 5\n---\napiVersion: v1\nkind: Service\nmetadata:\n  namespace: train-ticket\n  name: ts-order-other-service\nspec:\n  ports:\n  - name: http\n    port: 12032\n  selector:\n    app: ts-order-other-service\n---\napiVersion: v1\nkind: Secret\nmetadata:\n  namespace: train-ticket\n  name: ts-order-other-mysql\ntype: Opaque\nstringData:\n  ORDER_OTHER_MYSQL_HOST: tsdb-mysql-leader\n  ORDER_OTHER_MYSQL_PORT: '3306'\n  ORDER_OTHER_MYSQL_DATABASE: ts\n  ORDER_OTHER_MYSQL_USER: ts\n  ORDER_OTHER_MYSQL_PASSWORD: Ts_123456\n",
+   "error": null,
+   "purpose": "declared probes / limits / image / env",
+   "tool_latency": null
+  },
+  {
+   "step_id": 3,
+   "action_type": "tool",
+   "action_name": "GetErrorLogs",
+   "action_input": {
+    "namespace": "train-ticket",
+    "service_name": "ts-order-other-service"
+   },
+   "observation": "{\n  \"app\": [\n    \"Error: Error from server (BadRequest): container \\\"ts-order-other-service\\\" in pod \\\"ts-order-other-service-5fdd56f7f9-r5kch\\\" is waiting to start: CreateContainerConfigError\"\n  ]\n}",
+   "error": null,
+   "purpose": "application error logs",
+   "tool_latency": null
+  }
+ ],
+ "agentrun": {
+  "tag": "test",
+  "dsl": "workspace/dsl_versions/v0.13.dsl.txt",
+  "dsl_version": "0.13",
+  "sop": {
+   "sop": "boutique-runtime-rca",
+   "scope": {
+    "system": "boutique",
+    "families": [
+     "runtime",
+     "admission",
+     "scheduling",
+     "startup",
+     "service",
+     "performance",
+     "infrastructure",
+     "codedefect"
+    ],
+    "severity": [
+     "SEV2",
+     "SEV3"
+    ]
+   },
+   "owner": "sre-platform",
+   "approved_by": [
+    "oncall-primary",
+    "sre-lead"
+   ],
+   "reviewed_at": "2026-10-23",
+   "change_ticket": "OPS-1241",
+   "boundaries": "R4 已知：`node_network_delay` 若快照里没有任何 Node 级 retrans 告警（例：performance/25），\n本 SOP 会退回 pod 级判断（当前工具面无法区分 pod 与 node 的延迟注入）。\n只读诊断：本 SOP 不执行任何写操作（重启/回滚/扩缩容），也不做对外播报；\n它回答\"最可能的根因与受害对象\"，处置与沟通由值班按 runbook 人工执行。\n不覆盖 SEV1（需 incident commander 介入）与变更引发的问题（走变更回滚流程）。\n输入是冻结快照：诊断结论对\"快照时刻\"成立，恢复后需重新取证。\nR1 已知边界：PVC 的 requested size / accessMode 在本 benchmark 的工具面不可见，\n因此 pvc_capacity 与 pvc_access_mode 无法区分（同一分数并列，交给 jev 或升级）。\n"
+  },
+  "params": {
+   "cands_cap": 8,
+   "max_waves": 10,
+   "min_waves": 5,
+   "steps_per_wave": 1,
+   "dominance_ratio": 1.5,
+   "conf_min": 0.0,
+   "escalate": true,
+   "escalate_budget": 8,
+   "judge_on_codedefect": true,
+   "jev_route": true,
+   "jev_pick": true,
+   "jev_verify": true,
+   "route_fallback": "runtime"
+  },
+  "nodes_executed": [
+   "anchors:extract_anchors",
+   "census:probes",
+   "route:decide",
+   "plan:build_plan",
+   "probe:probes",
+   "derive:derive_candidates",
+   "pick:decide",
+   "verify:decide",
+   "probe:probes",
+   "derive:derive_candidates",
+   "pick:decide",
+   "verify:decide",
+   "probe:probes",
+   "derive:derive_candidates",
+   "pick:decide",
+   "verify:decide",
+   "probe:probes",
+   "derive:derive_candidates",
+   "pick:decide",
+   "verify:decide",
+   "probe:probes",
+   "derive:derive_candidates",
+   "pick:decide",
+   "verify:decide",
+   "escalate:escalate",
+   "answer:normalize_answer",
+   "persist:persist_trace"
+  ],
+  "census": [
+   {
+    "step": "pods",
+    "gate": "always"
+   },
+   {
+    "step": "alerts",
+    "gate": "healthy_system"
+   }
+  ],
+  "plan": [
+   {
+    "step": "describe_pod",
+    "gate": "always",
+    "wave": 1
+   },
+   {
+    "step": "app_yaml",
+    "gate": "probe_or_restart_or_weak",
+    "wave": 2
+   },
+   {
+    "step": "error_logs",
+    "gate": "restart_or_weak_strong",
+    "wave": 3
+   },
+   {
+    "step": "node_kubelet",
+    "gate": "runtime_stall",
+    "wave": 4
+   },
+   {
+    "step": "node_containerd",
+    "gate": "runtime_stall | node_all_healthy",
+    "wave": 5
+   }
+  ],
+  "family": "runtime",
+  "state_wiring": {
+   "family": "$route.family",
+   "route_probs": "$route.probabilities",
+   "picked": "$pick.picked",
+   "pick_dominant": "$pick.dominant",
+   "verify_status": "$verify.status",
+   "verify_prob": "$verify.confidence"
+  },
+  "bindings": {
+   "anchors": {
+    "anchors": "Anchors(case_id='trainticket/startup/10', system='trainticket', namespace='train-ticket', query='Partial Service Unreachability.', difficulty='easy', symptoms=['unavailable'], mentioned_apps=[], priors={'db_service': 'tsdb-mysql-leader', 'db_port': 3306})"
+   },
+   "route": {
+    "family": "runtime",
+    "probabilities": {},
+    "route_why": "mechanism_mode"
+   },
+   "plan": {
+    "plan": "[{'name': 'describe_pod', 'key': 'describe:pod', 'tool': 'DescribeResource', 'args': <function _args_describe_pod at 0x10ee43ec0>, 'purpose': 'probe config, container state, restart reasons, scheduler events', 'when': <function compile_steps.<locals>.<lambda> at 0x110acd4e0>, 'gate': 'always', 'wave': 1}, {'name': 'app_yaml', 'key': 'appyaml', 'tool': 'GetAppYAML', 'args': <function _args_app_yaml at 0x10ee74040>, 'purpose': 'declared probes / limits / image / env', 'when': <function compile_steps.<locals>.<lambda> at 0x110acd580>, 'gate': 'probe_or_restart_or_weak', 'wave': 2}, {'name': 'error_logs', 'key': 'errors', 'tool': 'GetErrorLogs', 'args': <function _args_error_logs at 0x10ee740e0>, 'purpose': 'application error logs', 'when': <function compile_steps.<locals>.<lambda> at 0x110acd620>, 'gate': 'restart_or_weak_strong', 'wave': 3}, {'name': 'node_kubelet', 'key': 'node:kubelet', 'tool': 'CheckNodeServiceStatus', 'args': <function _args_node_kubelet at 0x10ee74540>, 'purpose': 'kubelet status on the node hosting the stalled pod', 'when': <function compile_steps.<locals>.<lambda> at 0x110acd6c0>, 'gate': 'runtime_stall', 'wave': 4}, {'name': 'node_containerd', 'key': 'node:containerd', 'tool': 'CheckNodeServiceStatus', 'args': <function _args_node_containerd at 0x10ee745e0>, 'purpose': 'container runtime status on the same node', 'when': <function compile_steps.<locals>.<lambda> at 0x110acd760>, 'gate': 'runtime_stall | node_all_healthy', 'wave': 5}]"
+   },
+   "derive": {
+    "candidates": "[Candidate(root_cause='missing_secret_binding', object='app/ts-order-other-service', score=0.77, evidence='pod references a Secret that cannot be mounted', rule='secret_binding')]"
+   },
+   "pick": {
+    "picked": 0,
+    "dominant": true,
+    "pick_why": "no_new_evidence"
+   },
+   "verify": {
+    "status": "verified",
+    "confidence": null,
+    "verify_why": "dominant_candidate"
+   },
+   "escalate": {
+    "answer": null
+   },
+   "answer": {
+    "final": {
+     "key_evidence_summary": "pod references a Secret that cannot be mounted",
+     "top_3_predictions": [
+      {
+       "rank": 1,
+       "fault_object": "app/ts-order-other-service",
+       "root_cause": "missing_secret_binding"
+      },
+      {
+       "rank": 2,
+       "fault_object": "app/ts-order-other-service",
+       "root_cause": "missing_secret_binding"
+      },
+      {
+       "rank": 3,
+       "fault_object": "app/ts-order-other-service",
+       "root_cause": "missing_secret_binding"
+      }
+     ]
+    }
+   }
+  },
+  "picked": {
+   "root_cause": "missing_secret_binding",
+   "object": "app/ts-order-other-service",
+   "score": 0.77,
+   "evidence": "pod references a Secret that cannot be mounted",
+   "rule": "secret_binding"
+  },
+  "pick_why": "",
+  "verify_prob": null,
+  "verify_verdict": "verified",
+  "verified": true,
+  "escalated": false,
+  "escalate_reason": "",
+  "escalate_steps": 0,
+  "waves": 5,
+  "candidates": [
+   {
+    "root_cause": "missing_secret_binding",
+    "object": "app/ts-order-other-service",
+    "score": 0.77,
+    "evidence": "pod references a Secret that cannot be mounted",
+    "rule": "secret_binding"
+   }
+  ],
+  "jev": [
+   {
+    "rid": "test:trainticket/startup/10#route",
+    "kind": "route",
+    "node": "route",
+    "mode": "mechanism",
+    "options": [
+     "runtime",
+     "infrastructure"
+    ],
+    "status": "mechanical",
+    "guard": "unavailable",
+    "use": "first_option",
+    "choice": "runtime",
+    "why": "mechanism_mode",
+    "dominant": false,
+    "continue_loop": false,
+    "escalate": false
+   },
+   {
+    "rid": "test:trainticket/startup/10#pick1",
+    "kind": "pick",
+    "node": "pick",
+    "mode": "mechanism",
+    "options": [
+     "c0"
+    ],
+    "status": "mechanical",
+    "guard": "top_over_second >= $params.dominance_ratio",
+    "use": "first_option",
+    "choice": 0,
+    "why": "dominance",
+    "dominant": true,
+    "continue_loop": false,
+    "escalate": false
+   },
+   {
+    "rid": "test:trainticket/startup/10#verify1",
+    "kind": "verify",
+    "node": "verify",
+    "mode": "mechanism",
+    "options": [
+     "supported",
+     "insufficient",
+     "contradicted"
+    ],
+    "status": "mechanical",
+    "guard": "$pick.dominant",
+    "use": "verified",
+    "choice": "verified",
+    "why": "dominant_candidate",
+    "dominant": false,
+    "continue_loop": false,
+    "escalate": false
+   },
+   {
+    "rid": "test:trainticket/startup/10#pick2",
+    "kind": "pick",
+    "node": "pick",
+    "mode": "mechanism",
+    "options": [
+     "c0"
+    ],
+    "status": "mechanical",
+    "guard": "unchanged_since_last",
+    "use": "previous",
+    "choice": 0,
+    "why": "no_new_evidence",
+    "dominant": true,
+    "continue_loop": false,
+    "escalate": false
+   },
+   {
+    "rid": "test:trainticket/startup/10#verify2",
+    "kind": "verify",
+    "node": "verify",
+    "mode": "mechanism",
+    "options": [
+     "supported",
+     "insufficient",
+     "contradicted"
+    ],
+    "status": "mechanical",
+    "guard": "$pick.dominant",
+    "use": "verified",
+    "choice": "verified",
+    "why": "dominant_candidate",
+    "dominant": false,
+    "continue_loop": false,
+    "escalate": false
+   },
+   {
+    "rid": "test:trainticket/startup/10#pick3",
+    "kind": "pick",
+    "node": "pick",
+    "mode": "mechanism",
+    "options": [
+     "c0"
+    ],
+    "status": "mechanical",
+    "guard": "unchanged_since_last",
+    "use": "previous",
+    "choice": 0,
+    "why": "no_new_evidence",
+    "dominant": true,
+    "continue_loop": false,
+    "escalate": false
+   },
+   {
+    "rid": "test:trainticket/startup/10#verify3",
+    "kind": "verify",
+    "node": "verify",
+    "mode": "mechanism",
+    "options": [
+     "supported",
+     "insufficient",
+     "contradicted"
+    ],
+    "status": "mechanical",
+    "guard": "$pick.dominant",
+    "use": "verified",
+    "choice": "verified",
+    "why": "dominant_candidate",
+    "dominant": false,
+    "continue_loop": false,
+    "escalate": false
+   },
+   {
+    "rid": "test:trainticket/startup/10#pick4",
+    "kind": "pick",
+    "node": "pick",
+    "mode": "mechanism",
+    "options": [
+     "c0"
+    ],
+    "status": "mechanical",
+    "guard": "unchanged_since_last",
+    "use": "previous",
+    "choice": 0,
+    "why": "no_new_evidence",
+    "dominant": true,
+    "continue_loop": false,
+    "escalate": false
+   },
+   {
+    "rid": "test:trainticket/startup/10#verify4",
+    "kind": "verify",
+    "node": "verify",
+    "mode": "mechanism",
+    "options": [
+     "supported",
+     "insufficient",
+     "contradicted"
+    ],
+    "status": "mechanical",
+    "guard": "$pick.dominant",
+    "use": "verified",
+    "choice": "verified",
+    "why": "dominant_candidate",
+    "dominant": false,
+    "continue_loop": false,
+    "escalate": false
+   },
+   {
+    "rid": "test:trainticket/startup/10#pick5",
+    "kind": "pick",
+    "node": "pick",
+    "mode": "mechanism",
+    "options": [
+     "c0"
+    ],
+    "status": "mechanical",
+    "guard": "unchanged_since_last",
+    "use": "previous",
+    "choice": 0,
+    "why": "no_new_evidence",
+    "dominant": true,
+    "continue_loop": false,
+    "escalate": false
+   },
+   {
+    "rid": "test:trainticket/startup/10#verify5",
+    "kind": "verify",
+    "node": "verify",
+    "mode": "mechanism",
+    "options": [
+     "supported",
+     "insufficient",
+     "contradicted"
+    ],
+    "status": "mechanical",
+    "guard": "$pick.dominant",
+    "use": "verified",
+    "choice": "verified",
+    "why": "dominant_candidate",
+    "dominant": false,
+    "continue_loop": false,
+    "escalate": false
+   }
+  ],
+  "nodes": [
+   {
+    "node": "code",
+    "id": "anchors",
+    "anchors": {
+     "case_id": "trainticket/startup/10",
+     "system": "trainticket",
+     "namespace": "train-ticket",
+     "query": "Partial Service Unreachability.",
+     "difficulty": "easy",
+     "symptoms": [
+      "unavailable"
+     ],
+     "mentioned_apps": []
+    }
+   },
+   {
+    "node": "probes",
+    "plan": "census",
+    "wave": 0,
+    "executed": 1,
+    "steps": [
+     {
+      "key": "pods",
+      "tool": "GetResources",
+      "arguments": {
+       "namespace": "train-ticket",
+       "resource_type": "pods",
+       "output_wide": true
+      },
+      "gate": "always"
+     }
+    ],
+    "skipped": [
+     {
+      "step": "alerts",
+      "why": "gate healthy_system"
+     }
+    ]
+   },
+   {
+    "node": "decide",
+    "id": "route",
+    "rid": "test:trainticket/startup/10#route",
+    "status": "mechanical",
+    "guard": "unavailable",
+    "use": "first_option",
+    "choice": "runtime",
+    "dominant": false,
+    "why": "mechanism_mode"
+   },
+   {
+    "node": "code",
+    "id": "plan",
+    "family": "runtime",
+    "plan": [
+     {
+      "step": "describe_pod",
+      "gate": "always",
+      "wave": 1
+     },
+     {
+      "step": "app_yaml",
+      "gate": "probe_or_restart_or_weak",
+      "wave": 2
+     },
+     {
+      "step": "error_logs",
+      "gate": "restart_or_weak_strong",
+      "wave": 3
+     },
+     {
+      "step": "node_kubelet",
+      "gate": "runtime_stall",
+      "wave": 4
+     },
+     {
+      "step": "node_containerd",
+      "gate": "runtime_stall | node_all_healthy",
+      "wave": 5
+     }
+    ]
+   },
+   {
+    "node": "probes",
+    "plan": "family",
+    "wave": 1,
+    "executed": 1,
+    "steps": [
+     {
+      "key": "describe:pod",
+      "tool": "DescribeResource",
+      "arguments": {
+       "namespace": "train-ticket",
+       "resource_type": "pods",
+       "name": "ts-order-other-service-5fdd56f7f9-r5kch"
+      },
+      "gate": "always"
+     }
+    ],
+    "skipped": []
+   },
+   {
+    "node": "code",
+    "id": "derive",
+    "raw": 1,
+    "kept": 1,
+    "top": [
+     {
+      "root_cause": "missing_secret_binding",
+      "object": "app/ts-order-other-service",
+      "score": 0.77,
+      "evidence": "pod references a Secret that cannot be mounted",
+      "rule": "secret_binding"
+     }
+    ]
+   },
+   {
+    "node": "decide",
+    "id": "pick",
+    "rid": "test:trainticket/startup/10#pick1",
+    "status": "mechanical",
+    "guard": "top_over_second >= $params.dominance_ratio",
+    "use": "first_option",
+    "choice": 0,
+    "dominant": true,
+    "why": "dominance"
+   },
+   {
+    "node": "decide",
+    "id": "verify",
+    "rid": "test:trainticket/startup/10#verify1",
+    "status": "mechanical",
+    "guard": "$pick.dominant",
+    "use": "verified",
+    "choice": "verified",
+    "dominant": false,
+    "why": "dominant_candidate"
+   },
+   {
+    "node": "probes",
+    "plan": "family",
+    "wave": 2,
+    "executed": 1,
+    "steps": [
+     {
+      "key": "appyaml",
+      "tool": "GetAppYAML",
+      "arguments": {
+       "app_name": "ts-order-other-service"
+      },
+      "gate": "probe_or_restart_or_weak"
+     }
+    ],
+    "skipped": []
+   },
+   {
+    "node": "code",
+    "id": "derive",
+    "raw": 1,
+    "kept": 1,
+    "top": [
+     {
+      "root_cause": "missing_secret_binding",
+      "object": "app/ts-order-other-service",
+      "score": 0.77,
+      "evidence": "pod references a Secret that cannot be mounted",
+      "rule": "secret_binding"
+     }
+    ]
+   },
+   {
+    "node": "decide",
+    "id": "pick",
+    "rid": "test:trainticket/startup/10#pick2",
+    "status": "mechanical",
+    "guard": "unchanged_since_last",
+    "use": "previous",
+    "choice": 0,
+    "dominant": true,
+    "why": "no_new_evidence"
+   },
+   {
+    "node": "decide",
+    "id": "verify",
+    "rid": "test:trainticket/startup/10#verify2",
+    "status": "mechanical",
+    "guard": "$pick.dominant",
+    "use": "verified",
+    "choice": "verified",
+    "dominant": false,
+    "why": "dominant_candidate"
+   },
+   {
+    "node": "probes",
+    "plan": "family",
+    "wave": 3,
+    "executed": 1,
+    "steps": [
+     {
+      "key": "errors",
+      "tool": "GetErrorLogs",
+      "arguments": {
+       "namespace": "train-ticket",
+       "service_name": "ts-order-other-service"
+      },
+      "gate": "restart_or_weak_strong"
+     }
+    ],
+    "skipped": []
+   },
+   {
+    "node": "code",
+    "id": "derive",
+    "raw": 1,
+    "kept": 1,
+    "top": [
+     {
+      "root_cause": "missing_secret_binding",
+      "object": "app/ts-order-other-service",
+      "score": 0.77,
+      "evidence": "pod references a Secret that cannot be mounted",
+      "rule": "secret_binding"
+     }
+    ]
+   },
+   {
+    "node": "decide",
+    "id": "pick",
+    "rid": "test:trainticket/startup/10#pick3",
+    "status": "mechanical",
+    "guard": "unchanged_since_last",
+    "use": "previous",
+    "choice": 0,
+    "dominant": true,
+    "why": "no_new_evidence"
+   },
+   {
+    "node": "decide",
+    "id": "verify",
+    "rid": "test:trainticket/startup/10#verify3",
+    "status": "mechanical",
+    "guard": "$pick.dominant",
+    "use": "verified",
+    "choice": "verified",
+    "dominant": false,
+    "why": "dominant_candidate"
+   },
+   {
+    "node": "probes",
+    "plan": "family",
+    "wave": 4,
+    "executed": 0,
+    "steps": [],
+    "skipped": [
+     {
+      "step": "node_kubelet",
+      "why": "gate runtime_stall"
+     }
+    ]
+   },
+   {
+    "node": "code",
+    "id": "derive",
+    "raw": 1,
+    "kept": 1,
+    "top": [
+     {
+      "root_cause": "missing_secret_binding",
+      "object": "app/ts-order-other-service",
+      "score": 0.77,
+      "evidence": "pod references a Secret that cannot be mounted",
+      "rule": "secret_binding"
+     }
+    ]
+   },
+   {
+    "node": "decide",
+    "id": "pick",
+    "rid": "test:trainticket/startup/10#pick4",
+    "status": "mechanical",
+    "guard": "unchanged_since_last",
+    "use": "previous",
+    "choice": 0,
+    "dominant": true,
+    "why": "no_new_evidence"
+   },
+   {
+    "node": "decide",
+    "id": "verify",
+    "rid": "test:trainticket/startup/10#verify4",
+    "status": "mechanical",
+    "guard": "$pick.dominant",
+    "use": "verified",
+    "choice": "verified",
+    "dominant": false,
+    "why": "dominant_candidate"
+   },
+   {
+    "node": "probes",
+    "plan": "family",
+    "wave": 5,
+    "executed": 0,
+    "steps": [],
+    "skipped": [
+     {
+      "step": "node_containerd",
+      "why": "gate runtime_stall | node_all_healthy"
+     }
+    ]
+   },
+   {
+    "node": "code",
+    "id": "derive",
+    "raw": 1,
+    "kept": 1,
+    "top": [
+     {
+      "root_cause": "missing_secret_binding",
+      "object": "app/ts-order-other-service",
+      "score": 0.77,
+      "evidence": "pod references a Secret that cannot be mounted",
+      "rule": "secret_binding"
+     }
+    ]
+   },
+   {
+    "node": "decide",
+    "id": "pick",
+    "rid": "test:trainticket/startup/10#pick5",
+    "status": "mechanical",
+    "guard": "unchanged_since_last",
+    "use": "previous",
+    "choice": 0,
+    "dominant": true,
+    "why": "no_new_evidence"
+   },
+   {
+    "node": "decide",
+    "id": "verify",
+    "rid": "test:trainticket/startup/10#verify5",
+    "status": "mechanical",
+    "guard": "$pick.dominant",
+    "use": "verified",
+    "choice": "verified",
+    "dominant": false,
+    "why": "dominant_candidate"
+   },
+   {
+    "node": "loop",
+    "id": "waves",
+    "stop": "plan_exhausted",
+    "wave": 5
+   },
+   {
+    "node": "escalate",
+    "id": "escalate",
+    "fired": false,
+    "reasons": [],
+    "why": "no reason"
+   },
+   {
+    "node": "code",
+    "id": "answer",
+    "predictions": [
+     {
+      "rank": 1,
+      "fault_object": "app/ts-order-other-service",
+      "root_cause": "missing_secret_binding"
+     },
+     {
+      "rank": 2,
+      "fault_object": "app/ts-order-other-service",
+      "root_cause": "missing_secret_binding"
+     },
+     {
+      "rank": 3,
+      "fault_object": "app/ts-order-other-service",
+      "root_cause": "missing_secret_binding"
+     }
+    ]
+   },
+   {
+    "node": "artifact",
+    "id": "persist",
+    "persisted": false,
+    "why": "written by the CLI driver"
+   }
+  ],
+  "notes": [],
+  "tool_calls": 4,
+  "model_calls": 0,
+  "tokens_in": 0,
+  "tokens_out": 0,
+  "wall_s": 0.12
+ }
+}

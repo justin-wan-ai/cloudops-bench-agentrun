@@ -1,0 +1,704 @@
+{
+ "case_id": "boutique/performance/2",
+ "system_name": "boutique",
+ "question": "Service latency increased significantly",
+ "case_path": "/Users/justinwan/work/workspace/cloudops_bench_rsi/repo/benchmark/boutique/performance/2",
+ "max_steps": 8,
+ "current_step": 3,
+ "finished": true,
+ "stop_reason": "submit",
+ "final_answer": "{\"key_evidence_summary\": \"network latency anomaly on the pod\", \"top_3_predictions\": [{\"rank\": 1, \"fault_object\": \"app/cartservice\", \"root_cause\": \"pod_network_delay\"}, {\"rank\": 2, \"fault_object\": \"app/checkoutservice\", \"root_cause\": \"pod_network_delay\"}, {\"rank\": 3, \"fault_object\": \"app/frontend\", \"root_cause\": \"pod_network_delay\"}]}",
+ "metadata": {
+  "namespace": "boutique",
+  "query": "Service latency increased significantly",
+  "fault_category": "performance",
+  "model_name": "agentrun-v0.9"
+ },
+ "steps": [
+  {
+   "step_id": 0,
+   "action_type": "tool",
+   "action_name": "GetResources",
+   "action_input": {
+    "namespace": "boutique",
+    "resource_type": "pods",
+    "output_wide": true,
+    "show_labels": true
+   },
+   "observation": "Error: Error: Only one of '--show-labels' or '-o wide' can be specified at a time for kubectl get.",
+   "error": null,
+   "purpose": "pod readiness census",
+   "tool_latency": null
+  },
+  {
+   "step_id": 1,
+   "action_type": "tool",
+   "action_name": "GetAlerts",
+   "action_input": {},
+   "observation": "{'status': 'has_anomalies', 'alert_count': 3, 'alerts': [{'type': 'Service', 'name': 'cartservice', 'time_range': '2025-12-25 15:50:32 ~ 2025-12-25 15:52:27', 'status': 'ABNORMAL', 'evidence': ['RESOURCE_SATURATION [cpu_cfs] | Val: 0.811s (Throttled)', 'RESOURCE_SATURATION [cpu core] | Normal=0.02 cores -> Current=0.16 cores (+544.6%)', 'LATENCY_DEGRADATION [Slow Response] | cartservice-p95latency: Normal=10.77ms -> Current=83.83ms (+678.2%)']}, {'type': 'Service', 'name': 'checkoutservice', 'time_range': '2025-12-25 15:50:32 ~ 2025-12-25 15:52:27', 'status': 'ABNORMAL', 'evidence': ['LATENCY_DEGRADATION [Slow Response] | checkoutservice-p95latency: Normal=31.43ms -> Current=129.15ms (+310.8%)']}, {'type': 'Service', 'name': 'frontend', 'time_range': '2025-12-25 15:50:32 ~ 2025-12-25 15:52:27', 'status': 'ABNORMAL', 'evidence': ['LATENCY_DEGRADATION [Slow Response] | frontend-p95latency: Normal=34.73ms -> Current=134.55ms (+287.4%)']}]}",
+   "error": null,
+   "purpose": "anomaly signature (routes performance/code families)",
+   "tool_latency": null
+  },
+  {
+   "step_id": 2,
+   "action_type": "tool",
+   "action_name": "GetRecentLogs",
+   "action_input": {
+    "namespace": "boutique",
+    "service_name": "cartservice"
+   },
+   "observation": "['From cartservice logs:', '2025-12-25T15:53:28.973424390+08:00 GetCartAsync called with userId=981671d8-c1eb-4380-8bf1-0d2d4b2d7898', '2025-12-25T15:53:28.981778678+08:00 AddItemAsync called with userId=a489d435-1d2e-4d6a-83aa-3168e7650280, productId=9SIQT8TOJO, quantity=2', '2025-12-25T15:53:28.985345517+08:00 GetCartAsync called with userId=a489d435-1d2e-4d6a-83aa-3168e7650280', '2025-12-25T15:53:29.000573914+08:00 GetCartAsync called with userId=b466517c-71ee-4d16-90b7-4bed5f4b1afe', '2025-12-25T15:53:29.092206601+08:00 GetCartAsync called with userId=4d35e435-e01e-4e7e-971b-97be11890bed', '2025-12-25T15:53:29.092858079+08:00 GetCartAsync called with userId=1e763302-fa26-41d6-a327-61bb018e5c0a', '2025-12-25T15:53:29.092867234+08:00 GetCartAsync called with userId=e1913876-ad18-447a-a87f-575c20c04678', '2025-12-25T15:53:29.117777432+08:00 GetCartAsync called with userId=1ad09fe5-6bd5-4ff3-8e69-ac2153613899', '2025-12-25T15:53:29.131051115+08:00 GetCartAsync called with userId=ba93e855-3675-4932-989b-32ab2c3668d7', '2025-12-25T15:53:29.253439043+08:00 GetCartAsync called with userId=93378473-6dfb-4654-beca-bf125d61b40d', '2025-12-25T15:53:29.263562052+08:00 EmptyCartAsync called with userId=93378473-6dfb-4654-beca-bf125d61b40d', '2025-12-25T15:53:29.271186006+08:00 GetCartAsync called with userId=f1821ece-71ea-4f74-91c9-262c09efffd9', '2025-12-25T15:53:29.277791123+08:00 EmptyCartAsync called with userId=f1821ece-71ea-4f74-91c9-262c09efffd9', '2025-12-25T15:53:29.414680984+08:00 GetCartAsync called with userId=e0ea87d4-68f4-42b2-ad0a-9dfc7811fcf0', '2025-12-25T15:53:29.427913886+08:00 GetCartAsync called with userId=6c73767e-2d06-4291-a8de-96412f171481', '2025-12-25T15:53:29.446878807+08:00 GetCartAsync called with userId=348b19fd-b906-4279-8c7e-4cfb88d6d17b', '2025-12-25T15:53:29.643128058+08:00 GetCartAsync called with userId=dfa1b41e-4f0b-4426-8122-a947117ac79b', '2025-12-25T15:53:29.651252671+08:00 EmptyCartAsync called with userId=dfa1b41e-4f0b-4426-8122-a947117ac79b', '2025-12-25T15:53:29.679437633+08:00 GetCartAsync called with userId=9eacca9e-bbb1-4761-83e9-37e22859087b', '2025-12-25T15:53:29.782973182+08:00 GetCartAsync called with userId=84291cec-0490-4185-bb1b-2d64dac23b79', '2025-12-25T15:53:29.804089951+08:00 GetCartAsync called with userId=98bf4263-1170-4453-a637-c09826ee6fe5', '2025-12-25T15:53:29.813329117+08:00 EmptyCartAsync called with userId=98bf4263-1170-4453-a637-c09826ee6fe5', '2025-12-25T15:53:29.906972830+08:00 GetCartAsync called with userId=d4c08503-be79-4055-8b02-3a0cfe568ed2', '2025-12-25T15:53:29.913748024+08:00 GetCartAsync called with userId=8526c070-d2f1-482b-8c8e-31a75061c8c7', '2025-12-25T15:53:29.919966124+08:00 GetCartAsync called with userId=48d5a37d-7335-446a-828e-ffd968882c1a', '2025-12-25T15:53:29.934029912+08:00 AddItemAsync called with userId=48d5a37d-7335-446a-828e-ffd968882c1a, productId=66VCHSJNUP, quantity=5', '2025-12-25T15:53:29.937771225+08:00 GetCartAsync called with userId=48d5a37d-7335-446a-828e-ffd968882c1a', '2025-12-25T15:53:30.039828983+08:00 GetCartAsync called with userId=af38ae36-a8c7-446c-a701-c80599e41d5f', '2025-12-25T15:53:30.146055264+08:00 GetCartAsync called with userId=667eba67-347c-4701-9dff-a77780be9708', '2025-12-25T15:53:30.176762065+08:00 GetCartAsync called with userId=3763045b-3ad5-428e-be37-ae042840e5c7', '2025-12-25T15:53:30.191230334+08:00 GetCartAsync called with userId=24895903-a007-4ec7-ab6c-cacaa01bbfd1', '2025-12-25T15:53:30.244059132+08:00 GetCartAsync called with userId=ff296367-6ce8-422f-a684-fafc2974014d', '2025-12-25T15:53:30.289604592+08:00 GetCartAsync called with userId=8f2ed669-d13e-455b-87e6-48bba15995a6', '2025-12-25T15:53:30.296462793+08:00 GetCartAsync called with userId=13d4cad4-e4bd-4281-ae73-1e23e7d89bda', '2025-12-25T15:53:30.318680675+08:00 GetCartAsync called with userId=a14ade8b-07b7-46c2-92d8-dea66bc2a7e0', '2025-12-25T15:53:30.521954253+08:00 GetCartAsync called with userId=b54a49c9-6433-453a-b33f-063f8b537957', '2025-12-25T15:53:30.547895972+08:00 GetCartAsync called with userId=76c6640c-2a08-4827-bf0a-60d53a899ad1', '2025-12-25T15:53:30.557401227+08:00 EmptyCartAsync called with userId=76c6640c-2a08-4827-bf0a-60d53a899ad1', '2025-12-25T15:53:30.573707896+08:00 GetCartAsync called with userId=57613ab9-68f9-4c61-844d-3b36245e3a76', '2025-12-25T15:53:30.587885934+08:00 AddItemAsync called with userId=47d36ce1-a734-4962-b416-8105ff4d6c61, productId=1YMWWN1N4O, quantity=4', '2025-12-25T15:53:30.591717289+08:00 GetCartAsync called with userId=47d36ce1-a734-4962-b416-8105ff4d6c61', '2025-12-25T15:53:30.630210598+08:00 GetCartAsync called with userId=7c48ebca-5a50-47dc-8607-10a48fcdfb2a', '2025-12-25T15:53:30.667440905+08:00 GetCartAsync called with userId=b90a4fdf-7f4c-41ef-aac6-3463f545442e', '2025-12-25T15:53:30.674483421+08:00 EmptyCartAsync called with userId=b90a4fdf-7f4c-41ef-aac6-3463f545442e', '2025-12-25T15:53:30.722032340+08:00 GetCartAsync called with userId=af396e4f-af60-44a7-9839-a9d8bdd1e58a', '2025-12-25T15:53:30.805823324+08:00 GetCartAsync called with userId=dfa1b41e-4f0b-4426-8122-a947117ac79b', '2025-12-25T15:53:30.840001438+08:00 GetCartAsync called with userId=98bf4263-1170-4453-a637-c09826ee6fe5', '2025-12-25T15:53:30.845099862+08:00 GetCartAsync called with userId=9dc3c2c7-bdcc-4d91-ae15-62c482cbf991', '2025-12-25T15:53:30.857880325+08:00 GetCartAsync called with userId=bb0b9728-1e0b-4f55-b4b2-2088399e454e', '2025-12-25T15:53:30.918812151+08:00 GetCartAsync called with userId=278fa3b5-e5b3-4c4a-b9f6-1b84191c8afa']",
+   "error": null,
+   "purpose": "request latency / saturation logs",
+   "tool_latency": null
+  }
+ ],
+ "agentrun": {
+  "tag": "test",
+  "dsl": "workspace/dsl_versions/v0.9.dsl.txt",
+  "dsl_version": "0.9",
+  "sop": {
+   "sop": "boutique-runtime-rca",
+   "scope": {
+    "system": "boutique",
+    "families": [
+     "runtime",
+     "admission",
+     "scheduling",
+     "startup",
+     "service",
+     "performance",
+     "infrastructure",
+     "codedefect"
+    ],
+    "severity": [
+     "SEV2",
+     "SEV3"
+    ]
+   },
+   "owner": "sre-platform",
+   "approved_by": [
+    "oncall-primary",
+    "sre-lead"
+   ],
+   "reviewed_at": "2026-10-23",
+   "change_ticket": "OPS-1237",
+   "boundaries": "只读诊断：本 SOP 不执行任何写操作（重启/回滚/扩缩容），也不做对外播报；\n它回答\"最可能的根因与受害对象\"，处置与沟通由值班按 runbook 人工执行。\n不覆盖 SEV1（需 incident commander 介入）与变更引发的问题（走变更回滚流程）。\n输入是冻结快照：诊断结论对\"快照时刻\"成立，恢复后需重新取证。\nR1 已知边界：PVC 的 requested size / accessMode 在本 benchmark 的工具面不可见，\n因此 pvc_capacity 与 pvc_access_mode 无法区分（同一分数并列，交给 jev 或升级）。\n"
+  },
+  "params": {
+   "cands_cap": 8,
+   "max_waves": 8,
+   "min_waves": 5,
+   "steps_per_wave": 1,
+   "dominance_ratio": 1.5,
+   "conf_min": 0.0,
+   "escalate": true,
+   "escalate_budget": 8,
+   "judge_on_codedefect": true,
+   "jev_route": true,
+   "jev_pick": true,
+   "jev_verify": true,
+   "route_fallback": "runtime"
+  },
+  "nodes_executed": [
+   "anchors:extract_anchors",
+   "census:probes",
+   "route:decide",
+   "plan:build_plan",
+   "probe:probes",
+   "derive:derive_candidates",
+   "pick:decide",
+   "verify:decide",
+   "probe:probes",
+   "derive:derive_candidates",
+   "pick:decide",
+   "verify:decide",
+   "probe:probes",
+   "derive:derive_candidates",
+   "pick:decide",
+   "verify:decide",
+   "escalate:escalate",
+   "answer:normalize_answer",
+   "persist:persist_trace"
+  ],
+  "census": [
+   {
+    "step": "pods",
+    "gate": "always"
+   },
+   {
+    "step": "alerts",
+    "gate": "healthy_system"
+   }
+  ],
+  "plan": [
+   {
+    "step": "recent_logs",
+    "gate": "always",
+    "wave": 1
+   },
+   {
+    "step": "describe_pod",
+    "gate": "weak",
+    "wave": 2
+   },
+   {
+    "step": "deps",
+    "gate": "weak",
+    "wave": 3
+   }
+  ],
+  "family": "performance",
+  "state_wiring": {
+   "family": "$route.family",
+   "route_probs": "$route.probabilities",
+   "picked": "$pick.picked",
+   "pick_dominant": "$pick.dominant",
+   "verify_status": "$verify.status",
+   "verify_prob": "$verify.confidence"
+  },
+  "bindings": {
+   "anchors": {
+    "anchors": "Anchors(case_id='boutique/performance/2', system='boutique', namespace='boutique', query='Service latency increased significantly', difficulty='hard', symptoms=['degradation'], mentioned_apps=[], priors={'db_service': '', 'db_port': 0})"
+   },
+   "route": {
+    "family": "performance",
+    "probabilities": {},
+    "route_why": "mechanism_mode"
+   },
+   "plan": {
+    "plan": "[{'name': 'recent_logs', 'key': 'recent', 'tool': 'GetRecentLogs', 'args': <function _args_error_logs at 0x10d4fbce0>, 'purpose': 'request latency / saturation logs', 'when': <function compile_steps.<locals>.<lambda> at 0x10dae6d40>, 'gate': 'always', 'wave': 1}, {'name': 'describe_pod', 'key': 'describe:pod', 'tool': 'DescribeResource', 'args': <function _args_describe_pod at 0x10d4fbb00>, 'purpose': 'probe config, container state, restart reasons, scheduler events', 'when': <function compile_steps.<locals>.<lambda> at 0x10dae6e80>, 'gate': 'weak', 'wave': 2}, {'name': 'deps', 'key': 'deps', 'tool': 'GetServiceDependencies', 'args': <function _args_deps at 0x10d5245e0>, 'purpose': 'upstream/downstream call graph', 'when': <function compile_steps.<locals>.<lambda> at 0x10dae6fc0>, 'gate': 'weak', 'wave': 3}]"
+   },
+   "derive": {
+    "candidates": "[Candidate(root_cause='pod_network_delay', object='app/cartservice', score=0.82, evidence='network latency anomaly on the pod', rule='delay_alert'), Candidate(root_cause='pod_network_delay', object='app/checkoutservice', score=0.82, evidence='network latency anomaly on the pod', rule='delay_alert'), Candidate(root_cause='pod_network_delay', object='app/frontend', score=0.82, evidence='network latency anomaly on the pod', rule='delay_alert')]"
+   },
+   "pick": {
+    "picked": 0,
+    "dominant": false,
+    "pick_why": "no_new_evidence"
+   },
+   "verify": {
+    "status": "verified",
+    "confidence": null,
+    "verify_why": "no_new_evidence"
+   },
+   "escalate": {
+    "answer": null
+   },
+   "answer": {
+    "final": {
+     "key_evidence_summary": "network latency anomaly on the pod",
+     "top_3_predictions": [
+      {
+       "rank": 1,
+       "fault_object": "app/cartservice",
+       "root_cause": "pod_network_delay"
+      },
+      {
+       "rank": 2,
+       "fault_object": "app/checkoutservice",
+       "root_cause": "pod_network_delay"
+      },
+      {
+       "rank": 3,
+       "fault_object": "app/frontend",
+       "root_cause": "pod_network_delay"
+      }
+     ]
+    }
+   }
+  },
+  "picked": {
+   "root_cause": "pod_network_delay",
+   "object": "app/cartservice",
+   "score": 0.82,
+   "evidence": "network latency anomaly on the pod",
+   "rule": "delay_alert"
+  },
+  "pick_why": "",
+  "verify_prob": null,
+  "verify_verdict": "verified",
+  "verified": true,
+  "escalated": false,
+  "escalate_reason": "",
+  "escalate_steps": 0,
+  "waves": 3,
+  "candidates": [
+   {
+    "root_cause": "pod_network_delay",
+    "object": "app/cartservice",
+    "score": 0.82,
+    "evidence": "network latency anomaly on the pod",
+    "rule": "delay_alert"
+   },
+   {
+    "root_cause": "pod_network_delay",
+    "object": "app/checkoutservice",
+    "score": 0.82,
+    "evidence": "network latency anomaly on the pod",
+    "rule": "delay_alert"
+   },
+   {
+    "root_cause": "pod_network_delay",
+    "object": "app/frontend",
+    "score": 0.82,
+    "evidence": "network latency anomaly on the pod",
+    "rule": "delay_alert"
+   }
+  ],
+  "jev": [
+   {
+    "rid": "test:boutique/performance/2#route",
+    "kind": "route",
+    "node": "route",
+    "mode": "mechanism",
+    "options": [
+     "performance",
+     "infrastructure"
+    ],
+    "status": "mechanical",
+    "guard": "unavailable",
+    "use": "first_option",
+    "choice": "performance",
+    "why": "mechanism_mode",
+    "dominant": false,
+    "continue_loop": false,
+    "escalate": false
+   },
+   {
+    "rid": "test:boutique/performance/2#pick1",
+    "kind": "pick",
+    "node": "pick",
+    "mode": "mechanism",
+    "options": [
+     "c0",
+     "c1",
+     "c2"
+    ],
+    "status": "mechanical",
+    "guard": "unavailable",
+    "use": "first_option",
+    "choice": 0,
+    "why": "mechanism_mode",
+    "dominant": false,
+    "continue_loop": false,
+    "escalate": false
+   },
+   {
+    "rid": "test:boutique/performance/2#verify1",
+    "kind": "verify",
+    "node": "verify",
+    "mode": "mechanism",
+    "options": [
+     "supported",
+     "insufficient",
+     "contradicted"
+    ],
+    "status": "mechanical",
+    "guard": "unavailable",
+    "use": "verified",
+    "choice": "verified",
+    "why": "mechanism_mode",
+    "dominant": false,
+    "continue_loop": false,
+    "escalate": false
+   },
+   {
+    "rid": "test:boutique/performance/2#pick2",
+    "kind": "pick",
+    "node": "pick",
+    "mode": "mechanism",
+    "options": [
+     "c0",
+     "c1",
+     "c2"
+    ],
+    "status": "mechanical",
+    "guard": "unchanged_since_last",
+    "use": "previous",
+    "choice": 0,
+    "why": "no_new_evidence",
+    "dominant": false,
+    "continue_loop": false,
+    "escalate": false
+   },
+   {
+    "rid": "test:boutique/performance/2#verify2",
+    "kind": "verify",
+    "node": "verify",
+    "mode": "mechanism",
+    "options": [
+     "supported",
+     "insufficient",
+     "contradicted"
+    ],
+    "status": "mechanical",
+    "guard": "unchanged_since_last",
+    "use": "previous",
+    "choice": "verified",
+    "why": "no_new_evidence",
+    "dominant": false,
+    "continue_loop": false,
+    "escalate": false
+   },
+   {
+    "rid": "test:boutique/performance/2#pick3",
+    "kind": "pick",
+    "node": "pick",
+    "mode": "mechanism",
+    "options": [
+     "c0",
+     "c1",
+     "c2"
+    ],
+    "status": "mechanical",
+    "guard": "unchanged_since_last",
+    "use": "previous",
+    "choice": 0,
+    "why": "no_new_evidence",
+    "dominant": false,
+    "continue_loop": false,
+    "escalate": false
+   },
+   {
+    "rid": "test:boutique/performance/2#verify3",
+    "kind": "verify",
+    "node": "verify",
+    "mode": "mechanism",
+    "options": [
+     "supported",
+     "insufficient",
+     "contradicted"
+    ],
+    "status": "mechanical",
+    "guard": "unchanged_since_last",
+    "use": "previous",
+    "choice": "verified",
+    "why": "no_new_evidence",
+    "dominant": false,
+    "continue_loop": false,
+    "escalate": false
+   }
+  ],
+  "nodes": [
+   {
+    "node": "code",
+    "id": "anchors",
+    "anchors": {
+     "case_id": "boutique/performance/2",
+     "system": "boutique",
+     "namespace": "boutique",
+     "query": "Service latency increased significantly",
+     "difficulty": "hard",
+     "symptoms": [
+      "degradation"
+     ],
+     "mentioned_apps": []
+    }
+   },
+   {
+    "node": "probes",
+    "plan": "census",
+    "wave": 0,
+    "executed": 2,
+    "steps": [
+     {
+      "key": "pods",
+      "tool": "GetResources",
+      "arguments": {
+       "namespace": "boutique",
+       "resource_type": "pods",
+       "output_wide": true,
+       "show_labels": true
+      },
+      "gate": "always"
+     },
+     {
+      "key": "alerts",
+      "tool": "GetAlerts",
+      "arguments": {},
+      "gate": "healthy_system"
+     }
+    ],
+    "skipped": []
+   },
+   {
+    "node": "decide",
+    "id": "route",
+    "rid": "test:boutique/performance/2#route",
+    "status": "mechanical",
+    "guard": "unavailable",
+    "use": "first_option",
+    "choice": "performance",
+    "dominant": false,
+    "why": "mechanism_mode"
+   },
+   {
+    "node": "code",
+    "id": "plan",
+    "family": "performance",
+    "plan": [
+     {
+      "step": "recent_logs",
+      "gate": "always",
+      "wave": 1
+     },
+     {
+      "step": "describe_pod",
+      "gate": "weak",
+      "wave": 2
+     },
+     {
+      "step": "deps",
+      "gate": "weak",
+      "wave": 3
+     }
+    ]
+   },
+   {
+    "node": "probes",
+    "plan": "family",
+    "wave": 1,
+    "executed": 1,
+    "steps": [
+     {
+      "key": "recent",
+      "tool": "GetRecentLogs",
+      "arguments": {
+       "namespace": "boutique",
+       "service_name": "cartservice"
+      },
+      "gate": "always"
+     }
+    ],
+    "skipped": []
+   },
+   {
+    "node": "code",
+    "id": "derive",
+    "raw": 3,
+    "kept": 3,
+    "top": [
+     {
+      "root_cause": "pod_network_delay",
+      "object": "app/cartservice",
+      "score": 0.82,
+      "evidence": "network latency anomaly on the pod",
+      "rule": "delay_alert"
+     },
+     {
+      "root_cause": "pod_network_delay",
+      "object": "app/checkoutservice",
+      "score": 0.82,
+      "evidence": "network latency anomaly on the pod",
+      "rule": "delay_alert"
+     },
+     {
+      "root_cause": "pod_network_delay",
+      "object": "app/frontend",
+      "score": 0.82,
+      "evidence": "network latency anomaly on the pod",
+      "rule": "delay_alert"
+     }
+    ]
+   },
+   {
+    "node": "decide",
+    "id": "pick",
+    "rid": "test:boutique/performance/2#pick1",
+    "status": "mechanical",
+    "guard": "unavailable",
+    "use": "first_option",
+    "choice": 0,
+    "dominant": false,
+    "why": "mechanism_mode"
+   },
+   {
+    "node": "decide",
+    "id": "verify",
+    "rid": "test:boutique/performance/2#verify1",
+    "status": "mechanical",
+    "guard": "unavailable",
+    "use": "verified",
+    "choice": "verified",
+    "dominant": false,
+    "why": "mechanism_mode"
+   },
+   {
+    "node": "probes",
+    "plan": "family",
+    "wave": 2,
+    "executed": 0,
+    "steps": [],
+    "skipped": [
+     {
+      "step": "describe_pod",
+      "why": "gate weak"
+     }
+    ]
+   },
+   {
+    "node": "code",
+    "id": "derive",
+    "raw": 3,
+    "kept": 3,
+    "top": [
+     {
+      "root_cause": "pod_network_delay",
+      "object": "app/cartservice",
+      "score": 0.82,
+      "evidence": "network latency anomaly on the pod",
+      "rule": "delay_alert"
+     },
+     {
+      "root_cause": "pod_network_delay",
+      "object": "app/checkoutservice",
+      "score": 0.82,
+      "evidence": "network latency anomaly on the pod",
+      "rule": "delay_alert"
+     },
+     {
+      "root_cause": "pod_network_delay",
+      "object": "app/frontend",
+      "score": 0.82,
+      "evidence": "network latency anomaly on the pod",
+      "rule": "delay_alert"
+     }
+    ]
+   },
+   {
+    "node": "decide",
+    "id": "pick",
+    "rid": "test:boutique/performance/2#pick2",
+    "status": "mechanical",
+    "guard": "unchanged_since_last",
+    "use": "previous",
+    "choice": 0,
+    "dominant": false,
+    "why": "no_new_evidence"
+   },
+   {
+    "node": "decide",
+    "id": "verify",
+    "rid": "test:boutique/performance/2#verify2",
+    "status": "mechanical",
+    "guard": "unchanged_since_last",
+    "use": "previous",
+    "choice": "verified",
+    "dominant": false,
+    "why": "no_new_evidence"
+   },
+   {
+    "node": "probes",
+    "plan": "family",
+    "wave": 3,
+    "executed": 0,
+    "steps": [],
+    "skipped": [
+     {
+      "step": "deps",
+      "why": "gate weak"
+     }
+    ]
+   },
+   {
+    "node": "code",
+    "id": "derive",
+    "raw": 3,
+    "kept": 3,
+    "top": [
+     {
+      "root_cause": "pod_network_delay",
+      "object": "app/cartservice",
+      "score": 0.82,
+      "evidence": "network latency anomaly on the pod",
+      "rule": "delay_alert"
+     },
+     {
+      "root_cause": "pod_network_delay",
+      "object": "app/checkoutservice",
+      "score": 0.82,
+      "evidence": "network latency anomaly on the pod",
+      "rule": "delay_alert"
+     },
+     {
+      "root_cause": "pod_network_delay",
+      "object": "app/frontend",
+      "score": 0.82,
+      "evidence": "network latency anomaly on the pod",
+      "rule": "delay_alert"
+     }
+    ]
+   },
+   {
+    "node": "decide",
+    "id": "pick",
+    "rid": "test:boutique/performance/2#pick3",
+    "status": "mechanical",
+    "guard": "unchanged_since_last",
+    "use": "previous",
+    "choice": 0,
+    "dominant": false,
+    "why": "no_new_evidence"
+   },
+   {
+    "node": "decide",
+    "id": "verify",
+    "rid": "test:boutique/performance/2#verify3",
+    "status": "mechanical",
+    "guard": "unchanged_since_last",
+    "use": "previous",
+    "choice": "verified",
+    "dominant": false,
+    "why": "no_new_evidence"
+   },
+   {
+    "node": "loop",
+    "id": "waves",
+    "stop": "plan_exhausted",
+    "wave": 3
+   },
+   {
+    "node": "escalate",
+    "id": "escalate",
+    "fired": false,
+    "reasons": [],
+    "why": "no reason"
+   },
+   {
+    "node": "code",
+    "id": "answer",
+    "predictions": [
+     {
+      "rank": 1,
+      "fault_object": "app/cartservice",
+      "root_cause": "pod_network_delay"
+     },
+     {
+      "rank": 2,
+      "fault_object": "app/checkoutservice",
+      "root_cause": "pod_network_delay"
+     },
+     {
+      "rank": 3,
+      "fault_object": "app/frontend",
+      "root_cause": "pod_network_delay"
+     }
+    ]
+   },
+   {
+    "node": "artifact",
+    "id": "persist",
+    "persisted": false,
+    "why": "written by the CLI driver"
+   }
+  ],
+  "notes": [],
+  "tool_calls": 3,
+  "model_calls": 0,
+  "tokens_in": 0,
+  "tokens_out": 0,
+  "wall_s": 0.14
+ }
+}

@@ -1,0 +1,559 @@
+{
+ "case_id": "boutique/admission/32",
+ "system_name": "boutique",
+ "question": "Service Availability Disruption.",
+ "case_path": "/Users/justinwan/work/workspace/cloudops_bench_rsi/repo/benchmark/boutique/admission/32",
+ "max_steps": 5,
+ "current_step": 3,
+ "finished": true,
+ "stop_reason": "submit",
+ "final_answer": "{\"key_evidence_summary\": \"memory-request-quota: requests.memory=300mi requested, requests.memory=3000Mi used, limit requests.memory=3Gi\", \"top_3_predictions\": [{\"rank\": 1, \"fault_object\": \"namespace/boutique\", \"root_cause\": \"namespace_memory_quota_exceeded\"}, {\"rank\": 2, \"fault_object\": \"namespace/boutique\", \"root_cause\": \"namespace_memory_quota_exceeded\"}, {\"rank\": 3, \"fault_object\": \"namespace/boutique\", \"root_cause\": \"namespace_memory_quota_exceeded\"}]}",
+ "metadata": {
+  "namespace": "boutique",
+  "query": "Service Availability Disruption.",
+  "fault_category": "admission",
+  "model_name": "agentrun-v0.1"
+ },
+ "steps": [
+  {
+   "step_id": 0,
+   "action_type": "tool",
+   "action_name": "GetResources",
+   "action_input": {
+    "namespace": "boutique",
+    "resource_type": "pods"
+   },
+   "observation": "NAME                                     READY   STATUS    RESTARTS   AGE\nadservice-99b76fc49-g6dwd                1/1     Running   0          94s\ncartservice-9b469fbc4-nt2cx              1/1     Running   0          94s\ncheckoutservice-6bcfb6486c-n476f         1/1     Running   0          94s\ncurrencyservice-5c9c9fdd9d-n572n         1/1     Running   0          93s\nemailservice-69cb5ccf57-2rlft            1/1     Running   0          93s\nfrontend-78fdd6f7d6-bglhr                1/1     Running   0          93s\npaymentservice-f8b6c595c-p98ng           1/1     Running   0          93s\nproductcatalogservice-5f876f76c9-ldfvq   1/1     Running   0          93s\nrecommendationservice-6b4cdff567-8cvjb   1/1     Running   0          92s\nredis-cart-5858bb886-8q87w               1/1     Running   0          92s\n",
+   "error": null,
+   "purpose": "pod readiness census",
+   "tool_latency": null
+  },
+  {
+   "step_id": 1,
+   "action_type": "tool",
+   "action_name": "GetResources",
+   "action_input": {
+    "namespace": "boutique",
+    "resource_type": "deployments"
+   },
+   "observation": "NAME                    READY   UP-TO-DATE   AVAILABLE   AGE\nadservice               1/1     1            1           99s\ncartservice             1/1     1            1           99s\ncheckoutservice         1/1     1            1           99s\ncurrencyservice         1/1     1            1           99s\nemailservice            1/1     1            1           98s\nfrontend                1/1     1            1           98s\npaymentservice          1/1     1            1           98s\nproductcatalogservice   1/1     1            1           98s\nrecommendationservice   1/1     1            1           98s\nredis-cart              1/1     1            1           97s\nshippingservice         0/1     0            0           97s\n",
+   "error": null,
+   "purpose": "which deployment never got a pod",
+   "tool_latency": null
+  },
+  {
+   "step_id": 2,
+   "action_type": "tool",
+   "action_name": "GetResources",
+   "action_input": {
+    "namespace": "boutique",
+    "resource_type": "events"
+   },
+   "observation": "118s        Normal    Pulled              pod/recommendationservice-6b4cdff567-8cvjb    Container image \"us-central1-docker.pkg.dev/google-samples/microservices-demo/recommendationservice:v0.10.3\" already present on machine\n118s        Normal    Started             pod/productcatalogservice-5f876f76c9-ldfvq    Started container server\n118s        Normal    Created             pod/productcatalogservice-5f876f76c9-ldfvq    Created container server\n118s        Normal    Pulled              pod/productcatalogservice-5f876f76c9-ldfvq    Container image \"us-central1-docker.pkg.dev/google-samples/microservices-demo/productcatalogservice:v0.10.3\" already present on machine\n118s        Normal    Started             pod/paymentservice-f8b6c595c-p98ng            Started container server\n117s        Normal    Pulled              pod/redis-cart-5858bb886-8q87w                Container image \"redis:alpine\" already present on machine\n117s        Warning   FailedCreate        replicaset/shippingservice-696cc9d869         Error creating: pods \"shippingservice-696cc9d869-jjvwt\" is forbidden: exceeded quota: memory-request-quota, requested: requests.memory=300Mi, used: requests.memory=3000Mi, limited: requests.memory=3Gi\n117s        Normal    Started             pod/redis-cart-5858bb886-8q87w                Started container redis\n117s        Warning   FailedCreate        replicaset/shippingservice-696cc9d869         Error creating: pods \"shippingservice-696cc9d869-4tzz4\" is forbidden: exceeded quota: memory-request-quota, requested: requests.memory=300Mi, used: requests.memory=3000Mi, limited: requests.memory=3Gi\n117s        Warning   FailedCreate        replicaset/shippingservice-696cc9d869         Error creating: pods \"shippingservice-696cc9d869-jf8vd\" is forbidden: exceeded quota: memory-request-quota, requested: requests.memory=300Mi, used: requests.memory=3000Mi, limited: requests.memory=3Gi\n117s        Warning   FailedCreate        replicaset/shippingservice-696cc9d869         Error creating: pods \"shippingservice-696cc9d869-2q7tj\" is forbidden: exceeded quota: memory-request-quota, requested: requests.memory=300Mi, used: requests.memory=3000Mi, limited: requests.memory=3Gi\n117s        Warning   FailedCreate        replicaset/shippingservice-696cc9d869         Error creating: pods \"shippingservice-696cc9d869-ccxnj\" is forbidden: exceeded quota: memory-request-quota, requested: requests.memory=300Mi, used: requests.memory=3000Mi, limited: requests.memory=3Gi\n117s        Normal    Created             pod/redis-cart-5858bb886-8q87w                Created container redis\n117s        Warning   FailedCreate        replicaset/shippingservice-696cc9d869         Error creating: pods \"shippingservice-696cc9d869-n54dx\" is forbidden: exceeded quota: memory-request-quota, requested: requests.memory=300Mi, used: requests.memory=3000Mi, limited: requests.memory=3Gi\n116s        Warning   FailedCreate        replicaset/shippingservice-696cc9d869         Error creating: pods \"shippingservice-696cc9d869-wj2r7\" is forbidden: exceeded quota: memory-request-quota, requested: requests.memory=300Mi, used: requests.memory=3000Mi, limited: requests.memory=3Gi\n109s        Warning   Unhealthy           pod/adservice-99b76fc49-g6dwd                 Liveness probe failed: timeout: failed to connect service \"172.20.1.105:9555\" within 1s: context deadline exceeded\n109s        Warning   Unhealthy           pod/adservice-99b76fc49-g6dwd                 Readiness probe failed: timeout: failed to connect service \"172.20.1.105:9555\" within 1s: context deadline exceeded\n99s         Warning   Unhealthy           pod/adservice-99b76fc49-g6dwd                 Liveness probe failed: timeout: health rpc did not complete within 1s\n99s         Warning   Unhealthy           pod/adservice-99b76fc49-g6dwd                 Readiness probe failed: timeout: health rpc did not complete within 1s\n36s         Warning   FailedCreate        replicaset/shippingservice-696cc9d869         (combined from similar events): Error creating: pods \"shippingservice-696cc9d869-c8w6q\" is forbidden: exceeded quota: memory-request-quota, requested: requests.memory=300Mi, used: requests.memory=3000Mi, limited: requests.memory=3Gi\n",
+   "error": null,
+   "purpose": "quota/RBAC rejection surfaces as Warning events",
+   "tool_latency": null
+  }
+ ],
+ "agentrun": {
+  "tag": "test",
+  "dsl": "workspace/dsl_versions/v0.4.dsl.txt",
+  "dsl_version": "0.4",
+  "params": {
+   "cands_cap": 8,
+   "max_waves": 5,
+   "min_waves": 5,
+   "steps_per_wave": 1,
+   "dominance_ratio": 1.5,
+   "conf_min": 0.0,
+   "escalate": true,
+   "escalate_budget": 8,
+   "judge_on_codedefect": true,
+   "jev_route": true,
+   "jev_pick": true,
+   "jev_verify": true,
+   "census": [
+    {
+     "step": "pods",
+     "gate": "always"
+    },
+    {
+     "step": "alerts",
+     "gate": "healthy_system"
+    }
+   ],
+   "family_plan": {
+    "admission": [
+     {
+      "step": "deployments",
+      "gate": "always"
+     },
+     {
+      "step": "events",
+      "gate": "always"
+     },
+     {
+      "step": "resourcequota",
+      "gate": "weak_strong"
+     },
+     {
+      "step": "describe_deployment",
+      "gate": "weak_very_strong"
+     }
+    ],
+    "scheduling": [
+     {
+      "step": "describe_pod",
+      "gate": "always"
+     },
+     {
+      "step": "pvcs",
+      "gate": "volume_evidence"
+     },
+     {
+      "step": "cluster_config",
+      "gate": "always"
+     }
+    ],
+    "startup": [
+     {
+      "step": "describe_pod",
+      "gate": "always"
+     },
+     {
+      "step": "app_yaml",
+      "gate": "weak_strong"
+     },
+     {
+      "step": "error_logs",
+      "gate": "weak"
+     }
+    ],
+    "runtime": [
+     {
+      "step": "describe_pod",
+      "gate": "always"
+     },
+     {
+      "step": "app_yaml",
+      "gate": "probe_or_restart_or_weak"
+     },
+     {
+      "step": "error_logs",
+      "gate": "restart_or_weak_strong"
+     }
+    ],
+    "service": [
+     {
+      "step": "services",
+      "gate": "always"
+     },
+     {
+      "step": "endpoints",
+      "gate": "always"
+     },
+     {
+      "step": "app_yaml",
+      "gate": "weak"
+     },
+     {
+      "step": "connectivity",
+      "gate": "weak_strong"
+     },
+     {
+      "step": "deps",
+      "gate": "weak_strong"
+     }
+    ],
+    "performance": [
+     {
+      "step": "recent_logs",
+      "gate": "always"
+     },
+     {
+      "step": "describe_pod",
+      "gate": "weak"
+     },
+     {
+      "step": "deps",
+      "gate": "weak"
+     }
+    ],
+    "infrastructure": [
+     {
+      "step": "node_status",
+      "gate": "always"
+     },
+     {
+      "step": "cluster_config",
+      "gate": "weak"
+     }
+    ],
+    "codedefect": [
+     {
+      "step": "code_files",
+      "gate": "always"
+     },
+     {
+      "step": "source_code",
+      "gate": "always"
+     },
+     {
+      "step": "recent_logs",
+      "gate": "weak_strong"
+     }
+    ]
+   },
+   "route_priority": [
+    {
+     "signal": "pending_pods",
+     "family": "scheduling"
+    },
+    {
+     "signal": "image_pull",
+     "family": "startup"
+    },
+    {
+     "signal": "not_ready_or_crash",
+     "family": "runtime"
+    },
+    {
+     "signal": "no_pods_created",
+     "family": "admission"
+    },
+    {
+     "signal": "code_shaped_alert",
+     "family": "codedefect"
+    },
+    {
+     "signal": "saturation_alert",
+     "family": "performance"
+    },
+    {
+     "signal": "healthy_unreachable",
+     "family": "service"
+    },
+    {
+     "signal": "healthy_degraded",
+     "family": "performance"
+    },
+    {
+     "signal": "residual",
+     "family": "infrastructure"
+    }
+   ],
+   "route_fallback": "runtime"
+  },
+  "nodes_executed": [
+   "code:extract_anchors",
+   "call",
+   "jev",
+   "code:build_plan",
+   "call",
+   "code:derive_candidates",
+   "jev",
+   "jev",
+   "call",
+   "code:derive_candidates",
+   "jev",
+   "jev",
+   "call",
+   "code:derive_candidates",
+   "jev",
+   "jev",
+   "code:normalize_answer"
+  ],
+  "family": "admission",
+  "route_probabilities": {
+   "admission": 0.01,
+   "infrastructure": 0.02,
+   "other": 0.97
+  },
+  "picked": {
+   "root_cause": "namespace_memory_quota_exceeded",
+   "object": "namespace/boutique",
+   "score": 0.99,
+   "evidence": "memory-request-quota: requests.memory=300mi requested, requests.memory=3000Mi used, limit requests.memory=3Gi",
+   "rule": "quota_event"
+  },
+  "pick_why": "dominant candidate (single candidate); no model call",
+  "verify_prob": null,
+  "verified": true,
+  "verify_verdict": "dominant",
+  "escalated": false,
+  "escalate_reason": "",
+  "escalate_steps": 0,
+  "waves": 3,
+  "candidates": [
+   {
+    "root_cause": "namespace_memory_quota_exceeded",
+    "object": "namespace/boutique",
+    "score": 0.99,
+    "evidence": "memory-request-quota: requests.memory=300mi requested, requests.memory=3000Mi used, limit requests.memory=3Gi",
+    "rule": "quota_event"
+   }
+  ],
+  "jev": [
+   {
+    "rid": "test:boutique/admission/32#route",
+    "kind": "route",
+    "mode": "live",
+    "choice": "admission",
+    "confidence": 0.95,
+    "probabilities": {
+     "admission": 0.01,
+     "infrastructure": 0.02,
+     "other": 0.97
+    },
+    "status": "abstain",
+    "why": "jev abstained ('other'); mechanical fallback admission",
+    "usage": {
+     "input_tokens": 154
+    }
+   },
+   {
+    "rid": "test:boutique/admission/32#pick2",
+    "kind": "pick",
+    "mode": "live",
+    "choice": 0,
+    "dominant": true,
+    "status": "mechanical",
+    "why": "dominant candidate (single candidate); no model call",
+    "confidence": null,
+    "probabilities": {}
+   }
+  ],
+  "nodes": [
+   {
+    "node": "code",
+    "logic": "extract_anchors",
+    "anchors": {
+     "case_id": "boutique/admission/32",
+     "system": "boutique",
+     "namespace": "boutique",
+     "query": "Service Availability Disruption.",
+     "difficulty": "medium",
+     "symptoms": [],
+     "mentioned_apps": []
+    }
+   },
+   {
+    "node": "call",
+    "target": "probe_batch",
+    "wave": 0,
+    "executed": 1,
+    "steps": [
+     {
+      "key": "pods",
+      "tool": "GetResources",
+      "arguments": {
+       "namespace": "boutique",
+       "resource_type": "pods"
+      }
+     }
+    ],
+    "skipped": [
+     {
+      "key": "alerts",
+      "why": "when=false"
+     }
+    ]
+   },
+   {
+    "node": "jev",
+    "rid": "test:boutique/admission/32#route",
+    "kind": "route",
+    "choice": "admission",
+    "confidence": 0.95,
+    "prob": null,
+    "status": "abstain",
+    "mode": "live"
+   },
+   {
+    "node": "code",
+    "logic": "build_plan",
+    "family": "admission",
+    "plan": [
+     {
+      "key": "deployments",
+      "tool": "GetResources",
+      "wave": 1
+     },
+     {
+      "key": "events",
+      "tool": "GetResources",
+      "wave": 2
+     },
+     {
+      "key": "resourcequota",
+      "tool": "GetResources",
+      "wave": 3
+     },
+     {
+      "key": "describe:deployment",
+      "tool": "DescribeResource",
+      "wave": 4
+     }
+    ]
+   },
+   {
+    "node": "call",
+    "target": "probe_batch",
+    "wave": 1,
+    "executed": 1,
+    "steps": [
+     {
+      "key": "deployments",
+      "tool": "GetResources",
+      "arguments": {
+       "namespace": "boutique",
+       "resource_type": "deployments"
+      }
+     }
+    ],
+    "skipped": []
+   },
+   {
+    "node": "code",
+    "logic": "derive_candidates",
+    "raw": 0,
+    "kept": 0,
+    "top": []
+   },
+   {
+    "node": "jev",
+    "kind": "pick",
+    "mode": "skipped",
+    "why": "no candidates"
+   },
+   {
+    "node": "call",
+    "target": "probe_batch",
+    "wave": 2,
+    "executed": 1,
+    "steps": [
+     {
+      "key": "events",
+      "tool": "GetResources",
+      "arguments": {
+       "namespace": "boutique",
+       "resource_type": "events"
+      }
+     }
+    ],
+    "skipped": []
+   },
+   {
+    "node": "code",
+    "logic": "derive_candidates",
+    "raw": 8,
+    "kept": 1,
+    "top": [
+     {
+      "root_cause": "namespace_memory_quota_exceeded",
+      "object": "namespace/boutique",
+      "score": 0.99,
+      "evidence": "memory-request-quota: requests.memory=300mi requested, requests.memory=3000Mi used, limit requests.memory=3Gi",
+      "rule": "quota_event"
+     }
+    ]
+   },
+   {
+    "node": "jev",
+    "rid": "test:boutique/admission/32#pick2",
+    "kind": "pick",
+    "choice": 0,
+    "confidence": null,
+    "prob": null,
+    "status": "mechanical",
+    "mode": "live"
+   },
+   {
+    "node": "jev",
+    "kind": "verify",
+    "mode": "skipped",
+    "why": "dominant candidate: semantic gate suppressed by design",
+    "scores": [
+     0.99
+    ]
+   },
+   {
+    "node": "call",
+    "target": "probe_batch",
+    "wave": 3,
+    "executed": 0,
+    "steps": [],
+    "skipped": [
+     {
+      "key": "resourcequota",
+      "why": "when=false"
+     }
+    ]
+   },
+   {
+    "node": "code",
+    "logic": "derive_candidates",
+    "raw": 8,
+    "kept": 1,
+    "top": [
+     {
+      "root_cause": "namespace_memory_quota_exceeded",
+      "object": "namespace/boutique",
+      "score": 0.99,
+      "evidence": "memory-request-quota: requests.memory=300mi requested, requests.memory=3000Mi used, limit requests.memory=3Gi",
+      "rule": "quota_event"
+     }
+    ]
+   },
+   {
+    "node": "jev",
+    "kind": "pick",
+    "mode": "skipped",
+    "why": "no new candidate evidence since last wave"
+   },
+   {
+    "node": "jev",
+    "kind": "verify",
+    "mode": "skipped",
+    "why": "no new evidence since last verify"
+   },
+   {
+    "node": "loop",
+    "until": "plan_exhausted",
+    "wave": 3
+   },
+   {
+    "node": "escalate",
+    "reason": "predicate_false",
+    "hits": []
+   },
+   {
+    "node": "code",
+    "logic": "normalize_answer",
+    "predictions": [
+     {
+      "rank": 1,
+      "fault_object": "namespace/boutique",
+      "root_cause": "namespace_memory_quota_exceeded"
+     },
+     {
+      "rank": 2,
+      "fault_object": "namespace/boutique",
+      "root_cause": "namespace_memory_quota_exceeded"
+     },
+     {
+      "rank": 3,
+      "fault_object": "namespace/boutique",
+      "root_cause": "namespace_memory_quota_exceeded"
+     }
+    ]
+   }
+  ],
+  "notes": [],
+  "tool_calls": 3,
+  "model_calls": 0,
+  "tokens_in": 0,
+  "tokens_out": 0,
+  "wall_s": 0.25
+ }
+}

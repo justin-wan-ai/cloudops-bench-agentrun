@@ -1,0 +1,745 @@
+{
+ "case_id": "boutique/infrastructure/1",
+ "system_name": "boutique",
+ "question": "Service Availability Disruption.",
+ "case_path": "/Users/justinwan/work/workspace/cloudops_bench_rsi/repo/benchmark/boutique/infrastructure/1",
+ "max_steps": 8,
+ "current_step": 4,
+ "finished": true,
+ "stop_reason": "submit",
+ "final_answer": "{\"key_evidence_summary\": \"readiness probe targets :15021 but the container listens on :15090\", \"top_3_predictions\": [{\"rank\": 1, \"fault_object\": \"app/adservice\", \"root_cause\": \"readiness_probe_incorrect_port\"}, {\"rank\": 2, \"fault_object\": \"app/adservice\", \"root_cause\": \"readiness_probe_incorrect_port\"}, {\"rank\": 3, \"fault_object\": \"app/adservice\", \"root_cause\": \"readiness_probe_incorrect_port\"}]}",
+ "metadata": {
+  "namespace": "boutique",
+  "query": "Service Availability Disruption.",
+  "fault_category": "infrastructure",
+  "model_name": "agentrun-v0.7"
+ },
+ "steps": [
+  {
+   "step_id": 0,
+   "action_type": "tool",
+   "action_name": "GetResources",
+   "action_input": {
+    "namespace": "boutique",
+    "resource_type": "pods"
+   },
+   "observation": "NAME                                     READY   STATUS     RESTARTS   AGE\nadservice-d68dfc56-lbl9p                 0/2     Init:0/1   0          63s\ncartservice-7c5f46fc47-rqcnh             0/2     Init:0/1   0          62s\ncheckoutservice-dbcdcb5fb-76bxg          2/2     Running    0          62s\ncurrencyservice-5cd6467fc4-b9rf6         2/2     Running    0          62s\nemailservice-7dc7d85bcb-b5h82            0/2     Init:0/1   0          62s\nfrontend-6778bd7b8b-4c9fx                2/2     Running    0          64s\npaymentservice-869f9f96cd-qkds4          2/2     Running    0          63s\nproductcatalogservice-6fb89f98f8-ptjsz   0/2     Init:0/1   0          64s\nrecommendationservice-54dfdd6986-w5n9r   2/2     Running    0          63s\nredis-cart-58649b5469-t5jqs              2/2     Running    0          63s\nshippingservice-674c8c548d-r8d6c         0/2     Init:0/1   0          63s\n",
+   "error": null,
+   "purpose": "pod readiness census",
+   "tool_latency": null
+  },
+  {
+   "step_id": 1,
+   "action_type": "tool",
+   "action_name": "DescribeResource",
+   "action_input": {
+    "namespace": "boutique",
+    "resource_type": "pods",
+    "name": "adservice-d68dfc56-lbl9p"
+   },
+   "observation": "Name:             adservice-d68dfc56-lbl9p\nNamespace:        boutique\nPriority:         0\nService Account:  adservice\nNode:             worker-01/192.168.0.222\nStart Time:       Fri, 02 Jan 2026 12:32:50 +0800\nLabels:           app=adservice\n                  networking.istio.io/tunnel=http\n                  pod-template-hash=d68dfc56\n                  security.istio.io/tlsMode=istio\n                  service.istio.io/canonical-name=adservice\n                  service.istio.io/canonical-revision=latest\nAnnotations:      istio.io/rev: default\n                  kubectl.kubernetes.io/default-container: server\n                  kubectl.kubernetes.io/default-logs-container: server\n                  prometheus.io/path: /stats/prometheus\n                  prometheus.io/port: 15020\n                  prometheus.io/scrape: true\n                  sidecar.istio.io/interceptionMode: REDIRECT\n                  sidecar.istio.io/status:\n                    {\"initContainers\":[\"istio-validation\"],\"containers\":[\"istio-proxy\"],\"volumes\":[\"workload-socket\",\"credential-socket\",\"workload-certs\",\"ist...\n                  traffic.sidecar.istio.io/excludeInboundPorts: 15020\n                  traffic.sidecar.istio.io/includeInboundPorts: *\n                  traffic.sidecar.istio.io/includeOutboundIPRanges: *\nStatus:           Pending\nIP:               \nIPs:              <none>\nControlled By:    ReplicaSet/adservice-d68dfc56\nInit Containers:\n  istio-validation:\n    Container ID:  \n    Image:         docker.io/istio/proxyv2:1.27.3-distroless\n    Image ID:      \n    Port:          <none>\n    Host Port:     <none>\n    Args:\n      istio-iptables\n      -p\n      15001\n      -z\n      15006\n      -u\n      1337\n      -m\n      REDIRECT\n      -i\n      *\n      -x\n      \n      -b\n      *\n      -d\n      15090,15021,15020\n      --log_output_level=default:info\n      --run-validation\n      --skip-rule-apply\n    State:          Waiting\n      Reason:       PodInitializing\n    Ready:          False\n    Restart Count:  0\n    Limits:\n      cpu:     2\n      memory:  1Gi\n    Requests:\n      cpu:     100m\n      memory:  128Mi\n    Environment:\n      ISTIO_META_ENABLE_HBONE:  true\n    Mounts:\n      /var/run/secrets/kubernetes.io/serviceaccount from kube-api-access-hklb9 (ro)\nContainers:\n  server:\n    Container ID:   \n    Image:          us-central1-docker.pkg.dev/google-samples/microservices-demo/adservice:v0.10.3\n    Image ID:       \n    Port:           9555/TCP\n    Host Port:      0/TCP\n    State:          Waiting\n      Reason:       PodInitializing\n    Ready:          False\n    Restart Count:  0\n    Limits:\n      cpu:     200m\n      memory:  300Mi\n    Requests:\n      cpu:     100m\n      memory:  200Mi\n    Environment:\n      PORT:  9555\n    Mounts:\n      /var/run/secrets/kubernetes.io/serviceaccount from kube-api-access-hklb9 (ro)\n  istio-proxy:\n    Container ID:  \n    Image:         docker.io/istio/proxyv2:1.27.3-distroless\n    Image ID:      \n    Port:          15090/TCP\n    Host Port:     0/TCP\n    Args:\n      proxy\n      sidecar\n      --domain\n      $(POD_NAMESPACE).svc.cluster.local\n      --proxyLogLevel=warning\n      --proxyComponentLogLevel=misc:error\n      --log_output_level=default:info\n    State:          Waiting\n      Reason:       PodInitializing\n    Ready:          False\n    Restart Count:  0\n    Limits:\n      cpu:     2\n      memory:  1Gi\n    Requests:\n      cpu:      100m\n      memory:   128Mi\n    Readiness:  http-get http://:15021/healthz/ready delay=0s timeout=3s period=15s #success=1 #failure=4\n    Startup:    http-get http://:15021/healthz/ready delay=0s timeout=3s period=1s #success=1 #failure=600\n    Environment:\n      PILOT_CERT_PROVIDER:           istiod\n      CA_ADDR:                       istiod.istio-system.svc:15012\n      POD_NAME:                      adservice-d68dfc56-lbl9p (v1:metadata.name)\n      POD_NAMESPACE:                 boutique (v1:metadata.namespace)\n      INSTANCE_IP:                    (v1:status.podIP)\n      SERVICE_ACCOUNT:                (v1:spec.serviceAccountName)\n      HOST_IP:                        (v1:status.hostIP)\n      ISTIO_CPU_LIMIT:               2 (limits.cpu)\n      PROXY_CONFIG:                  {\"proxyMetadata\":{\"ISTIO_META_ENABLE_HBONE\":\"true\"},\"image\":{\"imageType\":\"distroless\"}}\n                                     \n      ISTIO_META_POD_PORTS:          [\n                                         {\"containerPort\":9555,\"protocol\":\"TCP\"}\n                                     ]\n      ISTIO_META_APP_CONTAINERS:     server\n      GOMEMLIMIT:                    1073741824 (limits.memory)\n      GOMAXPROCS:                    2 (limits.cpu)\n      ISTIO_META_CLUSTER_ID:         Kubernetes\n      ISTIO_META_NODE_NAME:           (v1:spec.nodeName)\n      ISTIO_META_INTERCEPTION_MODE:  REDIRECT\n      ISTIO_META_WORKLOAD_NAME:      adservice\n      ISTIO_META_OWNER:              kubernetes://apis/apps/v1/namespaces/boutique/deployments/adservice\n      ISTIO_META_MESH_ID:            cluster.local\n      TRUST_DOMAIN:                  cluster.local\n      ISTIO_META_ENABLE_HBONE:       true\n    Mounts:\n      /etc/istio/pod from istio-podinfo (rw)\n      /etc/istio/proxy from istio-envoy (rw)\n      /var/lib/istio/data from istio-data (rw)\n      /var/run/secrets/credential-uds from credential-socket (rw)\n      /var/run/secrets/istio from istiod-ca-cert (rw)\n      /var/run/secrets/istio/crl from istio-ca-crl (rw)\n      /var/run/secrets/kubernetes.io/serviceaccount from kube-api-access-hklb9 (ro)\n      /var/run/secrets/tokens from istio-token (rw)\n      /var/run/secrets/workload-spiffe-credentials from workload-certs (rw)\n      /var/run/secrets/workload-spiffe-uds from workload-socket (rw)\nConditions:\n  Type                        Status\n  PodReadyToStartContainers   False \n  Initialized                 False \n  Ready                       False \n  ContainersReady             False \n  PodScheduled                True \nVolumes:\n  workload-socket:\n    Type:       EmptyDir (a temporary directory that shares a pod's lifetime)\n    Medium:     \n    SizeLimit:  <unset>\n  credential-socket:\n    Type:       EmptyDir (a temporary directory that shares a pod's lifetime)\n    Medium:     \n    SizeLimit:  <unset>\n  workload-certs:\n    Type:       EmptyDir (a temporary directory that shares a pod's lifetime)\n    Medium:     \n    SizeLimit:  <unset>\n  istio-envoy:\n    Type:       EmptyDir (a temporary directory that shares a pod's lifetime)\n    Medium:     Memory\n    SizeLimit:  <unset>\n  istio-data:\n    Type:       EmptyDir (a temporary directory that shares a pod's lifetime)\n    Medium:     \n    SizeLimit:  <unset>\n  istio-podinfo:\n    Type:  DownwardAPI (a volume populated by information about the pod)\n    Items:\n      metadata.labels -> labels\n      metadata.annotations -> annotations\n  istio-token:\n    Type:                    Projected (a volume that contains injected data from multiple sources)\n    TokenExpirationSeconds:  43200\n  istiod-ca-cert:\n    Type:      ConfigMap (a volume populated by a ConfigMap)\n    Name:      istio-ca-root-cert\n    Optional:  false\n  istio-ca-crl:\n    Type:      ConfigMap (a volume populated by a ConfigMap)\n    Name:      istio-ca-crl\n    Optional:  true\n  kube-api-access-hklb9:\n    Type:                    Projected (a volume that contains injected data from multiple sources)\n    TokenExpirationSeconds:  3607\n    ConfigMapName:           kube-root-ca.crt\n    ConfigMapOptional:       <nil>\n    DownwardAPI:             true\nQoS Class:                   Burstable\nNode-Selectors:              <none>\nTolerations:                 node.kubernetes.io/not-ready:NoExecute op=Exists for 300s\n                             node.kubernetes.io/unreachable:NoExecute op=Exists for 300s\nEvents:\n  Type     Reason                  Age   From               Message\n  ----     ------                  ----  ----               -------\n  Normal   Scheduled               63s   default-scheduler  Successfully assigned boutique/adservice-d68dfc56-lbl9p to worker-01\n  Warning  FailedCreatePodSandBox  62s   kubelet            Failed to create pod sandbox: rpc error: code = Unavailable desc = connection error: desc = \"transport: Error while dialing: dial unix /run/containerd/containerd.sock: connect: no such file or directory\"\n",
+   "error": null,
+   "purpose": "probe config, container state, restart reasons, scheduler events",
+   "tool_latency": null
+  },
+  {
+   "step_id": 2,
+   "action_type": "tool",
+   "action_name": "GetAppYAML",
+   "action_input": {
+    "app_name": "adservice"
+   },
+   "observation": "apiVersion: apps/v1\nkind: Deployment\nmetadata:\n  name: adservice\n  namespace: boutique \n  labels:\n    app: adservice\nspec:\n  selector:\n    matchLabels:\n      app: adservice\n  template:\n    metadata:\n      labels:\n        app: adservice\n    spec:\n      serviceAccountName: adservice\n      terminationGracePeriodSeconds: 5\n      securityContext:\n        fsGroup: 1000\n        runAsGroup: 1000\n        runAsNonRoot: true\n        runAsUser: 1000\n      containers:\n      - name: server\n        securityContext:\n          allowPrivilegeEscalation: false\n          capabilities:\n            drop:\n              - ALL\n          privileged: false\n          readOnlyRootFilesystem: true\n        image: us-central1-docker.pkg.dev/google-samples/microservices-demo/adservice:v0.10.3\n        ports:\n        - containerPort: 9555\n        env:\n        - name: PORT\n          value: \"9555\"\n        resources:\n          requests:\n            cpu: 100m\n            memory: 200Mi\n          limits:\n            cpu: 200m\n            memory: 300Mi\n        # readinessProbe:\n        #   initialDelaySeconds: 5\n        #   grpc:\n        #     port: 9555\n        # livenessProbe:\n        #   initialDelaySeconds: 5\n        #   grpc:\n        #     port: 9555\n---\napiVersion: v1\nkind: Service\nmetadata:\n  name: adservice\n  namespace: boutique\n  labels:\n    app: adservice\nspec:\n  type: ClusterIP\n  selector:\n    app: adservice\n  ports:\n  - name: grpc\n    port: 9555\n    targetPort: 9555\n\n---\napiVersion: v1\nkind: ServiceAccount\nmetadata:\n  name: adservice\n  namespace: boutique\n# [END gke_release_kubernetes_manifests_microservices_demo]",
+   "error": null,
+   "purpose": "declared probes / limits / image / env",
+   "tool_latency": null
+  },
+  {
+   "step_id": 3,
+   "action_type": "tool",
+   "action_name": "GetErrorLogs",
+   "action_input": {
+    "namespace": "boutique",
+    "service_name": "adservice"
+   },
+   "observation": "\"{\\n  \\\"total_log_count\\\": 1,\\n  \\\"total_errors\\\": 1,\\n  \\\"total_error_ratio\\\": 1.0,\\n  \\\"patterns\\\": [\\n    {\\n      \\\"count\\\": 1,\\n      \\\"ratio\\\": 1.0,\\n      \\\"sample\\\": \\\"Error: Error from server (BadRequest): container \\\\\\\"server\\\\\\\" in pod \\\\\\\"adservice-d68dfc56-lbl9p\\\\\\\" is waiting to start: PodInitializing\\\"\\n    }\\n  ]\\n}\"",
+   "error": null,
+   "purpose": "application error logs",
+   "tool_latency": null
+  }
+ ],
+ "agentrun": {
+  "tag": "test",
+  "dsl": "workspace/dsl_versions/v0.7.dsl.txt",
+  "dsl_version": "0.7",
+  "sop": {
+   "sop": "boutique-runtime-rca",
+   "scope": {
+    "system": "boutique",
+    "families": [
+     "runtime",
+     "admission",
+     "scheduling",
+     "startup",
+     "service",
+     "performance",
+     "infrastructure",
+     "codedefect"
+    ],
+    "severity": [
+     "SEV2",
+     "SEV3"
+    ]
+   },
+   "owner": "sre-platform",
+   "approved_by": [
+    "oncall-primary",
+    "sre-lead"
+   ],
+   "reviewed_at": "2026-10-23",
+   "change_ticket": "OPS-1235",
+   "boundaries": "只读诊断：本 SOP 不执行任何写操作（重启/回滚/扩缩容），也不做对外播报；\n它回答\"最可能的根因与受害对象\"，处置与沟通由值班按 runbook 人工执行。\n不覆盖 SEV1（需 incident commander 介入）与变更引发的问题（走变更回滚流程）。\n输入是冻结快照：诊断结论对\"快照时刻\"成立，恢复后需重新取证。\nR1 已知边界：PVC 的 requested size / accessMode 在本 benchmark 的工具面不可见，\n因此 pvc_capacity 与 pvc_access_mode 无法区分（同一分数并列，交给 jev 或升级）。\n"
+  },
+  "params": {
+   "cands_cap": 8,
+   "max_waves": 8,
+   "min_waves": 5,
+   "steps_per_wave": 1,
+   "dominance_ratio": 1.5,
+   "conf_min": 0.0,
+   "escalate": true,
+   "escalate_budget": 8,
+   "judge_on_codedefect": true,
+   "jev_route": true,
+   "jev_pick": true,
+   "jev_verify": true,
+   "route_fallback": "runtime"
+  },
+  "nodes_executed": [
+   "anchors:extract_anchors",
+   "census:probes",
+   "route:decide",
+   "plan:build_plan",
+   "probe:probes",
+   "derive:derive_candidates",
+   "pick:decide",
+   "verify:decide",
+   "probe:probes",
+   "derive:derive_candidates",
+   "pick:decide",
+   "verify:decide",
+   "probe:probes",
+   "derive:derive_candidates",
+   "pick:decide",
+   "verify:decide",
+   "probe:probes",
+   "derive:derive_candidates",
+   "pick:decide",
+   "verify:decide",
+   "escalate:escalate",
+   "answer:normalize_answer",
+   "persist:persist_trace"
+  ],
+  "census": [
+   {
+    "step": "pods",
+    "gate": "always"
+   },
+   {
+    "step": "alerts",
+    "gate": "healthy_system"
+   }
+  ],
+  "plan": [
+   {
+    "step": "describe_pod",
+    "gate": "always",
+    "wave": 1
+   },
+   {
+    "step": "app_yaml",
+    "gate": "probe_evidence | restart_evidence | weak",
+    "wave": 2
+   },
+   {
+    "step": "error_logs",
+    "gate": "restart_evidence | weak_strong",
+    "wave": 3
+   }
+  ],
+  "family": "runtime",
+  "state_wiring": {
+   "family": "$route.family",
+   "route_probs": "$route.probabilities",
+   "picked": "$pick.picked",
+   "pick_dominant": "$pick.dominant",
+   "verify_status": "$verify.status",
+   "verify_prob": "$verify.confidence"
+  },
+  "bindings": {
+   "anchors": {
+    "anchors": "Anchors(case_id='boutique/infrastructure/1', system='boutique', namespace='boutique', query='Service Availability Disruption.', difficulty='medium', symptoms=[], mentioned_apps=[], priors={'db_service': '', 'db_port': 0})"
+   },
+   "route": {
+    "family": "runtime",
+    "probabilities": {},
+    "route_why": "mechanism_mode"
+   },
+   "plan": {
+    "plan": "[{'name': 'describe_pod', 'key': 'describe:pod', 'tool': 'DescribeResource', 'args': <function _args_describe_pod at 0x103d4ade0>, 'purpose': 'probe config, container state, restart reasons, scheduler events', 'when': <function compile_steps.<locals>.<lambda> at 0x103d7f7e0>, 'gate': 'always', 'wave': 1}, {'name': 'app_yaml', 'key': 'appyaml', 'tool': 'GetAppYAML', 'args': <function _args_app_yaml at 0x103d4af20>, 'purpose': 'declared probes / limits / image / env', 'when': <function compile_steps.<locals>.<lambda> at 0x103d7f880>, 'gate': 'probe_evidence | restart_evidence | weak', 'wave': 2}, {'name': 'error_logs', 'key': 'errors', 'tool': 'GetErrorLogs', 'args': <function _args_error_logs at 0x103d4afc0>, 'purpose': 'application error logs', 'when': <function compile_steps.<locals>.<lambda> at 0x103d7f920>, 'gate': 'restart_evidence | weak_strong', 'wave': 3}]"
+   },
+   "derive": {
+    "candidates": "[Candidate(root_cause='readiness_probe_incorrect_port', object='app/adservice', score=0.5700000000000001, evidence='readiness probe targets :15021 but the container listens on :15090', rule='probe_config')]"
+   },
+   "pick": {
+    "picked": 0,
+    "dominant": true,
+    "pick_why": "no_new_evidence"
+   },
+   "verify": {
+    "status": "verified",
+    "confidence": null,
+    "verify_why": "dominant_candidate"
+   },
+   "escalate": {
+    "answer": null
+   },
+   "answer": {
+    "final": {
+     "key_evidence_summary": "readiness probe targets :15021 but the container listens on :15090",
+     "top_3_predictions": [
+      {
+       "rank": 1,
+       "fault_object": "app/adservice",
+       "root_cause": "readiness_probe_incorrect_port"
+      },
+      {
+       "rank": 2,
+       "fault_object": "app/adservice",
+       "root_cause": "readiness_probe_incorrect_port"
+      },
+      {
+       "rank": 3,
+       "fault_object": "app/adservice",
+       "root_cause": "readiness_probe_incorrect_port"
+      }
+     ]
+    }
+   }
+  },
+  "picked": {
+   "root_cause": "readiness_probe_incorrect_port",
+   "object": "app/adservice",
+   "score": 0.57,
+   "evidence": "readiness probe targets :15021 but the container listens on :15090",
+   "rule": "probe_config"
+  },
+  "pick_why": "",
+  "verify_prob": null,
+  "verify_verdict": "verified",
+  "verified": true,
+  "escalated": false,
+  "escalate_reason": "",
+  "escalate_steps": 0,
+  "waves": 4,
+  "candidates": [
+   {
+    "root_cause": "readiness_probe_incorrect_port",
+    "object": "app/adservice",
+    "score": 0.57,
+    "evidence": "readiness probe targets :15021 but the container listens on :15090",
+    "rule": "probe_config"
+   }
+  ],
+  "jev": [
+   {
+    "rid": "test:boutique/infrastructure/1#route",
+    "kind": "route",
+    "node": "route",
+    "mode": "mechanism",
+    "options": [
+     "runtime",
+     "infrastructure"
+    ],
+    "status": "mechanical",
+    "guard": "unavailable",
+    "use": "first_option",
+    "choice": "runtime",
+    "why": "mechanism_mode",
+    "dominant": false,
+    "continue_loop": false,
+    "escalate": false
+   },
+   {
+    "rid": "test:boutique/infrastructure/1#pick1",
+    "kind": "pick",
+    "node": "pick",
+    "mode": "mechanism",
+    "options": [
+     "c0"
+    ],
+    "status": "mechanical",
+    "guard": "top_over_second >= $params.dominance_ratio",
+    "use": "first_option",
+    "choice": 0,
+    "why": "dominance",
+    "dominant": true,
+    "continue_loop": false,
+    "escalate": false
+   },
+   {
+    "rid": "test:boutique/infrastructure/1#verify1",
+    "kind": "verify",
+    "node": "verify",
+    "mode": "mechanism",
+    "options": [
+     "supported",
+     "insufficient",
+     "contradicted"
+    ],
+    "status": "mechanical",
+    "guard": "$pick.dominant",
+    "use": "verified",
+    "choice": "verified",
+    "why": "dominant_candidate",
+    "dominant": false,
+    "continue_loop": false,
+    "escalate": false
+   },
+   {
+    "rid": "test:boutique/infrastructure/1#pick2",
+    "kind": "pick",
+    "node": "pick",
+    "mode": "mechanism",
+    "options": [
+     "c0"
+    ],
+    "status": "mechanical",
+    "guard": "unchanged_since_last",
+    "use": "previous",
+    "choice": 0,
+    "why": "no_new_evidence",
+    "dominant": true,
+    "continue_loop": false,
+    "escalate": false
+   },
+   {
+    "rid": "test:boutique/infrastructure/1#verify2",
+    "kind": "verify",
+    "node": "verify",
+    "mode": "mechanism",
+    "options": [
+     "supported",
+     "insufficient",
+     "contradicted"
+    ],
+    "status": "mechanical",
+    "guard": "$pick.dominant",
+    "use": "verified",
+    "choice": "verified",
+    "why": "dominant_candidate",
+    "dominant": false,
+    "continue_loop": false,
+    "escalate": false
+   },
+   {
+    "rid": "test:boutique/infrastructure/1#pick3",
+    "kind": "pick",
+    "node": "pick",
+    "mode": "mechanism",
+    "options": [
+     "c0"
+    ],
+    "status": "mechanical",
+    "guard": "unchanged_since_last",
+    "use": "previous",
+    "choice": 0,
+    "why": "no_new_evidence",
+    "dominant": true,
+    "continue_loop": false,
+    "escalate": false
+   },
+   {
+    "rid": "test:boutique/infrastructure/1#verify3",
+    "kind": "verify",
+    "node": "verify",
+    "mode": "mechanism",
+    "options": [
+     "supported",
+     "insufficient",
+     "contradicted"
+    ],
+    "status": "mechanical",
+    "guard": "$pick.dominant",
+    "use": "verified",
+    "choice": "verified",
+    "why": "dominant_candidate",
+    "dominant": false,
+    "continue_loop": false,
+    "escalate": false
+   },
+   {
+    "rid": "test:boutique/infrastructure/1#pick4",
+    "kind": "pick",
+    "node": "pick",
+    "mode": "mechanism",
+    "options": [
+     "c0"
+    ],
+    "status": "mechanical",
+    "guard": "unchanged_since_last",
+    "use": "previous",
+    "choice": 0,
+    "why": "no_new_evidence",
+    "dominant": true,
+    "continue_loop": false,
+    "escalate": false
+   },
+   {
+    "rid": "test:boutique/infrastructure/1#verify4",
+    "kind": "verify",
+    "node": "verify",
+    "mode": "mechanism",
+    "options": [
+     "supported",
+     "insufficient",
+     "contradicted"
+    ],
+    "status": "mechanical",
+    "guard": "$pick.dominant",
+    "use": "verified",
+    "choice": "verified",
+    "why": "dominant_candidate",
+    "dominant": false,
+    "continue_loop": false,
+    "escalate": false
+   }
+  ],
+  "nodes": [
+   {
+    "node": "code",
+    "id": "anchors",
+    "anchors": {
+     "case_id": "boutique/infrastructure/1",
+     "system": "boutique",
+     "namespace": "boutique",
+     "query": "Service Availability Disruption.",
+     "difficulty": "medium",
+     "symptoms": [],
+     "mentioned_apps": []
+    }
+   },
+   {
+    "node": "probes",
+    "plan": "census",
+    "wave": 0,
+    "executed": 1,
+    "steps": [
+     {
+      "key": "pods",
+      "tool": "GetResources",
+      "arguments": {
+       "namespace": "boutique",
+       "resource_type": "pods"
+      },
+      "gate": "always"
+     }
+    ],
+    "skipped": [
+     {
+      "step": "alerts",
+      "why": "gate healthy_system"
+     }
+    ]
+   },
+   {
+    "node": "decide",
+    "id": "route",
+    "rid": "test:boutique/infrastructure/1#route",
+    "status": "mechanical",
+    "guard": "unavailable",
+    "use": "first_option",
+    "choice": "runtime",
+    "dominant": false,
+    "why": "mechanism_mode"
+   },
+   {
+    "node": "code",
+    "id": "plan",
+    "family": "runtime",
+    "plan": [
+     {
+      "step": "describe_pod",
+      "gate": "always",
+      "wave": 1
+     },
+     {
+      "step": "app_yaml",
+      "gate": "probe_evidence | restart_evidence | weak",
+      "wave": 2
+     },
+     {
+      "step": "error_logs",
+      "gate": "restart_evidence | weak_strong",
+      "wave": 3
+     }
+    ]
+   },
+   {
+    "node": "probes",
+    "plan": "family",
+    "wave": 1,
+    "executed": 1,
+    "steps": [
+     {
+      "key": "describe:pod",
+      "tool": "DescribeResource",
+      "arguments": {
+       "namespace": "boutique",
+       "resource_type": "pods",
+       "name": "adservice-d68dfc56-lbl9p"
+      },
+      "gate": "always"
+     }
+    ],
+    "skipped": []
+   },
+   {
+    "node": "code",
+    "id": "derive",
+    "raw": 1,
+    "kept": 1,
+    "top": [
+     {
+      "root_cause": "readiness_probe_incorrect_port",
+      "object": "app/adservice",
+      "score": 0.57,
+      "evidence": "readiness probe targets :15021 but the container listens on :15090",
+      "rule": "probe_config"
+     }
+    ]
+   },
+   {
+    "node": "decide",
+    "id": "pick",
+    "rid": "test:boutique/infrastructure/1#pick1",
+    "status": "mechanical",
+    "guard": "top_over_second >= $params.dominance_ratio",
+    "use": "first_option",
+    "choice": 0,
+    "dominant": true,
+    "why": "dominance"
+   },
+   {
+    "node": "decide",
+    "id": "verify",
+    "rid": "test:boutique/infrastructure/1#verify1",
+    "status": "mechanical",
+    "guard": "$pick.dominant",
+    "use": "verified",
+    "choice": "verified",
+    "dominant": false,
+    "why": "dominant_candidate"
+   },
+   {
+    "node": "probes",
+    "plan": "family",
+    "wave": 2,
+    "executed": 1,
+    "steps": [
+     {
+      "key": "appyaml",
+      "tool": "GetAppYAML",
+      "arguments": {
+       "app_name": "adservice"
+      },
+      "gate": "probe_evidence | restart_evidence | weak"
+     }
+    ],
+    "skipped": []
+   },
+   {
+    "node": "code",
+    "id": "derive",
+    "raw": 1,
+    "kept": 1,
+    "top": [
+     {
+      "root_cause": "readiness_probe_incorrect_port",
+      "object": "app/adservice",
+      "score": 0.57,
+      "evidence": "readiness probe targets :15021 but the container listens on :15090",
+      "rule": "probe_config"
+     }
+    ]
+   },
+   {
+    "node": "decide",
+    "id": "pick",
+    "rid": "test:boutique/infrastructure/1#pick2",
+    "status": "mechanical",
+    "guard": "unchanged_since_last",
+    "use": "previous",
+    "choice": 0,
+    "dominant": true,
+    "why": "no_new_evidence"
+   },
+   {
+    "node": "decide",
+    "id": "verify",
+    "rid": "test:boutique/infrastructure/1#verify2",
+    "status": "mechanical",
+    "guard": "$pick.dominant",
+    "use": "verified",
+    "choice": "verified",
+    "dominant": false,
+    "why": "dominant_candidate"
+   },
+   {
+    "node": "probes",
+    "plan": "family",
+    "wave": 3,
+    "executed": 1,
+    "steps": [
+     {
+      "key": "errors",
+      "tool": "GetErrorLogs",
+      "arguments": {
+       "namespace": "boutique",
+       "service_name": "adservice"
+      },
+      "gate": "restart_evidence | weak_strong"
+     }
+    ],
+    "skipped": []
+   },
+   {
+    "node": "code",
+    "id": "derive",
+    "raw": 1,
+    "kept": 1,
+    "top": [
+     {
+      "root_cause": "readiness_probe_incorrect_port",
+      "object": "app/adservice",
+      "score": 0.57,
+      "evidence": "readiness probe targets :15021 but the container listens on :15090",
+      "rule": "probe_config"
+     }
+    ]
+   },
+   {
+    "node": "decide",
+    "id": "pick",
+    "rid": "test:boutique/infrastructure/1#pick3",
+    "status": "mechanical",
+    "guard": "unchanged_since_last",
+    "use": "previous",
+    "choice": 0,
+    "dominant": true,
+    "why": "no_new_evidence"
+   },
+   {
+    "node": "decide",
+    "id": "verify",
+    "rid": "test:boutique/infrastructure/1#verify3",
+    "status": "mechanical",
+    "guard": "$pick.dominant",
+    "use": "verified",
+    "choice": "verified",
+    "dominant": false,
+    "why": "dominant_candidate"
+   },
+   {
+    "node": "probes",
+    "plan": "family",
+    "wave": 4,
+    "executed": 0,
+    "why": "plan exhausted"
+   },
+   {
+    "node": "code",
+    "id": "derive",
+    "raw": 1,
+    "kept": 1,
+    "top": [
+     {
+      "root_cause": "readiness_probe_incorrect_port",
+      "object": "app/adservice",
+      "score": 0.57,
+      "evidence": "readiness probe targets :15021 but the container listens on :15090",
+      "rule": "probe_config"
+     }
+    ]
+   },
+   {
+    "node": "decide",
+    "id": "pick",
+    "rid": "test:boutique/infrastructure/1#pick4",
+    "status": "mechanical",
+    "guard": "unchanged_since_last",
+    "use": "previous",
+    "choice": 0,
+    "dominant": true,
+    "why": "no_new_evidence"
+   },
+   {
+    "node": "decide",
+    "id": "verify",
+    "rid": "test:boutique/infrastructure/1#verify4",
+    "status": "mechanical",
+    "guard": "$pick.dominant",
+    "use": "verified",
+    "choice": "verified",
+    "dominant": false,
+    "why": "dominant_candidate"
+   },
+   {
+    "node": "loop",
+    "id": "waves",
+    "stop": "plan_exhausted",
+    "wave": 4
+   },
+   {
+    "node": "escalate",
+    "id": "escalate",
+    "fired": false,
+    "reasons": [],
+    "why": "no reason"
+   },
+   {
+    "node": "code",
+    "id": "answer",
+    "predictions": [
+     {
+      "rank": 1,
+      "fault_object": "app/adservice",
+      "root_cause": "readiness_probe_incorrect_port"
+     },
+     {
+      "rank": 2,
+      "fault_object": "app/adservice",
+      "root_cause": "readiness_probe_incorrect_port"
+     },
+     {
+      "rank": 3,
+      "fault_object": "app/adservice",
+      "root_cause": "readiness_probe_incorrect_port"
+     }
+    ]
+   },
+   {
+    "node": "artifact",
+    "id": "persist",
+    "persisted": false,
+    "why": "written by the CLI driver"
+   }
+  ],
+  "notes": [],
+  "tool_calls": 4,
+  "model_calls": 0,
+  "tokens_in": 0,
+  "tokens_out": 0,
+  "wall_s": 0.04
+ }
+}

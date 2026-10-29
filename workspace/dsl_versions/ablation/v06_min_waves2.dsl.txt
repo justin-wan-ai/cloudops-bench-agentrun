@@ -1,0 +1,286 @@
+# AgentRun DSL v0.6 -- an SRE SOP that is the executable artifact
+#
+# v0.6 = v0.5 semantics, re-ordered so a值班 SRE can read and sign it off without a
+# separate document.  Nothing here is rendered from Python; this file IS the SOP.
+#
+# Reading order (mirrors how an incident procedure is actually reviewed):
+#   1. front matter : who owns it, what it covers, who approved it, what it excludes
+#   2. verify       : what to collect and how to tell the symptom apart  -> plans:
+#   3. decide       : the judgement itself, with intent + falsification condition
+#   4. escalate     : when to stop reasoning and hand over
+#   5. wiring/knobs : state: (output wiring) and params: (numbers you may tune)
+#
+# A `decide` node has five machine sections plus two human ones:
+#   intent / refute_if            <- why this decision exists, and what would disprove it
+#   ask / space / input           <- what is asked, over which options, with which fields
+#   pre / post                    <- the two decision tables (mechanical, and answer->action)
+#   out                           <- named outputs referenced downstream as $node.field
+#
+# Vocabulary (validated at load time):
+#   guards : no_options | jev_disabled | has_stored_answer | unchanged_since_last | no_pick
+#            top_over_second >= <number|$params.key> | $node.field | $node.field == literal
+#   use    : answer | first_option | stored | previous | none | $params.key | <literal>
+#   extras : why | dominant=true|auto | continue_loop | escalate | require=beats_alternatives
+#   gates  : always | healthy_system | weak | weak_strong | weak_very_strong
+#            probe_evidence | restart_evidence | volume_evidence   (a step may list several = OR)
+#   stop   : plan_exhausted | verified_and_model
+
+sop: boutique-runtime-rca
+version: "0.6"
+
+scope:
+  system: boutique
+  families: [runtime, admission, scheduling, startup, service, performance, infrastructure, codedefect]
+  severity: [SEV2, SEV3]
+owner: sre-platform
+approved_by: [oncall-primary, sre-lead]
+reviewed_at: 2026-10-23
+change_ticket: OPS-1234
+boundaries: |
+  只读诊断：本 SOP 不执行任何写操作（重启/回滚/扩缩容），也不做对外播报；
+  它回答"最可能的根因与受害对象"，处置与沟通由值班按 runbook 人工执行。
+  不覆盖 SEV1（需 incident commander 介入）与变更引发的问题（走变更回滚流程）。
+  输入是冻结快照：诊断结论对"快照时刻"成立，恢复后需重新取证。
+
+# =============================================================== 1. 判定
+flow:
+  - id: anchors
+    do: extract_anchors
+    out: {anchors: anchors}
+
+  # 症状登记：只取两项最便宜的体检（pod 清单 + 告警签名）
+  - id: census
+    do: probes
+    plan: census
+
+  # --------------------------------------------------------------- route
+  - id: route
+    do: decide
+    intent: |
+      把"这条告警属于哪一类故障机制"定下来，从而决定后面要取证哪一批证据。
+      候选顺序本身就是机械先验（谁先命中谁优先），模型只在候选里做一次受限选择，并可弃权。
+    refute_if: |
+      若后续证据显示 pod 全部 Ready、告警为空、且服务确实不可达，则本路由把问题归到
+      runtime 是错的（应改走 service 家族），此时 verify 应给出 contradicted 并升级。
+    ask: |
+      Which Kubernetes fault family best explains the observed state for this incident?
+      Judge by the concrete observations, not by the wording alone.
+      Prefer `other` over a near miss.
+    space:
+      from: signals
+      order:                       # 从上到下匹配；同一家族只取第一个命中的信号
+        - {when: pending_pods,        value: scheduling}
+        - {when: image_pull,          value: startup}
+        - {when: not_ready_or_crash,  value: runtime}
+        - {when: no_pods_created,     value: admission}
+        - {when: code_shaped_alert,   value: codedefect}
+        - {when: saturation_alert,    value: performance}
+        - {when: healthy_unreachable, value: service}
+        - {when: healthy_degraded,    value: performance}
+        - {when: residual,            value: infrastructure}
+      other: true
+      render: [description, reason]
+    input:
+      incident: [query, system, namespace]
+      observed: signal_reasons
+    pre:
+      - if: jev_disabled
+        then: {use: first_option, why: jev_route=false}
+      - if: no_options
+        then: {use: $params.route_fallback, why: no_signal}
+      - if: has_stored_answer
+        then: {use: stored, why: answer_library}
+    post:
+      default:     {use: answer}
+      other:       {use: first_option, why: abstained}
+      unavailable: {use: first_option, why: mechanism_mode}
+      error:       {use: first_option, why: transport_error}
+    out: {family: choice, probabilities: distribution, route_why: reason}
+
+  - id: plan
+    do: build_plan
+    family: $route.family
+    out: {plan: plan}
+
+  # =============================================================== 2. 循环取证
+  - id: waves
+    do: loop
+    max_waves: $params.max_waves
+    min_waves: $params.min_waves
+    stop_when: [plan_exhausted, verified_and_model]
+    body:
+      - id: probe
+        do: probes
+        plan: family
+        wave: current
+
+      - id: derive
+        do: derive_candidates
+        out: {candidates: candidates}
+
+      # ----------------------------------------------------------- pick
+      - id: pick
+        do: decide
+        intent: |
+          在"证据支持的候选根因"里选出唯一一个对象+根因。候选已按规则分排序，
+          顺序只是先验；模型用来处理"两条候选都说得通"的情形，不负责发现新候选。
+        refute_if: |
+          若被选中对象的 describe 显示 Ready=True、无重启、无异常事件，则这条候选不成立，
+          应退回候选集或升级，而不是把 rank1 硬报出去。
+        ask: |
+          Which candidate is the best evidence-grounded explanation of the incident?
+          Candidate order already encodes a deterministic prior; use it only as a tie-break.
+          Answer `other` when no candidate's evidence actually supports the symptom.
+        space:
+          from: candidates
+          limit: $params.cands_cap
+          render: [root_cause, object, rule, evidence, score]
+          other: true
+        input:
+          incident: [query, namespace, state.family]
+          candidates: space_items
+        pre:
+          - if: no_options
+            then: {use: none, why: no_candidates}
+          - if: unchanged_since_last
+            then: {use: previous, why: no_new_evidence}
+          - if: jev_disabled
+            then: {use: first_option, why: jev_pick=false}
+          - if: has_stored_answer
+            then: {use: stored, why: answer_library}
+          - if: top_over_second >= $params.dominance_ratio
+            then: {use: first_option, dominant: true, why: dominance}
+        post:
+          default:     {use: answer, dominant: auto}
+          other:       {use: first_option, dominant: auto, why: abstained}
+          unavailable: {use: first_option, dominant: auto, why: mechanism_mode}
+          error:       {use: first_option, dominant: auto, why: transport_error}
+        out: {picked: choice, dominant: dominance_flag, pick_why: reason}
+
+      # ----------------------------------------------------------- verify
+      - id: verify
+        do: decide
+        intent: |
+          判断"能不能收工"：证据是否把这一条根因钉死。只有 supported 才允许结束取证；
+          insufficient 表示"家族对了但根因没定"，要继续取证（下一波）而不是升级。
+        refute_if: |
+          若关键观测（pod 状态 / 事件 / 探针配置）与该根因矛盾，则只能是 contradicted：
+          此时不得继续循环，必须升级给 judge，避免在同一错误方向上烧预算。
+        ask: |
+          How well is this hypothesis supported by the observations?
+          supported    = the quoted evidence pins this specific cause
+          insufficient = compatible, but does not discriminate it from the alternatives
+          contradicted = the observations speak against it
+        space:
+          from: fixed
+          options: [supported, insufficient, contradicted]
+          other: true
+        input:
+          incident: [query, namespace, state.family]
+          hypothesis: picked_item
+          key_observations: top_observations(3)
+        pre:
+          - if: no_pick
+            then: {use: unverified, why: nothing_to_verify}
+          - if: $pick.dominant
+            then: {use: verified, why: dominant_candidate}
+          - if: unchanged_since_last
+            then: {use: previous, why: no_new_evidence}
+          - if: jev_disabled
+            then: {use: verified, why: jev_verify=false}
+          - if: has_stored_answer
+            then: {use: stored, why: answer_library}
+        post:
+          supported:    {use: verified,   require: beats_alternatives}
+          insufficient: {use: unverified, continue_loop: true, why: insufficient}
+          contradicted: {use: unverified, escalate: true,     why: contradicted}
+          other:        {use: verified,   why: abstained}
+          unavailable:  {use: verified,   why: mechanism_mode}
+          error:        {use: verified,   why: transport_error}
+        out: {status: choice, confidence: p_supported, verify_why: reason}
+
+  # =============================================================== 3. 升级
+  - id: escalate
+    do: escalate
+    intent: |
+      停止按 SOP 走：当没有候选、证据自相矛盾、家族未知、或跑完预算仍无强候选时，
+      交给 judge agent（预算内只读探索），由它给出结论并记录理由。
+    when: [no_candidates, contradicted, family_unknown, weak_after_waves]
+    to: judge_agent
+    budget: $params.escalate_budget
+    out: {answer: answer}
+
+  - id: answer
+    do: normalize_answer
+    out: {final: payload}
+
+  - id: persist
+    do: persist_trace
+
+# =============================================================== 附录 A. 取证清单
+# 每个家族要取证什么、在什么条件下才值得花这次调用（gate 为真才执行；多个 gate = OR）。
+# 这份清单是 SOP 的"证据要求"，与 flow 同属一个文件，改它等于改 SOP。
+plans:
+  census:
+    - {step: pods,   gate: always}
+    - {step: alerts, gate: healthy_system}
+  admission:
+    - {step: deployments,         gate: always}
+    - {step: events,              gate: always}
+    - {step: resourcequota,       gate: weak_strong}
+    - {step: describe_deployment, gate: weak_very_strong}
+  scheduling:
+    - {step: describe_pod,   gate: always}
+    - {step: pvcs,           gate: volume_evidence}
+    - {step: cluster_config, gate: always}
+  startup:
+    - {step: describe_pod, gate: always}
+    - {step: app_yaml,     gate: weak_strong}
+    - {step: error_logs,   gate: weak}
+  runtime:
+    - {step: describe_pod, gate: always}
+    - {step: app_yaml,     gate: [probe_evidence, restart_evidence, weak]}
+    - {step: error_logs,   gate: [restart_evidence, weak_strong]}
+  service:
+    - {step: services,     gate: always}
+    - {step: endpoints,    gate: always}
+    - {step: app_yaml,     gate: weak}
+    - {step: connectivity, gate: weak_strong}
+    - {step: deps,         gate: weak_strong}
+  performance:
+    - {step: recent_logs,  gate: always}
+    - {step: describe_pod, gate: weak}
+    - {step: deps,         gate: weak}
+  infrastructure:
+    - {step: node_status,    gate: always}
+    - {step: cluster_config, gate: weak}
+  codedefect:
+    - {step: code_files,  gate: always}
+    - {step: source_code, gate: always}
+    - {step: recent_logs, gate: weak_strong}
+
+# =============================================================== 附录 B. 输出接线
+# 判定结果落到哪个运行时槽位（规则引擎只读这些槽位；没有隐式接线）。
+state:
+  family:        $route.family
+  route_probs:   $route.probabilities
+  picked:        $pick.picked
+  pick_dominant: $pick.dominant
+  verify_status: $verify.status
+  verify_prob:   $verify.confidence
+
+# =============================================================== 附录 C. 可调数值
+params:
+  cands_cap: 8
+  max_waves: 5
+  min_waves: 2
+  steps_per_wave: 1
+  dominance_ratio: 1.5
+  conf_min: 0.0
+  escalate: true
+  escalate_budget: 8
+  judge_on_codedefect: true
+  route_fallback: runtime
+  jev_route: true
+  jev_pick: true
+  jev_verify: true

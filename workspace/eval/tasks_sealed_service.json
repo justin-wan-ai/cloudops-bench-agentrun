@@ -1,0 +1,273 @@
+{
+ "n": 38,
+ "cases": [
+  {
+   "id": "boutique/service/11",
+   "system": "boutique",
+   "category": "service",
+   "case": "11",
+   "difficulty": "medium"
+  },
+  {
+   "id": "boutique/service/12",
+   "system": "boutique",
+   "category": "service",
+   "case": "12",
+   "difficulty": "medium"
+  },
+  {
+   "id": "boutique/service/14",
+   "system": "boutique",
+   "category": "service",
+   "case": "14",
+   "difficulty": "medium"
+  },
+  {
+   "id": "boutique/service/15",
+   "system": "boutique",
+   "category": "service",
+   "case": "15",
+   "difficulty": "medium"
+  },
+  {
+   "id": "boutique/service/16",
+   "system": "boutique",
+   "category": "service",
+   "case": "16",
+   "difficulty": "medium"
+  },
+  {
+   "id": "boutique/service/18",
+   "system": "boutique",
+   "category": "service",
+   "case": "18",
+   "difficulty": "medium"
+  },
+  {
+   "id": "boutique/service/19",
+   "system": "boutique",
+   "category": "service",
+   "case": "19",
+   "difficulty": "medium"
+  },
+  {
+   "id": "boutique/service/2",
+   "system": "boutique",
+   "category": "service",
+   "case": "2",
+   "difficulty": "medium"
+  },
+  {
+   "id": "boutique/service/21",
+   "system": "boutique",
+   "category": "service",
+   "case": "21",
+   "difficulty": "medium"
+  },
+  {
+   "id": "boutique/service/22",
+   "system": "boutique",
+   "category": "service",
+   "case": "22",
+   "difficulty": "medium"
+  },
+  {
+   "id": "boutique/service/23",
+   "system": "boutique",
+   "category": "service",
+   "case": "23",
+   "difficulty": "medium"
+  },
+  {
+   "id": "boutique/service/25",
+   "system": "boutique",
+   "category": "service",
+   "case": "25",
+   "difficulty": "medium"
+  },
+  {
+   "id": "boutique/service/27",
+   "system": "boutique",
+   "category": "service",
+   "case": "27",
+   "difficulty": "medium"
+  },
+  {
+   "id": "boutique/service/3",
+   "system": "boutique",
+   "category": "service",
+   "case": "3",
+   "difficulty": "medium"
+  },
+  {
+   "id": "boutique/service/30",
+   "system": "boutique",
+   "category": "service",
+   "case": "30",
+   "difficulty": "medium"
+  },
+  {
+   "id": "boutique/service/31",
+   "system": "boutique",
+   "category": "service",
+   "case": "31",
+   "difficulty": "medium"
+  },
+  {
+   "id": "boutique/service/33",
+   "system": "boutique",
+   "category": "service",
+   "case": "33",
+   "difficulty": "medium"
+  },
+  {
+   "id": "boutique/service/34",
+   "system": "boutique",
+   "category": "service",
+   "case": "34",
+   "difficulty": "medium"
+  },
+  {
+   "id": "boutique/service/36",
+   "system": "boutique",
+   "category": "service",
+   "case": "36",
+   "difficulty": "medium"
+  },
+  {
+   "id": "boutique/service/37",
+   "system": "boutique",
+   "category": "service",
+   "case": "37",
+   "difficulty": "medium"
+  },
+  {
+   "id": "boutique/service/39",
+   "system": "boutique",
+   "category": "service",
+   "case": "39",
+   "difficulty": "medium"
+  },
+  {
+   "id": "boutique/service/40",
+   "system": "boutique",
+   "category": "service",
+   "case": "40",
+   "difficulty": "medium"
+  },
+  {
+   "id": "boutique/service/41",
+   "system": "boutique",
+   "category": "service",
+   "case": "41",
+   "difficulty": "medium"
+  },
+  {
+   "id": "boutique/service/42",
+   "system": "boutique",
+   "category": "service",
+   "case": "42",
+   "difficulty": "medium"
+  },
+  {
+   "id": "boutique/service/43",
+   "system": "boutique",
+   "category": "service",
+   "case": "43",
+   "difficulty": "medium"
+  },
+  {
+   "id": "boutique/service/44",
+   "system": "boutique",
+   "category": "service",
+   "case": "44",
+   "difficulty": "medium"
+  },
+  {
+   "id": "boutique/service/45",
+   "system": "boutique",
+   "category": "service",
+   "case": "45",
+   "difficulty": "medium"
+  },
+  {
+   "id": "boutique/service/46",
+   "system": "boutique",
+   "category": "service",
+   "case": "46",
+   "difficulty": "medium"
+  },
+  {
+   "id": "boutique/service/47",
+   "system": "boutique",
+   "category": "service",
+   "case": "47",
+   "difficulty": "medium"
+  },
+  {
+   "id": "boutique/service/49",
+   "system": "boutique",
+   "category": "service",
+   "case": "49",
+   "difficulty": "medium"
+  },
+  {
+   "id": "boutique/service/50",
+   "system": "boutique",
+   "category": "service",
+   "case": "50",
+   "difficulty": "medium"
+  },
+  {
+   "id": "boutique/service/51",
+   "system": "boutique",
+   "category": "service",
+   "case": "51",
+   "difficulty": "medium"
+  },
+  {
+   "id": "boutique/service/52",
+   "system": "boutique",
+   "category": "service",
+   "case": "52",
+   "difficulty": "medium"
+  },
+  {
+   "id": "boutique/service/53",
+   "system": "boutique",
+   "category": "service",
+   "case": "53",
+   "difficulty": "medium"
+  },
+  {
+   "id": "boutique/service/54",
+   "system": "boutique",
+   "category": "service",
+   "case": "54",
+   "difficulty": "medium"
+  },
+  {
+   "id": "boutique/service/6",
+   "system": "boutique",
+   "category": "service",
+   "case": "6",
+   "difficulty": "medium"
+  },
+  {
+   "id": "boutique/service/8",
+   "system": "boutique",
+   "category": "service",
+   "case": "8",
+   "difficulty": "medium"
+  },
+  {
+   "id": "boutique/service/9",
+   "system": "boutique",
+   "category": "service",
+   "case": "9",
+   "difficulty": "medium"
+  }
+ ],
+ "round": "service",
+ "split": "sealed"
+}

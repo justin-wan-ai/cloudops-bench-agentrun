@@ -1,0 +1,1099 @@
+{
+ "case_id": "boutique/scheduling/11",
+ "system_name": "boutique",
+ "question": "Partial Service Unreachability.",
+ "case_path": "/Users/justinwan/work/workspace/cloudops_bench_rsi/repo/benchmark/boutique/scheduling/11",
+ "max_steps": 8,
+ "current_step": 3,
+ "finished": true,
+ "stop_reason": "submit",
+ "final_answer": "{\"key_evidence_summary\": \"all 1 label-compatible node(s) carry node.kubernetes.io/unschedulable\", \"top_3_predictions\": [{\"rank\": 1, \"fault_object\": \"app/currencyservice\", \"root_cause\": \"node_cordon_mismatch\"}, {\"rank\": 2, \"fault_object\": \"app/currencyservice\", \"root_cause\": \"node_selector_mismatch\"}, {\"rank\": 3, \"fault_object\": \"app/currencyservice\", \"root_cause\": \"node_cordon_mismatch\"}]}",
+ "metadata": {
+  "namespace": "boutique",
+  "query": "Partial Service Unreachability.",
+  "fault_category": "scheduling",
+  "model_name": "agentrun-v0.8"
+ },
+ "steps": [
+  {
+   "step_id": 0,
+   "action_type": "tool",
+   "action_name": "GetResources",
+   "action_input": {
+    "namespace": "boutique",
+    "resource_type": "pods",
+    "output_wide": true
+   },
+   "observation": "NAME                                     READY   STATUS    RESTARTS   AGE   IP             NODE        NOMINATED NODE   READINESS GATES\nadservice-84dbdf99d-b76cg                1/1     Running   0          73s   172.20.1.136   worker-01   <none>           <none>\ncartservice-79b49f5555-xq6tg             1/1     Running   0          73s   172.20.2.197   worker-02   <none>           <none>\ncheckoutservice-8445f8b6cb-n5h2p         1/1     Running   0          73s   172.20.1.137   worker-01   <none>           <none>\ncurrencyservice-6f654d5956-ff8rt         0/1     Pending   0          71s   <none>         <none>      <none>           <none>\nemailservice-b78fc569b-xwzt8             1/1     Running   0          73s   172.20.2.198   worker-02   <none>           <none>\nfrontend-6778bd7b8b-mgkg6                1/1     Running   0          72s   172.20.2.199   worker-02   <none>           <none>\npaymentservice-78c5996648-tw96p          1/1     Running   0          72s   172.20.1.138   worker-01   <none>           <none>\nproductcatalogservice-ddb46fc86-7694v    1/1     Running   0          72s   172.20.2.200   worker-02   <none>           <none>\nrecommendationservice-7df9c5b676-ss2wb   1/1     Running   0          72s   172.20.1.139   worker-01   <none>           <none>\nredis-cart-68db7b6f97-tl6lw              1/1     Running   0          71s   172.20.1.140   worker-01   <none>           <none>\nshippingservice-7cbfcb6d68-x8t4t         1/1     Running   0          71s   172.20.2.201   worker-02   <none>           <none>\n",
+   "error": null,
+   "purpose": "pod readiness census",
+   "tool_latency": null
+  },
+  {
+   "step_id": 1,
+   "action_type": "tool",
+   "action_name": "DescribeResource",
+   "action_input": {
+    "namespace": "boutique",
+    "resource_type": "pods",
+    "name": "currencyservice-6f654d5956-ff8rt"
+   },
+   "observation": "Name:             currencyservice-6f654d5956-ff8rt\nNamespace:        boutique\nPriority:         0\nService Account:  currencyservice\nNode:             <none>\nLabels:           app=currencyservice\n                  pod-template-hash=6f654d5956\nAnnotations:      <none>\nStatus:           Pending\nIP:               \nIPs:              <none>\nControlled By:    ReplicaSet/currencyservice-6f654d5956\nContainers:\n  server:\n    Image:      us-central1-docker.pkg.dev/google-samples/microservices-demo/currencyservice:v0.10.3\n    Port:       7000/TCP\n    Host Port:  0/TCP\n    Limits:\n      cpu:     200m\n      memory:  1280Mi\n    Requests:\n      cpu:      100m\n      memory:   64Mi\n    Liveness:   grpc <pod>:7000  delay=5s timeout=1s period=10s #success=1 #failure=3\n    Readiness:  grpc <pod>:7000  delay=5s timeout=1s period=10s #success=1 #failure=3\n    Environment:\n      PORT:              7000\n      DISABLE_PROFILER:  1\n    Mounts:\n      /var/run/secrets/kubernetes.io/serviceaccount from kube-api-access-28k29 (ro)\nConditions:\n  Type           Status\n  PodScheduled   False \nVolumes:\n  kube-api-access-28k29:\n    Type:                    Projected (a volume that contains injected data from multiple sources)\n    TokenExpirationSeconds:  3607\n    ConfigMapName:           kube-root-ca.crt\n    ConfigMapOptional:       <nil>\n    DownwardAPI:             true\nQoS Class:                   Burstable\nNode-Selectors:              hardware-type=gpu\nTolerations:                 node.kubernetes.io/not-ready:NoExecute op=Exists for 300s\n                             node.kubernetes.io/unreachable:NoExecute op=Exists for 300s\nEvents:\n  Type     Reason            Age   From               Message\n  ----     ------            ----  ----               -------\n  Warning  FailedScheduling  71s   default-scheduler  0/4 nodes are available: 2 node(s) didn't match Pod's node affinity/selector, 2 node(s) were unschedulable. preemption: 0/4 nodes are available: 4 Preemption is not helpful for scheduling.\n",
+   "error": null,
+   "purpose": "probe config, container state, restart reasons, scheduler events",
+   "tool_latency": null
+  },
+  {
+   "step_id": 2,
+   "action_type": "tool",
+   "action_name": "GetClusterConfiguration",
+   "action_input": {},
+   "observation": "{'node_count': 4, 'nodes': [{'name': 'master', 'role': 'worker', 'status': 'Ready', 'conditions': {'MemoryPressure': 'False', 'DiskPressure': 'False', 'PIDPressure': 'False'}, 'taints': ['node.kubernetes.io/unschedulable:NoSchedule'], 'labels': {'beta.kubernetes.io/arch': 'amd64', 'beta.kubernetes.io/os': 'linux', 'kubernetes.io/arch': 'amd64', 'kubernetes.io/hostname': 'master', 'kubernetes.io/os': 'linux', 'kubernetes.io/role': 'master'}, 'allocatable_resources': {'cpu': '8', 'memory': '15671352Ki'}}, {'name': 'worker-01', 'role': 'worker', 'status': 'Ready', 'conditions': {'MemoryPressure': 'False', 'DiskPressure': 'False', 'PIDPressure': 'False'}, 'taints': ['node.kubernetes.io/unschedulable:NoSchedule'], 'labels': {'beta.kubernetes.io/arch': 'amd64', 'beta.kubernetes.io/os': 'linux', 'hardware-type': 'gpu', 'kubernetes.io/arch': 'amd64', 'kubernetes.io/hostname': 'worker-01', 'kubernetes.io/os': 'linux', 'kubernetes.io/role': 'node'}, 'allocatable_resources': {'cpu': '8', 'memory': '15671348Ki'}}, {'name': 'worker-02', 'role': 'worker', 'status': 'Ready', 'conditions': {'MemoryPressure': 'False', 'DiskPressure': 'False', 'PIDPressure': 'False'}, 'taints': [], 'labels': {'beta.kubernetes.io/arch': 'amd64', 'beta.kubernetes.io/os': 'linux', 'kubernetes.io/arch': 'amd64', 'kubernetes.io/hostname': 'worker-02', 'kubernetes.io/os': 'linux', 'kubernetes.io/role': 'node'}, 'allocatable_resources': {'cpu': '8', 'memory': '15671344Ki'}}, {'name': 'worker-03', 'role': 'worker', 'status': 'Ready', 'conditions': {'MemoryPressure': 'False', 'DiskPressure': 'False', 'PIDPressure': 'False'}, 'taints': [], 'labels': {'beta.kubernetes.io/arch': 'amd64', 'beta.kubernetes.io/os': 'linux', 'kubernetes.io/arch': 'amd64', 'kubernetes.io/hostname': 'worker-03', 'kubernetes.io/os': 'linux', 'kubernetes.io/role': 'node'}, 'allocatable_resources': {'cpu': '8', 'memory': '15671356Ki'}}]}",
+   "error": null,
+   "purpose": "cluster-wide node state",
+   "tool_latency": null
+  }
+ ],
+ "agentrun": {
+  "tag": "test",
+  "dsl": "workspace/dsl_versions/v0.8.dsl.txt",
+  "dsl_version": "0.8",
+  "sop": {
+   "sop": "boutique-runtime-rca",
+   "scope": {
+    "system": "boutique",
+    "families": [
+     "runtime",
+     "admission",
+     "scheduling",
+     "startup",
+     "service",
+     "performance",
+     "infrastructure",
+     "codedefect"
+    ],
+    "severity": [
+     "SEV2",
+     "SEV3"
+    ]
+   },
+   "owner": "sre-platform",
+   "approved_by": [
+    "oncall-primary",
+    "sre-lead"
+   ],
+   "reviewed_at": "2026-10-23",
+   "change_ticket": "OPS-1236",
+   "boundaries": "只读诊断：本 SOP 不执行任何写操作（重启/回滚/扩缩容），也不做对外播报；\n它回答\"最可能的根因与受害对象\"，处置与沟通由值班按 runbook 人工执行。\n不覆盖 SEV1（需 incident commander 介入）与变更引发的问题（走变更回滚流程）。\n输入是冻结快照：诊断结论对\"快照时刻\"成立，恢复后需重新取证。\nR1 已知边界：PVC 的 requested size / accessMode 在本 benchmark 的工具面不可见，\n因此 pvc_capacity 与 pvc_access_mode 无法区分（同一分数并列，交给 jev 或升级）。\n"
+  },
+  "params": {
+   "cands_cap": 8,
+   "max_waves": 8,
+   "min_waves": 5,
+   "steps_per_wave": 1,
+   "dominance_ratio": 1.5,
+   "conf_min": 0.0,
+   "escalate": true,
+   "escalate_budget": 8,
+   "judge_on_codedefect": true,
+   "jev_route": true,
+   "jev_pick": true,
+   "jev_verify": true,
+   "route_fallback": "runtime"
+  },
+  "nodes_executed": [
+   "anchors:extract_anchors",
+   "census:probes",
+   "route:decide",
+   "plan:build_plan",
+   "probe:probes",
+   "derive:derive_candidates",
+   "pick:decide",
+   "verify:decide",
+   "probe:probes",
+   "derive:derive_candidates",
+   "pick:decide",
+   "verify:decide",
+   "probe:probes",
+   "derive:derive_candidates",
+   "pick:decide",
+   "verify:decide",
+   "probe:probes",
+   "derive:derive_candidates",
+   "pick:decide",
+   "verify:decide",
+   "probe:probes",
+   "derive:derive_candidates",
+   "pick:decide",
+   "verify:decide",
+   "probe:probes",
+   "derive:derive_candidates",
+   "pick:decide",
+   "verify:decide",
+   "probe:probes",
+   "derive:derive_candidates",
+   "pick:decide",
+   "verify:decide",
+   "escalate:escalate",
+   "answer:normalize_answer",
+   "persist:persist_trace"
+  ],
+  "census": [
+   {
+    "step": "pods",
+    "gate": "always"
+   },
+   {
+    "step": "alerts",
+    "gate": "healthy_system"
+   }
+  ],
+  "plan": [
+   {
+    "step": "describe_pod",
+    "gate": "always",
+    "wave": 1
+   },
+   {
+    "step": "cluster_config",
+    "gate": "always",
+    "wave": 2
+   },
+   {
+    "step": "pvcs",
+    "gate": "volume_evidence",
+    "wave": 3
+   },
+   {
+    "step": "pvs",
+    "gate": "pending_claim",
+    "wave": 4
+   },
+   {
+    "step": "storage_classes",
+    "gate": "pending_claim",
+    "wave": 5
+   },
+   {
+    "step": "node_scheduler",
+    "gate": "unscheduled_without_events",
+    "wave": 6
+   },
+   {
+    "step": "node_kubelet",
+    "gate": "node_reported_unreachable",
+    "wave": 7
+   }
+  ],
+  "family": "scheduling",
+  "state_wiring": {
+   "family": "$route.family",
+   "route_probs": "$route.probabilities",
+   "picked": "$pick.picked",
+   "pick_dominant": "$pick.dominant",
+   "verify_status": "$verify.status",
+   "verify_prob": "$verify.confidence"
+  },
+  "bindings": {
+   "anchors": {
+    "anchors": "Anchors(case_id='boutique/scheduling/11', system='boutique', namespace='boutique', query='Partial Service Unreachability.', difficulty='easy', symptoms=['unavailable'], mentioned_apps=[], priors={'db_service': '', 'db_port': 0})"
+   },
+   "route": {
+    "family": "scheduling",
+    "probabilities": {},
+    "route_why": "mechanism_mode"
+   },
+   "plan": {
+    "plan": "[{'name': 'describe_pod', 'key': 'describe:pod', 'tool': 'DescribeResource', 'args': <function _args_describe_pod at 0x10b82f560>, 'purpose': 'probe config, container state, restart reasons, scheduler events', 'when': <function compile_steps.<locals>.<lambda> at 0x10b8e8a40>, 'gate': 'always', 'wave': 1}, {'name': 'cluster_config', 'key': 'cluster', 'tool': 'GetClusterConfiguration', 'args': {}, 'purpose': 'cluster-wide node state', 'when': <function compile_steps.<locals>.<lambda> at 0x10b8e8900>, 'gate': 'always', 'wave': 2}, {'name': 'pvcs', 'key': 'pvcs', 'tool': 'GetResources', 'args': <function _args_pvcs at 0x10b82f100>, 'purpose': 'PVC status/capacity/class table', 'when': <function compile_steps.<locals>.<lambda> at 0x10b8e87c0>, 'gate': 'volume_evidence', 'wave': 3}, {'name': 'pvs', 'key': 'pvs', 'tool': 'GetResources', 'args': <function _args_pvs at 0x10b82f1a0>, 'purpose': 'PV capacity/access modes/claim binding', 'when': <function compile_steps.<locals>.<lambda> at 0x10b8e89a0>, 'gate': 'pending_claim', 'wave': 4}, {'name': 'storage_classes', 'key': 'storage_classes', 'tool': 'GetResources', 'args': <function _args_storage_classes at 0x10b82f240>, 'purpose': 'existing StorageClasses', 'when': <function compile_steps.<locals>.<lambda> at 0x10b85bf60>, 'gate': 'pending_claim', 'wave': 5}, {'name': 'node_scheduler', 'key': 'node:kube-scheduler', 'tool': 'CheckNodeServiceStatus', 'args': <function _args_node_scheduler at 0x10b82fd80>, 'purpose': 'kube-scheduler status on master', 'when': <function compile_steps.<locals>.<lambda> at 0x10b859d00>, 'gate': 'unscheduled_without_events', 'wave': 6}, {'name': 'node_kubelet', 'key': 'node:kubelet', 'tool': 'CheckNodeServiceStatus', 'args': <function _args_node_kubelet at 0x10b82fba0>, 'purpose': 'kubelet status on the node hosting the stalled pod', 'when': <function compile_steps.<locals>.<lambda> at 0x10b1214e0>, 'gate': 'node_reported_unreachable', 'wave': 7}]"
+   },
+   "derive": {
+    "candidates": "[Candidate(root_cause='node_cordon_mismatch', object='app/currencyservice', score=0.99, evidence='all 1 label-compatible node(s) carry node.kubernetes.io/unschedulable', rule='scheduling_solver'), Candidate(root_cause='node_selector_mismatch', object='app/currencyservice', score=0.99, evidence=\"no node carries the pod's nodeSelector hardware-type=gpu (labels present: [])\", rule='scheduling_solver')]"
+   },
+   "pick": {
+    "picked": 0,
+    "dominant": false,
+    "pick_why": "no_new_evidence"
+   },
+   "verify": {
+    "status": "verified",
+    "confidence": null,
+    "verify_why": "no_new_evidence"
+   },
+   "escalate": {
+    "answer": null
+   },
+   "answer": {
+    "final": {
+     "key_evidence_summary": "all 1 label-compatible node(s) carry node.kubernetes.io/unschedulable",
+     "top_3_predictions": [
+      {
+       "rank": 1,
+       "fault_object": "app/currencyservice",
+       "root_cause": "node_cordon_mismatch"
+      },
+      {
+       "rank": 2,
+       "fault_object": "app/currencyservice",
+       "root_cause": "node_selector_mismatch"
+      },
+      {
+       "rank": 3,
+       "fault_object": "app/currencyservice",
+       "root_cause": "node_cordon_mismatch"
+      }
+     ]
+    }
+   }
+  },
+  "picked": {
+   "root_cause": "node_cordon_mismatch",
+   "object": "app/currencyservice",
+   "score": 0.99,
+   "evidence": "all 1 label-compatible node(s) carry node.kubernetes.io/unschedulable",
+   "rule": "scheduling_solver"
+  },
+  "pick_why": "",
+  "verify_prob": null,
+  "verify_verdict": "verified",
+  "verified": true,
+  "escalated": false,
+  "escalate_reason": "",
+  "escalate_steps": 0,
+  "waves": 7,
+  "candidates": [
+   {
+    "root_cause": "node_cordon_mismatch",
+    "object": "app/currencyservice",
+    "score": 0.99,
+    "evidence": "all 1 label-compatible node(s) carry node.kubernetes.io/unschedulable",
+    "rule": "scheduling_solver"
+   },
+   {
+    "root_cause": "node_selector_mismatch",
+    "object": "app/currencyservice",
+    "score": 0.99,
+    "evidence": "no node carries the pod's nodeSelector hardware-type=gpu (labels present: [])",
+    "rule": "scheduling_solver"
+   }
+  ],
+  "jev": [
+   {
+    "rid": "test:boutique/scheduling/11#route",
+    "kind": "route",
+    "node": "route",
+    "mode": "mechanism",
+    "options": [
+     "scheduling",
+     "runtime",
+     "infrastructure"
+    ],
+    "status": "mechanical",
+    "guard": "unavailable",
+    "use": "first_option",
+    "choice": "scheduling",
+    "why": "mechanism_mode",
+    "dominant": false,
+    "continue_loop": false,
+    "escalate": false
+   },
+   {
+    "rid": "test:boutique/scheduling/11#pick1",
+    "kind": "pick",
+    "node": "pick",
+    "mode": "mechanism",
+    "options": [
+     "c0"
+    ],
+    "status": "mechanical",
+    "guard": "top_over_second >= $params.dominance_ratio",
+    "use": "first_option",
+    "choice": 0,
+    "why": "dominance",
+    "dominant": true,
+    "continue_loop": false,
+    "escalate": false
+   },
+   {
+    "rid": "test:boutique/scheduling/11#verify1",
+    "kind": "verify",
+    "node": "verify",
+    "mode": "mechanism",
+    "options": [
+     "supported",
+     "insufficient",
+     "contradicted"
+    ],
+    "status": "mechanical",
+    "guard": "$pick.dominant",
+    "use": "verified",
+    "choice": "verified",
+    "why": "dominant_candidate",
+    "dominant": false,
+    "continue_loop": false,
+    "escalate": false
+   },
+   {
+    "rid": "test:boutique/scheduling/11#pick2",
+    "kind": "pick",
+    "node": "pick",
+    "mode": "mechanism",
+    "options": [
+     "c0",
+     "c1"
+    ],
+    "status": "mechanical",
+    "guard": "unavailable",
+    "use": "first_option",
+    "choice": 0,
+    "why": "mechanism_mode",
+    "dominant": false,
+    "continue_loop": false,
+    "escalate": false
+   },
+   {
+    "rid": "test:boutique/scheduling/11#verify2",
+    "kind": "verify",
+    "node": "verify",
+    "mode": "mechanism",
+    "options": [
+     "supported",
+     "insufficient",
+     "contradicted"
+    ],
+    "status": "mechanical",
+    "guard": "unavailable",
+    "use": "verified",
+    "choice": "verified",
+    "why": "mechanism_mode",
+    "dominant": false,
+    "continue_loop": false,
+    "escalate": false
+   },
+   {
+    "rid": "test:boutique/scheduling/11#pick3",
+    "kind": "pick",
+    "node": "pick",
+    "mode": "mechanism",
+    "options": [
+     "c0",
+     "c1"
+    ],
+    "status": "mechanical",
+    "guard": "unchanged_since_last",
+    "use": "previous",
+    "choice": 0,
+    "why": "no_new_evidence",
+    "dominant": false,
+    "continue_loop": false,
+    "escalate": false
+   },
+   {
+    "rid": "test:boutique/scheduling/11#verify3",
+    "kind": "verify",
+    "node": "verify",
+    "mode": "mechanism",
+    "options": [
+     "supported",
+     "insufficient",
+     "contradicted"
+    ],
+    "status": "mechanical",
+    "guard": "unchanged_since_last",
+    "use": "previous",
+    "choice": "verified",
+    "why": "no_new_evidence",
+    "dominant": false,
+    "continue_loop": false,
+    "escalate": false
+   },
+   {
+    "rid": "test:boutique/scheduling/11#pick4",
+    "kind": "pick",
+    "node": "pick",
+    "mode": "mechanism",
+    "options": [
+     "c0",
+     "c1"
+    ],
+    "status": "mechanical",
+    "guard": "unchanged_since_last",
+    "use": "previous",
+    "choice": 0,
+    "why": "no_new_evidence",
+    "dominant": false,
+    "continue_loop": false,
+    "escalate": false
+   },
+   {
+    "rid": "test:boutique/scheduling/11#verify4",
+    "kind": "verify",
+    "node": "verify",
+    "mode": "mechanism",
+    "options": [
+     "supported",
+     "insufficient",
+     "contradicted"
+    ],
+    "status": "mechanical",
+    "guard": "unchanged_since_last",
+    "use": "previous",
+    "choice": "verified",
+    "why": "no_new_evidence",
+    "dominant": false,
+    "continue_loop": false,
+    "escalate": false
+   },
+   {
+    "rid": "test:boutique/scheduling/11#pick5",
+    "kind": "pick",
+    "node": "pick",
+    "mode": "mechanism",
+    "options": [
+     "c0",
+     "c1"
+    ],
+    "status": "mechanical",
+    "guard": "unchanged_since_last",
+    "use": "previous",
+    "choice": 0,
+    "why": "no_new_evidence",
+    "dominant": false,
+    "continue_loop": false,
+    "escalate": false
+   },
+   {
+    "rid": "test:boutique/scheduling/11#verify5",
+    "kind": "verify",
+    "node": "verify",
+    "mode": "mechanism",
+    "options": [
+     "supported",
+     "insufficient",
+     "contradicted"
+    ],
+    "status": "mechanical",
+    "guard": "unchanged_since_last",
+    "use": "previous",
+    "choice": "verified",
+    "why": "no_new_evidence",
+    "dominant": false,
+    "continue_loop": false,
+    "escalate": false
+   },
+   {
+    "rid": "test:boutique/scheduling/11#pick6",
+    "kind": "pick",
+    "node": "pick",
+    "mode": "mechanism",
+    "options": [
+     "c0",
+     "c1"
+    ],
+    "status": "mechanical",
+    "guard": "unchanged_since_last",
+    "use": "previous",
+    "choice": 0,
+    "why": "no_new_evidence",
+    "dominant": false,
+    "continue_loop": false,
+    "escalate": false
+   },
+   {
+    "rid": "test:boutique/scheduling/11#verify6",
+    "kind": "verify",
+    "node": "verify",
+    "mode": "mechanism",
+    "options": [
+     "supported",
+     "insufficient",
+     "contradicted"
+    ],
+    "status": "mechanical",
+    "guard": "unchanged_since_last",
+    "use": "previous",
+    "choice": "verified",
+    "why": "no_new_evidence",
+    "dominant": false,
+    "continue_loop": false,
+    "escalate": false
+   },
+   {
+    "rid": "test:boutique/scheduling/11#pick7",
+    "kind": "pick",
+    "node": "pick",
+    "mode": "mechanism",
+    "options": [
+     "c0",
+     "c1"
+    ],
+    "status": "mechanical",
+    "guard": "unchanged_since_last",
+    "use": "previous",
+    "choice": 0,
+    "why": "no_new_evidence",
+    "dominant": false,
+    "continue_loop": false,
+    "escalate": false
+   },
+   {
+    "rid": "test:boutique/scheduling/11#verify7",
+    "kind": "verify",
+    "node": "verify",
+    "mode": "mechanism",
+    "options": [
+     "supported",
+     "insufficient",
+     "contradicted"
+    ],
+    "status": "mechanical",
+    "guard": "unchanged_since_last",
+    "use": "previous",
+    "choice": "verified",
+    "why": "no_new_evidence",
+    "dominant": false,
+    "continue_loop": false,
+    "escalate": false
+   }
+  ],
+  "nodes": [
+   {
+    "node": "code",
+    "id": "anchors",
+    "anchors": {
+     "case_id": "boutique/scheduling/11",
+     "system": "boutique",
+     "namespace": "boutique",
+     "query": "Partial Service Unreachability.",
+     "difficulty": "easy",
+     "symptoms": [
+      "unavailable"
+     ],
+     "mentioned_apps": []
+    }
+   },
+   {
+    "node": "probes",
+    "plan": "census",
+    "wave": 0,
+    "executed": 1,
+    "steps": [
+     {
+      "key": "pods",
+      "tool": "GetResources",
+      "arguments": {
+       "namespace": "boutique",
+       "resource_type": "pods",
+       "output_wide": true
+      },
+      "gate": "always"
+     }
+    ],
+    "skipped": [
+     {
+      "step": "alerts",
+      "why": "gate healthy_system"
+     }
+    ]
+   },
+   {
+    "node": "decide",
+    "id": "route",
+    "rid": "test:boutique/scheduling/11#route",
+    "status": "mechanical",
+    "guard": "unavailable",
+    "use": "first_option",
+    "choice": "scheduling",
+    "dominant": false,
+    "why": "mechanism_mode"
+   },
+   {
+    "node": "code",
+    "id": "plan",
+    "family": "scheduling",
+    "plan": [
+     {
+      "step": "describe_pod",
+      "gate": "always",
+      "wave": 1
+     },
+     {
+      "step": "cluster_config",
+      "gate": "always",
+      "wave": 2
+     },
+     {
+      "step": "pvcs",
+      "gate": "volume_evidence",
+      "wave": 3
+     },
+     {
+      "step": "pvs",
+      "gate": "pending_claim",
+      "wave": 4
+     },
+     {
+      "step": "storage_classes",
+      "gate": "pending_claim",
+      "wave": 5
+     },
+     {
+      "step": "node_scheduler",
+      "gate": "unscheduled_without_events",
+      "wave": 6
+     },
+     {
+      "step": "node_kubelet",
+      "gate": "node_reported_unreachable",
+      "wave": 7
+     }
+    ]
+   },
+   {
+    "node": "probes",
+    "plan": "family",
+    "wave": 1,
+    "executed": 1,
+    "steps": [
+     {
+      "key": "describe:pod",
+      "tool": "DescribeResource",
+      "arguments": {
+       "namespace": "boutique",
+       "resource_type": "pods",
+       "name": "currencyservice-6f654d5956-ff8rt"
+      },
+      "gate": "always"
+     }
+    ],
+    "skipped": []
+   },
+   {
+    "node": "code",
+    "id": "derive",
+    "raw": 1,
+    "kept": 1,
+    "top": [
+     {
+      "root_cause": "node_selector_mismatch",
+      "object": "app/currencyservice",
+      "score": 0.99,
+      "evidence": "no node carries the pod's nodeSelector hardware-type=gpu (labels present: [])",
+      "rule": "scheduling_solver"
+     }
+    ]
+   },
+   {
+    "node": "decide",
+    "id": "pick",
+    "rid": "test:boutique/scheduling/11#pick1",
+    "status": "mechanical",
+    "guard": "top_over_second >= $params.dominance_ratio",
+    "use": "first_option",
+    "choice": 0,
+    "dominant": true,
+    "why": "dominance"
+   },
+   {
+    "node": "decide",
+    "id": "verify",
+    "rid": "test:boutique/scheduling/11#verify1",
+    "status": "mechanical",
+    "guard": "$pick.dominant",
+    "use": "verified",
+    "choice": "verified",
+    "dominant": false,
+    "why": "dominant_candidate"
+   },
+   {
+    "node": "probes",
+    "plan": "family",
+    "wave": 2,
+    "executed": 1,
+    "steps": [
+     {
+      "key": "cluster",
+      "tool": "GetClusterConfiguration",
+      "arguments": {},
+      "gate": "always"
+     }
+    ],
+    "skipped": []
+   },
+   {
+    "node": "code",
+    "id": "derive",
+    "raw": 1,
+    "kept": 2,
+    "top": [
+     {
+      "root_cause": "node_cordon_mismatch",
+      "object": "app/currencyservice",
+      "score": 0.99,
+      "evidence": "all 1 label-compatible node(s) carry node.kubernetes.io/unschedulable",
+      "rule": "scheduling_solver"
+     },
+     {
+      "root_cause": "node_selector_mismatch",
+      "object": "app/currencyservice",
+      "score": 0.99,
+      "evidence": "no node carries the pod's nodeSelector hardware-type=gpu (labels present: [])",
+      "rule": "scheduling_solver"
+     }
+    ]
+   },
+   {
+    "node": "decide",
+    "id": "pick",
+    "rid": "test:boutique/scheduling/11#pick2",
+    "status": "mechanical",
+    "guard": "unavailable",
+    "use": "first_option",
+    "choice": 0,
+    "dominant": false,
+    "why": "mechanism_mode"
+   },
+   {
+    "node": "decide",
+    "id": "verify",
+    "rid": "test:boutique/scheduling/11#verify2",
+    "status": "mechanical",
+    "guard": "unavailable",
+    "use": "verified",
+    "choice": "verified",
+    "dominant": false,
+    "why": "mechanism_mode"
+   },
+   {
+    "node": "probes",
+    "plan": "family",
+    "wave": 3,
+    "executed": 0,
+    "steps": [],
+    "skipped": [
+     {
+      "step": "pvcs",
+      "why": "gate volume_evidence"
+     }
+    ]
+   },
+   {
+    "node": "code",
+    "id": "derive",
+    "raw": 1,
+    "kept": 2,
+    "top": [
+     {
+      "root_cause": "node_cordon_mismatch",
+      "object": "app/currencyservice",
+      "score": 0.99,
+      "evidence": "all 1 label-compatible node(s) carry node.kubernetes.io/unschedulable",
+      "rule": "scheduling_solver"
+     },
+     {
+      "root_cause": "node_selector_mismatch",
+      "object": "app/currencyservice",
+      "score": 0.99,
+      "evidence": "no node carries the pod's nodeSelector hardware-type=gpu (labels present: [])",
+      "rule": "scheduling_solver"
+     }
+    ]
+   },
+   {
+    "node": "decide",
+    "id": "pick",
+    "rid": "test:boutique/scheduling/11#pick3",
+    "status": "mechanical",
+    "guard": "unchanged_since_last",
+    "use": "previous",
+    "choice": 0,
+    "dominant": false,
+    "why": "no_new_evidence"
+   },
+   {
+    "node": "decide",
+    "id": "verify",
+    "rid": "test:boutique/scheduling/11#verify3",
+    "status": "mechanical",
+    "guard": "unchanged_since_last",
+    "use": "previous",
+    "choice": "verified",
+    "dominant": false,
+    "why": "no_new_evidence"
+   },
+   {
+    "node": "probes",
+    "plan": "family",
+    "wave": 4,
+    "executed": 0,
+    "steps": [],
+    "skipped": [
+     {
+      "step": "pvs",
+      "why": "gate pending_claim"
+     }
+    ]
+   },
+   {
+    "node": "code",
+    "id": "derive",
+    "raw": 1,
+    "kept": 2,
+    "top": [
+     {
+      "root_cause": "node_cordon_mismatch",
+      "object": "app/currencyservice",
+      "score": 0.99,
+      "evidence": "all 1 label-compatible node(s) carry node.kubernetes.io/unschedulable",
+      "rule": "scheduling_solver"
+     },
+     {
+      "root_cause": "node_selector_mismatch",
+      "object": "app/currencyservice",
+      "score": 0.99,
+      "evidence": "no node carries the pod's nodeSelector hardware-type=gpu (labels present: [])",
+      "rule": "scheduling_solver"
+     }
+    ]
+   },
+   {
+    "node": "decide",
+    "id": "pick",
+    "rid": "test:boutique/scheduling/11#pick4",
+    "status": "mechanical",
+    "guard": "unchanged_since_last",
+    "use": "previous",
+    "choice": 0,
+    "dominant": false,
+    "why": "no_new_evidence"
+   },
+   {
+    "node": "decide",
+    "id": "verify",
+    "rid": "test:boutique/scheduling/11#verify4",
+    "status": "mechanical",
+    "guard": "unchanged_since_last",
+    "use": "previous",
+    "choice": "verified",
+    "dominant": false,
+    "why": "no_new_evidence"
+   },
+   {
+    "node": "probes",
+    "plan": "family",
+    "wave": 5,
+    "executed": 0,
+    "steps": [],
+    "skipped": [
+     {
+      "step": "storage_classes",
+      "why": "gate pending_claim"
+     }
+    ]
+   },
+   {
+    "node": "code",
+    "id": "derive",
+    "raw": 1,
+    "kept": 2,
+    "top": [
+     {
+      "root_cause": "node_cordon_mismatch",
+      "object": "app/currencyservice",
+      "score": 0.99,
+      "evidence": "all 1 label-compatible node(s) carry node.kubernetes.io/unschedulable",
+      "rule": "scheduling_solver"
+     },
+     {
+      "root_cause": "node_selector_mismatch",
+      "object": "app/currencyservice",
+      "score": 0.99,
+      "evidence": "no node carries the pod's nodeSelector hardware-type=gpu (labels present: [])",
+      "rule": "scheduling_solver"
+     }
+    ]
+   },
+   {
+    "node": "decide",
+    "id": "pick",
+    "rid": "test:boutique/scheduling/11#pick5",
+    "status": "mechanical",
+    "guard": "unchanged_since_last",
+    "use": "previous",
+    "choice": 0,
+    "dominant": false,
+    "why": "no_new_evidence"
+   },
+   {
+    "node": "decide",
+    "id": "verify",
+    "rid": "test:boutique/scheduling/11#verify5",
+    "status": "mechanical",
+    "guard": "unchanged_since_last",
+    "use": "previous",
+    "choice": "verified",
+    "dominant": false,
+    "why": "no_new_evidence"
+   },
+   {
+    "node": "probes",
+    "plan": "family",
+    "wave": 6,
+    "executed": 0,
+    "steps": [],
+    "skipped": [
+     {
+      "step": "node_scheduler",
+      "why": "gate unscheduled_without_events"
+     }
+    ]
+   },
+   {
+    "node": "code",
+    "id": "derive",
+    "raw": 1,
+    "kept": 2,
+    "top": [
+     {
+      "root_cause": "node_cordon_mismatch",
+      "object": "app/currencyservice",
+      "score": 0.99,
+      "evidence": "all 1 label-compatible node(s) carry node.kubernetes.io/unschedulable",
+      "rule": "scheduling_solver"
+     },
+     {
+      "root_cause": "node_selector_mismatch",
+      "object": "app/currencyservice",
+      "score": 0.99,
+      "evidence": "no node carries the pod's nodeSelector hardware-type=gpu (labels present: [])",
+      "rule": "scheduling_solver"
+     }
+    ]
+   },
+   {
+    "node": "decide",
+    "id": "pick",
+    "rid": "test:boutique/scheduling/11#pick6",
+    "status": "mechanical",
+    "guard": "unchanged_since_last",
+    "use": "previous",
+    "choice": 0,
+    "dominant": false,
+    "why": "no_new_evidence"
+   },
+   {
+    "node": "decide",
+    "id": "verify",
+    "rid": "test:boutique/scheduling/11#verify6",
+    "status": "mechanical",
+    "guard": "unchanged_since_last",
+    "use": "previous",
+    "choice": "verified",
+    "dominant": false,
+    "why": "no_new_evidence"
+   },
+   {
+    "node": "probes",
+    "plan": "family",
+    "wave": 7,
+    "executed": 0,
+    "steps": [],
+    "skipped": [
+     {
+      "step": "node_kubelet",
+      "why": "gate node_reported_unreachable"
+     }
+    ]
+   },
+   {
+    "node": "code",
+    "id": "derive",
+    "raw": 1,
+    "kept": 2,
+    "top": [
+     {
+      "root_cause": "node_cordon_mismatch",
+      "object": "app/currencyservice",
+      "score": 0.99,
+      "evidence": "all 1 label-compatible node(s) carry node.kubernetes.io/unschedulable",
+      "rule": "scheduling_solver"
+     },
+     {
+      "root_cause": "node_selector_mismatch",
+      "object": "app/currencyservice",
+      "score": 0.99,
+      "evidence": "no node carries the pod's nodeSelector hardware-type=gpu (labels present: [])",
+      "rule": "scheduling_solver"
+     }
+    ]
+   },
+   {
+    "node": "decide",
+    "id": "pick",
+    "rid": "test:boutique/scheduling/11#pick7",
+    "status": "mechanical",
+    "guard": "unchanged_since_last",
+    "use": "previous",
+    "choice": 0,
+    "dominant": false,
+    "why": "no_new_evidence"
+   },
+   {
+    "node": "decide",
+    "id": "verify",
+    "rid": "test:boutique/scheduling/11#verify7",
+    "status": "mechanical",
+    "guard": "unchanged_since_last",
+    "use": "previous",
+    "choice": "verified",
+    "dominant": false,
+    "why": "no_new_evidence"
+   },
+   {
+    "node": "loop",
+    "id": "waves",
+    "stop": "plan_exhausted",
+    "wave": 7
+   },
+   {
+    "node": "escalate",
+    "id": "escalate",
+    "fired": false,
+    "reasons": [],
+    "why": "no reason"
+   },
+   {
+    "node": "code",
+    "id": "answer",
+    "predictions": [
+     {
+      "rank": 1,
+      "fault_object": "app/currencyservice",
+      "root_cause": "node_cordon_mismatch"
+     },
+     {
+      "rank": 2,
+      "fault_object": "app/currencyservice",
+      "root_cause": "node_selector_mismatch"
+     },
+     {
+      "rank": 3,
+      "fault_object": "app/currencyservice",
+      "root_cause": "node_cordon_mismatch"
+     }
+    ]
+   },
+   {
+    "node": "artifact",
+    "id": "persist",
+    "persisted": false,
+    "why": "written by the CLI driver"
+   }
+  ],
+  "notes": [],
+  "tool_calls": 3,
+  "model_calls": 0,
+  "tokens_in": 0,
+  "tokens_out": 0,
+  "wall_s": 0.04
+ }
+}

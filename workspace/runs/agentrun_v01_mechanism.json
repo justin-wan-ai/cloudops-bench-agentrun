@@ -1,0 +1,80 @@
+{
+  "dsl": "/Users/justinwan/work/workspace/cloudops_bench_rsi/workspace/dsl_versions/v0.1.dsl.txt",
+  "params": {
+    "cands_cap": 8,
+    "max_waves": 3,
+    "steps_per_wave": 3,
+    "dominance_ratio": 1.5,
+    "conf_min": 0.55,
+    "escalate": true,
+    "escalate_budget": 8,
+    "judge_on_codedefect": true,
+    "jev_route": true,
+    "jev_pick": true,
+    "jev_verify": true
+  },
+  "jev_mode": "mechanism",
+  "jev_usage": {},
+  "cases": [
+    {
+      "id": "trainticket/runtime/61",
+      "family": "runtime",
+      "tool_calls": 6,
+      "model_calls": 0,
+      "tokens_in": 0,
+      "tokens_out": 0,
+      "wall_s": 0.05,
+      "escalated": false,
+      "verified": true,
+      "verify_prob": null
+    },
+    {
+      "id": "boutique/codedefect/60",
+      "family": "codedefect",
+      "tool_calls": 5,
+      "model_calls": 0,
+      "tokens_in": 0,
+      "tokens_out": 0,
+      "wall_s": 0.06,
+      "escalated": false,
+      "verified": true,
+      "verify_prob": null
+    },
+    {
+      "id": "boutique/admission/32",
+      "family": "admission",
+      "tool_calls": 6,
+      "model_calls": 0,
+      "tokens_in": 0,
+      "tokens_out": 0,
+      "wall_s": 0.02,
+      "escalated": false,
+      "verified": true,
+      "verify_prob": null
+    },
+    {
+      "id": "boutique/scheduling/109",
+      "family": "scheduling",
+      "tool_calls": 6,
+      "model_calls": 0,
+      "tokens_in": 0,
+      "tokens_out": 0,
+      "wall_s": 0.02,
+      "escalated": false,
+      "verified": true,
+      "verify_prob": null
+    },
+    {
+      "id": "boutique/runtime/32",
+      "family": "runtime",
+      "tool_calls": 6,
+      "model_calls": 0,
+      "tokens_in": 0,
+      "tokens_out": 0,
+      "wall_s": 0.02,
+      "escalated": false,
+      "verified": true,
+      "verify_prob": null
+    }
+  ]
+}

@@ -1,0 +1,764 @@
+{
+ "case_id": "trainticket/performance/21",
+ "system_name": "trainticket",
+ "question": "Service quality degradation.",
+ "case_path": "/Users/justinwan/work/workspace/cloudops_bench_rsi/repo/benchmark/trainticket/performance/21",
+ "max_steps": 8,
+ "current_step": 3,
+ "finished": true,
+ "stop_reason": "submit",
+ "final_answer": "{\"key_evidence_summary\": \"network latency anomaly on the pod\", \"top_3_predictions\": [{\"rank\": 1, \"fault_object\": \"app/ts-food-service\", \"root_cause\": \"pod_network_delay\"}, {\"rank\": 2, \"fault_object\": \"app/ts-gateway-service\", \"root_cause\": \"pod_network_delay\"}, {\"rank\": 3, \"fault_object\": \"app/ts-order-service\", \"root_cause\": \"pod_network_delay\"}]}",
+ "metadata": {
+  "namespace": "train-ticket",
+  "query": "Service quality degradation.",
+  "fault_category": "performance",
+  "model_name": "agentrun-v0.8"
+ },
+ "steps": [
+  {
+   "step_id": 0,
+   "action_type": "tool",
+   "action_name": "GetResources",
+   "action_input": {
+    "namespace": "train-ticket",
+    "resource_type": "pods",
+    "output_wide": true
+   },
+   "observation": "NAME                                            READY   STATUS    RESTARTS        AGE     IP             NODE        NOMINATED NODE   READINESS GATES\nnacos-0                                         1/1     Running   0               11d     172.20.2.76    worker-02   <none>           <none>\nnacos-1                                         1/1     Running   0               11d     172.20.1.247   worker-01   <none>           <none>\nnacos-2                                         1/1     Running   0               11d     172.20.3.7     worker-03   <none>           <none>\nnacosdb-mysql-0                                 3/3     Running   1 (11d ago)     11d     172.20.2.75    worker-02   <none>           <none>\nnacosdb-mysql-1                                 3/3     Running   2 (11d ago)     11d     172.20.1.246   worker-01   <none>           <none>\nnacosdb-mysql-2                                 3/3     Running   1 (11d ago)     11d     172.20.3.6     worker-03   <none>           <none>\nrabbitmq-57b4f9969c-4cndj                       1/1     Running   0               11d     172.20.2.77    worker-02   <none>           <none>\nts-assurance-service-88f65755-c6pwt             2/2     Running   0               14m     172.20.1.70    worker-01   <none>           <none>\nts-auth-service-656fb96d87-5nq95                2/2     Running   0               14m     172.20.1.59    worker-01   <none>           <none>\nts-avatar-service-54fb8f5c57-26dgt              2/2     Running   0               14m     172.20.2.160   worker-02   <none>           <none>\nts-basic-service-57fb684696-t9sjv               2/2     Running   0               14m     172.20.2.168   worker-02   <none>           <none>\nts-cancel-service-67fb7d5bb4-xkhm8              2/2     Running   0               14m     172.20.3.199   worker-03   <none>           <none>\nts-config-service-65779cfcd7-msmdv              2/2     Running   0               14m     172.20.3.200   worker-03   <none>           <none>\nts-consign-price-service-b74c79d7-slfdv         2/2     Running   0               7h20m   172.20.2.48    worker-02   <none>           <none>\nts-consign-service-846bdf46cc-q7xn2             2/2     Running   0               14m     172.20.2.170   worker-02   <none>           <none>\nts-contacts-service-7fc68f4bbc-k5wnb            2/2     Running   0               14m     172.20.2.159   worker-02   <none>           <none>\nts-delivery-service-659b5d4f75-2tc9r            2/2     Running   0               14m     172.20.3.205   worker-03   <none>           <none>\nts-execute-service-5f7c9df447-p5t2t             2/2     Running   0               14m     172.20.3.204   worker-03   <none>           <none>\nts-food-delivery-service-5b898fdbbf-4s2g9       2/2     Running   0               14m     172.20.2.158   worker-02   <none>           <none>\nts-food-service-59c58c74cc-dshtq                2/2     Running   0               14m     172.20.1.67    worker-01   <none>           <none>\nts-gateway-service-ddc65b886-6ghn5              2/2     Running   0               14m     172.20.1.60    worker-01   <none>           <none>\nts-inside-payment-service-5b98976c87-9w2s9      2/2     Running   0               14m     172.20.2.161   worker-02   <none>           <none>\nts-news-service-578fd9cd67-qvrh8                2/2     Running   0               14m     172.20.2.167   worker-02   <none>           <none>\nts-notification-service-6b579b64d7-wqx6g        2/2     Running   0               14m     172.20.1.68    worker-01   <none>           <none>\nts-order-other-service-788d947bdf-767jg         2/2     Running   0               14m     172.20.3.206   worker-03   <none>           <none>\nts-order-service-dd54d5df9-zw2w8                2/2     Running   0               14m     172.20.1.57    worker-01   <none>           <none>\nts-payment-service-666d596f87-wnr7t             2/2     Running   0               14m     172.20.1.58    worker-01   <none>           <none>\nts-preserve-other-service-5f85fdfd7-6zlrl       2/2     Running   0               14m     172.20.3.203   worker-03   <none>           <none>\nts-preserve-service-6bccdc5454-k5bs4            2/2     Running   0               14m     172.20.1.66    worker-01   <none>           <none>\nts-price-service-6c4b77845-4l7kg                2/2     Running   0               14m     172.20.2.163   worker-02   <none>           <none>\nts-rebook-service-75d676f77b-924wm              2/2     Running   0               14m     172.20.2.165   worker-02   <none>           <none>\nts-route-plan-service-695f545f8c-4rnrn          2/2     Running   0               14m     172.20.1.69    worker-01   <none>           <none>\nts-route-service-688dc779fc-7xwqd               2/2     Running   0               14m     172.20.1.61    worker-01   <none>           <none>\nts-seat-service-5fc7c67c7f-zsk6w                2/2     Running   0               14m     172.20.2.162   worker-02   <none>           <none>\nts-security-service-5fb7f7fbff-vr49j            2/2     Running   0               14m     172.20.3.201   worker-03   <none>           <none>\nts-station-food-service-d99b9b859-dvf67         2/2     Running   0               14m     172.20.2.164   worker-02   <none>           <none>\nts-station-service-7cbf6b96c9-tl7np             2/2     Running   0               14m     172.20.3.202   worker-03   <none>           <none>\nts-ticket-office-service-6fd78bd9df-h7jxz       2/2     Running   1 (14m ago)     14m     172.20.1.62    worker-01   <none>           <none>\nts-train-food-service-67cb5bdf99-2kzdv          2/2     Running   0               14m     172.20.1.65    worker-01   <none>           <none>\nts-train-service-c4fb58df9-krtsl                2/2     Running   0               14m     172.20.3.197   worker-03   <none>           <none>\nts-travel-plan-service-5985cdf6b6-fwfqr         2/2     Running   0               14m     172.20.1.63    worker-01   <none>           <none>\nts-travel-service-5b9b99c879-xsxf7              2/2     Running   0               14m     172.20.2.171   worker-02   <none>           <none>\nts-travel2-service-849bffcb7c-gc2zg             2/2     Running   0               14m     172.20.1.56    worker-01   <none>           <none>\nts-ui-dashboard-554844f867-s6s4d                2/2     Running   0               14m     172.20.2.166   worker-02   <none>           <none>\nts-user-service-6886cbf9cf-sf5v9                2/2     Running   0               14m     172.20.1.64    worker-01   <none>           <none>\nts-verification-code-service-7cbd896f77-6d9wf   2/2     Running   0               14m     172.20.2.169   worker-02   <none>           <none>\nts-voucher-service-5ffdd5456c-fnxb5             2/2     Running   0               14m     172.20.3.196   worker-03   <none>           <none>\nts-wait-order-service-848dbb9dd7-7rq2b          2/2     Running   0               14m     172.20.3.198   worker-03   <none>           <none>\ntsdb-mysql-0                                    4/4     Running   1 (7h22m ago)   7h26m   172.20.2.47    worker-02   <none>           <none>\ntsdb-mysql-1                                    4/4     Running   1 (7h22m ago)   7h25m   172.20.1.187   worker-01   <none>           <none>\ntsdb-mysql-2                                    4/4     Running   1 (7h22m ago)   7h23m   172.20.3.159   worker-03   <none>           <none>\n",
+   "error": null,
+   "purpose": "pod readiness census",
+   "tool_latency": null
+  },
+  {
+   "step_id": 1,
+   "action_type": "tool",
+   "action_name": "GetAlerts",
+   "action_input": {},
+   "observation": "{'status': 'has_anomalies', 'alert_count': 5, 'alerts': [{'type': 'Service', 'name': 'ts-food-service', 'entity_type': 'Service', 'entity_name': 'ts-food-service', 'time_range': '2026-03-19 21:53:44 ~ 2026-03-19 21:55:34', 'status': 'ABNORMAL', 'metric_category': 'LATENCY_DEGRADATION', 'evidence': ['LATENCY_DEGRADATION [Slow Response] | p50latency: Normal=17.50ms -> Current=7500.00ms (+42757.1%) | Peak=7500.00ms | p90latency: Normal=23.50ms -> Current=9500.00ms (+40325.5%) | Peak=9500.00ms']}, {'type': 'Service', 'name': 'ts-gateway-service', 'entity_type': 'Service', 'entity_name': 'ts-gateway-service', 'time_range': '2026-03-19 21:53:44 ~ 2026-03-19 21:55:34', 'status': 'ABNORMAL', 'metric_category': 'LATENCY_DEGRADATION', 'evidence': ['LATENCY_DEGRADATION [Slow Response] | p90latency: Normal=949.06ms -> Current=5391.30ms (+468.1%) | Peak=5986.49ms']}, {'type': 'Service', 'name': 'ts-order-service', 'entity_type': 'Service', 'entity_name': 'ts-order-service', 'time_range': '2026-03-19 21:53:44 ~ 2026-03-19 21:55:34', 'status': 'ABNORMAL', 'metric_category': 'RESOURCE_SATURATION', 'evidence': ['RESOURCE_SATURATION [cpu_cfs] | Val: 0.445s (Throttled)']}, {'type': 'Service', 'name': 'ts-preserve-service', 'entity_type': 'Service', 'entity_name': 'ts-preserve-service', 'time_range': '2026-03-19 21:53:44 ~ 2026-03-19 21:55:34', 'status': 'ABNORMAL', 'metric_category': 'LATENCY_DEGRADATION', 'evidence': ['LATENCY_DEGRADATION [Slow Response] | p50latency: Normal=1206.09ms -> Current=7916.67ms (+556.4%) | Peak=8750.00ms | p90latency: Normal=2541.67ms -> Current=16333.33ms (+542.6%) | Peak=24714.29ms']}, {'type': 'Service', 'name': 'ts-ui-dashboard', 'entity_type': 'Service', 'entity_name': 'ts-ui-dashboard', 'time_range': '2026-03-19 21:53:44 ~ 2026-03-19 21:55:34', 'status': 'ABNORMAL', 'metric_category': 'LATENCY_DEGRADATION', 'evidence': ['LATENCY_DEGRADATION [Slow Response] | p90latency: Normal=970.69ms -> Current=5066.67ms (+422.0%) | Peak=6000.00ms']}]}",
+   "error": null,
+   "purpose": "anomaly signature (routes performance/code families)",
+   "tool_latency": null
+  },
+  {
+   "step_id": 2,
+   "action_type": "tool",
+   "action_name": "GetRecentLogs",
+   "action_input": {
+    "namespace": "train-ticket",
+    "service_name": "ts-food-service"
+   },
+   "observation": "['From ts-food-service logs:', '2026-03-19T21:56:20.254860591+08:00 2026-03-19 21:56:20.254  INFO 1 --- [io-18856-exec-9] foodsearch.service.FoodServiceImpl       : [createFoodOrder][AddFoodOrder, delivery info send to mq][delivery info: {\"orderId\":\"f9b8d01f-a36e-433e-8b78-5edd9550af40\",\"foodName\":\"Bone Soup\",\"storeName\":null,\"stationName\":null}]', '2026-03-19T21:56:20.254868195+08:00 2026-03-19 21:56:20.254  INFO 1 --- [io-18856-exec-9] foodsearch.mq.RabbitSend                 : Send info to mq:{\"orderId\":\"f9b8d01f-a36e-433e-8b78-5edd9550af40\",\"foodName\":\"Bone Soup\",\"storeName\":null,\"stationName\":null}', '2026-03-19T21:56:20.421296846+08:00 2026-03-19 21:56:20.421  INFO 1 --- [io-18856-exec-7] foodsearch.controller.FoodController     : [createFoodOrder][Try to Create a FoodOrder!]', '2026-03-19T21:56:20.429828778+08:00 2026-03-19 21:56:20.429  INFO 1 --- [io-18856-exec-7] foodsearch.service.FoodServiceImpl       : [createFoodOrder][AddFoodOrder Success]', '2026-03-19T21:56:20.430293601+08:00 2026-03-19 21:56:20.430  INFO 1 --- [io-18856-exec-7] foodsearch.service.FoodServiceImpl       : [createFoodOrder][AddFoodOrder, delivery info send to mq][delivery info: {\"orderId\":\"8407c77a-4abd-4d73-b189-cc15b730bcd6\",\"foodName\":\"Bone Soup\",\"storeName\":null,\"stationName\":null}]', '2026-03-19T21:56:20.430298218+08:00 2026-03-19 21:56:20.430  INFO 1 --- [io-18856-exec-7] foodsearch.mq.RabbitSend                 : Send info to mq:{\"orderId\":\"8407c77a-4abd-4d73-b189-cc15b730bcd6\",\"foodName\":\"Bone Soup\",\"storeName\":null,\"stationName\":null}', '2026-03-19T21:56:20.935984596+08:00 2026-03-19 21:56:20.935  INFO 1 --- [o-18856-exec-10] foodsearch.controller.FoodController     : [createFoodOrder][Try to Create a FoodOrder!]', '2026-03-19T21:56:20.943746401+08:00 2026-03-19 21:56:20.943  INFO 1 --- [o-18856-exec-10] foodsearch.service.FoodServiceImpl       : [createFoodOrder][AddFoodOrder Success]', '2026-03-19T21:56:20.944186873+08:00 2026-03-19 21:56:20.944  INFO 1 --- [o-18856-exec-10] foodsearch.service.FoodServiceImpl       : [createFoodOrder][AddFoodOrder, delivery info send to mq][delivery info: {\"orderId\":\"4ded61e8-59a6-4243-a0fd-94387c905d81\",\"foodName\":\"Bone Soup\",\"storeName\":null,\"stationName\":null}]', '2026-03-19T21:56:20.944203290+08:00 2026-03-19 21:56:20.944  INFO 1 --- [o-18856-exec-10] foodsearch.mq.RabbitSend                 : Send info to mq:{\"orderId\":\"4ded61e8-59a6-4243-a0fd-94387c905d81\",\"foodName\":\"Bone Soup\",\"storeName\":null,\"stationName\":null}', '2026-03-19T21:56:28.536863561+08:00 2026-03-19 21:56:28.536  INFO 1 --- [io-18856-exec-1] foodsearch.controller.FoodController     : [createFoodOrder][Try to Create a FoodOrder!]', '2026-03-19T21:56:28.544995538+08:00 2026-03-19 21:56:28.544  INFO 1 --- [io-18856-exec-1] foodsearch.service.FoodServiceImpl       : [createFoodOrder][AddFoodOrder Success]', '2026-03-19T21:56:28.545455796+08:00 2026-03-19 21:56:28.545  INFO 1 --- [io-18856-exec-1] foodsearch.service.FoodServiceImpl       : [createFoodOrder][AddFoodOrder, delivery info send to mq][delivery info: {\"orderId\":\"e845d602-fecf-41d9-8a26-5adb502df24e\",\"foodName\":\"Bone Soup\",\"storeName\":null,\"stationName\":null}]', '2026-03-19T21:56:28.545467186+08:00 2026-03-19 21:56:28.545  INFO 1 --- [io-18856-exec-1] foodsearch.mq.RabbitSend                 : Send info to mq:{\"orderId\":\"e845d602-fecf-41d9-8a26-5adb502df24e\",\"foodName\":\"Bone Soup\",\"storeName\":null,\"stationName\":null}', '2026-03-19T21:56:28.742638917+08:00 2026-03-19 21:56:28.742  INFO 1 --- [io-18856-exec-4] foodsearch.controller.FoodController     : [createFoodOrder][Try to Create a FoodOrder!]', '2026-03-19T21:56:28.750698085+08:00 2026-03-19 21:56:28.750  INFO 1 --- [io-18856-exec-4] foodsearch.service.FoodServiceImpl       : [createFoodOrder][AddFoodOrder Success]', '2026-03-19T21:56:28.751293771+08:00 2026-03-19 21:56:28.751  INFO 1 --- [io-18856-exec-4] foodsearch.service.FoodServiceImpl       : [createFoodOrder][AddFoodOrder, delivery info send to mq][delivery info: {\"orderId\":\"cbfb1770-122d-44e2-8a21-e2cb2e58797d\",\"foodName\":\"Bone Soup\",\"storeName\":null,\"stationName\":null}]', '2026-03-19T21:56:28.751297777+08:00 2026-03-19 21:56:28.751  INFO 1 --- [io-18856-exec-4] foodsearch.mq.RabbitSend                 : Send info to mq:{\"orderId\":\"cbfb1770-122d-44e2-8a21-e2cb2e58797d\",\"foodName\":\"Bone Soup\",\"storeName\":null,\"stationName\":null}', '2026-03-19T21:56:29.421816127+08:00 2026-03-19 21:56:29.421  INFO 1 --- [io-18856-exec-2] foodsearch.controller.FoodController     : [createFoodOrder][Try to Create a FoodOrder!]', '2026-03-19T21:56:29.430060056+08:00 2026-03-19 21:56:29.429  INFO 1 --- [io-18856-exec-2] foodsearch.service.FoodServiceImpl       : [createFoodOrder][AddFoodOrder Success]', '2026-03-19T21:56:29.430516446+08:00 2026-03-19 21:56:29.430  INFO 1 --- [io-18856-exec-2] foodsearch.service.FoodServiceImpl       : [createFoodOrder][AddFoodOrder, delivery info send to mq][delivery info: {\"orderId\":\"0abcc1f9-79c6-4928-afeb-b3a4d7b4ac18\",\"foodName\":\"Bone Soup\",\"storeName\":null,\"stationName\":null}]', '2026-03-19T21:56:29.430521604+08:00 2026-03-19 21:56:29.430  INFO 1 --- [io-18856-exec-2] foodsearch.mq.RabbitSend                 : Send info to mq:{\"orderId\":\"0abcc1f9-79c6-4928-afeb-b3a4d7b4ac18\",\"foodName\":\"Bone Soup\",\"storeName\":null,\"stationName\":null}', '2026-03-19T21:56:32.527228724+08:00 2026-03-19 21:56:32.527  INFO 1 --- [io-18856-exec-8] foodsearch.controller.FoodController     : [createFoodOrder][Try to Create a FoodOrder!]', '2026-03-19T21:56:32.536000525+08:00 2026-03-19 21:56:32.535  INFO 1 --- [io-18856-exec-8] foodsearch.service.FoodServiceImpl       : [createFoodOrder][AddFoodOrder Success]', '2026-03-19T21:56:32.536600925+08:00 2026-03-19 21:56:32.536  INFO 1 --- [io-18856-exec-8] foodsearch.service.FoodServiceImpl       : [createFoodOrder][AddFoodOrder, delivery info send to mq][delivery info: {\"orderId\":\"8eba96a2-2684-4863-ab61-fce498bef3d7\",\"foodName\":\"Bone Soup\",\"storeName\":null,\"stationName\":null}]', '2026-03-19T21:56:32.536607758+08:00 2026-03-19 21:56:32.536  INFO 1 --- [io-18856-exec-8] foodsearch.mq.RabbitSend                 : Send info to mq:{\"orderId\":\"8eba96a2-2684-4863-ab61-fce498bef3d7\",\"foodName\":\"Bone Soup\",\"storeName\":null,\"stationName\":null}', '2026-03-19T21:56:33.041385198+08:00 2026-03-19 21:56:33.041  INFO 1 --- [io-18856-exec-6] foodsearch.controller.FoodController     : [createFoodOrder][Try to Create a FoodOrder!]', '2026-03-19T21:56:33.049885380+08:00 2026-03-19 21:56:33.049  INFO 1 --- [io-18856-exec-6] foodsearch.service.FoodServiceImpl       : [createFoodOrder][AddFoodOrder Success]', '2026-03-19T21:56:33.050329325+08:00 2026-03-19 21:56:33.050  INFO 1 --- [io-18856-exec-6] foodsearch.service.FoodServiceImpl       : [createFoodOrder][AddFoodOrder, delivery info send to mq][delivery info: {\"orderId\":\"4683bba9-d84c-4c1c-b5f1-c3e562126f10\",\"foodName\":\"Bone Soup\",\"storeName\":null,\"stationName\":null}]', '2026-03-19T21:56:33.050335505+08:00 2026-03-19 21:56:33.050  INFO 1 --- [io-18856-exec-6] foodsearch.mq.RabbitSend                 : Send info to mq:{\"orderId\":\"4683bba9-d84c-4c1c-b5f1-c3e562126f10\",\"foodName\":\"Bone Soup\",\"storeName\":null,\"stationName\":null}', '2026-03-19T21:56:33.741577981+08:00 2026-03-19 21:56:33.741  INFO 1 --- [io-18856-exec-3] foodsearch.controller.FoodController     : [createFoodOrder][Try to Create a FoodOrder!]', '2026-03-19T21:56:33.749551757+08:00 2026-03-19 21:56:33.749  INFO 1 --- [io-18856-exec-3] foodsearch.service.FoodServiceImpl       : [createFoodOrder][AddFoodOrder Success]', '2026-03-19T21:56:33.749945883+08:00 2026-03-19 21:56:33.749  INFO 1 --- [io-18856-exec-3] foodsearch.service.FoodServiceImpl       : [createFoodOrder][AddFoodOrder, delivery info send to mq][delivery info: {\"orderId\":\"60eab994-e91f-490b-b4f7-ae27a1525c28\",\"foodName\":\"Bone Soup\",\"storeName\":null,\"stationName\":null}]', '2026-03-19T21:56:33.749953020+08:00 2026-03-19 21:56:33.749  INFO 1 --- [io-18856-exec-3] foodsearch.mq.RabbitSend                 : Send info to mq:{\"orderId\":\"60eab994-e91f-490b-b4f7-ae27a1525c28\",\"foodName\":\"Bone Soup\",\"storeName\":null,\"stationName\":null}', '2026-03-19T21:56:33.853437042+08:00 2026-03-19 21:56:33.853  INFO 1 --- [io-18856-exec-9] foodsearch.controller.FoodController     : [createFoodOrder][Try to Create a FoodOrder!]', '2026-03-19T21:56:33.861813668+08:00 2026-03-19 21:56:33.861  INFO 1 --- [io-18856-exec-9] foodsearch.service.FoodServiceImpl       : [createFoodOrder][AddFoodOrder Success]', '2026-03-19T21:56:33.862255165+08:00 2026-03-19 21:56:33.862  INFO 1 --- [io-18856-exec-9] foodsearch.service.FoodServiceImpl       : [createFoodOrder][AddFoodOrder, delivery info send to mq][delivery info: {\"orderId\":\"3ad216e2-6bdb-4b35-aeb2-1f45664df9fe\",\"foodName\":\"Bone Soup\",\"storeName\":null,\"stationName\":null}]', '2026-03-19T21:56:33.862262282+08:00 2026-03-19 21:56:33.862  INFO 1 --- [io-18856-exec-9] foodsearch.mq.RabbitSend                 : Send info to mq:{\"orderId\":\"3ad216e2-6bdb-4b35-aeb2-1f45664df9fe\",\"foodName\":\"Bone Soup\",\"storeName\":null,\"stationName\":null}', '2026-03-19T21:56:34.927337346+08:00 2026-03-19 21:56:34.927  INFO 1 --- [io-18856-exec-7] foodsearch.controller.FoodController     : [createFoodOrder][Try to Create a FoodOrder!]', '2026-03-19T21:56:34.935299029+08:00 2026-03-19 21:56:34.935  INFO 1 --- [io-18856-exec-7] foodsearch.service.FoodServiceImpl       : [createFoodOrder][AddFoodOrder Success]', '2026-03-19T21:56:34.935752448+08:00 2026-03-19 21:56:34.935  INFO 1 --- [io-18856-exec-7] foodsearch.service.FoodServiceImpl       : [createFoodOrder][AddFoodOrder, delivery info send to mq][delivery info: {\"orderId\":\"7ca85e42-7882-421f-ade1-5af191daf26f\",\"foodName\":\"Bone Soup\",\"storeName\":null,\"stationName\":null}]', '2026-03-19T21:56:34.935764770+08:00 2026-03-19 21:56:34.935  INFO 1 --- [io-18856-exec-7] foodsearch.mq.RabbitSend                 : Send info to mq:{\"orderId\":\"7ca85e42-7882-421f-ade1-5af191daf26f\",\"foodName\":\"Bone Soup\",\"storeName\":null,\"stationName\":null}', '2026-03-19T21:56:37.423266257+08:00 2026-03-19 21:56:37.423  INFO 1 --- [io-18856-exec-5] foodsearch.controller.FoodController     : [createFoodOrder][Try to Create a FoodOrder!]', '2026-03-19T21:56:37.432468811+08:00 2026-03-19 21:56:37.432  INFO 1 --- [io-18856-exec-5] foodsearch.service.FoodServiceImpl       : [createFoodOrder][AddFoodOrder Success]', '2026-03-19T21:56:37.432914157+08:00 2026-03-19 21:56:37.432  INFO 1 --- [io-18856-exec-5] foodsearch.service.FoodServiceImpl       : [createFoodOrder][AddFoodOrder, delivery info send to mq][delivery info: {\"orderId\":\"cc33d76d-f7ae-4b52-8af9-b836f9c7280b\",\"foodName\":\"Bone Soup\",\"storeName\":null,\"stationName\":null}]', '2026-03-19T21:56:37.432926342+08:00 2026-03-19 21:56:37.432  INFO 1 --- [io-18856-exec-5] foodsearch.mq.RabbitSend                 : Send info to mq:{\"orderId\":\"cc33d76d-f7ae-4b52-8af9-b836f9c7280b\",\"foodName\":\"Bone Soup\",\"storeName\":null,\"stationName\":null}', '2026-03-19T21:56:37.527812842+08:00 2026-03-19 21:56:37.527  INFO 1 --- [io-18856-exec-1] foodsearch.controller.FoodController     : [createFoodOrder][Try to Create a FoodOrder!]', '2026-03-19T21:56:37.536273420+08:00 2026-03-19 21:56:37.536  INFO 1 --- [io-18856-exec-1] foodsearch.service.FoodServiceImpl       : [createFoodOrder][AddFoodOrder Success]', '2026-03-19T21:56:37.536829843+08:00 2026-03-19 21:56:37.536  INFO 1 --- [io-18856-exec-1] foodsearch.service.FoodServiceImpl       : [createFoodOrder][AddFoodOrder, delivery info send to mq][delivery info: {\"orderId\":\"0b684122-8b1e-4eb8-986c-2f95b23a7ace\",\"foodName\":\"Bone Soup\",\"storeName\":null,\"stationName\":null}]', '2026-03-19T21:56:37.536845208+08:00 2026-03-19 21:56:37.536  INFO 1 --- [io-18856-exec-1] foodsearch.mq.RabbitSend                 : Send info to mq:{\"orderId\":\"0b684122-8b1e-4eb8-986c-2f95b23a7ace\",\"foodName\":\"Bone Soup\",\"storeName\":null,\"stationName\":null}', '', 'From previous container logs:', 'Error: Error from server (BadRequest): previous terminated container \"ts-food-service\" in pod \"ts-food-service-59c58c74cc-dshtq\" not found', '', 'From istio-proxy logs:', 'concurrency: 2', 'configPath: ./etc/istio/proxy', 'controlPlaneAuthPolicy: MUTUAL_TLS', 'discoveryAddress: istiod.istio-system.svc:15012', 'drainDuration: 45s', 'image:', '  imageType: distroless', 'proxyAdminPort: 15000', 'proxyMetadata:', '  ISTIO_META_ENABLE_HBONE: \"true\"', 'serviceCluster: istio-proxy', 'statNameLength: 189', 'statusPort: 15020', 'terminationDrainDuration: 5s']",
+   "error": null,
+   "purpose": "request latency / saturation logs",
+   "tool_latency": null
+  }
+ ],
+ "agentrun": {
+  "tag": "test",
+  "dsl": "workspace/dsl_versions/v0.8.dsl.txt",
+  "dsl_version": "0.8",
+  "sop": {
+   "sop": "boutique-runtime-rca",
+   "scope": {
+    "system": "boutique",
+    "families": [
+     "runtime",
+     "admission",
+     "scheduling",
+     "startup",
+     "service",
+     "performance",
+     "infrastructure",
+     "codedefect"
+    ],
+    "severity": [
+     "SEV2",
+     "SEV3"
+    ]
+   },
+   "owner": "sre-platform",
+   "approved_by": [
+    "oncall-primary",
+    "sre-lead"
+   ],
+   "reviewed_at": "2026-10-23",
+   "change_ticket": "OPS-1236",
+   "boundaries": "只读诊断：本 SOP 不执行任何写操作（重启/回滚/扩缩容），也不做对外播报；\n它回答\"最可能的根因与受害对象\"，处置与沟通由值班按 runbook 人工执行。\n不覆盖 SEV1（需 incident commander 介入）与变更引发的问题（走变更回滚流程）。\n输入是冻结快照：诊断结论对\"快照时刻\"成立，恢复后需重新取证。\nR1 已知边界：PVC 的 requested size / accessMode 在本 benchmark 的工具面不可见，\n因此 pvc_capacity 与 pvc_access_mode 无法区分（同一分数并列，交给 jev 或升级）。\n"
+  },
+  "params": {
+   "cands_cap": 8,
+   "max_waves": 8,
+   "min_waves": 5,
+   "steps_per_wave": 1,
+   "dominance_ratio": 1.5,
+   "conf_min": 0.0,
+   "escalate": true,
+   "escalate_budget": 8,
+   "judge_on_codedefect": true,
+   "jev_route": true,
+   "jev_pick": true,
+   "jev_verify": true,
+   "route_fallback": "runtime"
+  },
+  "nodes_executed": [
+   "anchors:extract_anchors",
+   "census:probes",
+   "route:decide",
+   "plan:build_plan",
+   "probe:probes",
+   "derive:derive_candidates",
+   "pick:decide",
+   "verify:decide",
+   "probe:probes",
+   "derive:derive_candidates",
+   "pick:decide",
+   "verify:decide",
+   "probe:probes",
+   "derive:derive_candidates",
+   "pick:decide",
+   "verify:decide",
+   "escalate:escalate",
+   "answer:normalize_answer",
+   "persist:persist_trace"
+  ],
+  "census": [
+   {
+    "step": "pods",
+    "gate": "always"
+   },
+   {
+    "step": "alerts",
+    "gate": "healthy_system"
+   }
+  ],
+  "plan": [
+   {
+    "step": "recent_logs",
+    "gate": "always",
+    "wave": 1
+   },
+   {
+    "step": "describe_pod",
+    "gate": "weak",
+    "wave": 2
+   },
+   {
+    "step": "deps",
+    "gate": "weak",
+    "wave": 3
+   }
+  ],
+  "family": "performance",
+  "state_wiring": {
+   "family": "$route.family",
+   "route_probs": "$route.probabilities",
+   "picked": "$pick.picked",
+   "pick_dominant": "$pick.dominant",
+   "verify_status": "$verify.status",
+   "verify_prob": "$verify.confidence"
+  },
+  "bindings": {
+   "anchors": {
+    "anchors": "Anchors(case_id='trainticket/performance/21', system='trainticket', namespace='train-ticket', query='Service quality degradation.', difficulty='hard', symptoms=['degradation'], mentioned_apps=[], priors={'db_service': 'tsdb-mysql-leader', 'db_port': 3306})"
+   },
+   "route": {
+    "family": "performance",
+    "probabilities": {},
+    "route_why": "mechanism_mode"
+   },
+   "plan": {
+    "plan": "[{'name': 'recent_logs', 'key': 'recent', 'tool': 'GetRecentLogs', 'args': <function _args_error_logs at 0x107ddb740>, 'purpose': 'request latency / saturation logs', 'when': <function compile_steps.<locals>.<lambda> at 0x107eba8e0>, 'gate': 'always', 'wave': 1}, {'name': 'describe_pod', 'key': 'describe:pod', 'tool': 'DescribeResource', 'args': <function _args_describe_pod at 0x107ddb560>, 'purpose': 'probe config, container state, restart reasons, scheduler events', 'when': <function compile_steps.<locals>.<lambda> at 0x107ebaa20>, 'gate': 'weak', 'wave': 2}, {'name': 'deps', 'key': 'deps', 'tool': 'GetServiceDependencies', 'args': <function _args_deps at 0x107ddbe20>, 'purpose': 'upstream/downstream call graph', 'when': <function compile_steps.<locals>.<lambda> at 0x107ebaac0>, 'gate': 'weak', 'wave': 3}]"
+   },
+   "derive": {
+    "candidates": "[Candidate(root_cause='pod_network_delay', object='app/ts-food-service', score=0.82, evidence='network latency anomaly on the pod', rule='delay_alert'), Candidate(root_cause='pod_network_delay', object='app/ts-gateway-service', score=0.82, evidence='network latency anomaly on the pod', rule='delay_alert'), Candidate(root_cause='pod_network_delay', object='app/ts-order-service', score=0.82, evidence='network latency anomaly on the pod', rule='delay_alert'), Candidate(root_cause='pod_network_delay', object='app/ts-preserve-service', score=0.82, evidence='network latency anomaly on the pod', rule='delay_alert'), Candidate(root_cause='pod_network_delay', object='app/ts-ui-dashboard', score=0.82, evidence='network latency anomaly on the pod', rule='delay_alert')]"
+   },
+   "pick": {
+    "picked": 0,
+    "dominant": false,
+    "pick_why": "no_new_evidence"
+   },
+   "verify": {
+    "status": "verified",
+    "confidence": null,
+    "verify_why": "no_new_evidence"
+   },
+   "escalate": {
+    "answer": null
+   },
+   "answer": {
+    "final": {
+     "key_evidence_summary": "network latency anomaly on the pod",
+     "top_3_predictions": [
+      {
+       "rank": 1,
+       "fault_object": "app/ts-food-service",
+       "root_cause": "pod_network_delay"
+      },
+      {
+       "rank": 2,
+       "fault_object": "app/ts-gateway-service",
+       "root_cause": "pod_network_delay"
+      },
+      {
+       "rank": 3,
+       "fault_object": "app/ts-order-service",
+       "root_cause": "pod_network_delay"
+      }
+     ]
+    }
+   }
+  },
+  "picked": {
+   "root_cause": "pod_network_delay",
+   "object": "app/ts-food-service",
+   "score": 0.82,
+   "evidence": "network latency anomaly on the pod",
+   "rule": "delay_alert"
+  },
+  "pick_why": "",
+  "verify_prob": null,
+  "verify_verdict": "verified",
+  "verified": true,
+  "escalated": false,
+  "escalate_reason": "",
+  "escalate_steps": 0,
+  "waves": 3,
+  "candidates": [
+   {
+    "root_cause": "pod_network_delay",
+    "object": "app/ts-food-service",
+    "score": 0.82,
+    "evidence": "network latency anomaly on the pod",
+    "rule": "delay_alert"
+   },
+   {
+    "root_cause": "pod_network_delay",
+    "object": "app/ts-gateway-service",
+    "score": 0.82,
+    "evidence": "network latency anomaly on the pod",
+    "rule": "delay_alert"
+   },
+   {
+    "root_cause": "pod_network_delay",
+    "object": "app/ts-order-service",
+    "score": 0.82,
+    "evidence": "network latency anomaly on the pod",
+    "rule": "delay_alert"
+   },
+   {
+    "root_cause": "pod_network_delay",
+    "object": "app/ts-preserve-service",
+    "score": 0.82,
+    "evidence": "network latency anomaly on the pod",
+    "rule": "delay_alert"
+   },
+   {
+    "root_cause": "pod_network_delay",
+    "object": "app/ts-ui-dashboard",
+    "score": 0.82,
+    "evidence": "network latency anomaly on the pod",
+    "rule": "delay_alert"
+   }
+  ],
+  "jev": [
+   {
+    "rid": "test:trainticket/performance/21#route",
+    "kind": "route",
+    "node": "route",
+    "mode": "mechanism",
+    "options": [
+     "performance",
+     "infrastructure"
+    ],
+    "status": "mechanical",
+    "guard": "unavailable",
+    "use": "first_option",
+    "choice": "performance",
+    "why": "mechanism_mode",
+    "dominant": false,
+    "continue_loop": false,
+    "escalate": false
+   },
+   {
+    "rid": "test:trainticket/performance/21#pick1",
+    "kind": "pick",
+    "node": "pick",
+    "mode": "mechanism",
+    "options": [
+     "c0",
+     "c1",
+     "c2",
+     "c3",
+     "c4"
+    ],
+    "status": "mechanical",
+    "guard": "unavailable",
+    "use": "first_option",
+    "choice": 0,
+    "why": "mechanism_mode",
+    "dominant": false,
+    "continue_loop": false,
+    "escalate": false
+   },
+   {
+    "rid": "test:trainticket/performance/21#verify1",
+    "kind": "verify",
+    "node": "verify",
+    "mode": "mechanism",
+    "options": [
+     "supported",
+     "insufficient",
+     "contradicted"
+    ],
+    "status": "mechanical",
+    "guard": "unavailable",
+    "use": "verified",
+    "choice": "verified",
+    "why": "mechanism_mode",
+    "dominant": false,
+    "continue_loop": false,
+    "escalate": false
+   },
+   {
+    "rid": "test:trainticket/performance/21#pick2",
+    "kind": "pick",
+    "node": "pick",
+    "mode": "mechanism",
+    "options": [
+     "c0",
+     "c1",
+     "c2",
+     "c3",
+     "c4"
+    ],
+    "status": "mechanical",
+    "guard": "unchanged_since_last",
+    "use": "previous",
+    "choice": 0,
+    "why": "no_new_evidence",
+    "dominant": false,
+    "continue_loop": false,
+    "escalate": false
+   },
+   {
+    "rid": "test:trainticket/performance/21#verify2",
+    "kind": "verify",
+    "node": "verify",
+    "mode": "mechanism",
+    "options": [
+     "supported",
+     "insufficient",
+     "contradicted"
+    ],
+    "status": "mechanical",
+    "guard": "unchanged_since_last",
+    "use": "previous",
+    "choice": "verified",
+    "why": "no_new_evidence",
+    "dominant": false,
+    "continue_loop": false,
+    "escalate": false
+   },
+   {
+    "rid": "test:trainticket/performance/21#pick3",
+    "kind": "pick",
+    "node": "pick",
+    "mode": "mechanism",
+    "options": [
+     "c0",
+     "c1",
+     "c2",
+     "c3",
+     "c4"
+    ],
+    "status": "mechanical",
+    "guard": "unchanged_since_last",
+    "use": "previous",
+    "choice": 0,
+    "why": "no_new_evidence",
+    "dominant": false,
+    "continue_loop": false,
+    "escalate": false
+   },
+   {
+    "rid": "test:trainticket/performance/21#verify3",
+    "kind": "verify",
+    "node": "verify",
+    "mode": "mechanism",
+    "options": [
+     "supported",
+     "insufficient",
+     "contradicted"
+    ],
+    "status": "mechanical",
+    "guard": "unchanged_since_last",
+    "use": "previous",
+    "choice": "verified",
+    "why": "no_new_evidence",
+    "dominant": false,
+    "continue_loop": false,
+    "escalate": false
+   }
+  ],
+  "nodes": [
+   {
+    "node": "code",
+    "id": "anchors",
+    "anchors": {
+     "case_id": "trainticket/performance/21",
+     "system": "trainticket",
+     "namespace": "train-ticket",
+     "query": "Service quality degradation.",
+     "difficulty": "hard",
+     "symptoms": [
+      "degradation"
+     ],
+     "mentioned_apps": []
+    }
+   },
+   {
+    "node": "probes",
+    "plan": "census",
+    "wave": 0,
+    "executed": 2,
+    "steps": [
+     {
+      "key": "pods",
+      "tool": "GetResources",
+      "arguments": {
+       "namespace": "train-ticket",
+       "resource_type": "pods",
+       "output_wide": true
+      },
+      "gate": "always"
+     },
+     {
+      "key": "alerts",
+      "tool": "GetAlerts",
+      "arguments": {},
+      "gate": "healthy_system"
+     }
+    ],
+    "skipped": []
+   },
+   {
+    "node": "decide",
+    "id": "route",
+    "rid": "test:trainticket/performance/21#route",
+    "status": "mechanical",
+    "guard": "unavailable",
+    "use": "first_option",
+    "choice": "performance",
+    "dominant": false,
+    "why": "mechanism_mode"
+   },
+   {
+    "node": "code",
+    "id": "plan",
+    "family": "performance",
+    "plan": [
+     {
+      "step": "recent_logs",
+      "gate": "always",
+      "wave": 1
+     },
+     {
+      "step": "describe_pod",
+      "gate": "weak",
+      "wave": 2
+     },
+     {
+      "step": "deps",
+      "gate": "weak",
+      "wave": 3
+     }
+    ]
+   },
+   {
+    "node": "probes",
+    "plan": "family",
+    "wave": 1,
+    "executed": 1,
+    "steps": [
+     {
+      "key": "recent",
+      "tool": "GetRecentLogs",
+      "arguments": {
+       "namespace": "train-ticket",
+       "service_name": "ts-food-service"
+      },
+      "gate": "always"
+     }
+    ],
+    "skipped": []
+   },
+   {
+    "node": "code",
+    "id": "derive",
+    "raw": 5,
+    "kept": 5,
+    "top": [
+     {
+      "root_cause": "pod_network_delay",
+      "object": "app/ts-food-service",
+      "score": 0.82,
+      "evidence": "network latency anomaly on the pod",
+      "rule": "delay_alert"
+     },
+     {
+      "root_cause": "pod_network_delay",
+      "object": "app/ts-gateway-service",
+      "score": 0.82,
+      "evidence": "network latency anomaly on the pod",
+      "rule": "delay_alert"
+     },
+     {
+      "root_cause": "pod_network_delay",
+      "object": "app/ts-order-service",
+      "score": 0.82,
+      "evidence": "network latency anomaly on the pod",
+      "rule": "delay_alert"
+     },
+     {
+      "root_cause": "pod_network_delay",
+      "object": "app/ts-preserve-service",
+      "score": 0.82,
+      "evidence": "network latency anomaly on the pod",
+      "rule": "delay_alert"
+     },
+     {
+      "root_cause": "pod_network_delay",
+      "object": "app/ts-ui-dashboard",
+      "score": 0.82,
+      "evidence": "network latency anomaly on the pod",
+      "rule": "delay_alert"
+     }
+    ]
+   },
+   {
+    "node": "decide",
+    "id": "pick",
+    "rid": "test:trainticket/performance/21#pick1",
+    "status": "mechanical",
+    "guard": "unavailable",
+    "use": "first_option",
+    "choice": 0,
+    "dominant": false,
+    "why": "mechanism_mode"
+   },
+   {
+    "node": "decide",
+    "id": "verify",
+    "rid": "test:trainticket/performance/21#verify1",
+    "status": "mechanical",
+    "guard": "unavailable",
+    "use": "verified",
+    "choice": "verified",
+    "dominant": false,
+    "why": "mechanism_mode"
+   },
+   {
+    "node": "probes",
+    "plan": "family",
+    "wave": 2,
+    "executed": 0,
+    "steps": [],
+    "skipped": [
+     {
+      "step": "describe_pod",
+      "why": "gate weak"
+     }
+    ]
+   },
+   {
+    "node": "code",
+    "id": "derive",
+    "raw": 5,
+    "kept": 5,
+    "top": [
+     {
+      "root_cause": "pod_network_delay",
+      "object": "app/ts-food-service",
+      "score": 0.82,
+      "evidence": "network latency anomaly on the pod",
+      "rule": "delay_alert"
+     },
+     {
+      "root_cause": "pod_network_delay",
+      "object": "app/ts-gateway-service",
+      "score": 0.82,
+      "evidence": "network latency anomaly on the pod",
+      "rule": "delay_alert"
+     },
+     {
+      "root_cause": "pod_network_delay",
+      "object": "app/ts-order-service",
+      "score": 0.82,
+      "evidence": "network latency anomaly on the pod",
+      "rule": "delay_alert"
+     },
+     {
+      "root_cause": "pod_network_delay",
+      "object": "app/ts-preserve-service",
+      "score": 0.82,
+      "evidence": "network latency anomaly on the pod",
+      "rule": "delay_alert"
+     },
+     {
+      "root_cause": "pod_network_delay",
+      "object": "app/ts-ui-dashboard",
+      "score": 0.82,
+      "evidence": "network latency anomaly on the pod",
+      "rule": "delay_alert"
+     }
+    ]
+   },
+   {
+    "node": "decide",
+    "id": "pick",
+    "rid": "test:trainticket/performance/21#pick2",
+    "status": "mechanical",
+    "guard": "unchanged_since_last",
+    "use": "previous",
+    "choice": 0,
+    "dominant": false,
+    "why": "no_new_evidence"
+   },
+   {
+    "node": "decide",
+    "id": "verify",
+    "rid": "test:trainticket/performance/21#verify2",
+    "status": "mechanical",
+    "guard": "unchanged_since_last",
+    "use": "previous",
+    "choice": "verified",
+    "dominant": false,
+    "why": "no_new_evidence"
+   },
+   {
+    "node": "probes",
+    "plan": "family",
+    "wave": 3,
+    "executed": 0,
+    "steps": [],
+    "skipped": [
+     {
+      "step": "deps",
+      "why": "gate weak"
+     }
+    ]
+   },
+   {
+    "node": "code",
+    "id": "derive",
+    "raw": 5,
+    "kept": 5,
+    "top": [
+     {
+      "root_cause": "pod_network_delay",
+      "object": "app/ts-food-service",
+      "score": 0.82,
+      "evidence": "network latency anomaly on the pod",
+      "rule": "delay_alert"
+     },
+     {
+      "root_cause": "pod_network_delay",
+      "object": "app/ts-gateway-service",
+      "score": 0.82,
+      "evidence": "network latency anomaly on the pod",
+      "rule": "delay_alert"
+     },
+     {
+      "root_cause": "pod_network_delay",
+      "object": "app/ts-order-service",
+      "score": 0.82,
+      "evidence": "network latency anomaly on the pod",
+      "rule": "delay_alert"
+     },
+     {
+      "root_cause": "pod_network_delay",
+      "object": "app/ts-preserve-service",
+      "score": 0.82,
+      "evidence": "network latency anomaly on the pod",
+      "rule": "delay_alert"
+     },
+     {
+      "root_cause": "pod_network_delay",
+      "object": "app/ts-ui-dashboard",
+      "score": 0.82,
+      "evidence": "network latency anomaly on the pod",
+      "rule": "delay_alert"
+     }
+    ]
+   },
+   {
+    "node": "decide",
+    "id": "pick",
+    "rid": "test:trainticket/performance/21#pick3",
+    "status": "mechanical",
+    "guard": "unchanged_since_last",
+    "use": "previous",
+    "choice": 0,
+    "dominant": false,
+    "why": "no_new_evidence"
+   },
+   {
+    "node": "decide",
+    "id": "verify",
+    "rid": "test:trainticket/performance/21#verify3",
+    "status": "mechanical",
+    "guard": "unchanged_since_last",
+    "use": "previous",
+    "choice": "verified",
+    "dominant": false,
+    "why": "no_new_evidence"
+   },
+   {
+    "node": "loop",
+    "id": "waves",
+    "stop": "plan_exhausted",
+    "wave": 3
+   },
+   {
+    "node": "escalate",
+    "id": "escalate",
+    "fired": false,
+    "reasons": [],
+    "why": "no reason"
+   },
+   {
+    "node": "code",
+    "id": "answer",
+    "predictions": [
+     {
+      "rank": 1,
+      "fault_object": "app/ts-food-service",
+      "root_cause": "pod_network_delay"
+     },
+     {
+      "rank": 2,
+      "fault_object": "app/ts-gateway-service",
+      "root_cause": "pod_network_delay"
+     },
+     {
+      "rank": 3,
+      "fault_object": "app/ts-order-service",
+      "root_cause": "pod_network_delay"
+     }
+    ]
+   },
+   {
+    "node": "artifact",
+    "id": "persist",
+    "persisted": false,
+    "why": "written by the CLI driver"
+   }
+  ],
+  "notes": [],
+  "tool_calls": 3,
+  "model_calls": 0,
+  "tokens_in": 0,
+  "tokens_out": 0,
+  "wall_s": 0.09
+ }
+}

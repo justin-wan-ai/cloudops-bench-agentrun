@@ -1,0 +1,171 @@
+{
+  "dsl": "workspace/dsl_versions/v0.7.dsl.txt",
+  "version": "0.7",
+  "params": {
+    "cands_cap": 8,
+    "max_waves": 8,
+    "min_waves": 5,
+    "steps_per_wave": 1,
+    "dominance_ratio": 1.5,
+    "conf_min": 0.0,
+    "escalate": true,
+    "escalate_budget": 8,
+    "judge_on_codedefect": true,
+    "jev_route": true,
+    "jev_pick": true,
+    "jev_verify": true,
+    "route_fallback": "runtime"
+  },
+  "jev_mode": "live",
+  "jev_usage": {
+    "calls": 16,
+    "input_tokens": 4058,
+    "model_latency_ms": 27795.1
+  },
+  "cases": [
+    {
+      "id": "boutique/scheduling/106",
+      "family": "scheduling",
+      "tool_calls": 3,
+      "model_calls": 1,
+      "tokens_in": 224,
+      "tokens_out": 0,
+      "wall_s": 5.96,
+      "escalated": false,
+      "verified": true,
+      "verify_prob": null
+    },
+    {
+      "id": "boutique/scheduling/117",
+      "family": "scheduling",
+      "tool_calls": 3,
+      "model_calls": 1,
+      "tokens_in": 223,
+      "tokens_out": 0,
+      "wall_s": 0.43,
+      "escalated": false,
+      "verified": true,
+      "verify_prob": null
+    },
+    {
+      "id": "boutique/scheduling/128",
+      "family": "scheduling",
+      "tool_calls": 6,
+      "model_calls": 3,
+      "tokens_in": 908,
+      "tokens_out": 0,
+      "wall_s": 1.97,
+      "escalated": false,
+      "verified": false,
+      "verify_prob": null
+    },
+    {
+      "id": "boutique/scheduling/132",
+      "family": "scheduling",
+      "tool_calls": 6,
+      "model_calls": 1,
+      "tokens_in": 226,
+      "tokens_out": 0,
+      "wall_s": 2.84,
+      "escalated": false,
+      "verified": true,
+      "verify_prob": null
+    },
+    {
+      "id": "boutique/scheduling/136",
+      "family": "scheduling",
+      "tool_calls": 6,
+      "model_calls": 1,
+      "tokens_in": 226,
+      "tokens_out": 0,
+      "wall_s": 0.25,
+      "escalated": false,
+      "verified": true,
+      "verify_prob": null
+    },
+    {
+      "id": "boutique/scheduling/138",
+      "family": "scheduling",
+      "tool_calls": 6,
+      "model_calls": 1,
+      "tokens_in": 224,
+      "tokens_out": 0,
+      "wall_s": 0.34,
+      "escalated": false,
+      "verified": true,
+      "verify_prob": null
+    },
+    {
+      "id": "boutique/scheduling/148",
+      "family": "scheduling",
+      "tool_calls": 3,
+      "model_calls": 1,
+      "tokens_in": 224,
+      "tokens_out": 0,
+      "wall_s": 0.3,
+      "escalated": false,
+      "verified": true,
+      "verify_prob": null
+    },
+    {
+      "id": "boutique/scheduling/27",
+      "family": "scheduling",
+      "tool_calls": 3,
+      "model_calls": 1,
+      "tokens_in": 222,
+      "tokens_out": 0,
+      "wall_s": 6.32,
+      "escalated": false,
+      "verified": true,
+      "verify_prob": null
+    },
+    {
+      "id": "boutique/scheduling/35",
+      "family": "scheduling",
+      "tool_calls": 3,
+      "model_calls": 1,
+      "tokens_in": 225,
+      "tokens_out": 0,
+      "wall_s": 0.4,
+      "escalated": false,
+      "verified": true,
+      "verify_prob": null
+    },
+    {
+      "id": "boutique/scheduling/55",
+      "family": "scheduling",
+      "tool_calls": 6,
+      "model_calls": 3,
+      "tokens_in": 909,
+      "tokens_out": 0,
+      "wall_s": 12.26,
+      "escalated": false,
+      "verified": false,
+      "verify_prob": null
+    },
+    {
+      "id": "boutique/scheduling/7",
+      "family": "scheduling",
+      "tool_calls": 4,
+      "model_calls": 1,
+      "tokens_in": 225,
+      "tokens_out": 0,
+      "wall_s": 0.26,
+      "escalated": false,
+      "verified": true,
+      "verify_prob": null
+    },
+    {
+      "id": "boutique/scheduling/72",
+      "family": "scheduling",
+      "tool_calls": 3,
+      "model_calls": 1,
+      "tokens_in": 222,
+      "tokens_out": 0,
+      "wall_s": 0.7,
+      "escalated": false,
+      "verified": true,
+      "verify_prob": null
+    }
+  ]
+}

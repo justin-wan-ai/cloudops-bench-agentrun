@@ -1,0 +1,6 @@
+{
+  "Completed": "{\"key_evidence_summary\": \"checkoutservice pod is Running but not Ready (0/1) with repeated readiness probe failures against http://172.20.2.80:5050/health. The error 'malformed HTTP response' containing binary gRPC frame bytes shows the probe is using HTTP/1 while the container serves gRPC. The liveness probe is already configured as grpc, further supporting a protocol mismatch in the readiness probe.\", \"top_3_predictions\": [{\"rank\": 1, \"fault_object\": \"app/checkoutservice\", \"root_cause\": \"readiness_probe_incorrect_protocol\"}, {\"rank\": 2, \"fault_object\": \"app/checkoutservice\", \"root_cause\": \"liveness_probe_incorrect_protocol\"}, {\"rank\": 3, \"fault_object\": \"app/checkoutservice\", \"root_cause\": \"readiness_probe_incorrect_port\"}]}",
+  "finished": true,
+  "stop_reason": "submit",
+  "steps_used": 3
+}

@@ -1,0 +1,59 @@
+# AgentRun DSL v0.1 -- agentic root cause analysis over a frozen incident snapshot
+#
+# Migration of the free ReAct loop (repo/agents/cloudops_agent) to
+#   fixed plan + typed jev decisions + escalate fallback.
+#
+# Semantics implemented by agentrun/runner.py:
+#   * node PRESENCE decides whether a step runs at all;
+#   * execution order is fixed (call -> derive -> pick -> verify), the DSL selects
+#     the chain, the loop bound and the parameters -- not line-by-line execution;
+#   * every parameter below must be able to change behaviour (P5 gate).
+#
+# Motivation per block (P4 distillation of the baseline traces):
+#   extract_anchors   the symptom/question is the only free-text input; everything
+#                     else (namespace, service list, priors) is deterministic.
+#   jev(route)        the baseline always spends 2-4 calls discovering which fault
+#                     domain it is in; one typed choice on the observed census replaces it.
+#                     The census probe (wave 0) is what makes the route restricted
+#                     (pattern B: deterministic first, model second).
+#   build_plan        probe sequences are stable per family -> compiled plans.
+#   loop(probe/pick)  the only genuinely ambiguous step is "which object is the
+#                     culprit" when several are plausible -> jev(pick) over <=cands_cap.
+#   jev(verify)       a calibration gate; low probability means "family right, cause
+#                     not pinned" -> escalate instead of guessing.
+#   escalate          code defects and unknown families cannot be compiled, so they
+#                     go back to a budgeted agent (structural no-downgrade).
+
+dsl: agentrun-rca
+version: "0.1"
+
+params:
+  cands_cap: 8              # candidates handed to jev(pick)
+  max_waves: 3              # bounded loop
+  steps_per_wave: 3         # how many plan steps one wave may spend
+  dominance_ratio: 1.5      # mechanical pick only when top score dominates
+  conf_min: 0.55            # below this jev(verify) probability -> escalate
+  escalate: true
+  escalate_budget: 8        # judge agent tool-call budget
+  judge_on_codedefect: true # code defects are open-ended by construction
+  jev_route: true
+  jev_pick: true
+  jev_verify: true
+
+chain:
+  - code: extract_anchors
+  - call: probe_batch      # wave 0 = cheap census (alerts / pods / deployments)
+  - jev: route
+  - code: build_plan
+  - loop:
+      until: solved_or_exhausted
+      max_waves: 3
+      body:
+        - call: probe_batch
+        - code: derive_candidates
+        - jev: pick
+        - jev: verify
+  - escalate:
+      predicate: no_candidates | not_verified | family_unknown | waves_exhausted
+  - code: normalize_answer
+  - artifact: persist_trace

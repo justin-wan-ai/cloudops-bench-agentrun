@@ -1,0 +1,654 @@
+{
+ "case_id": "trainticket/service/4",
+ "system_name": "trainticket",
+ "question": "Service Availability Disruption.",
+ "case_path": "/Users/justinwan/work/workspace/cloudops_bench_rsi/repo/benchmark/trainticket/service/4",
+ "max_steps": 8,
+ "current_step": 4,
+ "finished": true,
+ "stop_reason": "submit",
+ "final_answer": "{\"key_evidence_summary\": \"no evidence-grounded hypothesis\", \"top_3_predictions\": []}",
+ "metadata": {
+  "namespace": "train-ticket",
+  "query": "Service Availability Disruption.",
+  "fault_category": "service",
+  "model_name": "agentrun-v0.8"
+ },
+ "steps": [
+  {
+   "step_id": 0,
+   "action_type": "tool",
+   "action_name": "GetResources",
+   "action_input": {
+    "namespace": "train-ticket",
+    "resource_type": "pods",
+    "output_wide": true
+   },
+   "observation": "NAME                                            READY   STATUS    RESTARTS        AGE     IP             NODE        NOMINATED NODE   READINESS GATES\nnacos-0                                         1/1     Running   0               9d      172.20.2.76    worker-02   <none>           <none>\nnacos-1                                         1/1     Running   0               9d      172.20.1.247   worker-01   <none>           <none>\nnacos-2                                         1/1     Running   0               9d      172.20.3.7     worker-03   <none>           <none>\nnacosdb-mysql-0                                 3/3     Running   1 (9d ago)      9d      172.20.2.75    worker-02   <none>           <none>\nnacosdb-mysql-1                                 3/3     Running   2 (9d ago)      9d      172.20.1.246   worker-01   <none>           <none>\nnacosdb-mysql-2                                 3/3     Running   1 (9d ago)      9d      172.20.3.6     worker-03   <none>           <none>\nrabbitmq-57b4f9969c-4cndj                       1/1     Running   0               9d      172.20.2.77    worker-02   <none>           <none>\nts-assurance-service-88f65755-cpsb6             2/2     Running   0               5m5s    172.20.3.22    worker-03   <none>           <none>\nts-auth-service-656fb96d87-w59gw                2/2     Running   0               5m14s   172.20.1.159   worker-01   <none>           <none>\nts-avatar-service-54fb8f5c57-zf2mc              2/2     Running   0               5m11s   172.20.3.14    worker-03   <none>           <none>\nts-basic-service-57fb684696-bvrms               2/2     Running   0               5m14s   172.20.2.45    worker-02   <none>           <none>\nts-cancel-service-67fb7d5bb4-9rvfd              2/2     Running   0               5m13s   172.20.1.161   worker-01   <none>           <none>\nts-config-service-65779cfcd7-566nz              2/2     Running   0               5m7s    172.20.1.171   worker-01   <none>           <none>\nts-consign-price-service-b74c79d7-zvs4s         2/2     Running   0               16h     172.20.2.120   worker-02   <none>           <none>\nts-consign-service-846bdf46cc-l8925             2/2     Running   0               5m11s   172.20.2.50    worker-02   <none>           <none>\nts-contacts-service-7fc68f4bbc-h6ncd            2/2     Running   0               5m13s   172.20.1.162   worker-01   <none>           <none>\nts-delivery-service-659b5d4f75-gwjfd            2/2     Running   0               5m9s    172.20.1.169   worker-01   <none>           <none>\nts-execute-service-5f7c9df447-d22sv             2/2     Running   0               5m11s   172.20.3.13    worker-03   <none>           <none>\nts-food-delivery-service-5b898fdbbf-gkw86       2/2     Running   0               5m7s    172.20.3.20    worker-03   <none>           <none>\nts-food-service-59c58c74cc-bz6g9                2/2     Running   0               5m7s    172.20.2.56    worker-02   <none>           <none>\nts-gateway-service-88868597f-vpffp              2/2     Running   0               5m5s    172.20.1.178   worker-01   <none>           <none>\nts-inside-payment-service-5b98976c87-dzl97      2/2     Running   0               5m10s   172.20.3.15    worker-03   <none>           <none>\nts-news-service-578fd9cd67-jt2jm                2/2     Running   0               5m5s    172.20.2.58    worker-02   <none>           <none>\nts-notification-service-6b579b64d7-cz5vp        2/2     Running   0               5m8s    172.20.3.18    worker-03   <none>           <none>\nts-order-other-service-788d947bdf-4d42f         2/2     Running   0               5m13s   172.20.2.48    worker-02   <none>           <none>\nts-order-service-dd54d5df9-qgpj5                2/2     Running   0               5m10s   172.20.3.16    worker-03   <none>           <none>\nts-payment-service-666d596f87-np8tl             2/2     Running   0               5m6s    172.20.3.21    worker-03   <none>           <none>\nts-preserve-other-service-5f85fdfd7-clfb6       2/2     Running   0               5m11s   172.20.2.51    worker-02   <none>           <none>\nts-preserve-service-6bccdc5454-dsqfk            2/2     Running   0               5m8s    172.20.2.55    worker-02   <none>           <none>\nts-price-service-6c4b77845-r7pgd                2/2     Running   0               5m13s   172.20.2.47    worker-02   <none>           <none>\nts-rebook-service-75d676f77b-4fcpd              2/2     Running   0               5m11s   172.20.1.165   worker-01   <none>           <none>\nts-route-plan-service-695f545f8c-xzpmd          2/2     Running   0               5m12s   172.20.1.164   worker-01   <none>           <none>\nts-route-service-688dc779fc-jghp2               2/2     Running   0               5m13s   172.20.2.46    worker-02   <none>           <none>\nts-seat-service-5fc7c67c7f-nqjcv                2/2     Running   0               5m10s   172.20.2.52    worker-02   <none>           <none>\nts-security-service-5fb7f7fbff-kcp7v            2/2     Running   0               5m8s    172.20.3.19    worker-03   <none>           <none>\nts-station-food-service-d99b9b859-c89sz         2/2     Running   0               5m14s   172.20.1.160   worker-01   <none>           <none>\nts-station-service-7cbf6b96c9-pj8lj             2/2     Running   0               5m12s   172.20.1.163   worker-01   <none>           <none>\nts-ticket-office-service-6fd78bd9df-8wtjp       2/2     Running   1 (5m9s ago)    5m12s   172.20.2.49    worker-02   <none>           <none>\nts-train-food-service-67cb5bdf99-nzrg4          2/2     Running   0               5m9s    172.20.1.167   worker-01   <none>           <none>\nts-train-service-c4fb58df9-mfxcq                2/2     Running   0               5m9s    172.20.2.54    worker-02   <none>           <none>\nts-travel-plan-service-5985cdf6b6-7cjt8         2/2     Running   0               5m10s   172.20.1.166   worker-01   <none>           <none>\nts-travel-service-5b9b99c879-vhb7j              2/2     Running   0               5m6s    172.20.1.173   worker-01   <none>           <none>\nts-travel2-service-849bffcb7c-cc8fz             2/2     Running   0               5m12s   172.20.3.12    worker-03   <none>           <none>\nts-ui-dashboard-554844f867-ml6f8                2/2     Running   3 (4m48s ago)   5m9s    172.20.2.53    worker-02   <none>           <none>\nts-user-service-6886cbf9cf-tb2zp                2/2     Running   0               5m7s    172.20.1.172   worker-01   <none>           <none>\nts-verification-code-service-7cbd896f77-gpgmw   2/2     Running   0               5m6s    172.20.2.57    worker-02   <none>           <none>\nts-voucher-service-5ffdd5456c-r6r25             2/2     Running   0               5m9s    172.20.3.17    worker-03   <none>           <none>\nts-wait-order-service-848dbb9dd7-pnnbd          2/2     Running   0               5m8s    172.20.1.170   worker-01   <none>           <none>\ntsdb-mysql-0                                    4/4     Running   1 (16h ago)     16h     172.20.1.214   worker-01   <none>           <none>\ntsdb-mysql-1                                    4/4     Running   1 (16h ago)     16h     172.20.2.116   worker-02   <none>           <none>\ntsdb-mysql-2                                    4/4     Running   1 (16h ago)     16h     172.20.3.235   worker-03   <none>           <none>\n",
+   "error": null,
+   "purpose": "pod readiness census",
+   "tool_latency": null
+  },
+  {
+   "step_id": 1,
+   "action_type": "tool",
+   "action_name": "GetAlerts",
+   "action_input": {},
+   "observation": "{'status': 'has_anomalies', 'alert_count': 2, 'alerts': [{'request_method': 'POST', 'business_action': 'Refresh order list', 'entry_service': 'ts-order-service', 'url': '/api/v1/orderservice/order/refresh', 'occurrences': 20, 'raw_error': \"HTTPError('404 Client Error: Not Found')\"}, {'request_method': 'POST', 'business_action': 'Refresh orders for cancel', 'entry_service': 'ts-order-service', 'url': '/api/v1/orderservice/order/refresh', 'occurrences': 20, 'raw_error': \"HTTPError('404 Client Error: Not Found')\"}]}",
+   "error": null,
+   "purpose": "anomaly signature (routes performance/code families)",
+   "tool_latency": null
+  },
+  {
+   "step_id": 2,
+   "action_type": "tool",
+   "action_name": "GetRecentLogs",
+   "action_input": {
+    "namespace": "train-ticket",
+    "service_name": "ts-order-service"
+   },
+   "observation": "['From ts-order-service logs:', '2026-03-17T15:28:25.489391673+08:00 2026-03-17 07:28:25.489  INFO 1 --- [io-12031-exec-1] order.service.OrderServiceImpl           : [getSoldTickets][Left ticket info][info is: LeftTicketInfo{soldTickets=[Ticket(seatNo=30190940, startStation=shanghai, destStation=suzhou), Ticket(seatNo=1009163842, startStation=shanghai, destStation=suzhou), Ticket(seatNo=1841099850, startStation=shanghai, destStation=suzhou), Ticket(seatNo=321616867, startStation=shanghai, destStation=suzhou), Ticket(seatNo=1380237017, startStation=shanghai, destStation=suzhou), Ticket(seatNo=2092040204, startStation=shanghai, destStation=suzhou), Ticket(seatNo=52598269, startStation=shanghai, destStation=suzhou), Ticket(seatNo=2084623041, startStation=shanghai, destStation=suzhou), Ticket(seatNo=1126970214, startStation=shanghai, destStation=suzhou), Ticket(seatNo=505358073, startStation=shanghai, destStation=suzhou), Ticket(seatNo=1277375133, startStation=shanghai, destStation=suzhou), Ticket(seatNo=564972609, startStation=shanghai, destStation=suzhou), Ticket(seatNo=87965495, startStation=shanghai, destStation=suzhou), Ticket(seatNo=1416568355, startStation=shanghai, destStation=suzhou), Ticket(seatNo=1966861394, startStation=shanghai, destStation=suzhou), Ticket(seatNo=1038426397, startStation=shanghai, destStation=suzhou), Ticket(seatNo=1824587685, startStation=shanghai, destStation=suzhou), Ticket(seatNo=541680782, startStation=shanghai, destStation=suzhou), Ticket(seatNo=200618474, startStation=shanghai, destStation=suzhou), Ticket(seatNo=1960855063, startStation=shanghai, destStation=suzhou), Ticket(seatNo=159252087, startStation=shanghai, destStation=suzhou), Ticket(seatNo=1284715007, startStation=shanghai, destStation=suzhou), Ticket(seatNo=1689213670, startStation=shanghai, destStation=suzhou), Ticket(seatNo=391542024, startStation=shanghai, destStation=suzhou), Ticket(seatNo=1567038774, startStation=shanghai, destStation=suzhou), Ticket(seatNo=739499875, startStation=shanghai, destStation=suzhou), Ticket(seatNo=1331086628, startStation=shanghai, destStation=suzhou), Ticket(seatNo=29532186, startStation=shanghai, destStation=suzhou), Ticket(seatNo=701864957, startStation=shanghai, destStation=suzhou), Ticket(seatNo=1500830788, startStation=shanghai, destStation=suzhou), Ticket(seatNo=807582416, startStation=shanghai, destStation=suzhou), Ticket(seatNo=536817310, startStation=shanghai, destStation=suzhou), Ticket(seatNo=1081155880, startStation=shanghai, destStation=suzhou), Ticket(seatNo=1891848688, startStation=shanghai, destStation=suzhou), Ticket(seatNo=1265127588, startStation=shanghai, destStation=suzhou), Ticket(seatNo=787266603, startStation=shanghai, destStation=suzhou), Ticket(seatNo=1782471418, startStation=shanghai, destStation=suzhou), Ticket(seatNo=515168416, startStation=shanghai, destStation=suzhou), Ticket(seatNo=2097578236, startStation=shanghai, destStation=suzhou), Ticket(seatNo=1607332532, startStation=shanghai, destStation=suzhou), Ticket(seatNo=1772525008, startStation=shanghai, destStation=suzhou), Ticket(seatNo=1916848482, startStation=shanghai, destStation=suzhou), Ticket(seatNo=1819932468, startStation=shanghai, destStation=suzhou), Ticket(seatNo=732996433, startStation=shanghai, destStation=suzhou), Ticket(seatNo=1859749538, startStation=shanghai, destStation=suzhou), Ticket(seatNo=1440409473, startStation=shanghai, destStation=suzhou), Ticket(seatNo=1971880857, startStation=shanghai, destStation=suzhou), Ticket(seatNo=1200434493, startStation=shanghai, destStation=suzhou), Ticket(seatNo=71791448, startStation=shanghai, destStation=suzhou), Ticket(seatNo=525792341, startStation=shanghai, destStation=suzhou), Ticket(seatNo=801824380, startStation=shanghai, destStation=suzhou), Ticket(seatNo=1255369961, startStation=shanghai, destStation=suzhou), Ticket(seatNo=436329588, startStation=shanghai, destStation=suzhou)]}]', '2026-03-17T15:28:25.497846054+08:00 2026-03-17 07:28:25.497  INFO 1 --- [io-12031-exec-9] order.controller.OrderController         : [createNewOrder][Create Order][from suzhou to shanghai at 2026-03-18]', '2026-03-17T15:28:25.497858623+08:00 2026-03-17 07:28:25.497  INFO 1 --- [io-12031-exec-9] order.service.OrderServiceImpl           : [create][Create Order][Ready to Create Order]', '2026-03-17T15:28:25.583288497+08:00 2026-03-17 07:28:25.583  INFO 1 --- [io-12031-exec-7] order.controller.OrderController         : [getSoldTickets][Get Sold Ticket][Travel Date: 2026-03-21]', '2026-03-17T15:28:25.583417412+08:00 2026-03-17 07:28:25.583  INFO 1 --- [io-12031-exec-5] order.controller.OrderController         : [getSoldTickets][Get Sold Ticket][Travel Date: 2026-03-21]', '2026-03-17T15:28:25.585352807+08:00 2026-03-17 07:28:25.585  INFO 1 --- [io-12031-exec-5] order.service.OrderServiceImpl           : [getSoldTickets][Left ticket info][info is: LeftTicketInfo{soldTickets=[Ticket(seatNo=364228348, startStation=nanjing, destStation=shanghai), Ticket(seatNo=1899796432, startStation=nanjing, destStation=shanghai), Ticket(seatNo=1075390666, startStation=nanjing, destStation=shanghai), Ticket(seatNo=1617765932, startStation=nanjing, destStation=shanghai), Ticket(seatNo=1327602212, startStation=nanjing, destStation=shanghai), Ticket(seatNo=2068124953, startStation=nanjing, destStation=shanghai), Ticket(seatNo=1631301104, startStation=nanjing, destStation=shanghai), Ticket(seatNo=1004049206, startStation=nanjing, destStation=shanghai), Ticket(seatNo=2085719474, startStation=nanjing, destStation=shanghai), Ticket(seatNo=901320188, startStation=nanjing, destStation=shanghai), Ticket(seatNo=50860655, startStation=nanjing, destStation=shanghai), Ticket(seatNo=424179862, startStation=nanjing, destStation=shanghai), Ticket(seatNo=698139500, startStation=nanjing, destStation=shanghai), Ticket(seatNo=567755597, startStation=nanjing, destStation=shanghai), Ticket(seatNo=648364958, startStation=nanjing, destStation=shanghai), Ticket(seatNo=1576834959, startStation=nanjing, destStation=shanghai), Ticket(seatNo=1300777387, startStation=nanjing, destStation=shanghai), Ticket(seatNo=540127418, startStation=nanjing, destStation=shanghai), Ticket(seatNo=1459726126, startStation=nanjing, destStation=shanghai), Ticket(seatNo=1170186519, startStation=nanjing, destStation=shanghai), Ticket(seatNo=381444158, startStation=nanjing, destStation=shanghai), Ticket(seatNo=489326382, startStation=nanjing, destStation=shanghai), Ticket(seatNo=831631968, startStation=nanjing, destStation=shanghai), Ticket(seatNo=1364118835, startStation=nanjing, destStation=shanghai), Ticket(seatNo=382644794, startStation=nanjing, destStation=shanghai)]}]', '2026-03-17T15:28:25.585490741+08:00 2026-03-17 07:28:25.585  INFO 1 --- [io-12031-exec-7] order.service.OrderServiceImpl           : [getSoldTickets][Left ticket info][info is: LeftTicketInfo{soldTickets=[Ticket(seatNo=30190940, startStation=shanghai, destStation=suzhou), Ticket(seatNo=1009163842, startStation=shanghai, destStation=suzhou), Ticket(seatNo=1841099850, startStation=shanghai, destStation=suzhou), Ticket(seatNo=321616867, startStation=shanghai, destStation=suzhou), Ticket(seatNo=1380237017, startStation=shanghai, destStation=suzhou), Ticket(seatNo=2092040204, startStation=shanghai, destStation=suzhou), Ticket(seatNo=52598269, startStation=shanghai, destStation=suzhou), Ticket(seatNo=2084623041, startStation=shanghai, destStation=suzhou), Ticket(seatNo=1126970214, startStation=shanghai, destStation=suzhou), Ticket(seatNo=505358073, startStation=shanghai, destStation=suzhou), Ticket(seatNo=1277375133, startStation=shanghai, destStation=suzhou), Ticket(seatNo=564972609, startStation=shanghai, destStation=suzhou), Ticket(seatNo=87965495, startStation=shanghai, destStation=suzhou), Ticket(seatNo=1416568355, startStation=shanghai, destStation=suzhou), Ticket(seatNo=1966861394, startStation=shanghai, destStation=suzhou), Ticket(seatNo=1038426397, startStation=shanghai, destStation=suzhou), Ticket(seatNo=1824587685, startStation=shanghai, destStation=suzhou), Ticket(seatNo=541680782, startStation=shanghai, destStation=suzhou), Ticket(seatNo=200618474, startStation=shanghai, destStation=suzhou), Ticket(seatNo=1960855063, startStation=shanghai, destStation=suzhou), Ticket(seatNo=159252087, startStation=shanghai, destStation=suzhou), Ticket(seatNo=1284715007, startStation=shanghai, destStation=suzhou), Ticket(seatNo=1689213670, startStation=shanghai, destStation=suzhou), Ticket(seatNo=391542024, startStation=shanghai, destStation=suzhou), Ticket(seatNo=1567038774, startStation=shanghai, destStation=suzhou), Ticket(seatNo=739499875, startStation=shanghai, destStation=suzhou), Ticket(seatNo=1331086628, startStation=shanghai, destStation=suzhou), Ticket(seatNo=29532186, startStation=shanghai, destStation=suzhou), Ticket(seatNo=701864957, startStation=shanghai, destStation=suzhou), Ticket(seatNo=1500830788, startStation=shanghai, destStation=suzhou), Ticket(seatNo=807582416, startStation=shanghai, destStation=suzhou), Ticket(seatNo=536817310, startStation=shanghai, destStation=suzhou), Ticket(seatNo=1081155880, startStation=shanghai, destStation=suzhou), Ticket(seatNo=1891848688, startStation=shanghai, destStation=suzhou), Ticket(seatNo=1265127588, startStation=shanghai, destStation=suzhou), Ticket(seatNo=787266603, startStation=shanghai, destStation=suzhou), Ticket(seatNo=1782471418, startStation=shanghai, destStation=suzhou), Ticket(seatNo=515168416, startStation=shanghai, destStation=suzhou), Ticket(seatNo=2097578236, startStation=shanghai, destStation=suzhou), Ticket(seatNo=1607332532, startStation=shanghai, destStation=suzhou), Ticket(seatNo=1772525008, startStation=shanghai, destStation=suzhou), Ticket(seatNo=1916848482, startStation=shanghai, destStation=suzhou), Ticket(seatNo=1819932468, startStation=shanghai, destStation=suzhou), Ticket(seatNo=732996433, startStation=shanghai, destStation=suzhou), Ticket(seatNo=1859749538, startStation=shanghai, destStation=suzhou), Ticket(seatNo=1440409473, startStation=shanghai, destStation=suzhou), Ticket(seatNo=1971880857, startStation=shanghai, destStation=suzhou), Ticket(seatNo=1200434493, startStation=shanghai, destStation=suzhou), Ticket(seatNo=71791448, startStation=shanghai, destStation=suzhou), Ticket(seatNo=525792341, startStation=shanghai, destStation=suzhou), Ticket(seatNo=801824380, startStation=shanghai, destStation=suzhou), Ticket(seatNo=1255369961, startStation=shanghai, destStation=suzhou), Ticket(seatNo=436329588, startStation=shanghai, destStation=suzhou)]}]', '2026-03-17T15:28:25.588285145+08:00 2026-03-17 07:28:25.588  INFO 1 --- [io-12031-exec-9] order.service.OrderServiceImpl           : [create][Order Create Success][Order Price][OrderId:3fb80d41-e93e-44be-9ce2-70e11b082f9e , Price: 50.0]', '2026-03-17T15:28:25.679446046+08:00 2026-03-17 07:28:25.679  INFO 1 --- [io-12031-exec-3] order.controller.OrderController         : [checkSecurityAboutOrder][Security Info Get][AccountId:4d2a46c7-71cb-4cf1-b5bb-b68406d9da6f]', '2026-03-17T15:28:25.682727965+08:00 2026-03-17 07:28:25.682  INFO 1 --- [io-12031-exec-8] order.controller.OrderController         : [getSoldTickets][Get Sold Ticket][Travel Date: 2026-03-21]', '2026-03-17T15:28:25.682741742+08:00 2026-03-17 07:28:25.682  INFO 1 --- [o-12031-exec-10] order.controller.OrderController         : [getSoldTickets][Get Sold Ticket][Travel Date: 2026-03-21]', '2026-03-17T15:28:25.684737410+08:00 2026-03-17 07:28:25.684  INFO 1 --- [o-12031-exec-10] order.service.OrderServiceImpl           : [getSoldTickets][Left ticket info][info is: LeftTicketInfo{soldTickets=[Ticket(seatNo=364228348, startStation=nanjing, destStation=shanghai), Ticket(seatNo=1899796432, startStation=nanjing, destStation=shanghai), Ticket(seatNo=1075390666, startStation=nanjing, destStation=shanghai), Ticket(seatNo=1617765932, startStation=nanjing, destStation=shanghai), Ticket(seatNo=1327602212, startStation=nanjing, destStation=shanghai), Ticket(seatNo=2068124953, startStation=nanjing, destStation=shanghai), Ticket(seatNo=1631301104, startStation=nanjing, destStation=shanghai), Ticket(seatNo=1004049206, startStation=nanjing, destStation=shanghai), Ticket(seatNo=2085719474, startStation=nanjing, destStation=shanghai), Ticket(seatNo=901320188, startStation=nanjing, destStation=shanghai), Ticket(seatNo=50860655, startStation=nanjing, destStation=shanghai), Ticket(seatNo=424179862, startStation=nanjing, destStation=shanghai), Ticket(seatNo=698139500, startStation=nanjing, destStation=shanghai), Ticket(seatNo=567755597, startStation=nanjing, destStation=shanghai), Ticket(seatNo=648364958, startStation=nanjing, destStation=shanghai), Ticket(seatNo=1576834959, startStation=nanjing, destStation=shanghai), Ticket(seatNo=1300777387, startStation=nanjing, destStation=shanghai), Ticket(seatNo=540127418, startStation=nanjing, destStation=shanghai), Ticket(seatNo=1459726126, startStation=nanjing, destStation=shanghai), Ticket(seatNo=1170186519, startStation=nanjing, destStation=shanghai), Ticket(seatNo=381444158, startStation=nanjing, destStation=shanghai), Ticket(seatNo=489326382, startStation=nanjing, destStation=shanghai), Ticket(seatNo=831631968, startStation=nanjing, destStation=shanghai), Ticket(seatNo=1364118835, startStation=nanjing, destStation=shanghai), Ticket(seatNo=382644794, startStation=nanjing, destStation=shanghai)]}]', '2026-03-17T15:28:25.685087670+08:00 2026-03-17 07:28:25.684  INFO 1 --- [io-12031-exec-8] order.service.OrderServiceImpl           : [getSoldTickets][Left ticket info][info is: LeftTicketInfo{soldTickets=[Ticket(seatNo=30190940, startStation=shanghai, destStation=suzhou), Ticket(seatNo=1009163842, startStation=shanghai, destStation=suzhou), Ticket(seatNo=1841099850, startStation=shanghai, destStation=suzhou), Ticket(seatNo=321616867, startStation=shanghai, destStation=suzhou), Ticket(seatNo=1380237017, startStation=shanghai, destStation=suzhou), Ticket(seatNo=2092040204, startStation=shanghai, destStation=suzhou), Ticket(seatNo=52598269, startStation=shanghai, destStation=suzhou), Ticket(seatNo=2084623041, startStation=shanghai, destStation=suzhou), Ticket(seatNo=1126970214, startStation=shanghai, destStation=suzhou), Ticket(seatNo=505358073, startStation=shanghai, destStation=suzhou), Ticket(seatNo=1277375133, startStation=shanghai, destStation=suzhou), Ticket(seatNo=564972609, startStation=shanghai, destStation=suzhou), Ticket(seatNo=87965495, startStation=shanghai, destStation=suzhou), Ticket(seatNo=1416568355, startStation=shanghai, destStation=suzhou), Ticket(seatNo=1966861394, startStation=shanghai, destStation=suzhou), Ticket(seatNo=1038426397, startStation=shanghai, destStation=suzhou), Ticket(seatNo=1824587685, startStation=shanghai, destStation=suzhou), Ticket(seatNo=541680782, startStation=shanghai, destStation=suzhou), Ticket(seatNo=200618474, startStation=shanghai, destStation=suzhou), Ticket(seatNo=1960855063, startStation=shanghai, destStation=suzhou), Ticket(seatNo=159252087, startStation=shanghai, destStation=suzhou), Ticket(seatNo=1284715007, startStation=shanghai, destStation=suzhou), Ticket(seatNo=1689213670, startStation=shanghai, destStation=suzhou), Ticket(seatNo=391542024, startStation=shanghai, destStation=suzhou), Ticket(seatNo=1567038774, startStation=shanghai, destStation=suzhou), Ticket(seatNo=739499875, startStation=shanghai, destStation=suzhou), Ticket(seatNo=1331086628, startStation=shanghai, destStation=suzhou), Ticket(seatNo=29532186, startStation=shanghai, destStation=suzhou), Ticket(seatNo=701864957, startStation=shanghai, destStation=suzhou), Ticket(seatNo=1500830788, startStation=shanghai, destStation=suzhou), Ticket(seatNo=807582416, startStation=shanghai, destStation=suzhou), Ticket(seatNo=536817310, startStation=shanghai, destStation=suzhou), Ticket(seatNo=1081155880, startStation=shanghai, destStation=suzhou), Ticket(seatNo=1891848688, startStation=shanghai, destStation=suzhou), Ticket(seatNo=1265127588, startStation=shanghai, destStation=suzhou), Ticket(seatNo=787266603, startStation=shanghai, destStation=suzhou), Ticket(seatNo=1782471418, startStation=shanghai, destStation=suzhou), Ticket(seatNo=515168416, startStation=shanghai, destStation=suzhou), Ticket(seatNo=2097578236, startStation=shanghai, destStation=suzhou), Ticket(seatNo=1607332532, startStation=shanghai, destStation=suzhou), Ticket(seatNo=1772525008, startStation=shanghai, destStation=suzhou), Ticket(seatNo=1916848482, startStation=shanghai, destStation=suzhou), Ticket(seatNo=1819932468, startStation=shanghai, destStation=suzhou), Ticket(seatNo=732996433, startStation=shanghai, destStation=suzhou), Ticket(seatNo=1859749538, startStation=shanghai, destStation=suzhou), Ticket(seatNo=1440409473, startStation=shanghai, destStation=suzhou), Ticket(seatNo=1971880857, startStation=shanghai, destStation=suzhou), Ticket(seatNo=1200434493, startStation=shanghai, destStation=suzhou), Ticket(seatNo=71791448, startStation=shanghai, destStation=suzhou), Ticket(seatNo=525792341, startStation=shanghai, destStation=suzhou), Ticket(seatNo=801824380, startStation=shanghai, destStation=suzhou), Ticket(seatNo=1255369961, startStation=shanghai, destStation=suzhou), Ticket(seatNo=436329588, startStation=shanghai, destStation=suzhou)]}]', '2026-03-17T15:28:25.692863562+08:00 2026-03-17 07:28:25.692  INFO 1 --- [io-12031-exec-4] order.controller.OrderController         : [createNewOrder][Create Order][from shanghai to suzhou at 2026-03-21]', '2026-03-17T15:28:25.692886461+08:00 2026-03-17 07:28:25.692  INFO 1 --- [io-12031-exec-4] order.service.OrderServiceImpl           : [create][Create Order][Ready to Create Order]', '2026-03-17T15:28:25.695319286+08:00 2026-03-17 07:28:25.695  INFO 1 --- [io-12031-exec-2] order.controller.OrderController         : [checkSecurityAboutOrder][Security Info Get][AccountId:4d2a46c7-71cb-4cf1-b5bb-b68406d9da6f]', '2026-03-17T15:28:25.753384000+08:00 2026-03-17 07:28:25.753  INFO 1 --- [io-12031-exec-6] order.controller.OrderController         : [getSoldTickets][Get Sold Ticket][Travel Date: 2026-03-21]', '2026-03-17T15:28:25.783553730+08:00 2026-03-17 07:28:25.783  INFO 1 --- [io-12031-exec-6] order.service.OrderServiceImpl           : [getSoldTickets][Left ticket info][info is: LeftTicketInfo{soldTickets=[Ticket(seatNo=364228348, startStation=nanjing, destStation=shanghai), Ticket(seatNo=1899796432, startStation=nanjing, destStation=shanghai), Ticket(seatNo=1075390666, startStation=nanjing, destStation=shanghai), Ticket(seatNo=1617765932, startStation=nanjing, destStation=shanghai), Ticket(seatNo=1327602212, startStation=nanjing, destStation=shanghai), Ticket(seatNo=2068124953, startStation=nanjing, destStation=shanghai), Ticket(seatNo=1631301104, startStation=nanjing, destStation=shanghai), Ticket(seatNo=1004049206, startStation=nanjing, destStation=shanghai), Ticket(seatNo=2085719474, startStation=nanjing, destStation=shanghai), Ticket(seatNo=901320188, startStation=nanjing, destStation=shanghai), Ticket(seatNo=50860655, startStation=nanjing, destStation=shanghai), Ticket(seatNo=424179862, startStation=nanjing, destStation=shanghai), Ticket(seatNo=698139500, startStation=nanjing, destStation=shanghai), Ticket(seatNo=567755597, startStation=nanjing, destStation=shanghai), Ticket(seatNo=648364958, startStation=nanjing, destStation=shanghai), Ticket(seatNo=1576834959, startStation=nanjing, destStation=shanghai), Ticket(seatNo=1300777387, startStation=nanjing, destStation=shanghai), Ticket(seatNo=540127418, startStation=nanjing, destStation=shanghai), Ticket(seatNo=1459726126, startStation=nanjing, destStation=shanghai), Ticket(seatNo=1170186519, startStation=nanjing, destStation=shanghai), Ticket(seatNo=381444158, startStation=nanjing, destStation=shanghai), Ticket(seatNo=489326382, startStation=nanjing, destStation=shanghai), Ticket(seatNo=831631968, startStation=nanjing, destStation=shanghai), Ticket(seatNo=1364118835, startStation=nanjing, destStation=shanghai), Ticket(seatNo=382644794, startStation=nanjing, destStation=shanghai)]}]', '2026-03-17T15:28:25.792312212+08:00 2026-03-17 07:28:25.792  INFO 1 --- [io-12031-exec-1] order.controller.OrderController         : [createNewOrder][Create Order][from nanjing to shanghai at 2026-03-21]', '2026-03-17T15:28:25.792326145+08:00 2026-03-17 07:28:25.792  INFO 1 --- [io-12031-exec-1] order.service.OrderServiceImpl           : [create][Create Order][Ready to Create Order]', '2026-03-17T15:28:25.889642352+08:00 2026-03-17 07:28:25.889  INFO 1 --- [io-12031-exec-5] order.controller.OrderController         : [getSoldTickets][Get Sold Ticket][Travel Date: 2026-03-19]', '2026-03-17T15:28:25.892112506+08:00 2026-03-17 07:28:25.891  INFO 1 --- [io-12031-exec-5] order.service.OrderServiceImpl           : [getSoldTickets][Left ticket info][info is: LeftTicketInfo{soldTickets=[Ticket(seatNo=1584624037, startStation=shanghai, destStation=suzhou), Ticket(seatNo=2103131969, startStation=shanghai, destStation=suzhou), Ticket(seatNo=425552672, startStation=shanghai, destStation=suzhou), Ticket(seatNo=1848754328, startStation=shanghai, destStation=suzhou), Ticket(seatNo=1785944690, startStation=shanghai, destStation=suzhou), Ticket(seatNo=2077937189, startStation=shanghai, destStation=suzhou), Ticket(seatNo=1253190698, startStation=shanghai, destStation=suzhou), Ticket(seatNo=475243906, startStation=shanghai, destStation=suzhou), Ticket(seatNo=1285583650, startStation=shanghai, destStation=suzhou), Ticket(seatNo=2144879680, startStation=shanghai, destStation=suzhou), Ticket(seatNo=808451008, startStation=shanghai, destStation=suzhou), Ticket(seatNo=299047532, startStation=shanghai, destStation=suzhou), Ticket(seatNo=1730052191, startStation=shanghai, destStation=suzhou), Ticket(seatNo=1644427750, startStation=shanghai, destStation=suzhou), Ticket(seatNo=771856980, startStation=shanghai, destStation=suzhou), Ticket(seatNo=2029024329, startStation=shanghai, destStation=suzhou), Ticket(seatNo=659871088, startStation=shanghai, destStation=suzhou), Ticket(seatNo=1275811613, startStation=shanghai, destStation=suzhou), Ticket(seatNo=2011964404, startStation=shanghai, destStation=suzhou), Ticket(seatNo=989337069, startStation=shanghai, destStation=suzhou), Ticket(seatNo=107923948, startStation=shanghai, destStation=suzhou), Ticket(seatNo=727683318, startStation=shanghai, destStation=suzhou), Ticket(seatNo=1860047977, startStation=shanghai, destStation=suzhou), Ticket(seatNo=289349958, startStation=shanghai, destStation=suzhou), Ticket(seatNo=704951128, startStation=shanghai, destStation=suzhou), Ticket(seatNo=1079394204, startStation=shanghai, destStation=suzhou), Ticket(seatNo=361977784, startStation=shanghai, destStation=suzhou), Ticket(seatNo=2137760005, startStation=shanghai, destStation=suzhou), Ticket(seatNo=1234908210, startStation=shanghai, destStation=suzhou), Ticket(seatNo=1671684261, startStation=shanghai, destStation=suzhou), Ticket(seatNo=865572279, startStation=shanghai, destStation=suzhou), Ticket(seatNo=34834027, startStation=shanghai, destStation=suzhou), Ticket(seatNo=1589319729, startStation=shanghai, destStation=suzhou), Ticket(seatNo=1019262532, startStation=shanghai, destStation=suzhou), Ticket(seatNo=569644744, startStation=shanghai, destStation=suzhou), Ticket(seatNo=498236030, startStation=shanghai, destStation=suzhou), Ticket(seatNo=1227835050, startStation=shanghai, destStation=suzhou), Ticket(seatNo=820589140, startStation=shanghai, destStation=suzhou), Ticket(seatNo=1645383859, startStation=shanghai, destStation=suzhou), Ticket(seatNo=1063084328, startStation=shanghai, destStation=suzhou), Ticket(seatNo=958094937, startStation=shanghai, destStation=suzhou), Ticket(seatNo=874785764, startStation=shanghai, destStation=suzhou), Ticket(seatNo=1162324666, startStation=shanghai, destStation=suzhou), Ticket(seatNo=931598529, startStation=shanghai, destStation=suzhou), Ticket(seatNo=833469220, startStation=shanghai, destStation=suzhou), Ticket(seatNo=2082213886, startStation=shanghai, destStation=suzhou)]}]', '2026-03-17T15:28:25.893773573+08:00 2026-03-17 07:28:25.893  INFO 1 --- [io-12031-exec-4] order.service.OrderServiceImpl           : [create][Order Create Success][Order Price][OrderId:be9052c7-8324-40bc-8290-ac113c3bb0f7 , Price: 50.0]', '2026-03-17T15:28:25.903286983+08:00 2026-03-17 07:28:25.903  INFO 1 --- [io-12031-exec-1] order.service.OrderServiceImpl           : [create][Order Create Success][Order Price][OrderId:acaa3ad6-ce42-4ea1-bdfe-179d1d8b43a8 , Price: 250.0]', '2026-03-17T15:28:25.983604679+08:00 2026-03-17 07:28:25.983  INFO 1 --- [io-12031-exec-7] order.controller.OrderController         : [getSoldTickets][Get Sold Ticket][Travel Date: 2026-03-19]', '2026-03-17T15:28:25.985823371+08:00 2026-03-17 07:28:25.985  INFO 1 --- [io-12031-exec-7] order.service.OrderServiceImpl           : [getSoldTickets][Left ticket info][info is: LeftTicketInfo{soldTickets=[Ticket(seatNo=1584624037, startStation=shanghai, destStation=suzhou), Ticket(seatNo=2103131969, startStation=shanghai, destStation=suzhou), Ticket(seatNo=425552672, startStation=shanghai, destStation=suzhou), Ticket(seatNo=1848754328, startStation=shanghai, destStation=suzhou), Ticket(seatNo=1785944690, startStation=shanghai, destStation=suzhou), Ticket(seatNo=2077937189, startStation=shanghai, destStation=suzhou), Ticket(seatNo=1253190698, startStation=shanghai, destStation=suzhou), Ticket(seatNo=475243906, startStation=shanghai, destStation=suzhou), Ticket(seatNo=1285583650, startStation=shanghai, destStation=suzhou), Ticket(seatNo=2144879680, startStation=shanghai, destStation=suzhou), Ticket(seatNo=808451008, startStation=shanghai, destStation=suzhou), Ticket(seatNo=299047532, startStation=shanghai, destStation=suzhou), Ticket(seatNo=1730052191, startStation=shanghai, destStation=suzhou), Ticket(seatNo=1644427750, startStation=shanghai, destStation=suzhou), Ticket(seatNo=771856980, startStation=shanghai, destStation=suzhou), Ticket(seatNo=2029024329, startStation=shanghai, destStation=suzhou), Ticket(seatNo=659871088, startStation=shanghai, destStation=suzhou), Ticket(seatNo=1275811613, startStation=shanghai, destStation=suzhou), Ticket(seatNo=2011964404, startStation=shanghai, destStation=suzhou), Ticket(seatNo=989337069, startStation=shanghai, destStation=suzhou), Ticket(seatNo=107923948, startStation=shanghai, destStation=suzhou), Ticket(seatNo=727683318, startStation=shanghai, destStation=suzhou), Ticket(seatNo=1860047977, startStation=shanghai, destStation=suzhou), Ticket(seatNo=289349958, startStation=shanghai, destStation=suzhou), Ticket(seatNo=704951128, startStation=shanghai, destStation=suzhou), Ticket(seatNo=1079394204, startStation=shanghai, destStation=suzhou), Ticket(seatNo=361977784, startStation=shanghai, destStation=suzhou), Ticket(seatNo=2137760005, startStation=shanghai, destStation=suzhou), Ticket(seatNo=1234908210, startStation=shanghai, destStation=suzhou), Ticket(seatNo=1671684261, startStation=shanghai, destStation=suzhou), Ticket(seatNo=865572279, startStation=shanghai, destStation=suzhou), Ticket(seatNo=34834027, startStation=shanghai, destStation=suzhou), Ticket(seatNo=1589319729, startStation=shanghai, destStation=suzhou), Ticket(seatNo=1019262532, startStation=shanghai, destStation=suzhou), Ticket(seatNo=569644744, startStation=shanghai, destStation=suzhou), Ticket(seatNo=498236030, startStation=shanghai, destStation=suzhou), Ticket(seatNo=1227835050, startStation=shanghai, destStation=suzhou), Ticket(seatNo=820589140, startStation=shanghai, destStation=suzhou), Ticket(seatNo=1645383859, startStation=shanghai, destStation=suzhou), Ticket(seatNo=1063084328, startStation=shanghai, destStation=suzhou), Ticket(seatNo=958094937, startStation=shanghai, destStation=suzhou), Ticket(seatNo=874785764, startStation=shanghai, destStation=suzhou), Ticket(seatNo=1162324666, startStation=shanghai, destStation=suzhou), Ticket(seatNo=931598529, startStation=shanghai, destStation=suzhou), Ticket(seatNo=833469220, startStation=shanghai, destStation=suzhou), Ticket(seatNo=2082213886, startStation=shanghai, destStation=suzhou)]}]', '2026-03-17T15:28:26.083402254+08:00 2026-03-17 07:28:26.083  INFO 1 --- [io-12031-exec-9] order.controller.OrderController         : [getSoldTickets][Get Sold Ticket][Travel Date: 2026-03-21]', '2026-03-17T15:28:26.085480071+08:00 2026-03-17 07:28:26.085  INFO 1 --- [io-12031-exec-9] order.service.OrderServiceImpl           : [getSoldTickets][Left ticket info][info is: LeftTicketInfo{soldTickets=[Ticket(seatNo=364228348, startStation=nanjing, destStation=shanghai), Ticket(seatNo=1899796432, startStation=nanjing, destStation=shanghai), Ticket(seatNo=1075390666, startStation=nanjing, destStation=shanghai), Ticket(seatNo=1617765932, startStation=nanjing, destStation=shanghai), Ticket(seatNo=1327602212, startStation=nanjing, destStation=shanghai), Ticket(seatNo=2068124953, startStation=nanjing, destStation=shanghai), Ticket(seatNo=1631301104, startStation=nanjing, destStation=shanghai), Ticket(seatNo=1004049206, startStation=nanjing, destStation=shanghai), Ticket(seatNo=2085719474, startStation=nanjing, destStation=shanghai), Ticket(seatNo=901320188, startStation=nanjing, destStation=shanghai), Ticket(seatNo=50860655, startStation=nanjing, destStation=shanghai), Ticket(seatNo=424179862, startStation=nanjing, destStation=shanghai), Ticket(seatNo=698139500, startStation=nanjing, destStation=shanghai), Ticket(seatNo=567755597, startStation=nanjing, destStation=shanghai), Ticket(seatNo=648364958, startStation=nanjing, destStation=shanghai), Ticket(seatNo=1576834959, startStation=nanjing, destStation=shanghai), Ticket(seatNo=1300777387, startStation=nanjing, destStation=shanghai), Ticket(seatNo=540127418, startStation=nanjing, destStation=shanghai), Ticket(seatNo=524085809, startStation=nanjing, destStation=shanghai), Ticket(seatNo=1459726126, startStation=nanjing, destStation=shanghai), Ticket(seatNo=1170186519, startStation=nanjing, destStation=shanghai), Ticket(seatNo=381444158, startStation=nanjing, destStation=shanghai), Ticket(seatNo=489326382, startStation=nanjing, destStation=shanghai), Ticket(seatNo=831631968, startStation=nanjing, destStation=shanghai), Ticket(seatNo=1364118835, startStation=nanjing, destStation=shanghai), Ticket(seatNo=382644794, startStation=nanjing, destStation=shanghai)]}]', '2026-03-17T15:28:26.128558980+08:00 2026-03-17 07:28:26.128  INFO 1 --- [o-12031-exec-10] order.controller.OrderController         : [getSoldTickets][Get Sold Ticket][Travel Date: 2026-03-21]', '2026-03-17T15:28:26.130490073+08:00 2026-03-17 07:28:26.130  INFO 1 --- [o-12031-exec-10] order.service.OrderServiceImpl           : [getSoldTickets][Left ticket info][info is: LeftTicketInfo{soldTickets=[Ticket(seatNo=364228348, startStation=nanjing, destStation=shanghai), Ticket(seatNo=1899796432, startStation=nanjing, destStation=shanghai), Ticket(seatNo=1075390666, startStation=nanjing, destStation=shanghai), Ticket(seatNo=1617765932, startStation=nanjing, destStation=shanghai), Ticket(seatNo=1327602212, startStation=nanjing, destStation=shanghai), Ticket(seatNo=2068124953, startStation=nanjing, destStation=shanghai), Ticket(seatNo=1631301104, startStation=nanjing, destStation=shanghai), Ticket(seatNo=1004049206, startStation=nanjing, destStation=shanghai), Ticket(seatNo=2085719474, startStation=nanjing, destStation=shanghai), Ticket(seatNo=901320188, startStation=nanjing, destStation=shanghai), Ticket(seatNo=50860655, startStation=nanjing, destStation=shanghai), Ticket(seatNo=424179862, startStation=nanjing, destStation=shanghai), Ticket(seatNo=698139500, startStation=nanjing, destStation=shanghai), Ticket(seatNo=567755597, startStation=nanjing, destStation=shanghai), Ticket(seatNo=648364958, startStation=nanjing, destStation=shanghai), Ticket(seatNo=1576834959, startStation=nanjing, destStation=shanghai), Ticket(seatNo=1300777387, startStation=nanjing, destStation=shanghai), Ticket(seatNo=540127418, startStation=nanjing, destStation=shanghai), Ticket(seatNo=524085809, startStation=nanjing, destStation=shanghai), Ticket(seatNo=1459726126, startStation=nanjing, destStation=shanghai), Ticket(seatNo=1170186519, startStation=nanjing, destStation=shanghai), Ticket(seatNo=381444158, startStation=nanjing, destStation=shanghai), Ticket(seatNo=489326382, startStation=nanjing, destStation=shanghai), Ticket(seatNo=831631968, startStation=nanjing, destStation=shanghai), Ticket(seatNo=1364118835, startStation=nanjing, destStation=shanghai), Ticket(seatNo=382644794, startStation=nanjing, destStation=shanghai)]}]', '2026-03-17T15:28:26.150091830+08:00 2026-03-17 07:28:26.149  INFO 1 --- [io-12031-exec-8] order.controller.OrderController         : [getSoldTickets][Get Sold Ticket][Travel Date: 2026-03-19]', '2026-03-17T15:28:26.152177531+08:00 2026-03-17 07:28:26.152  INFO 1 --- [io-12031-exec-8] order.service.OrderServiceImpl           : [getSoldTickets][Left ticket info][info is: LeftTicketInfo{soldTickets=[Ticket(seatNo=1584624037, startStation=shanghai, destStation=suzhou), Ticket(seatNo=2103131969, startStation=shanghai, destStation=suzhou), Ticket(seatNo=425552672, startStation=shanghai, destStation=suzhou), Ticket(seatNo=1848754328, startStation=shanghai, destStation=suzhou), Ticket(seatNo=1785944690, startStation=shanghai, destStation=suzhou), Ticket(seatNo=2077937189, startStation=shanghai, destStation=suzhou), Ticket(seatNo=1253190698, startStation=shanghai, destStation=suzhou), Ticket(seatNo=475243906, startStation=shanghai, destStation=suzhou), Ticket(seatNo=1285583650, startStation=shanghai, destStation=suzhou), Ticket(seatNo=2144879680, startStation=shanghai, destStation=suzhou), Ticket(seatNo=808451008, startStation=shanghai, destStation=suzhou), Ticket(seatNo=299047532, startStation=shanghai, destStation=suzhou), Ticket(seatNo=1730052191, startStation=shanghai, destStation=suzhou), Ticket(seatNo=1644427750, startStation=shanghai, destStation=suzhou), Ticket(seatNo=771856980, startStation=shanghai, destStation=suzhou), Ticket(seatNo=2029024329, startStation=shanghai, destStation=suzhou), Ticket(seatNo=659871088, startStation=shanghai, destStation=suzhou), Ticket(seatNo=1275811613, startStation=shanghai, destStation=suzhou), Ticket(seatNo=2011964404, startStation=shanghai, destStation=suzhou), Ticket(seatNo=989337069, startStation=shanghai, destStation=suzhou), Ticket(seatNo=107923948, startStation=shanghai, destStation=suzhou), Ticket(seatNo=727683318, startStation=shanghai, destStation=suzhou), Ticket(seatNo=1860047977, startStation=shanghai, destStation=suzhou), Ticket(seatNo=289349958, startStation=shanghai, destStation=suzhou), Ticket(seatNo=704951128, startStation=shanghai, destStation=suzhou), Ticket(seatNo=1079394204, startStation=shanghai, destStation=suzhou), Ticket(seatNo=361977784, startStation=shanghai, destStation=suzhou), Ticket(seatNo=2137760005, startStation=shanghai, destStation=suzhou), Ticket(seatNo=1234908210, startStation=shanghai, destStation=suzhou), Ticket(seatNo=1671684261, startStation=shanghai, destStation=suzhou), Ticket(seatNo=865572279, startStation=shanghai, destStation=suzhou), Ticket(seatNo=34834027, startStation=shanghai, destStation=suzhou), Ticket(seatNo=1589319729, startStation=shanghai, destStation=suzhou), Ticket(seatNo=1019262532, startStation=shanghai, destStation=suzhou), Ticket(seatNo=569644744, startStation=shanghai, destStation=suzhou), Ticket(seatNo=498236030, startStation=shanghai, destStation=suzhou), Ticket(seatNo=1227835050, startStation=shanghai, destStation=suzhou), Ticket(seatNo=820589140, startStation=shanghai, destStation=suzhou), Ticket(seatNo=1645383859, startStation=shanghai, destStation=suzhou), Ticket(seatNo=1063084328, startStation=shanghai, destStation=suzhou), Ticket(seatNo=958094937, startStation=shanghai, destStation=suzhou), Ticket(seatNo=874785764, startStation=shanghai, destStation=suzhou), Ticket(seatNo=1162324666, startStation=shanghai, destStation=suzhou), Ticket(seatNo=931598529, startStation=shanghai, destStation=suzhou), Ticket(seatNo=833469220, startStation=shanghai, destStation=suzhou), Ticket(seatNo=2082213886, startStation=shanghai, destStation=suzhou)]}]', '2026-03-17T15:28:26.183551490+08:00 2026-03-17 07:28:26.183  INFO 1 --- [io-12031-exec-3] order.controller.OrderController         : [createNewOrder][Create Order][from shanghai to suzhou at 2026-03-19]', '2026-03-17T15:28:26.183566160+08:00 2026-03-17 07:28:26.183  INFO 1 --- [io-12031-exec-3] order.service.OrderServiceImpl           : [create][Create Order][Ready to Create Order]', '2026-03-17T15:28:26.198566567+08:00 2026-03-17 07:28:26.198  INFO 1 --- [io-12031-exec-3] order.service.OrderServiceImpl           : [create][Order Create Success][Order Price][OrderId:8da4c190-bf76-4a4e-895e-6563da120919 , Price: 50.0]', '2026-03-17T15:28:26.249042070+08:00 2026-03-17 07:28:26.248  INFO 1 --- [io-12031-exec-6] order.controller.OrderController         : [getSoldTickets][Get Sold Ticket][Travel Date: 2026-03-21]', '2026-03-17T15:28:26.282649802+08:00 2026-03-17 07:28:26.282  INFO 1 --- [io-12031-exec-6] order.service.OrderServiceImpl           : [getSoldTickets][Left ticket info][info is: LeftTicketInfo{soldTickets=[Ticket(seatNo=364228348, startStation=nanjing, destStation=shanghai), Ticket(seatNo=1899796432, startStation=nanjing, destStation=shanghai), Ticket(seatNo=1075390666, startStation=nanjing, destStation=shanghai), Ticket(seatNo=1617765932, startStation=nanjing, destStation=shanghai), Ticket(seatNo=1327602212, startStation=nanjing, destStation=shanghai), Ticket(seatNo=2068124953, startStation=nanjing, destStation=shanghai), Ticket(seatNo=1631301104, startStation=nanjing, destStation=shanghai), Ticket(seatNo=1004049206, startStation=nanjing, destStation=shanghai), Ticket(seatNo=2085719474, startStation=nanjing, destStation=shanghai), Ticket(seatNo=901320188, startStation=nanjing, destStation=shanghai), Ticket(seatNo=50860655, startStation=nanjing, destStation=shanghai), Ticket(seatNo=424179862, startStation=nanjing, destStation=shanghai), Ticket(seatNo=698139500, startStation=nanjing, destStation=shanghai), Ticket(seatNo=567755597, startStation=nanjing, destStation=shanghai), Ticket(seatNo=648364958, startStation=nanjing, destStation=shanghai), Ticket(seatNo=1576834959, startStation=nanjing, destStation=shanghai), Ticket(seatNo=1300777387, startStation=nanjing, destStation=shanghai), Ticket(seatNo=540127418, startStation=nanjing, destStation=shanghai), Ticket(seatNo=524085809, startStation=nanjing, destStation=shanghai), Ticket(seatNo=1459726126, startStation=nanjing, destStation=shanghai), Ticket(seatNo=1170186519, startStation=nanjing, destStation=shanghai), Ticket(seatNo=381444158, startStation=nanjing, destStation=shanghai), Ticket(seatNo=489326382, startStation=nanjing, destStation=shanghai), Ticket(seatNo=831631968, startStation=nanjing, destStation=shanghai), Ticket(seatNo=1364118835, startStation=nanjing, destStation=shanghai), Ticket(seatNo=382644794, startStation=nanjing, destStation=shanghai)]}]', '2026-03-17T15:28:26.291654517+08:00 2026-03-17 07:28:26.291  INFO 1 --- [io-12031-exec-2] order.controller.OrderController         : [createNewOrder][Create Order][from nanjing to shanghai at 2026-03-21]', '2026-03-17T15:28:26.291836217+08:00 2026-03-17 07:28:26.291  INFO 1 --- [io-12031-exec-2] order.service.OrderServiceImpl           : [create][Create Order][Ready to Create Order]', '2026-03-17T15:28:26.306599159+08:00 2026-03-17 07:28:26.306  INFO 1 --- [io-12031-exec-2] order.service.OrderServiceImpl           : [create][Order Create Success][Order Price][OrderId:74ead722-b5cc-4259-9be7-888763c3426f , Price: 250.0]', '2026-03-17T15:28:26.786183779+08:00 2026-03-17 07:28:26.786  INFO 1 --- [io-12031-exec-5] order.controller.OrderController         : [checkSecurityAboutOrder][Security Info Get][AccountId:4d2a46c7-71cb-4cf1-b5bb-b68406d9da6f]', '2026-03-17T15:28:26.886090494+08:00 2026-03-17 07:28:26.885  INFO 1 --- [io-12031-exec-1] order.controller.OrderController         : [getSoldTickets][Get Sold Ticket][Travel Date: 2026-03-20]', '2026-03-17T15:28:26.892793469+08:00 2026-03-17 07:28:26.892  INFO 1 --- [io-12031-exec-1] order.service.OrderServiceImpl           : [getSoldTickets][Left ticket info][info is: LeftTicketInfo{soldTickets=[Ticket(seatNo=1187794744, startStation=shanghai, destStation=suzhou), Ticket(seatNo=1005996424, startStation=shanghai, destStation=suzhou), Ticket(seatNo=550605030, startStation=shanghai, destStation=suzhou), Ticket(seatNo=1043070192, startStation=shanghai, destStation=suzhou), Ticket(seatNo=424956339, startStation=shanghai, destStation=suzhou), Ticket(seatNo=1075801305, startStation=shanghai, destStation=suzhou), Ticket(seatNo=1404956683, startStation=shanghai, destStation=suzhou), Ticket(seatNo=639321801, startStation=shanghai, destStation=suzhou), Ticket(seatNo=1266010173, startStation=shanghai, destStation=suzhou), Ticket(seatNo=2088314426, startStation=shanghai, destStation=suzhou), Ticket(seatNo=621347152, startStation=shanghai, destStation=suzhou), Ticket(seatNo=1170691720, startStation=shanghai, destStation=suzhou), Ticket(seatNo=950026791, startStation=shanghai, destStation=suzhou), Ticket(seatNo=719386812, startStation=shanghai, destStation=suzhou), Ticket(seatNo=1038773466, startStation=shanghai, destStation=suzhou), Ticket(seatNo=868690634, startStation=shanghai, destStation=suzhou), Ticket(seatNo=1097923998, startStation=shanghai, destStation=suzhou), Ticket(seatNo=1575655367, startStation=shanghai, destStation=suzhou), Ticket(seatNo=148940075, startStation=shanghai, destStation=suzhou), Ticket(seatNo=2078789814, startStation=shanghai, destStation=suzhou), Ticket(seatNo=1162390413, startStation=shanghai, destStation=suzhou), Ticket(seatNo=13091665, startStation=shanghai, destStation=suzhou), Ticket(seatNo=1277327840, startStation=shanghai, destStation=suzhou), Ticket(seatNo=46461143, startStation=shanghai, destStation=suzhou), Ticket(seatNo=1364621577, startStation=shanghai, destStation=suzhou), Ticket(seatNo=539433495, startStation=shanghai, destStation=suzhou), Ticket(seatNo=636241848, startStation=shanghai, destStation=suzhou), Ticket(seatNo=746433586, startStation=shanghai, destStation=suzhou), Ticket(seatNo=1596798027, startStation=shanghai, destStation=suzhou), Ticket(seatNo=1565121914, startStation=shanghai, destStation=suzhou), Ticket(seatNo=1782899234, startStation=shanghai, destStation=suzhou), Ticket(seatNo=2019093799, startStation=shanghai, destStation=suzhou), Ticket(seatNo=242329276, startStation=shanghai, destStation=suzhou), Ticket(seatNo=1621940334, startStation=shanghai, destStation=suzhou), Ticket(seatNo=815020362, startStation=shanghai, destStation=suzhou), Ticket(seatNo=382510820, startStation=shanghai, destStation=suzhou), Ticket(seatNo=1376324467, startStation=shanghai, destStation=suzhou), Ticket(seatNo=139228999, startStation=shanghai, destStation=suzhou), Ticket(seatNo=595580257, startStation=shanghai, destStation=suzhou), Ticket(seatNo=544629048, startStation=shanghai, destStation=suzhou), Ticket(seatNo=2077168874, startStation=shanghai, destStation=suzhou), Ticket(seatNo=659142382, startStation=shanghai, destStation=suzhou), Ticket(seatNo=2014977321, startStation=shanghai, destStation=suzhou), Ticket(seatNo=1951462072, startStation=shanghai, destStation=suzhou), Ticket(seatNo=1305640912, startStation=shanghai, destStation=suzhou), Ticket(seatNo=1841724331, startStation=shanghai, destStation=suzhou), Ticket(seatNo=197205266, startStation=shanghai, destStation=suzhou), Ticket(seatNo=1864335348, startStation=shanghai, destStation=suzhou), Ticket(seatNo=644887434, startStation=shanghai, destStation=suzhou), Ticket(seatNo=210736504, startStation=shanghai, destStation=suzhou), Ticket(seatNo=514064375, startStation=shanghai, destStation=suzhou), Ticket(seatNo=1111693724, startStation=shanghai, destStation=suzhou)]}]', '2026-03-17T15:28:26.981970051+08:00 2026-03-17 07:28:26.981  INFO 1 --- [io-12031-exec-7] order.controller.OrderController         : [getSoldTickets][Get Sold Ticket][Travel Date: 2026-03-20]', '2026-03-17T15:28:26.984379813+08:00 2026-03-17 07:28:26.984  INFO 1 --- [io-12031-exec-7] order.service.OrderServiceImpl           : [getSoldTickets][Left ticket info][info is: LeftTicketInfo{soldTickets=[Ticket(seatNo=1187794744, startStation=shanghai, destStation=suzhou), Ticket(seatNo=1005996424, startStation=shanghai, destStation=suzhou), Ticket(seatNo=550605030, startStation=shanghai, destStation=suzhou), Ticket(seatNo=1043070192, startStation=shanghai, destStation=suzhou), Ticket(seatNo=424956339, startStation=shanghai, destStation=suzhou), Ticket(seatNo=1075801305, startStation=shanghai, destStation=suzhou), Ticket(seatNo=1404956683, startStation=shanghai, destStation=suzhou), Ticket(seatNo=639321801, startStation=shanghai, destStation=suzhou), Ticket(seatNo=1266010173, startStation=shanghai, destStation=suzhou), Ticket(seatNo=2088314426, startStation=shanghai, destStation=suzhou), Ticket(seatNo=621347152, startStation=shanghai, destStation=suzhou), Ticket(seatNo=1170691720, startStation=shanghai, destStation=suzhou), Ticket(seatNo=950026791, startStation=shanghai, destStation=suzhou), Ticket(seatNo=719386812, startStation=shanghai, destStation=suzhou), Ticket(seatNo=1038773466, startStation=shanghai, destStation=suzhou), Ticket(seatNo=868690634, startStation=shanghai, destStation=suzhou), Ticket(seatNo=1097923998, startStation=shanghai, destStation=suzhou), Ticket(seatNo=1575655367, startStation=shanghai, destStation=suzhou), Ticket(seatNo=148940075, startStation=shanghai, destStation=suzhou), Ticket(seatNo=2078789814, startStation=shanghai, destStation=suzhou), Ticket(seatNo=1162390413, startStation=shanghai, destStation=suzhou), Ticket(seatNo=13091665, startStation=shanghai, destStation=suzhou), Ticket(seatNo=1277327840, startStation=shanghai, destStation=suzhou), Ticket(seatNo=46461143, startStation=shanghai, destStation=suzhou), Ticket(seatNo=1364621577, startStation=shanghai, destStation=suzhou), Ticket(seatNo=539433495, startStation=shanghai, destStation=suzhou), Ticket(seatNo=636241848, startStation=shanghai, destStation=suzhou), Ticket(seatNo=746433586, startStation=shanghai, destStation=suzhou), Ticket(seatNo=1596798027, startStation=shanghai, destStation=suzhou), Ticket(seatNo=1565121914, startStation=shanghai, destStation=suzhou), Ticket(seatNo=1782899234, startStation=shanghai, destStation=suzhou), Ticket(seatNo=2019093799, startStation=shanghai, destStation=suzhou), Ticket(seatNo=242329276, startStation=shanghai, destStation=suzhou), Ticket(seatNo=1621940334, startStation=shanghai, destStation=suzhou), Ticket(seatNo=815020362, startStation=shanghai, destStation=suzhou), Ticket(seatNo=382510820, startStation=shanghai, destStation=suzhou), Ticket(seatNo=1376324467, startStation=shanghai, destStation=suzhou), Ticket(seatNo=139228999, startStation=shanghai, destStation=suzhou), Ticket(seatNo=595580257, startStation=shanghai, destStation=suzhou), Ticket(seatNo=544629048, startStation=shanghai, destStation=suzhou), Ticket(seatNo=2077168874, startStation=shanghai, destStation=suzhou), Ticket(seatNo=659142382, startStation=shanghai, destStation=suzhou), Ticket(seatNo=2014977321, startStation=shanghai, destStation=suzhou), Ticket(seatNo=1951462072, startStation=shanghai, destStation=suzhou), Ticket(seatNo=1305640912, startStation=shanghai, destStation=suzhou), Ticket(seatNo=1841724331, startStation=shanghai, destStation=suzhou), Ticket(seatNo=197205266, startStation=shanghai, destStation=suzhou), Ticket(seatNo=1864335348, startStation=shanghai, destStation=suzhou), Ticket(seatNo=644887434, startStation=shanghai, destStation=suzhou), Ticket(seatNo=210736504, startStation=shanghai, destStation=suzhou), Ticket(seatNo=514064375, startStation=shanghai, destStation=suzhou), Ticket(seatNo=1111693724, startStation=shanghai, destStation=suzhou)]}]', '2026-03-17T15:28:27.056002283+08:00 2026-03-17 07:28:27.055  INFO 1 --- [io-12031-exec-9] order.controller.OrderController         : [getSoldTickets][Get Sold Ticket][Travel Date: 2026-03-20]', '2026-03-17T15:28:27.084008805+08:00 2026-03-17 07:28:27.083  INFO 1 --- [io-12031-exec-9] order.service.OrderServiceImpl           : [getSoldTickets][Left ticket info][info is: LeftTicketInfo{soldTickets=[Ticket(seatNo=1187794744, startStation=shanghai, destStation=suzhou), Ticket(seatNo=1005996424, startStation=shanghai, destStation=suzhou), Ticket(seatNo=550605030, startStation=shanghai, destStation=suzhou), Ticket(seatNo=1043070192, startStation=shanghai, destStation=suzhou), Ticket(seatNo=424956339, startStation=shanghai, destStation=suzhou), Ticket(seatNo=1075801305, startStation=shanghai, destStation=suzhou), Ticket(seatNo=1404956683, startStation=shanghai, destStation=suzhou), Ticket(seatNo=639321801, startStation=shanghai, destStation=suzhou), Ticket(seatNo=1266010173, startStation=shanghai, destStation=suzhou), Ticket(seatNo=2088314426, startStation=shanghai, destStation=suzhou), Ticket(seatNo=621347152, startStation=shanghai, destStation=suzhou), Ticket(seatNo=1170691720, startStation=shanghai, destStation=suzhou), Ticket(seatNo=950026791, startStation=shanghai, destStation=suzhou), Ticket(seatNo=719386812, startStation=shanghai, destStation=suzhou), Ticket(seatNo=1038773466, startStation=shanghai, destStation=suzhou), Ticket(seatNo=868690634, startStation=shanghai, destStation=suzhou), Ticket(seatNo=1097923998, startStation=shanghai, destStation=suzhou), Ticket(seatNo=1575655367, startStation=shanghai, destStation=suzhou), Ticket(seatNo=148940075, startStation=shanghai, destStation=suzhou), Ticket(seatNo=2078789814, startStation=shanghai, destStation=suzhou), Ticket(seatNo=1162390413, startStation=shanghai, destStation=suzhou), Ticket(seatNo=13091665, startStation=shanghai, destStation=suzhou), Ticket(seatNo=1277327840, startStation=shanghai, destStation=suzhou), Ticket(seatNo=46461143, startStation=shanghai, destStation=suzhou), Ticket(seatNo=1364621577, startStation=shanghai, destStation=suzhou), Ticket(seatNo=539433495, startStation=shanghai, destStation=suzhou), Ticket(seatNo=636241848, startStation=shanghai, destStation=suzhou), Ticket(seatNo=746433586, startStation=shanghai, destStation=suzhou), Ticket(seatNo=1596798027, startStation=shanghai, destStation=suzhou), Ticket(seatNo=1565121914, startStation=shanghai, destStation=suzhou), Ticket(seatNo=1782899234, startStation=shanghai, destStation=suzhou), Ticket(seatNo=2019093799, startStation=shanghai, destStation=suzhou), Ticket(seatNo=242329276, startStation=shanghai, destStation=suzhou), Ticket(seatNo=1621940334, startStation=shanghai, destStation=suzhou), Ticket(seatNo=815020362, startStation=shanghai, destStation=suzhou), Ticket(seatNo=382510820, startStation=shanghai, destStation=suzhou), Ticket(seatNo=1376324467, startStation=shanghai, destStation=suzhou), Ticket(seatNo=139228999, startStation=shanghai, destStation=suzhou), Ticket(seatNo=595580257, startStation=shanghai, destStation=suzhou), Ticket(seatNo=544629048, startStation=shanghai, destStation=suzhou), Ticket(seatNo=2077168874, startStation=shanghai, destStation=suzhou), Ticket(seatNo=659142382, startStation=shanghai, destStation=suzhou), Ticket(seatNo=2014977321, startStation=shanghai, destStation=suzhou), Ticket(seatNo=1951462072, startStation=shanghai, destStation=suzhou), Ticket(seatNo=1305640912, startStation=shanghai, destStation=suzhou), Ticket(seatNo=1841724331, startStation=shanghai, destStation=suzhou), Ticket(seatNo=197205266, startStation=shanghai, destStation=suzhou), Ticket(seatNo=1864335348, startStation=shanghai, destStation=suzhou), Ticket(seatNo=644887434, startStation=shanghai, destStation=suzhou), Ticket(seatNo=210736504, startStation=shanghai, destStation=suzhou), Ticket(seatNo=514064375, startStation=shanghai, destStation=suzhou), Ticket(seatNo=1111693724, startStation=shanghai, destStation=suzhou)]}]', '2026-03-17T15:28:27.092538544+08:00 2026-03-17 07:28:27.092  INFO 1 --- [o-12031-exec-10] order.controller.OrderController         : [createNewOrder][Create Order][from shanghai to suzhou at 2026-03-20]', '2026-03-17T15:28:27.092553508+08:00 2026-03-17 07:28:27.092  INFO 1 --- [o-12031-exec-10] order.service.OrderServiceImpl           : [create][Create Order][Ready to Create Order]', '2026-03-17T15:28:27.183091178+08:00 2026-03-17 07:28:27.182  INFO 1 --- [o-12031-exec-10] order.service.OrderServiceImpl           : [create][Order Create Success][Order Price][OrderId:97cd280b-8a04-4ade-96ec-2974f0220e13 , Price: 50.0]', '', 'From previous container logs:', 'Error: Error from server (BadRequest): previous terminated container \"ts-order-service\" in pod \"ts-order-service-dd54d5df9-qgpj5\" not found', '', 'From istio-proxy logs:', '2026-03-17T07:24:25.917984Z\\tinfo\\tFLAG: --proxyLogLevel=\"warning\"', '2026-03-17T07:24:25.917987Z\\tinfo\\tFLAG: --serviceCluster=\"istio-proxy\"', '2026-03-17T07:24:25.917989Z\\tinfo\\tFLAG: --stsPort=\"0\"', '2026-03-17T07:24:25.917991Z\\tinfo\\tFLAG: --templateFile=\"\"', '2026-03-17T07:24:25.917993Z\\tinfo\\tFLAG: --tokenManagerPlugin=\"\"', '2026-03-17T07:24:25.918002Z\\tinfo\\tFLAG: --vklog=\"0\"', '2026-03-17T07:24:25.918004Z\\tinfo\\tVersion 1.27.3-df538c2279a633544e6c0961a03ab772729933be-Clean', '2026-03-17T07:24:25.921954Z\\tinfo\\tProxy role\\tips=[172.20.3.16] type=sidecar id=ts-order-service-dd54d5df9-qgpj5.train-ticket domain=train-ticket.svc.cluster.local', '2026-03-17T07:24:25.922006Z\\tinfo\\tApply proxy config from env {\"proxyMetadata\":{\"ISTIO_META_ENABLE_HBONE\":\"true\"},\"image\":{\"imageType\":\"distroless\"}}', '2026-03-17T07:24:25.923366Z\\tinfo\\tcpu limit detected as 2, setting concurrency', '2026-03-17T07:24:25.923584Z\\tinfo\\tEffective config: binaryPath: /usr/local/bin/envoy', 'concurrency: 2', 'configPath: ./etc/istio/proxy', 'controlPlaneAuthPolicy: MUTUAL_TLS', 'discoveryAddress: istiod.istio-system.svc:15012', 'drainDuration: 45s', 'image:', '  imageType: distroless', 'proxyAdminPort: 15000', 'proxyMetadata:', '  ISTIO_META_ENABLE_HBONE: \"true\"', 'serviceCluster: istio-proxy', 'statNameLength: 189', 'statusPort: 15020', 'terminationDrainDuration: 5s', '2026-03-17T07:24:25.923593Z\\tinfo\\tJWT policy is third-party-jwt', '2026-03-17T07:24:25.923595Z\\tinfo\\tusing credential fetcher of JWT type in cluster.local trust domain', '2026-03-17T07:24:25.962268Z\\tinfo\\tOpening status port 15020', '2026-03-17T07:24:25.961834Z\\tinfo\\tStarting default Istio SDS Server', '2026-03-17T07:24:25.965828Z\\tinfo\\tCA Endpoint istiod.istio-system.svc:15012, provider Citadel', '2026-03-17T07:24:25.965854Z\\tinfo\\tUsing CA istiod.istio-system.svc:15012 cert with certs: var/run/secrets/istio/root-cert.pem', '2026-03-17T07:24:25.966386Z\\tinfo\\txdsproxy\\tInitializing with upstream address \"istiod.istio-system.svc:15012\" and cluster \"Kubernetes\"', '2026-03-17T07:24:25.968678Z\\tinfo\\tPilot SAN: [istiod.istio-system.svc]', '2026-03-17T07:24:25.973030Z\\tinfo\\tStarting proxy agent', '2026-03-17T07:24:25.973075Z\\tinfo\\tEnvoy command: [-c etc/istio/proxy/envoy-rev.json --drain-time-s 45 --drain-strategy immediate --local-address-ip-version v4 --file-flush-interval-msec 1000 --disable-hot-restart --allow-unknown-static-fields -l warning --component-log-level misc:error --skip-deprecated-logs --concurrency 2]', '2026-03-17T07:24:25.997862Z\\tinfo\\tsds\\tStarting SDS grpc server', '2026-03-17T07:24:25.997885Z\\tinfo\\tsds\\tStarting SDS server for workload certificates, will listen on \"var/run/secrets/workload-spiffe-uds/socket\"', '2026-03-17T07:24:26.160207Z\\twarning\\tenvoy main external/envoy/source/server/server.cc:905\\tUsage of the deprecated runtime key overload.global_downstream_max_connections, consider switching to `envoy.resource_monitors.global_downstream_max_connections` instead.This runtime key will be removed in future.\\tthread=14', '2026-03-17T07:24:26.161407Z\\twarning\\tenvoy main external/envoy/source/server/server.cc:1001\\tThere is no configured limit to the number of allowed active downstream connections. Configure a limit in `envoy.resource_monitors.global_downstream_max_connections` resource monitor.\\tthread=14', '2026-03-17T07:24:26.167835Z\\tinfo\\txdsproxy\\tconnected to delta upstream XDS server: istiod.istio-system.svc:15012\\tid=1', '2026-03-17T07:24:26.255900Z\\tinfo\\tads\\tADS: new connection for node:1', '2026-03-17T07:24:26.258232Z\\tinfo\\tads\\tADS: new connection for node:2', '2026-03-17T07:24:27.047973Z\\tinfo\\tcache\\tgenerated new workload certificate\\tresourceName=default latency=1.078171661s ttl=23h59m59.952032178s', '2026-03-17T07:24:27.048006Z\\tinfo\\tcache\\tRoot cert has changed, start rotating root cert', '2026-03-17T07:24:27.048042Z\\tinfo\\tcache\\treturned workload trust anchor from cache\\tttl=23h59m59.951959154s', '2026-03-17T07:24:27.048065Z\\tinfo\\tcache\\treturned workload certificate from cache\\tttl=23h59m59.95193599s', '2026-03-17T07:24:27.048421Z\\tinfo\\tcache\\treturned workload trust anchor from cache\\tttl=23h59m59.951579909s', '2026-03-17T07:24:27.048540Z\\tinfo\\tcache\\treturned workload trust anchor from cache\\tttl=23h59m59.951460815s', '2026-03-17T07:24:28.212324Z\\tinfo\\tReadiness succeeded in 2.297089812s', '2026-03-17T07:24:28.212607Z\\tinfo\\tEnvoy proxy is ready']",
+   "error": null,
+   "purpose": "request latency / saturation logs",
+   "tool_latency": null
+  },
+  {
+   "step_id": 3,
+   "action_type": "tool",
+   "action_name": "GetServiceDependencies",
+   "action_input": {
+    "service_name": "ts-order-service"
+   },
+   "observation": "[Service]: ts-order-service\n[Upstream (Called By)]: ts-gateway-service, ts-preserve-service, ts-seat-service, ts-security-service, ts-inside-payment-service, ts-cancel-service, ts-rebook-service, ts-execute-service, ts-voucher-service\n[Downstream (Calls)]:\n(No confirmed downstream calls in current reachable main flow)",
+   "error": null,
+   "purpose": "upstream/downstream call graph",
+   "tool_latency": null
+  }
+ ],
+ "agentrun": {
+  "tag": "test",
+  "dsl": "workspace/dsl_versions/v0.8.dsl.txt",
+  "dsl_version": "0.8",
+  "sop": {
+   "sop": "boutique-runtime-rca",
+   "scope": {
+    "system": "boutique",
+    "families": [
+     "runtime",
+     "admission",
+     "scheduling",
+     "startup",
+     "service",
+     "performance",
+     "infrastructure",
+     "codedefect"
+    ],
+    "severity": [
+     "SEV2",
+     "SEV3"
+    ]
+   },
+   "owner": "sre-platform",
+   "approved_by": [
+    "oncall-primary",
+    "sre-lead"
+   ],
+   "reviewed_at": "2026-10-23",
+   "change_ticket": "OPS-1236",
+   "boundaries": "只读诊断：本 SOP 不执行任何写操作（重启/回滚/扩缩容），也不做对外播报；\n它回答\"最可能的根因与受害对象\"，处置与沟通由值班按 runbook 人工执行。\n不覆盖 SEV1（需 incident commander 介入）与变更引发的问题（走变更回滚流程）。\n输入是冻结快照：诊断结论对\"快照时刻\"成立，恢复后需重新取证。\nR1 已知边界：PVC 的 requested size / accessMode 在本 benchmark 的工具面不可见，\n因此 pvc_capacity 与 pvc_access_mode 无法区分（同一分数并列，交给 jev 或升级）。\n"
+  },
+  "params": {
+   "cands_cap": 8,
+   "max_waves": 8,
+   "min_waves": 5,
+   "steps_per_wave": 1,
+   "dominance_ratio": 1.5,
+   "conf_min": 0.0,
+   "escalate": true,
+   "escalate_budget": 8,
+   "judge_on_codedefect": true,
+   "jev_route": true,
+   "jev_pick": true,
+   "jev_verify": true,
+   "route_fallback": "runtime"
+  },
+  "nodes_executed": [
+   "anchors:extract_anchors",
+   "census:probes",
+   "route:decide",
+   "plan:build_plan",
+   "probe:probes",
+   "derive:derive_candidates",
+   "pick:decide",
+   "verify:decide",
+   "probe:probes",
+   "derive:derive_candidates",
+   "pick:decide",
+   "verify:decide",
+   "probe:probes",
+   "derive:derive_candidates",
+   "pick:decide",
+   "verify:decide",
+   "probe:probes",
+   "derive:derive_candidates",
+   "pick:decide",
+   "verify:decide",
+   "escalate:escalate",
+   "answer:normalize_answer",
+   "persist:persist_trace"
+  ],
+  "census": [
+   {
+    "step": "pods",
+    "gate": "always"
+   },
+   {
+    "step": "alerts",
+    "gate": "healthy_system"
+   }
+  ],
+  "plan": [
+   {
+    "step": "recent_logs",
+    "gate": "always",
+    "wave": 1
+   },
+   {
+    "step": "describe_pod",
+    "gate": "weak",
+    "wave": 2
+   },
+   {
+    "step": "deps",
+    "gate": "weak",
+    "wave": 3
+   }
+  ],
+  "family": "performance",
+  "state_wiring": {
+   "family": "$route.family",
+   "route_probs": "$route.probabilities",
+   "picked": "$pick.picked",
+   "pick_dominant": "$pick.dominant",
+   "verify_status": "$verify.status",
+   "verify_prob": "$verify.confidence"
+  },
+  "bindings": {
+   "anchors": {
+    "anchors": "Anchors(case_id='trainticket/service/4', system='trainticket', namespace='train-ticket', query='Service Availability Disruption.', difficulty='medium', symptoms=[], mentioned_apps=[], priors={'db_service': 'tsdb-mysql-leader', 'db_port': 3306})"
+   },
+   "route": {
+    "family": "performance",
+    "probabilities": {},
+    "route_why": "mechanism_mode"
+   },
+   "plan": {
+    "plan": "[{'name': 'recent_logs', 'key': 'recent', 'tool': 'GetRecentLogs', 'args': <function _args_error_logs at 0x107ddb740>, 'purpose': 'request latency / saturation logs', 'when': <function compile_steps.<locals>.<lambda> at 0x10821ce00>, 'gate': 'always', 'wave': 1}, {'name': 'describe_pod', 'key': 'describe:pod', 'tool': 'DescribeResource', 'args': <function _args_describe_pod at 0x107ddb560>, 'purpose': 'probe config, container state, restart reasons, scheduler events', 'when': <function compile_steps.<locals>.<lambda> at 0x10821cea0>, 'gate': 'weak', 'wave': 2}, {'name': 'deps', 'key': 'deps', 'tool': 'GetServiceDependencies', 'args': <function _args_deps at 0x107ddbe20>, 'purpose': 'upstream/downstream call graph', 'when': <function compile_steps.<locals>.<lambda> at 0x10821cf40>, 'gate': 'weak', 'wave': 3}]"
+   },
+   "derive": {
+    "candidates": "[]"
+   },
+   "pick": {
+    "picked": null,
+    "dominant": false,
+    "pick_why": "no_candidates"
+   },
+   "verify": {
+    "status": "unverified",
+    "confidence": null,
+    "verify_why": "nothing_to_verify"
+   },
+   "escalate": {
+    "answer": null
+   },
+   "answer": {
+    "final": {
+     "key_evidence_summary": "no evidence-grounded hypothesis",
+     "top_3_predictions": []
+    }
+   }
+  },
+  "picked": null,
+  "pick_why": "",
+  "verify_prob": null,
+  "verify_verdict": "unverified",
+  "verified": false,
+  "escalated": false,
+  "escalate_reason": "no_candidates",
+  "escalate_steps": 0,
+  "waves": 4,
+  "candidates": [],
+  "jev": [
+   {
+    "rid": "test:trainticket/service/4#route",
+    "kind": "route",
+    "node": "route",
+    "mode": "mechanism",
+    "options": [
+     "performance",
+     "infrastructure"
+    ],
+    "status": "mechanical",
+    "guard": "unavailable",
+    "use": "first_option",
+    "choice": "performance",
+    "why": "mechanism_mode",
+    "dominant": false,
+    "continue_loop": false,
+    "escalate": false
+   },
+   {
+    "rid": "test:trainticket/service/4#pick1",
+    "kind": "pick",
+    "node": "pick",
+    "mode": "mechanism",
+    "options": [],
+    "status": "mechanical",
+    "guard": "no_options",
+    "use": "none",
+    "choice": null,
+    "why": "no_candidates",
+    "dominant": false,
+    "continue_loop": false,
+    "escalate": false
+   },
+   {
+    "rid": "test:trainticket/service/4#verify1",
+    "kind": "verify",
+    "node": "verify",
+    "mode": "mechanism",
+    "options": [
+     "supported",
+     "insufficient",
+     "contradicted"
+    ],
+    "status": "mechanical",
+    "guard": "no_pick",
+    "use": "unverified",
+    "choice": "unverified",
+    "why": "nothing_to_verify",
+    "dominant": false,
+    "continue_loop": false,
+    "escalate": false
+   },
+   {
+    "rid": "test:trainticket/service/4#pick2",
+    "kind": "pick",
+    "node": "pick",
+    "mode": "mechanism",
+    "options": [],
+    "status": "mechanical",
+    "guard": "no_options",
+    "use": "none",
+    "choice": null,
+    "why": "no_candidates",
+    "dominant": false,
+    "continue_loop": false,
+    "escalate": false
+   },
+   {
+    "rid": "test:trainticket/service/4#verify2",
+    "kind": "verify",
+    "node": "verify",
+    "mode": "mechanism",
+    "options": [
+     "supported",
+     "insufficient",
+     "contradicted"
+    ],
+    "status": "mechanical",
+    "guard": "no_pick",
+    "use": "unverified",
+    "choice": "unverified",
+    "why": "nothing_to_verify",
+    "dominant": false,
+    "continue_loop": false,
+    "escalate": false
+   },
+   {
+    "rid": "test:trainticket/service/4#pick3",
+    "kind": "pick",
+    "node": "pick",
+    "mode": "mechanism",
+    "options": [],
+    "status": "mechanical",
+    "guard": "no_options",
+    "use": "none",
+    "choice": null,
+    "why": "no_candidates",
+    "dominant": false,
+    "continue_loop": false,
+    "escalate": false
+   },
+   {
+    "rid": "test:trainticket/service/4#verify3",
+    "kind": "verify",
+    "node": "verify",
+    "mode": "mechanism",
+    "options": [
+     "supported",
+     "insufficient",
+     "contradicted"
+    ],
+    "status": "mechanical",
+    "guard": "no_pick",
+    "use": "unverified",
+    "choice": "unverified",
+    "why": "nothing_to_verify",
+    "dominant": false,
+    "continue_loop": false,
+    "escalate": false
+   },
+   {
+    "rid": "test:trainticket/service/4#pick4",
+    "kind": "pick",
+    "node": "pick",
+    "mode": "mechanism",
+    "options": [],
+    "status": "mechanical",
+    "guard": "no_options",
+    "use": "none",
+    "choice": null,
+    "why": "no_candidates",
+    "dominant": false,
+    "continue_loop": false,
+    "escalate": false
+   },
+   {
+    "rid": "test:trainticket/service/4#verify4",
+    "kind": "verify",
+    "node": "verify",
+    "mode": "mechanism",
+    "options": [
+     "supported",
+     "insufficient",
+     "contradicted"
+    ],
+    "status": "mechanical",
+    "guard": "no_pick",
+    "use": "unverified",
+    "choice": "unverified",
+    "why": "nothing_to_verify",
+    "dominant": false,
+    "continue_loop": false,
+    "escalate": false
+   }
+  ],
+  "nodes": [
+   {
+    "node": "code",
+    "id": "anchors",
+    "anchors": {
+     "case_id": "trainticket/service/4",
+     "system": "trainticket",
+     "namespace": "train-ticket",
+     "query": "Service Availability Disruption.",
+     "difficulty": "medium",
+     "symptoms": [],
+     "mentioned_apps": []
+    }
+   },
+   {
+    "node": "probes",
+    "plan": "census",
+    "wave": 0,
+    "executed": 2,
+    "steps": [
+     {
+      "key": "pods",
+      "tool": "GetResources",
+      "arguments": {
+       "namespace": "train-ticket",
+       "resource_type": "pods",
+       "output_wide": true
+      },
+      "gate": "always"
+     },
+     {
+      "key": "alerts",
+      "tool": "GetAlerts",
+      "arguments": {},
+      "gate": "healthy_system"
+     }
+    ],
+    "skipped": []
+   },
+   {
+    "node": "decide",
+    "id": "route",
+    "rid": "test:trainticket/service/4#route",
+    "status": "mechanical",
+    "guard": "unavailable",
+    "use": "first_option",
+    "choice": "performance",
+    "dominant": false,
+    "why": "mechanism_mode"
+   },
+   {
+    "node": "code",
+    "id": "plan",
+    "family": "performance",
+    "plan": [
+     {
+      "step": "recent_logs",
+      "gate": "always",
+      "wave": 1
+     },
+     {
+      "step": "describe_pod",
+      "gate": "weak",
+      "wave": 2
+     },
+     {
+      "step": "deps",
+      "gate": "weak",
+      "wave": 3
+     }
+    ]
+   },
+   {
+    "node": "probes",
+    "plan": "family",
+    "wave": 1,
+    "executed": 1,
+    "steps": [
+     {
+      "key": "recent",
+      "tool": "GetRecentLogs",
+      "arguments": {
+       "namespace": "train-ticket",
+       "service_name": "ts-order-service"
+      },
+      "gate": "always"
+     }
+    ],
+    "skipped": []
+   },
+   {
+    "node": "code",
+    "id": "derive",
+    "raw": 0,
+    "kept": 0,
+    "top": []
+   },
+   {
+    "node": "decide",
+    "id": "pick",
+    "rid": "test:trainticket/service/4#pick1",
+    "status": "mechanical",
+    "guard": "no_options",
+    "use": "none",
+    "choice": null,
+    "dominant": false,
+    "why": "no_candidates"
+   },
+   {
+    "node": "decide",
+    "id": "verify",
+    "rid": "test:trainticket/service/4#verify1",
+    "status": "mechanical",
+    "guard": "no_pick",
+    "use": "unverified",
+    "choice": "unverified",
+    "dominant": false,
+    "why": "nothing_to_verify"
+   },
+   {
+    "node": "probes",
+    "plan": "family",
+    "wave": 2,
+    "executed": 0,
+    "steps": [],
+    "skipped": [
+     {
+      "step": "describe_pod",
+      "why": "args not applicable"
+     }
+    ]
+   },
+   {
+    "node": "code",
+    "id": "derive",
+    "raw": 0,
+    "kept": 0,
+    "top": []
+   },
+   {
+    "node": "decide",
+    "id": "pick",
+    "rid": "test:trainticket/service/4#pick2",
+    "status": "mechanical",
+    "guard": "no_options",
+    "use": "none",
+    "choice": null,
+    "dominant": false,
+    "why": "no_candidates"
+   },
+   {
+    "node": "decide",
+    "id": "verify",
+    "rid": "test:trainticket/service/4#verify2",
+    "status": "mechanical",
+    "guard": "no_pick",
+    "use": "unverified",
+    "choice": "unverified",
+    "dominant": false,
+    "why": "nothing_to_verify"
+   },
+   {
+    "node": "probes",
+    "plan": "family",
+    "wave": 3,
+    "executed": 1,
+    "steps": [
+     {
+      "key": "deps",
+      "tool": "GetServiceDependencies",
+      "arguments": {
+       "service_name": "ts-order-service"
+      },
+      "gate": "weak"
+     }
+    ],
+    "skipped": []
+   },
+   {
+    "node": "code",
+    "id": "derive",
+    "raw": 0,
+    "kept": 0,
+    "top": []
+   },
+   {
+    "node": "decide",
+    "id": "pick",
+    "rid": "test:trainticket/service/4#pick3",
+    "status": "mechanical",
+    "guard": "no_options",
+    "use": "none",
+    "choice": null,
+    "dominant": false,
+    "why": "no_candidates"
+   },
+   {
+    "node": "decide",
+    "id": "verify",
+    "rid": "test:trainticket/service/4#verify3",
+    "status": "mechanical",
+    "guard": "no_pick",
+    "use": "unverified",
+    "choice": "unverified",
+    "dominant": false,
+    "why": "nothing_to_verify"
+   },
+   {
+    "node": "probes",
+    "plan": "family",
+    "wave": 4,
+    "executed": 0,
+    "why": "plan exhausted"
+   },
+   {
+    "node": "code",
+    "id": "derive",
+    "raw": 0,
+    "kept": 0,
+    "top": []
+   },
+   {
+    "node": "decide",
+    "id": "pick",
+    "rid": "test:trainticket/service/4#pick4",
+    "status": "mechanical",
+    "guard": "no_options",
+    "use": "none",
+    "choice": null,
+    "dominant": false,
+    "why": "no_candidates"
+   },
+   {
+    "node": "decide",
+    "id": "verify",
+    "rid": "test:trainticket/service/4#verify4",
+    "status": "mechanical",
+    "guard": "no_pick",
+    "use": "unverified",
+    "choice": "unverified",
+    "dominant": false,
+    "why": "nothing_to_verify"
+   },
+   {
+    "node": "loop",
+    "id": "waves",
+    "stop": "plan_exhausted",
+    "wave": 4
+   },
+   {
+    "node": "escalate",
+    "id": "escalate",
+    "fired": true,
+    "reasons": [
+     "no_candidates"
+    ],
+    "skipped": "mode=mechanism"
+   },
+   {
+    "node": "code",
+    "id": "answer",
+    "predictions": []
+   },
+   {
+    "node": "artifact",
+    "id": "persist",
+    "persisted": false,
+    "why": "written by the CLI driver"
+   }
+  ],
+  "notes": [],
+  "tool_calls": 4,
+  "model_calls": 0,
+  "tokens_in": 0,
+  "tokens_out": 0,
+  "wall_s": 0.15
+ }
+}

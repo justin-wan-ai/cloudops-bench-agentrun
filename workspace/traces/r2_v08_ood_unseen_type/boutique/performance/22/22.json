@@ -1,0 +1,871 @@
+{
+ "case_id": "boutique/performance/22",
+ "system_name": "boutique",
+ "question": "Service latency increased significantly",
+ "case_path": "/Users/justinwan/work/workspace/cloudops_bench_rsi/repo/benchmark/boutique/performance/22",
+ "max_steps": 8,
+ "current_step": 3,
+ "finished": true,
+ "stop_reason": "submit",
+ "final_answer": "{\"key_evidence_summary\": \"network latency anomaly on the pod\", \"top_3_predictions\": [{\"rank\": 1, \"fault_object\": \"app/adservice\", \"root_cause\": \"pod_network_delay\"}, {\"rank\": 2, \"fault_object\": \"app/checkoutservice\", \"root_cause\": \"pod_network_delay\"}, {\"rank\": 3, \"fault_object\": \"app/currencyservice\", \"root_cause\": \"pod_network_delay\"}]}",
+ "metadata": {
+  "namespace": "boutique",
+  "query": "Service latency increased significantly",
+  "fault_category": "performance",
+  "model_name": "agentrun-v0.8"
+ },
+ "steps": [
+  {
+   "step_id": 0,
+   "action_type": "tool",
+   "action_name": "GetResources",
+   "action_input": {
+    "namespace": "boutique",
+    "resource_type": "pods",
+    "output_wide": true
+   },
+   "observation": "NAME                                     READY   STATUS    RESTARTS   AGE    IP            NODE        NOMINATED NODE   READINESS GATES\nadservice-d68dfc56-56qbz                 2/2     Running   0          6m7s   172.20.2.40   worker-02   <none>           <none>\ncartservice-7c5f46fc47-qcjjv             2/2     Running   0          6m7s   172.20.1.25   worker-01   <none>           <none>\ncheckoutservice-dbcdcb5fb-d8lz9          2/2     Running   0          6m7s   172.20.2.41   worker-02   <none>           <none>\ncurrencyservice-5cd6467fc4-8mhsg         2/2     Running   0          6m7s   172.20.1.26   worker-01   <none>           <none>\nemailservice-7dc7d85bcb-hk5zq            2/2     Running   0          6m7s   172.20.2.42   worker-02   <none>           <none>\nfrontend-6778bd7b8b-qxs75                2/2     Running   0          6m6s   172.20.1.27   worker-01   <none>           <none>\npaymentservice-869f9f96cd-96gz4          2/2     Running   0          6m6s   172.20.2.43   worker-02   <none>           <none>\nproductcatalogservice-6fb89f98f8-nkzxf   2/2     Running   0          6m6s   172.20.1.28   worker-01   <none>           <none>\nrecommendationservice-54dfdd6986-95kbh   2/2     Running   0          6m6s   172.20.2.44   worker-02   <none>           <none>\nredis-cart-58649b5469-k4xlw              2/2     Running   0          6m5s   172.20.1.29   worker-01   <none>           <none>\nshippingservice-674c8c548d-cn5cr         2/2     Running   0          6m5s   172.20.2.45   worker-02   <none>           <none>\n",
+   "error": null,
+   "purpose": "pod readiness census",
+   "tool_latency": null
+  },
+  {
+   "step_id": 1,
+   "action_type": "tool",
+   "action_name": "GetAlerts",
+   "action_input": {},
+   "observation": "{'status': 'has_anomalies', 'alert_count': 10, 'alerts': [{'type': 'Service', 'name': 'adservice', 'time_range': '2025-12-26 12:23:21 ~ 2025-12-26 12:25:16', 'status': 'ABNORMAL', 'evidence': ['THROUGHPUT_DROP [RPS] | Normal=12.33req/s -> Current=6.20req/s (-49.7%)', 'LATENCY_DEGRADATION [Slow Response] | adservice-p90latency: Normal=5.63ms -> Current=205.27ms (+3548.6%)']}, {'type': 'Service', 'name': 'checkoutservice', 'time_range': '2025-12-26 12:23:21 ~ 2025-12-26 12:25:16', 'status': 'ABNORMAL', 'evidence': ['THROUGHPUT_DROP [RPS] | Normal=3.09req/s -> Current=0.36req/s (-88.4%)', 'ERROR_SPIKE [Success Rate Drop] | Normal=100.0% -> Cur=25.0% (-75.0%)', 'LATENCY_DEGRADATION [Slow Response] | checkoutservice-p50latency: Normal=17.55ms -> Current=3632.62ms (+20595.1%) | checkoutservice-p90latency: Normal=24.37ms -> Current=9185.01ms (+37597.4%)']}, {'type': 'Service', 'name': 'currencyservice', 'time_range': '2025-12-26 12:23:21 ~ 2025-12-26 12:25:16', 'status': 'ABNORMAL', 'evidence': ['TRAFFIC_ANOMALY [Network Drop] | Inbound: Normal=149.46pps -> Current=76.52pps (-48.8%) | Outbound: Normal=144.35pps -> Current=72.71pps (-49.6%)']}, {'type': 'Service', 'name': 'emailservice', 'time_range': '2025-12-26 12:23:21 ~ 2025-12-26 12:25:16', 'status': 'ABNORMAL', 'evidence': ['THROUGHPUT_DROP [RPS] | Normal=3.03req/s -> Current=1.16req/s (-61.8%)']}, {'type': 'Service', 'name': 'frontend', 'time_range': '2025-12-26 12:23:21 ~ 2025-12-26 12:25:16', 'status': 'ABNORMAL', 'evidence': ['TRAFFIC_ANOMALY [Network Drop] | Inbound: Normal=398.31pps -> Current=171.12pps (-57.0%) | Outbound: Normal=429.06pps -> Current=198.78pps (-53.7%)', 'THROUGHPUT_DROP [RPS] | Normal=27.08req/s -> Current=14.45req/s (-46.6%)', 'LATENCY_DEGRADATION [Slow Response] | frontend-p50latency: Normal=15.96ms -> Current=3480.10ms (+21709.5%) | frontend-p90latency: Normal=37.42ms -> Current=10221.84ms (+27217.3%)']}, {'type': 'Service', 'name': 'paymentservice', 'time_range': '2025-12-26 12:23:21 ~ 2025-12-26 12:25:16', 'status': 'ABNORMAL', 'evidence': ['THROUGHPUT_DROP [RPS] | Normal=3.04req/s -> Current=1.34req/s (-56.0%)']}, {'type': 'Service', 'name': 'productcatalogservice', 'time_range': '2025-12-26 12:23:21 ~ 2025-12-26 12:25:16', 'status': 'ABNORMAL', 'evidence': ['TRAFFIC_ANOMALY [Network Drop] | Inbound: Normal=149.52pps -> Current=52.56pps (-64.8%) | Outbound: Normal=117.49pps -> Current=40.72pps (-65.3%)', 'THROUGHPUT_DROP [RPS] | Normal=121.01req/s -> Current=65.59req/s (-45.8%)', 'LATENCY_DEGRADATION [Slow Response] | productcatalogservice-p90latency: Normal=1.48ms -> Current=606.48ms (+40823.2%)']}, {'type': 'Service', 'name': 'recommendationservice', 'time_range': '2025-12-26 12:23:21 ~ 2025-12-26 12:25:16', 'status': 'ABNORMAL', 'evidence': ['TRAFFIC_ANOMALY [Network Drop] | Normal=49.20pps -> Current=21.94pps (-55.4%)', 'THROUGHPUT_DROP [RPS] | Normal=16.02req/s -> Current=8.33req/s (-48.0%)', 'LATENCY_DEGRADATION [Slow Response] | recommendationservice-p50latency: Normal=3.01ms -> Current=4328.87ms (+143716.3%) | recommendationservice-p90latency: Normal=4.82ms -> Current=8500.55ms (+176303.8%)']}, {'type': 'Service', 'name': 'redis-cart', 'time_range': '2025-12-26 12:23:21 ~ 2025-12-26 12:25:16', 'status': 'ABNORMAL', 'evidence': ['TRAFFIC_ANOMALY [Network Drop] | Normal=30.06pps -> Current=14.75pps (-50.9%)']}, {'type': 'Service', 'name': 'shippingservice', 'time_range': '2025-12-26 12:23:21 ~ 2025-12-26 12:25:16', 'status': 'ABNORMAL', 'evidence': ['TRAFFIC_ANOMALY [Network Drop] | Normal=23.55pps -> Current=9.97pps (-57.7%)', 'THROUGHPUT_DROP [RPS] | Normal=11.71req/s -> Current=2.95req/s (-74.8%)', 'LATENCY_DEGRADATION [Slow Response] | shippingservice-p90latency: Normal=4.32ms -> Current=1846.45ms (+42649.9%)']}]}",
+   "error": null,
+   "purpose": "anomaly signature (routes performance/code families)",
+   "tool_latency": null
+  },
+  {
+   "step_id": 2,
+   "action_type": "tool",
+   "action_name": "GetRecentLogs",
+   "action_input": {
+    "namespace": "boutique",
+    "service_name": "adservice"
+   },
+   "observation": "['From adservice logs:', '2025-12-26T12:26:13.507370985+08:00 {\"instant\":{\"epochSecond\":1766723173,\"nanoOfSecond\":507138709},\"thread\":\"grpc-default-executor-15\",\"level\":\"INFO\",\"loggerName\":\"hipstershop.AdService\",\"message\":\"received ad request (context_words=[])\",\"endOfBatch\":false,\"loggerFqcn\":\"org.apache.logging.log4j.spi.AbstractLogger\",\"threadId\":34,\"threadPriority\":5,\"logging.googleapis.com/trace\":\"${ctx:traceId}\",\"logging.googleapis.com/spanId\":\"${ctx:spanId}\",\"logging.googleapis.com/traceSampled\":\"${ctx:traceSampled}\",\"time\":\"2025-12-26T04:26:13.507Z\"}', '2025-12-26T12:26:13.792198559+08:00 {\"instant\":{\"epochSecond\":1766723173,\"nanoOfSecond\":791966806},\"thread\":\"grpc-default-executor-15\",\"level\":\"INFO\",\"loggerName\":\"hipstershop.AdService\",\"message\":\"received ad request (context_words=[clothing, tops])\",\"endOfBatch\":false,\"loggerFqcn\":\"org.apache.logging.log4j.spi.AbstractLogger\",\"threadId\":34,\"threadPriority\":5,\"logging.googleapis.com/trace\":\"${ctx:traceId}\",\"logging.googleapis.com/spanId\":\"${ctx:spanId}\",\"logging.googleapis.com/traceSampled\":\"${ctx:traceSampled}\",\"time\":\"2025-12-26T04:26:13.791Z\"}', '2025-12-26T12:26:13.812236316+08:00 {\"instant\":{\"epochSecond\":1766723173,\"nanoOfSecond\":811998244},\"thread\":\"grpc-default-executor-15\",\"level\":\"INFO\",\"loggerName\":\"hipstershop.AdService\",\"message\":\"received ad request (context_words=[])\",\"endOfBatch\":false,\"loggerFqcn\":\"org.apache.logging.log4j.spi.AbstractLogger\",\"threadId\":34,\"threadPriority\":5,\"logging.googleapis.com/trace\":\"${ctx:traceId}\",\"logging.googleapis.com/spanId\":\"${ctx:spanId}\",\"logging.googleapis.com/traceSampled\":\"${ctx:traceSampled}\",\"time\":\"2025-12-26T04:26:13.811Z\"}', '2025-12-26T12:26:13.915291485+08:00 {\"instant\":{\"epochSecond\":1766723173,\"nanoOfSecond\":915021885},\"thread\":\"grpc-default-executor-15\",\"level\":\"INFO\",\"loggerName\":\"hipstershop.AdService\",\"message\":\"received ad request (context_words=[kitchen])\",\"endOfBatch\":false,\"loggerFqcn\":\"org.apache.logging.log4j.spi.AbstractLogger\",\"threadId\":34,\"threadPriority\":5,\"logging.googleapis.com/trace\":\"${ctx:traceId}\",\"logging.googleapis.com/spanId\":\"${ctx:spanId}\",\"logging.googleapis.com/traceSampled\":\"${ctx:traceSampled}\",\"time\":\"2025-12-26T04:26:13.915Z\"}', '2025-12-26T12:26:13.948594485+08:00 {\"instant\":{\"epochSecond\":1766723173,\"nanoOfSecond\":948363358},\"thread\":\"grpc-default-executor-15\",\"level\":\"INFO\",\"loggerName\":\"hipstershop.AdService\",\"message\":\"received ad request (context_words=[kitchen])\",\"endOfBatch\":false,\"loggerFqcn\":\"org.apache.logging.log4j.spi.AbstractLogger\",\"threadId\":34,\"threadPriority\":5,\"logging.googleapis.com/trace\":\"${ctx:traceId}\",\"logging.googleapis.com/spanId\":\"${ctx:spanId}\",\"logging.googleapis.com/traceSampled\":\"${ctx:traceSampled}\",\"time\":\"2025-12-26T04:26:13.948Z\"}', '2025-12-26T12:26:14.005077999+08:00 {\"instant\":{\"epochSecond\":1766723174,\"nanoOfSecond\":4818955},\"thread\":\"grpc-default-executor-15\",\"level\":\"INFO\",\"loggerName\":\"hipstershop.AdService\",\"message\":\"received ad request (context_words=[])\",\"endOfBatch\":false,\"loggerFqcn\":\"org.apache.logging.log4j.spi.AbstractLogger\",\"threadId\":34,\"threadPriority\":5,\"logging.googleapis.com/trace\":\"${ctx:traceId}\",\"logging.googleapis.com/spanId\":\"${ctx:spanId}\",\"logging.googleapis.com/traceSampled\":\"${ctx:traceSampled}\",\"time\":\"2025-12-26T04:26:14.004Z\"}', '2025-12-26T12:26:14.020426647+08:00 {\"instant\":{\"epochSecond\":1766723174,\"nanoOfSecond\":20165592},\"thread\":\"grpc-default-executor-15\",\"level\":\"INFO\",\"loggerName\":\"hipstershop.AdService\",\"message\":\"received ad request (context_words=[])\",\"endOfBatch\":false,\"loggerFqcn\":\"org.apache.logging.log4j.spi.AbstractLogger\",\"threadId\":34,\"threadPriority\":5,\"logging.googleapis.com/trace\":\"${ctx:traceId}\",\"logging.googleapis.com/spanId\":\"${ctx:spanId}\",\"logging.googleapis.com/traceSampled\":\"${ctx:traceSampled}\",\"time\":\"2025-12-26T04:26:14.020Z\"}', '2025-12-26T12:26:14.161311202+08:00 {\"instant\":{\"epochSecond\":1766723174,\"nanoOfSecond\":161064000},\"thread\":\"grpc-default-executor-15\",\"level\":\"INFO\",\"loggerName\":\"hipstershop.AdService\",\"message\":\"received ad request (context_words=[kitchen])\",\"endOfBatch\":false,\"loggerFqcn\":\"org.apache.logging.log4j.spi.AbstractLogger\",\"threadId\":34,\"threadPriority\":5,\"logging.googleapis.com/trace\":\"${ctx:traceId}\",\"logging.googleapis.com/spanId\":\"${ctx:spanId}\",\"logging.googleapis.com/traceSampled\":\"${ctx:traceSampled}\",\"time\":\"2025-12-26T04:26:14.161Z\"}', '2025-12-26T12:26:14.181250998+08:00 {\"instant\":{\"epochSecond\":1766723174,\"nanoOfSecond\":181027834},\"thread\":\"grpc-default-executor-15\",\"level\":\"INFO\",\"loggerName\":\"hipstershop.AdService\",\"message\":\"received ad request (context_words=[])\",\"endOfBatch\":false,\"loggerFqcn\":\"org.apache.logging.log4j.spi.AbstractLogger\",\"threadId\":34,\"threadPriority\":5,\"logging.googleapis.com/trace\":\"${ctx:traceId}\",\"logging.googleapis.com/spanId\":\"${ctx:spanId}\",\"logging.googleapis.com/traceSampled\":\"${ctx:traceSampled}\",\"time\":\"2025-12-26T04:26:14.181Z\"}', '2025-12-26T12:26:14.201175634+08:00 {\"instant\":{\"epochSecond\":1766723174,\"nanoOfSecond\":200935998},\"thread\":\"grpc-default-executor-15\",\"level\":\"INFO\",\"loggerName\":\"hipstershop.AdService\",\"message\":\"received ad request (context_words=[hair, beauty])\",\"endOfBatch\":false,\"loggerFqcn\":\"org.apache.logging.log4j.spi.AbstractLogger\",\"threadId\":34,\"threadPriority\":5,\"logging.googleapis.com/trace\":\"${ctx:traceId}\",\"logging.googleapis.com/spanId\":\"${ctx:spanId}\",\"logging.googleapis.com/traceSampled\":\"${ctx:traceSampled}\",\"time\":\"2025-12-26T04:26:14.200Z\"}', '2025-12-26T12:26:14.210128303+08:00 {\"instant\":{\"epochSecond\":1766723174,\"nanoOfSecond\":209898710},\"thread\":\"grpc-default-executor-15\",\"level\":\"INFO\",\"loggerName\":\"hipstershop.AdService\",\"message\":\"received ad request (context_words=[kitchen])\",\"endOfBatch\":false,\"loggerFqcn\":\"org.apache.logging.log4j.spi.AbstractLogger\",\"threadId\":34,\"threadPriority\":5,\"logging.googleapis.com/trace\":\"${ctx:traceId}\",\"logging.googleapis.com/spanId\":\"${ctx:spanId}\",\"logging.googleapis.com/traceSampled\":\"${ctx:traceSampled}\",\"time\":\"2025-12-26T04:26:14.209Z\"}', '2025-12-26T12:26:14.430566492+08:00 {\"instant\":{\"epochSecond\":1766723174,\"nanoOfSecond\":430297820},\"thread\":\"grpc-default-executor-15\",\"level\":\"INFO\",\"loggerName\":\"hipstershop.AdService\",\"message\":\"received ad request (context_words=[])\",\"endOfBatch\":false,\"loggerFqcn\":\"org.apache.logging.log4j.spi.AbstractLogger\",\"threadId\":34,\"threadPriority\":5,\"logging.googleapis.com/trace\":\"${ctx:traceId}\",\"logging.googleapis.com/spanId\":\"${ctx:spanId}\",\"logging.googleapis.com/traceSampled\":\"${ctx:traceSampled}\",\"time\":\"2025-12-26T04:26:14.430Z\"}', '2025-12-26T12:26:14.437052697+08:00 {\"instant\":{\"epochSecond\":1766723174,\"nanoOfSecond\":436865703},\"thread\":\"grpc-default-executor-15\",\"level\":\"INFO\",\"loggerName\":\"hipstershop.AdService\",\"message\":\"received ad request (context_words=[accessories])\",\"endOfBatch\":false,\"loggerFqcn\":\"org.apache.logging.log4j.spi.AbstractLogger\",\"threadId\":34,\"threadPriority\":5,\"logging.googleapis.com/trace\":\"${ctx:traceId}\",\"logging.googleapis.com/spanId\":\"${ctx:spanId}\",\"logging.googleapis.com/traceSampled\":\"${ctx:traceSampled}\",\"time\":\"2025-12-26T04:26:14.436Z\"}', '2025-12-26T12:26:14.507021856+08:00 {\"instant\":{\"epochSecond\":1766723174,\"nanoOfSecond\":506817713},\"thread\":\"grpc-default-executor-15\",\"level\":\"INFO\",\"loggerName\":\"hipstershop.AdService\",\"message\":\"received ad request (context_words=[kitchen])\",\"endOfBatch\":false,\"loggerFqcn\":\"org.apache.logging.log4j.spi.AbstractLogger\",\"threadId\":34,\"threadPriority\":5,\"logging.googleapis.com/trace\":\"${ctx:traceId}\",\"logging.googleapis.com/spanId\":\"${ctx:spanId}\",\"logging.googleapis.com/traceSampled\":\"${ctx:traceSampled}\",\"time\":\"2025-12-26T04:26:14.506Z\"}', '2025-12-26T12:26:14.625873752+08:00 {\"instant\":{\"epochSecond\":1766723174,\"nanoOfSecond\":625657855},\"thread\":\"grpc-default-executor-15\",\"level\":\"INFO\",\"loggerName\":\"hipstershop.AdService\",\"message\":\"received ad request (context_words=[footwear])\",\"endOfBatch\":false,\"loggerFqcn\":\"org.apache.logging.log4j.spi.AbstractLogger\",\"threadId\":34,\"threadPriority\":5,\"logging.googleapis.com/trace\":\"${ctx:traceId}\",\"logging.googleapis.com/spanId\":\"${ctx:spanId}\",\"logging.googleapis.com/traceSampled\":\"${ctx:traceSampled}\",\"time\":\"2025-12-26T04:26:14.625Z\"}', '2025-12-26T12:26:14.720874771+08:00 {\"instant\":{\"epochSecond\":1766723174,\"nanoOfSecond\":720652451},\"thread\":\"grpc-default-executor-15\",\"level\":\"INFO\",\"loggerName\":\"hipstershop.AdService\",\"message\":\"received ad request (context_words=[])\",\"endOfBatch\":false,\"loggerFqcn\":\"org.apache.logging.log4j.spi.AbstractLogger\",\"threadId\":34,\"threadPriority\":5,\"logging.googleapis.com/trace\":\"${ctx:traceId}\",\"logging.googleapis.com/spanId\":\"${ctx:spanId}\",\"logging.googleapis.com/traceSampled\":\"${ctx:traceSampled}\",\"time\":\"2025-12-26T04:26:14.720Z\"}', '2025-12-26T12:26:14.900400111+08:00 {\"instant\":{\"epochSecond\":1766723174,\"nanoOfSecond\":900179425},\"thread\":\"grpc-default-executor-15\",\"level\":\"INFO\",\"loggerName\":\"hipstershop.AdService\",\"message\":\"received ad request (context_words=[accessories])\",\"endOfBatch\":false,\"loggerFqcn\":\"org.apache.logging.log4j.spi.AbstractLogger\",\"threadId\":34,\"threadPriority\":5,\"logging.googleapis.com/trace\":\"${ctx:traceId}\",\"logging.googleapis.com/spanId\":\"${ctx:spanId}\",\"logging.googleapis.com/traceSampled\":\"${ctx:traceSampled}\",\"time\":\"2025-12-26T04:26:14.900Z\"}', '2025-12-26T12:26:14.990737895+08:00 {\"instant\":{\"epochSecond\":1766723174,\"nanoOfSecond\":990521351},\"thread\":\"grpc-default-executor-15\",\"level\":\"INFO\",\"loggerName\":\"hipstershop.AdService\",\"message\":\"received ad request (context_words=[clothing, tops])\",\"endOfBatch\":false,\"loggerFqcn\":\"org.apache.logging.log4j.spi.AbstractLogger\",\"threadId\":34,\"threadPriority\":5,\"logging.googleapis.com/trace\":\"${ctx:traceId}\",\"logging.googleapis.com/spanId\":\"${ctx:spanId}\",\"logging.googleapis.com/traceSampled\":\"${ctx:traceSampled}\",\"time\":\"2025-12-26T04:26:14.990Z\"}', '2025-12-26T12:26:14.998965862+08:00 {\"instant\":{\"epochSecond\":1766723174,\"nanoOfSecond\":998781205},\"thread\":\"grpc-default-executor-15\",\"level\":\"INFO\",\"loggerName\":\"hipstershop.AdService\",\"message\":\"received ad request (context_words=[accessories])\",\"endOfBatch\":false,\"loggerFqcn\":\"org.apache.logging.log4j.spi.AbstractLogger\",\"threadId\":34,\"threadPriority\":5,\"logging.googleapis.com/trace\":\"${ctx:traceId}\",\"logging.googleapis.com/spanId\":\"${ctx:spanId}\",\"logging.googleapis.com/traceSampled\":\"${ctx:traceSampled}\",\"time\":\"2025-12-26T04:26:14.998Z\"}', '2025-12-26T12:26:15.007248226+08:00 {\"instant\":{\"epochSecond\":1766723175,\"nanoOfSecond\":7103223},\"thread\":\"grpc-default-executor-15\",\"level\":\"INFO\",\"loggerName\":\"hipstershop.AdService\",\"message\":\"received ad request (context_words=[kitchen])\",\"endOfBatch\":false,\"loggerFqcn\":\"org.apache.logging.log4j.spi.AbstractLogger\",\"threadId\":34,\"threadPriority\":5,\"logging.googleapis.com/trace\":\"${ctx:traceId}\",\"logging.googleapis.com/spanId\":\"${ctx:spanId}\",\"logging.googleapis.com/traceSampled\":\"${ctx:traceSampled}\",\"time\":\"2025-12-26T04:26:15.007Z\"}', '2025-12-26T12:26:15.052142878+08:00 {\"instant\":{\"epochSecond\":1766723175,\"nanoOfSecond\":51941206},\"thread\":\"grpc-default-executor-15\",\"level\":\"INFO\",\"loggerName\":\"hipstershop.AdService\",\"message\":\"received ad request (context_words=[accessories])\",\"endOfBatch\":false,\"loggerFqcn\":\"org.apache.logging.log4j.spi.AbstractLogger\",\"threadId\":34,\"threadPriority\":5,\"logging.googleapis.com/trace\":\"${ctx:traceId}\",\"logging.googleapis.com/spanId\":\"${ctx:spanId}\",\"logging.googleapis.com/traceSampled\":\"${ctx:traceSampled}\",\"time\":\"2025-12-26T04:26:15.051Z\"}', '2025-12-26T12:26:15.263778579+08:00 {\"instant\":{\"epochSecond\":1766723175,\"nanoOfSecond\":263509932},\"thread\":\"grpc-default-executor-15\",\"level\":\"INFO\",\"loggerName\":\"hipstershop.AdService\",\"message\":\"received ad request (context_words=[])\",\"endOfBatch\":false,\"loggerFqcn\":\"org.apache.logging.log4j.spi.AbstractLogger\",\"threadId\":34,\"threadPriority\":5,\"logging.googleapis.com/trace\":\"${ctx:traceId}\",\"logging.googleapis.com/spanId\":\"${ctx:spanId}\",\"logging.googleapis.com/traceSampled\":\"${ctx:traceSampled}\",\"time\":\"2025-12-26T04:26:15.263Z\"}', '2025-12-26T12:26:15.312384874+08:00 {\"instant\":{\"epochSecond\":1766723175,\"nanoOfSecond\":312162521},\"thread\":\"grpc-default-executor-15\",\"level\":\"INFO\",\"loggerName\":\"hipstershop.AdService\",\"message\":\"received ad request (context_words=[accessories])\",\"endOfBatch\":false,\"loggerFqcn\":\"org.apache.logging.log4j.spi.AbstractLogger\",\"threadId\":34,\"threadPriority\":5,\"logging.googleapis.com/trace\":\"${ctx:traceId}\",\"logging.googleapis.com/spanId\":\"${ctx:spanId}\",\"logging.googleapis.com/traceSampled\":\"${ctx:traceSampled}\",\"time\":\"2025-12-26T04:26:15.312Z\"}', '2025-12-26T12:26:15.356869451+08:00 {\"instant\":{\"epochSecond\":1766723175,\"nanoOfSecond\":356607508},\"thread\":\"grpc-default-executor-15\",\"level\":\"INFO\",\"loggerName\":\"hipstershop.AdService\",\"message\":\"received ad request (context_words=[footwear])\",\"endOfBatch\":false,\"loggerFqcn\":\"org.apache.logging.log4j.spi.AbstractLogger\",\"threadId\":34,\"threadPriority\":5,\"logging.googleapis.com/trace\":\"${ctx:traceId}\",\"logging.googleapis.com/spanId\":\"${ctx:spanId}\",\"logging.googleapis.com/traceSampled\":\"${ctx:traceSampled}\",\"time\":\"2025-12-26T04:26:15.356Z\"}', '2025-12-26T12:26:15.372779306+08:00 {\"instant\":{\"epochSecond\":1766723175,\"nanoOfSecond\":372614050},\"thread\":\"grpc-default-executor-15\",\"level\":\"INFO\",\"loggerName\":\"hipstershop.AdService\",\"message\":\"received ad request (context_words=[])\",\"endOfBatch\":false,\"loggerFqcn\":\"org.apache.logging.log4j.spi.AbstractLogger\",\"threadId\":34,\"threadPriority\":5,\"logging.googleapis.com/trace\":\"${ctx:traceId}\",\"logging.googleapis.com/spanId\":\"${ctx:spanId}\",\"logging.googleapis.com/traceSampled\":\"${ctx:traceSampled}\",\"time\":\"2025-12-26T04:26:15.372Z\"}', '2025-12-26T12:26:15.623881006+08:00 {\"instant\":{\"epochSecond\":1766723175,\"nanoOfSecond\":623636948},\"thread\":\"grpc-default-executor-15\",\"level\":\"INFO\",\"loggerName\":\"hipstershop.AdService\",\"message\":\"received ad request (context_words=[])\",\"endOfBatch\":false,\"loggerFqcn\":\"org.apache.logging.log4j.spi.AbstractLogger\",\"threadId\":34,\"threadPriority\":5,\"logging.googleapis.com/trace\":\"${ctx:traceId}\",\"logging.googleapis.com/spanId\":\"${ctx:spanId}\",\"logging.googleapis.com/traceSampled\":\"${ctx:traceSampled}\",\"time\":\"2025-12-26T04:26:15.623Z\"}', '2025-12-26T12:26:15.722924466+08:00 {\"instant\":{\"epochSecond\":1766723175,\"nanoOfSecond\":722696109},\"thread\":\"grpc-default-executor-15\",\"level\":\"INFO\",\"loggerName\":\"hipstershop.AdService\",\"message\":\"received ad request (context_words=[accessories])\",\"endOfBatch\":false,\"loggerFqcn\":\"org.apache.logging.log4j.spi.AbstractLogger\",\"threadId\":34,\"threadPriority\":5,\"logging.googleapis.com/trace\":\"${ctx:traceId}\",\"logging.googleapis.com/spanId\":\"${ctx:spanId}\",\"logging.googleapis.com/traceSampled\":\"${ctx:traceSampled}\",\"time\":\"2025-12-26T04:26:15.722Z\"}', '2025-12-26T12:26:15.815050209+08:00 {\"instant\":{\"epochSecond\":1766723175,\"nanoOfSecond\":814833409},\"thread\":\"grpc-default-executor-15\",\"level\":\"INFO\",\"loggerName\":\"hipstershop.AdService\",\"message\":\"received ad request (context_words=[])\",\"endOfBatch\":false,\"loggerFqcn\":\"org.apache.logging.log4j.spi.AbstractLogger\",\"threadId\":34,\"threadPriority\":5,\"logging.googleapis.com/trace\":\"${ctx:traceId}\",\"logging.googleapis.com/spanId\":\"${ctx:spanId}\",\"logging.googleapis.com/traceSampled\":\"${ctx:traceSampled}\",\"time\":\"2025-12-26T04:26:15.814Z\"}', '2025-12-26T12:26:15.849962040+08:00 {\"instant\":{\"epochSecond\":1766723175,\"nanoOfSecond\":849755318},\"thread\":\"grpc-default-executor-15\",\"level\":\"INFO\",\"loggerName\":\"hipstershop.AdService\",\"message\":\"received ad request (context_words=[footwear])\",\"endOfBatch\":false,\"loggerFqcn\":\"org.apache.logging.log4j.spi.AbstractLogger\",\"threadId\":34,\"threadPriority\":5,\"logging.googleapis.com/trace\":\"${ctx:traceId}\",\"logging.googleapis.com/spanId\":\"${ctx:spanId}\",\"logging.googleapis.com/traceSampled\":\"${ctx:traceSampled}\",\"time\":\"2025-12-26T04:26:15.849Z\"}', '2025-12-26T12:26:15.874750048+08:00 {\"instant\":{\"epochSecond\":1766723175,\"nanoOfSecond\":874523240},\"thread\":\"grpc-default-executor-15\",\"level\":\"INFO\",\"loggerName\":\"hipstershop.AdService\",\"message\":\"received ad request (context_words=[kitchen])\",\"endOfBatch\":false,\"loggerFqcn\":\"org.apache.logging.log4j.spi.AbstractLogger\",\"threadId\":34,\"threadPriority\":5,\"logging.googleapis.com/trace\":\"${ctx:traceId}\",\"logging.googleapis.com/spanId\":\"${ctx:spanId}\",\"logging.googleapis.com/traceSampled\":\"${ctx:traceSampled}\",\"time\":\"2025-12-26T04:26:15.874Z\"}', '2025-12-26T12:26:15.944482098+08:00 {\"instant\":{\"epochSecond\":1766723175,\"nanoOfSecond\":944268826},\"thread\":\"grpc-default-executor-15\",\"level\":\"INFO\",\"loggerName\":\"hipstershop.AdService\",\"message\":\"received ad request (context_words=[accessories])\",\"endOfBatch\":false,\"loggerFqcn\":\"org.apache.logging.log4j.spi.AbstractLogger\",\"threadId\":34,\"threadPriority\":5,\"logging.googleapis.com/trace\":\"${ctx:traceId}\",\"logging.googleapis.com/spanId\":\"${ctx:spanId}\",\"logging.googleapis.com/traceSampled\":\"${ctx:traceSampled}\",\"time\":\"2025-12-26T04:26:15.944Z\"}', '2025-12-26T12:26:15.989182305+08:00 {\"instant\":{\"epochSecond\":1766723175,\"nanoOfSecond\":988979007},\"thread\":\"grpc-default-executor-15\",\"level\":\"INFO\",\"loggerName\":\"hipstershop.AdService\",\"message\":\"received ad request (context_words=[accessories])\",\"endOfBatch\":false,\"loggerFqcn\":\"org.apache.logging.log4j.spi.AbstractLogger\",\"threadId\":34,\"threadPriority\":5,\"logging.googleapis.com/trace\":\"${ctx:traceId}\",\"logging.googleapis.com/spanId\":\"${ctx:spanId}\",\"logging.googleapis.com/traceSampled\":\"${ctx:traceSampled}\",\"time\":\"2025-12-26T04:26:15.988Z\"}', '2025-12-26T12:26:15.998013499+08:00 {\"instant\":{\"epochSecond\":1766723175,\"nanoOfSecond\":997822805},\"thread\":\"grpc-default-executor-15\",\"level\":\"INFO\",\"loggerName\":\"hipstershop.AdService\",\"message\":\"received ad request (context_words=[kitchen])\",\"endOfBatch\":false,\"loggerFqcn\":\"org.apache.logging.log4j.spi.AbstractLogger\",\"threadId\":34,\"threadPriority\":5,\"logging.googleapis.com/trace\":\"${ctx:traceId}\",\"logging.googleapis.com/spanId\":\"${ctx:spanId}\",\"logging.googleapis.com/traceSampled\":\"${ctx:traceSampled}\",\"time\":\"2025-12-26T04:26:15.997Z\"}', '2025-12-26T12:26:16.071618728+08:00 {\"instant\":{\"epochSecond\":1766723176,\"nanoOfSecond\":71403535},\"thread\":\"grpc-default-executor-15\",\"level\":\"INFO\",\"loggerName\":\"hipstershop.AdService\",\"message\":\"received ad request (context_words=[accessories])\",\"endOfBatch\":false,\"loggerFqcn\":\"org.apache.logging.log4j.spi.AbstractLogger\",\"threadId\":34,\"threadPriority\":5,\"logging.googleapis.com/trace\":\"${ctx:traceId}\",\"logging.googleapis.com/spanId\":\"${ctx:spanId}\",\"logging.googleapis.com/traceSampled\":\"${ctx:traceSampled}\",\"time\":\"2025-12-26T04:26:16.071Z\"}', '2025-12-26T12:26:16.178997516+08:00 {\"instant\":{\"epochSecond\":1766723176,\"nanoOfSecond\":178748412},\"thread\":\"grpc-default-executor-15\",\"level\":\"INFO\",\"loggerName\":\"hipstershop.AdService\",\"message\":\"received ad request (context_words=[])\",\"endOfBatch\":false,\"loggerFqcn\":\"org.apache.logging.log4j.spi.AbstractLogger\",\"threadId\":34,\"threadPriority\":5,\"logging.googleapis.com/trace\":\"${ctx:traceId}\",\"logging.googleapis.com/spanId\":\"${ctx:spanId}\",\"logging.googleapis.com/traceSampled\":\"${ctx:traceSampled}\",\"time\":\"2025-12-26T04:26:16.178Z\"}', '2025-12-26T12:26:16.285834201+08:00 {\"instant\":{\"epochSecond\":1766723176,\"nanoOfSecond\":285597127},\"thread\":\"grpc-default-executor-15\",\"level\":\"INFO\",\"loggerName\":\"hipstershop.AdService\",\"message\":\"received ad request (context_words=[accessories])\",\"endOfBatch\":false,\"loggerFqcn\":\"org.apache.logging.log4j.spi.AbstractLogger\",\"threadId\":34,\"threadPriority\":5,\"logging.googleapis.com/trace\":\"${ctx:traceId}\",\"logging.googleapis.com/spanId\":\"${ctx:spanId}\",\"logging.googleapis.com/traceSampled\":\"${ctx:traceSampled}\",\"time\":\"2025-12-26T04:26:16.285Z\"}', '2025-12-26T12:26:16.358024655+08:00 {\"instant\":{\"epochSecond\":1766723176,\"nanoOfSecond\":357757120},\"thread\":\"grpc-default-executor-15\",\"level\":\"INFO\",\"loggerName\":\"hipstershop.AdService\",\"message\":\"received ad request (context_words=[])\",\"endOfBatch\":false,\"loggerFqcn\":\"org.apache.logging.log4j.spi.AbstractLogger\",\"threadId\":34,\"threadPriority\":5,\"logging.googleapis.com/trace\":\"${ctx:traceId}\",\"logging.googleapis.com/spanId\":\"${ctx:spanId}\",\"logging.googleapis.com/traceSampled\":\"${ctx:traceSampled}\",\"time\":\"2025-12-26T04:26:16.357Z\"}', '2025-12-26T12:26:16.498783722+08:00 {\"instant\":{\"epochSecond\":1766723176,\"nanoOfSecond\":498545589},\"thread\":\"grpc-default-executor-15\",\"level\":\"INFO\",\"loggerName\":\"hipstershop.AdService\",\"message\":\"received ad request (context_words=[hair, beauty])\",\"endOfBatch\":false,\"loggerFqcn\":\"org.apache.logging.log4j.spi.AbstractLogger\",\"threadId\":34,\"threadPriority\":5,\"logging.googleapis.com/trace\":\"${ctx:traceId}\",\"logging.googleapis.com/spanId\":\"${ctx:spanId}\",\"logging.googleapis.com/traceSampled\":\"${ctx:traceSampled}\",\"time\":\"2025-12-26T04:26:16.498Z\"}', '2025-12-26T12:26:16.610908351+08:00 {\"instant\":{\"epochSecond\":1766723176,\"nanoOfSecond\":610665535},\"thread\":\"grpc-default-executor-15\",\"level\":\"INFO\",\"loggerName\":\"hipstershop.AdService\",\"message\":\"received ad request (context_words=[accessories])\",\"endOfBatch\":false,\"loggerFqcn\":\"org.apache.logging.log4j.spi.AbstractLogger\",\"threadId\":34,\"threadPriority\":5,\"logging.googleapis.com/trace\":\"${ctx:traceId}\",\"logging.googleapis.com/spanId\":\"${ctx:spanId}\",\"logging.googleapis.com/traceSampled\":\"${ctx:traceSampled}\",\"time\":\"2025-12-26T04:26:16.610Z\"}', '2025-12-26T12:26:16.726779049+08:00 {\"instant\":{\"epochSecond\":1766723176,\"nanoOfSecond\":726549884},\"thread\":\"grpc-default-executor-15\",\"level\":\"INFO\",\"loggerName\":\"hipstershop.AdService\",\"message\":\"received ad request (context_words=[decor, home])\",\"endOfBatch\":false,\"loggerFqcn\":\"org.apache.logging.log4j.spi.AbstractLogger\",\"threadId\":34,\"threadPriority\":5,\"logging.googleapis.com/trace\":\"${ctx:traceId}\",\"logging.googleapis.com/spanId\":\"${ctx:spanId}\",\"logging.googleapis.com/traceSampled\":\"${ctx:traceSampled}\",\"time\":\"2025-12-26T04:26:16.726Z\"}', '2025-12-26T12:26:16.762671675+08:00 {\"instant\":{\"epochSecond\":1766723176,\"nanoOfSecond\":762444485},\"thread\":\"grpc-default-executor-15\",\"level\":\"INFO\",\"loggerName\":\"hipstershop.AdService\",\"message\":\"received ad request (context_words=[kitchen])\",\"endOfBatch\":false,\"loggerFqcn\":\"org.apache.logging.log4j.spi.AbstractLogger\",\"threadId\":34,\"threadPriority\":5,\"logging.googleapis.com/trace\":\"${ctx:traceId}\",\"logging.googleapis.com/spanId\":\"${ctx:spanId}\",\"logging.googleapis.com/traceSampled\":\"${ctx:traceSampled}\",\"time\":\"2025-12-26T04:26:16.762Z\"}', '2025-12-26T12:26:16.879624182+08:00 {\"instant\":{\"epochSecond\":1766723176,\"nanoOfSecond\":879400290},\"thread\":\"grpc-default-executor-15\",\"level\":\"INFO\",\"loggerName\":\"hipstershop.AdService\",\"message\":\"received ad request (context_words=[kitchen])\",\"endOfBatch\":false,\"loggerFqcn\":\"org.apache.logging.log4j.spi.AbstractLogger\",\"threadId\":34,\"threadPriority\":5,\"logging.googleapis.com/trace\":\"${ctx:traceId}\",\"logging.googleapis.com/spanId\":\"${ctx:spanId}\",\"logging.googleapis.com/traceSampled\":\"${ctx:traceSampled}\",\"time\":\"2025-12-26T04:26:16.879Z\"}', '2025-12-26T12:26:16.892497023+08:00 {\"instant\":{\"epochSecond\":1766723176,\"nanoOfSecond\":892297476},\"thread\":\"grpc-default-executor-15\",\"level\":\"INFO\",\"loggerName\":\"hipstershop.AdService\",\"message\":\"received ad request (context_words=[])\",\"endOfBatch\":false,\"loggerFqcn\":\"org.apache.logging.log4j.spi.AbstractLogger\",\"threadId\":34,\"threadPriority\":5,\"logging.googleapis.com/trace\":\"${ctx:traceId}\",\"logging.googleapis.com/spanId\":\"${ctx:spanId}\",\"logging.googleapis.com/traceSampled\":\"${ctx:traceSampled}\",\"time\":\"2025-12-26T04:26:16.892Z\"}', '2025-12-26T12:26:16.893975559+08:00 {\"instant\":{\"epochSecond\":1766723176,\"nanoOfSecond\":893868682},\"thread\":\"grpc-default-executor-15\",\"level\":\"INFO\",\"loggerName\":\"hipstershop.AdService\",\"message\":\"received ad request (context_words=[kitchen])\",\"endOfBatch\":false,\"loggerFqcn\":\"org.apache.logging.log4j.spi.AbstractLogger\",\"threadId\":34,\"threadPriority\":5,\"logging.googleapis.com/trace\":\"${ctx:traceId}\",\"logging.googleapis.com/spanId\":\"${ctx:spanId}\",\"logging.googleapis.com/traceSampled\":\"${ctx:traceSampled}\",\"time\":\"2025-12-26T04:26:16.893Z\"}', '2025-12-26T12:26:16.957051920+08:00 {\"instant\":{\"epochSecond\":1766723176,\"nanoOfSecond\":956827448},\"thread\":\"grpc-default-executor-15\",\"level\":\"INFO\",\"loggerName\":\"hipstershop.AdService\",\"message\":\"received ad request (context_words=[accessories])\",\"endOfBatch\":false,\"loggerFqcn\":\"org.apache.logging.log4j.spi.AbstractLogger\",\"threadId\":34,\"threadPriority\":5,\"logging.googleapis.com/trace\":\"${ctx:traceId}\",\"logging.googleapis.com/spanId\":\"${ctx:spanId}\",\"logging.googleapis.com/traceSampled\":\"${ctx:traceSampled}\",\"time\":\"2025-12-26T04:26:16.956Z\"}', '2025-12-26T12:26:17.031904073+08:00 {\"instant\":{\"epochSecond\":1766723177,\"nanoOfSecond\":31650381},\"thread\":\"grpc-default-executor-15\",\"level\":\"INFO\",\"loggerName\":\"hipstershop.AdService\",\"message\":\"received ad request (context_words=[])\",\"endOfBatch\":false,\"loggerFqcn\":\"org.apache.logging.log4j.spi.AbstractLogger\",\"threadId\":34,\"threadPriority\":5,\"logging.googleapis.com/trace\":\"${ctx:traceId}\",\"logging.googleapis.com/spanId\":\"${ctx:spanId}\",\"logging.googleapis.com/traceSampled\":\"${ctx:traceSampled}\",\"time\":\"2025-12-26T04:26:17.031Z\"}', '2025-12-26T12:26:17.113692214+08:00 {\"instant\":{\"epochSecond\":1766723177,\"nanoOfSecond\":112474488},\"thread\":\"grpc-default-executor-15\",\"level\":\"INFO\",\"loggerName\":\"hipstershop.AdService\",\"message\":\"received ad request (context_words=[accessories])\",\"endOfBatch\":false,\"loggerFqcn\":\"org.apache.logging.log4j.spi.AbstractLogger\",\"threadId\":34,\"threadPriority\":5,\"logging.googleapis.com/trace\":\"${ctx:traceId}\",\"logging.googleapis.com/spanId\":\"${ctx:spanId}\",\"logging.googleapis.com/traceSampled\":\"${ctx:traceSampled}\",\"time\":\"2025-12-26T04:26:17.112Z\"}', '2025-12-26T12:26:17.141421214+08:00 {\"instant\":{\"epochSecond\":1766723177,\"nanoOfSecond\":141220044},\"thread\":\"grpc-default-executor-15\",\"level\":\"INFO\",\"loggerName\":\"hipstershop.AdService\",\"message\":\"received ad request (context_words=[])\",\"endOfBatch\":false,\"loggerFqcn\":\"org.apache.logging.log4j.spi.AbstractLogger\",\"threadId\":34,\"threadPriority\":5,\"logging.googleapis.com/trace\":\"${ctx:traceId}\",\"logging.googleapis.com/spanId\":\"${ctx:spanId}\",\"logging.googleapis.com/traceSampled\":\"${ctx:traceSampled}\",\"time\":\"2025-12-26T04:26:17.141Z\"}', '2025-12-26T12:26:17.237011385+08:00 {\"instant\":{\"epochSecond\":1766723177,\"nanoOfSecond\":236779813},\"thread\":\"grpc-default-executor-15\",\"level\":\"INFO\",\"loggerName\":\"hipstershop.AdService\",\"message\":\"received ad request (context_words=[decor, home])\",\"endOfBatch\":false,\"loggerFqcn\":\"org.apache.logging.log4j.spi.AbstractLogger\",\"threadId\":34,\"threadPriority\":5,\"logging.googleapis.com/trace\":\"${ctx:traceId}\",\"logging.googleapis.com/spanId\":\"${ctx:spanId}\",\"logging.googleapis.com/traceSampled\":\"${ctx:traceSampled}\",\"time\":\"2025-12-26T04:26:17.236Z\"}', '2025-12-26T12:26:17.339388762+08:00 {\"instant\":{\"epochSecond\":1766723177,\"nanoOfSecond\":339169047},\"thread\":\"grpc-default-executor-15\",\"level\":\"INFO\",\"loggerName\":\"hipstershop.AdService\",\"message\":\"received ad request (context_words=[accessories])\",\"endOfBatch\":false,\"loggerFqcn\":\"org.apache.logging.log4j.spi.AbstractLogger\",\"threadId\":34,\"threadPriority\":5,\"logging.googleapis.com/trace\":\"${ctx:traceId}\",\"logging.googleapis.com/spanId\":\"${ctx:spanId}\",\"logging.googleapis.com/traceSampled\":\"${ctx:traceSampled}\",\"time\":\"2025-12-26T04:26:17.339Z\"}']",
+   "error": null,
+   "purpose": "request latency / saturation logs",
+   "tool_latency": null
+  }
+ ],
+ "agentrun": {
+  "tag": "test",
+  "dsl": "workspace/dsl_versions/v0.8.dsl.txt",
+  "dsl_version": "0.8",
+  "sop": {
+   "sop": "boutique-runtime-rca",
+   "scope": {
+    "system": "boutique",
+    "families": [
+     "runtime",
+     "admission",
+     "scheduling",
+     "startup",
+     "service",
+     "performance",
+     "infrastructure",
+     "codedefect"
+    ],
+    "severity": [
+     "SEV2",
+     "SEV3"
+    ]
+   },
+   "owner": "sre-platform",
+   "approved_by": [
+    "oncall-primary",
+    "sre-lead"
+   ],
+   "reviewed_at": "2026-10-23",
+   "change_ticket": "OPS-1236",
+   "boundaries": "只读诊断：本 SOP 不执行任何写操作（重启/回滚/扩缩容），也不做对外播报；\n它回答\"最可能的根因与受害对象\"，处置与沟通由值班按 runbook 人工执行。\n不覆盖 SEV1（需 incident commander 介入）与变更引发的问题（走变更回滚流程）。\n输入是冻结快照：诊断结论对\"快照时刻\"成立，恢复后需重新取证。\nR1 已知边界：PVC 的 requested size / accessMode 在本 benchmark 的工具面不可见，\n因此 pvc_capacity 与 pvc_access_mode 无法区分（同一分数并列，交给 jev 或升级）。\n"
+  },
+  "params": {
+   "cands_cap": 8,
+   "max_waves": 8,
+   "min_waves": 5,
+   "steps_per_wave": 1,
+   "dominance_ratio": 1.5,
+   "conf_min": 0.0,
+   "escalate": true,
+   "escalate_budget": 8,
+   "judge_on_codedefect": true,
+   "jev_route": true,
+   "jev_pick": true,
+   "jev_verify": true,
+   "route_fallback": "runtime"
+  },
+  "nodes_executed": [
+   "anchors:extract_anchors",
+   "census:probes",
+   "route:decide",
+   "plan:build_plan",
+   "probe:probes",
+   "derive:derive_candidates",
+   "pick:decide",
+   "verify:decide",
+   "probe:probes",
+   "derive:derive_candidates",
+   "pick:decide",
+   "verify:decide",
+   "probe:probes",
+   "derive:derive_candidates",
+   "pick:decide",
+   "verify:decide",
+   "escalate:escalate",
+   "answer:normalize_answer",
+   "persist:persist_trace"
+  ],
+  "census": [
+   {
+    "step": "pods",
+    "gate": "always"
+   },
+   {
+    "step": "alerts",
+    "gate": "healthy_system"
+   }
+  ],
+  "plan": [
+   {
+    "step": "recent_logs",
+    "gate": "always",
+    "wave": 1
+   },
+   {
+    "step": "describe_pod",
+    "gate": "weak",
+    "wave": 2
+   },
+   {
+    "step": "deps",
+    "gate": "weak",
+    "wave": 3
+   }
+  ],
+  "family": "performance",
+  "state_wiring": {
+   "family": "$route.family",
+   "route_probs": "$route.probabilities",
+   "picked": "$pick.picked",
+   "pick_dominant": "$pick.dominant",
+   "verify_status": "$verify.status",
+   "verify_prob": "$verify.confidence"
+  },
+  "bindings": {
+   "anchors": {
+    "anchors": "Anchors(case_id='boutique/performance/22', system='boutique', namespace='boutique', query='Service latency increased significantly', difficulty='hard', symptoms=['degradation'], mentioned_apps=[], priors={'db_service': '', 'db_port': 0})"
+   },
+   "route": {
+    "family": "performance",
+    "probabilities": {},
+    "route_why": "mechanism_mode"
+   },
+   "plan": {
+    "plan": "[{'name': 'recent_logs', 'key': 'recent', 'tool': 'GetRecentLogs', 'args': <function _args_error_logs at 0x10c64b740>, 'purpose': 'request latency / saturation logs', 'when': <function compile_steps.<locals>.<lambda> at 0x10d054680>, 'gate': 'always', 'wave': 1}, {'name': 'describe_pod', 'key': 'describe:pod', 'tool': 'DescribeResource', 'args': <function _args_describe_pod at 0x10c64b560>, 'purpose': 'probe config, container state, restart reasons, scheduler events', 'when': <function compile_steps.<locals>.<lambda> at 0x10d054a40>, 'gate': 'weak', 'wave': 2}, {'name': 'deps', 'key': 'deps', 'tool': 'GetServiceDependencies', 'args': <function _args_deps at 0x10c64be20>, 'purpose': 'upstream/downstream call graph', 'when': <function compile_steps.<locals>.<lambda> at 0x10d054900>, 'gate': 'weak', 'wave': 3}]"
+   },
+   "derive": {
+    "candidates": "[Candidate(root_cause='pod_network_delay', object='app/adservice', score=0.82, evidence='network latency anomaly on the pod', rule='delay_alert'), Candidate(root_cause='pod_network_delay', object='app/checkoutservice', score=0.82, evidence='network latency anomaly on the pod', rule='delay_alert'), Candidate(root_cause='pod_network_delay', object='app/currencyservice', score=0.82, evidence='network latency anomaly on the pod', rule='delay_alert'), Candidate(root_cause='pod_network_delay', object='app/emailservice', score=0.82, evidence='network latency anomaly on the pod', rule='delay_alert'), Candidate(root_cause='pod_network_delay', object='app/frontend', score=0.82, evidence='network latency anomaly on the pod', rule='delay_alert'), Candidate(root_cause='pod_network_delay', object='app/paymentservice', score=0.82, evidence='network latency anomaly on the pod', rule='delay_alert'), Candidate(root_cause='pod_network_delay', object='app/productcatalogservice', score=0.82, evidence='network latency anomaly on the pod', rule='delay_alert'), Candidate(root_cause='pod_network_delay', object='app/recommendationservice', score=0.82, evidence='network latency anomaly on the pod', rule='delay_alert'), Candidate(root_cause='pod_network_delay', object='app/redis-cart', score=0.82, evidence='network latency anomaly on the pod', rule='delay_alert'), Candidate(root_cause='pod_network_delay', object='app/shippingservice', score=0.82, evidence='network latency anomaly on the pod', rule='delay_alert')]"
+   },
+   "pick": {
+    "picked": 0,
+    "dominant": false,
+    "pick_why": "no_new_evidence"
+   },
+   "verify": {
+    "status": "verified",
+    "confidence": null,
+    "verify_why": "no_new_evidence"
+   },
+   "escalate": {
+    "answer": null
+   },
+   "answer": {
+    "final": {
+     "key_evidence_summary": "network latency anomaly on the pod",
+     "top_3_predictions": [
+      {
+       "rank": 1,
+       "fault_object": "app/adservice",
+       "root_cause": "pod_network_delay"
+      },
+      {
+       "rank": 2,
+       "fault_object": "app/checkoutservice",
+       "root_cause": "pod_network_delay"
+      },
+      {
+       "rank": 3,
+       "fault_object": "app/currencyservice",
+       "root_cause": "pod_network_delay"
+      }
+     ]
+    }
+   }
+  },
+  "picked": {
+   "root_cause": "pod_network_delay",
+   "object": "app/adservice",
+   "score": 0.82,
+   "evidence": "network latency anomaly on the pod",
+   "rule": "delay_alert"
+  },
+  "pick_why": "",
+  "verify_prob": null,
+  "verify_verdict": "verified",
+  "verified": true,
+  "escalated": false,
+  "escalate_reason": "",
+  "escalate_steps": 0,
+  "waves": 3,
+  "candidates": [
+   {
+    "root_cause": "pod_network_delay",
+    "object": "app/adservice",
+    "score": 0.82,
+    "evidence": "network latency anomaly on the pod",
+    "rule": "delay_alert"
+   },
+   {
+    "root_cause": "pod_network_delay",
+    "object": "app/checkoutservice",
+    "score": 0.82,
+    "evidence": "network latency anomaly on the pod",
+    "rule": "delay_alert"
+   },
+   {
+    "root_cause": "pod_network_delay",
+    "object": "app/currencyservice",
+    "score": 0.82,
+    "evidence": "network latency anomaly on the pod",
+    "rule": "delay_alert"
+   },
+   {
+    "root_cause": "pod_network_delay",
+    "object": "app/emailservice",
+    "score": 0.82,
+    "evidence": "network latency anomaly on the pod",
+    "rule": "delay_alert"
+   },
+   {
+    "root_cause": "pod_network_delay",
+    "object": "app/frontend",
+    "score": 0.82,
+    "evidence": "network latency anomaly on the pod",
+    "rule": "delay_alert"
+   },
+   {
+    "root_cause": "pod_network_delay",
+    "object": "app/paymentservice",
+    "score": 0.82,
+    "evidence": "network latency anomaly on the pod",
+    "rule": "delay_alert"
+   },
+   {
+    "root_cause": "pod_network_delay",
+    "object": "app/productcatalogservice",
+    "score": 0.82,
+    "evidence": "network latency anomaly on the pod",
+    "rule": "delay_alert"
+   },
+   {
+    "root_cause": "pod_network_delay",
+    "object": "app/recommendationservice",
+    "score": 0.82,
+    "evidence": "network latency anomaly on the pod",
+    "rule": "delay_alert"
+   },
+   {
+    "root_cause": "pod_network_delay",
+    "object": "app/redis-cart",
+    "score": 0.82,
+    "evidence": "network latency anomaly on the pod",
+    "rule": "delay_alert"
+   },
+   {
+    "root_cause": "pod_network_delay",
+    "object": "app/shippingservice",
+    "score": 0.82,
+    "evidence": "network latency anomaly on the pod",
+    "rule": "delay_alert"
+   }
+  ],
+  "jev": [
+   {
+    "rid": "test:boutique/performance/22#route",
+    "kind": "route",
+    "node": "route",
+    "mode": "mechanism",
+    "options": [
+     "performance",
+     "infrastructure"
+    ],
+    "status": "mechanical",
+    "guard": "unavailable",
+    "use": "first_option",
+    "choice": "performance",
+    "why": "mechanism_mode",
+    "dominant": false,
+    "continue_loop": false,
+    "escalate": false
+   },
+   {
+    "rid": "test:boutique/performance/22#pick1",
+    "kind": "pick",
+    "node": "pick",
+    "mode": "mechanism",
+    "options": [
+     "c0",
+     "c1",
+     "c2",
+     "c3",
+     "c4",
+     "c5",
+     "c6",
+     "c7"
+    ],
+    "status": "mechanical",
+    "guard": "unavailable",
+    "use": "first_option",
+    "choice": 0,
+    "why": "mechanism_mode",
+    "dominant": false,
+    "continue_loop": false,
+    "escalate": false
+   },
+   {
+    "rid": "test:boutique/performance/22#verify1",
+    "kind": "verify",
+    "node": "verify",
+    "mode": "mechanism",
+    "options": [
+     "supported",
+     "insufficient",
+     "contradicted"
+    ],
+    "status": "mechanical",
+    "guard": "unavailable",
+    "use": "verified",
+    "choice": "verified",
+    "why": "mechanism_mode",
+    "dominant": false,
+    "continue_loop": false,
+    "escalate": false
+   },
+   {
+    "rid": "test:boutique/performance/22#pick2",
+    "kind": "pick",
+    "node": "pick",
+    "mode": "mechanism",
+    "options": [
+     "c0",
+     "c1",
+     "c2",
+     "c3",
+     "c4",
+     "c5",
+     "c6",
+     "c7"
+    ],
+    "status": "mechanical",
+    "guard": "unchanged_since_last",
+    "use": "previous",
+    "choice": 0,
+    "why": "no_new_evidence",
+    "dominant": false,
+    "continue_loop": false,
+    "escalate": false
+   },
+   {
+    "rid": "test:boutique/performance/22#verify2",
+    "kind": "verify",
+    "node": "verify",
+    "mode": "mechanism",
+    "options": [
+     "supported",
+     "insufficient",
+     "contradicted"
+    ],
+    "status": "mechanical",
+    "guard": "unchanged_since_last",
+    "use": "previous",
+    "choice": "verified",
+    "why": "no_new_evidence",
+    "dominant": false,
+    "continue_loop": false,
+    "escalate": false
+   },
+   {
+    "rid": "test:boutique/performance/22#pick3",
+    "kind": "pick",
+    "node": "pick",
+    "mode": "mechanism",
+    "options": [
+     "c0",
+     "c1",
+     "c2",
+     "c3",
+     "c4",
+     "c5",
+     "c6",
+     "c7"
+    ],
+    "status": "mechanical",
+    "guard": "unchanged_since_last",
+    "use": "previous",
+    "choice": 0,
+    "why": "no_new_evidence",
+    "dominant": false,
+    "continue_loop": false,
+    "escalate": false
+   },
+   {
+    "rid": "test:boutique/performance/22#verify3",
+    "kind": "verify",
+    "node": "verify",
+    "mode": "mechanism",
+    "options": [
+     "supported",
+     "insufficient",
+     "contradicted"
+    ],
+    "status": "mechanical",
+    "guard": "unchanged_since_last",
+    "use": "previous",
+    "choice": "verified",
+    "why": "no_new_evidence",
+    "dominant": false,
+    "continue_loop": false,
+    "escalate": false
+   }
+  ],
+  "nodes": [
+   {
+    "node": "code",
+    "id": "anchors",
+    "anchors": {
+     "case_id": "boutique/performance/22",
+     "system": "boutique",
+     "namespace": "boutique",
+     "query": "Service latency increased significantly",
+     "difficulty": "hard",
+     "symptoms": [
+      "degradation"
+     ],
+     "mentioned_apps": []
+    }
+   },
+   {
+    "node": "probes",
+    "plan": "census",
+    "wave": 0,
+    "executed": 2,
+    "steps": [
+     {
+      "key": "pods",
+      "tool": "GetResources",
+      "arguments": {
+       "namespace": "boutique",
+       "resource_type": "pods",
+       "output_wide": true
+      },
+      "gate": "always"
+     },
+     {
+      "key": "alerts",
+      "tool": "GetAlerts",
+      "arguments": {},
+      "gate": "healthy_system"
+     }
+    ],
+    "skipped": []
+   },
+   {
+    "node": "decide",
+    "id": "route",
+    "rid": "test:boutique/performance/22#route",
+    "status": "mechanical",
+    "guard": "unavailable",
+    "use": "first_option",
+    "choice": "performance",
+    "dominant": false,
+    "why": "mechanism_mode"
+   },
+   {
+    "node": "code",
+    "id": "plan",
+    "family": "performance",
+    "plan": [
+     {
+      "step": "recent_logs",
+      "gate": "always",
+      "wave": 1
+     },
+     {
+      "step": "describe_pod",
+      "gate": "weak",
+      "wave": 2
+     },
+     {
+      "step": "deps",
+      "gate": "weak",
+      "wave": 3
+     }
+    ]
+   },
+   {
+    "node": "probes",
+    "plan": "family",
+    "wave": 1,
+    "executed": 1,
+    "steps": [
+     {
+      "key": "recent",
+      "tool": "GetRecentLogs",
+      "arguments": {
+       "namespace": "boutique",
+       "service_name": "adservice"
+      },
+      "gate": "always"
+     }
+    ],
+    "skipped": []
+   },
+   {
+    "node": "code",
+    "id": "derive",
+    "raw": 10,
+    "kept": 10,
+    "top": [
+     {
+      "root_cause": "pod_network_delay",
+      "object": "app/adservice",
+      "score": 0.82,
+      "evidence": "network latency anomaly on the pod",
+      "rule": "delay_alert"
+     },
+     {
+      "root_cause": "pod_network_delay",
+      "object": "app/checkoutservice",
+      "score": 0.82,
+      "evidence": "network latency anomaly on the pod",
+      "rule": "delay_alert"
+     },
+     {
+      "root_cause": "pod_network_delay",
+      "object": "app/currencyservice",
+      "score": 0.82,
+      "evidence": "network latency anomaly on the pod",
+      "rule": "delay_alert"
+     },
+     {
+      "root_cause": "pod_network_delay",
+      "object": "app/emailservice",
+      "score": 0.82,
+      "evidence": "network latency anomaly on the pod",
+      "rule": "delay_alert"
+     },
+     {
+      "root_cause": "pod_network_delay",
+      "object": "app/frontend",
+      "score": 0.82,
+      "evidence": "network latency anomaly on the pod",
+      "rule": "delay_alert"
+     },
+     {
+      "root_cause": "pod_network_delay",
+      "object": "app/paymentservice",
+      "score": 0.82,
+      "evidence": "network latency anomaly on the pod",
+      "rule": "delay_alert"
+     },
+     {
+      "root_cause": "pod_network_delay",
+      "object": "app/productcatalogservice",
+      "score": 0.82,
+      "evidence": "network latency anomaly on the pod",
+      "rule": "delay_alert"
+     },
+     {
+      "root_cause": "pod_network_delay",
+      "object": "app/recommendationservice",
+      "score": 0.82,
+      "evidence": "network latency anomaly on the pod",
+      "rule": "delay_alert"
+     }
+    ]
+   },
+   {
+    "node": "decide",
+    "id": "pick",
+    "rid": "test:boutique/performance/22#pick1",
+    "status": "mechanical",
+    "guard": "unavailable",
+    "use": "first_option",
+    "choice": 0,
+    "dominant": false,
+    "why": "mechanism_mode"
+   },
+   {
+    "node": "decide",
+    "id": "verify",
+    "rid": "test:boutique/performance/22#verify1",
+    "status": "mechanical",
+    "guard": "unavailable",
+    "use": "verified",
+    "choice": "verified",
+    "dominant": false,
+    "why": "mechanism_mode"
+   },
+   {
+    "node": "probes",
+    "plan": "family",
+    "wave": 2,
+    "executed": 0,
+    "steps": [],
+    "skipped": [
+     {
+      "step": "describe_pod",
+      "why": "gate weak"
+     }
+    ]
+   },
+   {
+    "node": "code",
+    "id": "derive",
+    "raw": 10,
+    "kept": 10,
+    "top": [
+     {
+      "root_cause": "pod_network_delay",
+      "object": "app/adservice",
+      "score": 0.82,
+      "evidence": "network latency anomaly on the pod",
+      "rule": "delay_alert"
+     },
+     {
+      "root_cause": "pod_network_delay",
+      "object": "app/checkoutservice",
+      "score": 0.82,
+      "evidence": "network latency anomaly on the pod",
+      "rule": "delay_alert"
+     },
+     {
+      "root_cause": "pod_network_delay",
+      "object": "app/currencyservice",
+      "score": 0.82,
+      "evidence": "network latency anomaly on the pod",
+      "rule": "delay_alert"
+     },
+     {
+      "root_cause": "pod_network_delay",
+      "object": "app/emailservice",
+      "score": 0.82,
+      "evidence": "network latency anomaly on the pod",
+      "rule": "delay_alert"
+     },
+     {
+      "root_cause": "pod_network_delay",
+      "object": "app/frontend",
+      "score": 0.82,
+      "evidence": "network latency anomaly on the pod",
+      "rule": "delay_alert"
+     },
+     {
+      "root_cause": "pod_network_delay",
+      "object": "app/paymentservice",
+      "score": 0.82,
+      "evidence": "network latency anomaly on the pod",
+      "rule": "delay_alert"
+     },
+     {
+      "root_cause": "pod_network_delay",
+      "object": "app/productcatalogservice",
+      "score": 0.82,
+      "evidence": "network latency anomaly on the pod",
+      "rule": "delay_alert"
+     },
+     {
+      "root_cause": "pod_network_delay",
+      "object": "app/recommendationservice",
+      "score": 0.82,
+      "evidence": "network latency anomaly on the pod",
+      "rule": "delay_alert"
+     }
+    ]
+   },
+   {
+    "node": "decide",
+    "id": "pick",
+    "rid": "test:boutique/performance/22#pick2",
+    "status": "mechanical",
+    "guard": "unchanged_since_last",
+    "use": "previous",
+    "choice": 0,
+    "dominant": false,
+    "why": "no_new_evidence"
+   },
+   {
+    "node": "decide",
+    "id": "verify",
+    "rid": "test:boutique/performance/22#verify2",
+    "status": "mechanical",
+    "guard": "unchanged_since_last",
+    "use": "previous",
+    "choice": "verified",
+    "dominant": false,
+    "why": "no_new_evidence"
+   },
+   {
+    "node": "probes",
+    "plan": "family",
+    "wave": 3,
+    "executed": 0,
+    "steps": [],
+    "skipped": [
+     {
+      "step": "deps",
+      "why": "gate weak"
+     }
+    ]
+   },
+   {
+    "node": "code",
+    "id": "derive",
+    "raw": 10,
+    "kept": 10,
+    "top": [
+     {
+      "root_cause": "pod_network_delay",
+      "object": "app/adservice",
+      "score": 0.82,
+      "evidence": "network latency anomaly on the pod",
+      "rule": "delay_alert"
+     },
+     {
+      "root_cause": "pod_network_delay",
+      "object": "app/checkoutservice",
+      "score": 0.82,
+      "evidence": "network latency anomaly on the pod",
+      "rule": "delay_alert"
+     },
+     {
+      "root_cause": "pod_network_delay",
+      "object": "app/currencyservice",
+      "score": 0.82,
+      "evidence": "network latency anomaly on the pod",
+      "rule": "delay_alert"
+     },
+     {
+      "root_cause": "pod_network_delay",
+      "object": "app/emailservice",
+      "score": 0.82,
+      "evidence": "network latency anomaly on the pod",
+      "rule": "delay_alert"
+     },
+     {
+      "root_cause": "pod_network_delay",
+      "object": "app/frontend",
+      "score": 0.82,
+      "evidence": "network latency anomaly on the pod",
+      "rule": "delay_alert"
+     },
+     {
+      "root_cause": "pod_network_delay",
+      "object": "app/paymentservice",
+      "score": 0.82,
+      "evidence": "network latency anomaly on the pod",
+      "rule": "delay_alert"
+     },
+     {
+      "root_cause": "pod_network_delay",
+      "object": "app/productcatalogservice",
+      "score": 0.82,
+      "evidence": "network latency anomaly on the pod",
+      "rule": "delay_alert"
+     },
+     {
+      "root_cause": "pod_network_delay",
+      "object": "app/recommendationservice",
+      "score": 0.82,
+      "evidence": "network latency anomaly on the pod",
+      "rule": "delay_alert"
+     }
+    ]
+   },
+   {
+    "node": "decide",
+    "id": "pick",
+    "rid": "test:boutique/performance/22#pick3",
+    "status": "mechanical",
+    "guard": "unchanged_since_last",
+    "use": "previous",
+    "choice": 0,
+    "dominant": false,
+    "why": "no_new_evidence"
+   },
+   {
+    "node": "decide",
+    "id": "verify",
+    "rid": "test:boutique/performance/22#verify3",
+    "status": "mechanical",
+    "guard": "unchanged_since_last",
+    "use": "previous",
+    "choice": "verified",
+    "dominant": false,
+    "why": "no_new_evidence"
+   },
+   {
+    "node": "loop",
+    "id": "waves",
+    "stop": "plan_exhausted",
+    "wave": 3
+   },
+   {
+    "node": "escalate",
+    "id": "escalate",
+    "fired": false,
+    "reasons": [],
+    "why": "no reason"
+   },
+   {
+    "node": "code",
+    "id": "answer",
+    "predictions": [
+     {
+      "rank": 1,
+      "fault_object": "app/adservice",
+      "root_cause": "pod_network_delay"
+     },
+     {
+      "rank": 2,
+      "fault_object": "app/checkoutservice",
+      "root_cause": "pod_network_delay"
+     },
+     {
+      "rank": 3,
+      "fault_object": "app/currencyservice",
+      "root_cause": "pod_network_delay"
+     }
+    ]
+   },
+   {
+    "node": "artifact",
+    "id": "persist",
+    "persisted": false,
+    "why": "written by the CLI driver"
+   }
+  ],
+  "notes": [],
+  "tool_calls": 3,
+  "model_calls": 0,
+  "tokens_in": 0,
+  "tokens_out": 0,
+  "wall_s": 0.13
+ }
+}

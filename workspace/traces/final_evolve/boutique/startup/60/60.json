@@ -1,0 +1,845 @@
+{
+ "case_id": "boutique/startup/60",
+ "system_name": "boutique",
+ "question": "Partial Service Unreachability.",
+ "case_path": "/Users/justinwan/work/workspace/cloudops_bench_rsi/repo/benchmark/boutique/startup/60",
+ "max_steps": 10,
+ "current_step": 4,
+ "finished": true,
+ "stop_reason": "submit",
+ "final_answer": "{\"key_evidence_summary\": \"volume mount rejected with permission denied\", \"top_3_predictions\": [{\"rank\": 1, \"fault_object\": \"app/redis-cart\", \"root_cause\": \"volume_mount_permission_denied\"}, {\"rank\": 2, \"fault_object\": \"app/redis-cart\", \"root_cause\": \"volume_mount_permission_denied\"}, {\"rank\": 3, \"fault_object\": \"app/redis-cart\", \"root_cause\": \"volume_mount_permission_denied\"}]}",
+ "metadata": {
+  "namespace": "boutique",
+  "query": "Partial Service Unreachability.",
+  "fault_category": "startup",
+  "model_name": "agentrun-v0.13"
+ },
+ "steps": [
+  {
+   "step_id": 0,
+   "action_type": "tool",
+   "action_name": "GetResources",
+   "action_input": {
+    "namespace": "boutique",
+    "resource_type": "pods",
+    "output_wide": true
+   },
+   "observation": "NAME                                     READY   STATUS             RESTARTS      AGE    IP             NODE        NOMINATED NODE   READINESS GATES\nadservice-6f89c99b76-srdnf               1/1     Running            0             109s   172.20.2.232   worker-02   <none>           <none>\ncartservice-7c5f46fc47-gphhp             1/1     Running            0             109s   172.20.1.162   worker-01   <none>           <none>\ncheckoutservice-8445f8b6cb-rjjxx         1/1     Running            0             109s   172.20.2.233   worker-02   <none>           <none>\ncurrencyservice-5bc9dbdf66-4f2x2         1/1     Running            0             109s   172.20.2.234   worker-02   <none>           <none>\nemailservice-c86b9b8f6-2qm8s             1/1     Running            0             108s   172.20.1.163   worker-01   <none>           <none>\nfrontend-6778bd7b8b-5d58f                1/1     Running            0             108s   172.20.2.235   worker-02   <none>           <none>\npaymentservice-64b6c744b5-cw7qb          1/1     Running            0             108s   172.20.1.164   worker-01   <none>           <none>\nproductcatalogservice-6fb89f98f8-484tn   1/1     Running            0             108s   172.20.2.236   worker-02   <none>           <none>\nrecommendationservice-786899779d-gmplf   1/1     Running            0             108s   172.20.1.165   worker-01   <none>           <none>\nredis-cart-79598c9984-fs47p              0/1     CrashLoopBackOff   4 (23s ago)   107s   172.20.1.167   worker-01   <none>           <none>\nshippingservice-7ff54bf6b6-hcjwt         1/1     Running            0             107s   172.20.1.166   worker-01   <none>           <none>\n",
+   "error": null,
+   "purpose": "pod readiness census",
+   "tool_latency": null
+  },
+  {
+   "step_id": 1,
+   "action_type": "tool",
+   "action_name": "DescribeResource",
+   "action_input": {
+    "namespace": "boutique",
+    "resource_type": "pods",
+    "name": "redis-cart-79598c9984-fs47p"
+   },
+   "observation": "Name:             redis-cart-79598c9984-fs47p\nNamespace:        boutique\nPriority:         0\nService Account:  default\nNode:             worker-01/192.168.0.222\nStart Time:       Sat, 10 Jan 2026 17:10:17 +0800\nLabels:           app=redis-cart\n                  pod-template-hash=79598c9984\nAnnotations:      <none>\nStatus:           Running\nIP:               172.20.1.167\nIPs:\n  IP:           172.20.1.167\nControlled By:  ReplicaSet/redis-cart-79598c9984\nContainers:\n  redis:\n    Container ID:   containerd://8dcb00cd1a38a1dbfcb61804dfd35d919b9f497a87dd0d14877d278ebfba0af3\n    Image:          redis:alpine\n    Image ID:       docker.io/library/redis@sha256:987c376c727652f99625c7d205a1cba3cb2c53b92b0b62aade2bd48ee1593232\n    Port:           6379/TCP\n    Host Port:      0/TCP\n    State:          Waiting\n      Reason:       CrashLoopBackOff\n    Last State:     Terminated\n      Reason:       Error\n      Exit Code:    1\n      Started:      Sat, 10 Jan 2026 17:11:40 +0800\n      Finished:     Sat, 10 Jan 2026 17:11:41 +0800\n    Ready:          False\n    Restart Count:  4\n    Limits:\n      cpu:     125m\n      memory:  256Mi\n    Requests:\n      cpu:        70m\n      memory:     200Mi\n    Liveness:     tcp-socket :6379 delay=0s timeout=1s period=5s #success=1 #failure=3\n    Readiness:    tcp-socket :6379 delay=0s timeout=1s period=5s #success=1 #failure=3\n    Environment:  <none>\n    Mounts:\n      /data from redis-data (rw)\n      /var/run/secrets/kubernetes.io/serviceaccount from kube-api-access-q8nqw (ro)\nConditions:\n  Type                        Status\n  PodReadyToStartContainers   True \n  Initialized                 True \n  Ready                       False \n  ContainersReady             False \n  PodScheduled                True \nVolumes:\n  redis-data:\n    Type:          HostPath (bare host directory volume)\n    Path:          /mnt/redis-data-hp\n    HostPathType:  Directory\n  kube-api-access-q8nqw:\n    Type:                    Projected (a volume that contains injected data from multiple sources)\n    TokenExpirationSeconds:  3607\n    ConfigMapName:           kube-root-ca.crt\n    ConfigMapOptional:       <nil>\n    DownwardAPI:             true\nQoS Class:                   Burstable\nNode-Selectors:              kubernetes.io/hostname=worker-01\nTolerations:                 node.kubernetes.io/not-ready:NoExecute op=Exists for 300s\n                             node.kubernetes.io/unreachable:NoExecute op=Exists for 300s\nEvents:\n  Type     Reason     Age                 From               Message\n  ----     ------     ----                ----               -------\n  Normal   Scheduled  109s                default-scheduler  Successfully assigned boutique/redis-cart-79598c9984-fs47p to worker-01\n  Warning  Unhealthy  89s                 kubelet            Liveness probe failed: dial tcp 172.20.1.167:6379: connect: connection refused\n  Normal   Pulled     69s (x4 over 109s)  kubelet            Container image \"redis:alpine\" already present on machine\n  Normal   Created    69s (x4 over 108s)  kubelet            Created container redis\n  Normal   Started    69s (x4 over 108s)  kubelet            Started container redis\n  Warning  Unhealthy  68s (x3 over 89s)   kubelet            Readiness probe failed: dial tcp 172.20.1.167:6379: connect: connection refused\n  Warning  BackOff    52s (x9 over 107s)  kubelet            Back-off restarting failed container redis in pod redis-cart-79598c9984-fs47p_boutique(622bb4c1-f7c1-4af5-9e10-fba26d9ba08d)\n",
+   "error": null,
+   "purpose": "probe config, container state, restart reasons, scheduler events",
+   "tool_latency": null
+  },
+  {
+   "step_id": 2,
+   "action_type": "tool",
+   "action_name": "GetAppYAML",
+   "action_input": {
+    "app_name": "redis-cart"
+   },
+   "observation": "apiVersion: apps/v1\nkind: Deployment\nmetadata:\n  name: redis-cart\n  namespace: boutique\nspec:\n  selector:\n    matchLabels:\n      app: redis-cart\n  template:\n    metadata:\n      labels:\n        app: redis-cart\n    spec:\n      nodeSelector: \n        kubernetes.io/hostname: worker-01\n      containers:\n      - name: redis\n        image: redis:alpine\n        ports:\n        - containerPort: 6379\n        readinessProbe:\n          periodSeconds: 5\n          tcpSocket:\n            port: 6379\n        livenessProbe:\n          periodSeconds: 5\n          tcpSocket:\n            port: 6379\n        volumeMounts:\n        - mountPath: /data\n          name: redis-data\n        resources:\n          limits:\n            memory: 256Mi\n            cpu: 125m\n          requests:\n            cpu: 70m\n            memory: 200Mi\n      volumes:\n      - name: redis-data\n        hostPath:\n          path: /mnt/redis-data-hp\n          type: Directory\n---\napiVersion: v1\nkind: Service\nmetadata:\n  name: redis-cart\n  namespace: boutique\nspec:\n  type: ClusterIP\n  selector:\n    app: redis-cart\n  ports:\n  - name: redis\n    port: 6379\n    targetPort: 6379",
+   "error": null,
+   "purpose": "declared probes / limits / image / env",
+   "tool_latency": null
+  },
+  {
+   "step_id": 3,
+   "action_type": "tool",
+   "action_name": "GetErrorLogs",
+   "action_input": {
+    "namespace": "boutique",
+    "service_name": "redis-cart"
+   },
+   "observation": "{\n  \"total_log_count\": 59,\n  \"total_errors\": 5,\n  \"total_error_ratio\": 0.0847,\n  \"patterns\": [\n    {\n      \"count\": 1,\n      \"ratio\": 0.0169,\n      \"sample\": \"2026-01-10T17:11:41.070757584+08:00 1:M 10 Jan 2026 09:11:41.070 * <bf> \\t{ bf-error-rate       :      0.01 }\"\n    },\n    {\n      \"count\": 1,\n      \"ratio\": 0.0169,\n      \"sample\": \"2026-01-10T17:11:41.073822511+08:00 1:M 10 Jan 2026 09:11:41.073 * <search> gc: ON, prefix min length: 2, min word length to stem: 4, prefix max expansions: 200, query timeout (ms): 500, timeout policy: return, cursor read size: 1000, cursor max idle (ms): 300000, max doctable size: 1000000, max number of search results:  1000000,\"\n    },\n    {\n      \"count\": 1,\n      \"ratio\": 0.0169,\n      \"sample\": \"2026-01-10T17:11:41.074212565+08:00 1:M 10 Jan 2026 09:11:41.074 * <search> Cluster configuration: AUTO partitions, type: 0, coordinator timeout: 0ms\"\n    },\n    {\n      \"count\": 1,\n      \"ratio\": 0.0169,\n      \"sample\": \"2026-01-10T17:11:41.089501776+08:00 1:M 10 Jan 2026 09:11:41.089 # Fatal error: can't open the RDB file dump.rdb for reading: Permission denied\"\n    },\n    {\n      \"count\": 1,\n      \"ratio\": 0.0169,\n      \"sample\": \"2026-01-10T17:11:41.089503936+08:00 1:M 10 Jan 2026 09:11:41.089 # Fatal error loading the DB, check server logs. Exiting.\"\n    }\n  ]\n}",
+   "error": null,
+   "purpose": "application error logs",
+   "tool_latency": null
+  }
+ ],
+ "agentrun": {
+  "tag": "test",
+  "dsl": "workspace/dsl_versions/v0.13.dsl.txt",
+  "dsl_version": "0.13",
+  "sop": {
+   "sop": "boutique-runtime-rca",
+   "scope": {
+    "system": "boutique",
+    "families": [
+     "runtime",
+     "admission",
+     "scheduling",
+     "startup",
+     "service",
+     "performance",
+     "infrastructure",
+     "codedefect"
+    ],
+    "severity": [
+     "SEV2",
+     "SEV3"
+    ]
+   },
+   "owner": "sre-platform",
+   "approved_by": [
+    "oncall-primary",
+    "sre-lead"
+   ],
+   "reviewed_at": "2026-10-23",
+   "change_ticket": "OPS-1241",
+   "boundaries": "R4 已知：`node_network_delay` 若快照里没有任何 Node 级 retrans 告警（例：performance/25），\n本 SOP 会退回 pod 级判断（当前工具面无法区分 pod 与 node 的延迟注入）。\n只读诊断：本 SOP 不执行任何写操作（重启/回滚/扩缩容），也不做对外播报；\n它回答\"最可能的根因与受害对象\"，处置与沟通由值班按 runbook 人工执行。\n不覆盖 SEV1（需 incident commander 介入）与变更引发的问题（走变更回滚流程）。\n输入是冻结快照：诊断结论对\"快照时刻\"成立，恢复后需重新取证。\nR1 已知边界：PVC 的 requested size / accessMode 在本 benchmark 的工具面不可见，\n因此 pvc_capacity 与 pvc_access_mode 无法区分（同一分数并列，交给 jev 或升级）。\n"
+  },
+  "params": {
+   "cands_cap": 8,
+   "max_waves": 10,
+   "min_waves": 5,
+   "steps_per_wave": 1,
+   "dominance_ratio": 1.5,
+   "conf_min": 0.0,
+   "escalate": true,
+   "escalate_budget": 8,
+   "judge_on_codedefect": true,
+   "jev_route": true,
+   "jev_pick": true,
+   "jev_verify": true,
+   "route_fallback": "runtime"
+  },
+  "nodes_executed": [
+   "anchors:extract_anchors",
+   "census:probes",
+   "route:decide",
+   "plan:build_plan",
+   "probe:probes",
+   "derive:derive_candidates",
+   "pick:decide",
+   "verify:decide",
+   "probe:probes",
+   "derive:derive_candidates",
+   "pick:decide",
+   "verify:decide",
+   "probe:probes",
+   "derive:derive_candidates",
+   "pick:decide",
+   "verify:decide",
+   "probe:probes",
+   "derive:derive_candidates",
+   "pick:decide",
+   "verify:decide",
+   "probe:probes",
+   "derive:derive_candidates",
+   "pick:decide",
+   "verify:decide",
+   "escalate:escalate",
+   "answer:normalize_answer",
+   "persist:persist_trace"
+  ],
+  "census": [
+   {
+    "step": "pods",
+    "gate": "always"
+   },
+   {
+    "step": "alerts",
+    "gate": "healthy_system"
+   }
+  ],
+  "plan": [
+   {
+    "step": "describe_pod",
+    "gate": "always",
+    "wave": 1
+   },
+   {
+    "step": "app_yaml",
+    "gate": "probe_or_restart_or_weak",
+    "wave": 2
+   },
+   {
+    "step": "error_logs",
+    "gate": "restart_or_weak_strong",
+    "wave": 3
+   },
+   {
+    "step": "node_kubelet",
+    "gate": "runtime_stall",
+    "wave": 4
+   },
+   {
+    "step": "node_containerd",
+    "gate": "runtime_stall | node_all_healthy",
+    "wave": 5
+   }
+  ],
+  "family": "runtime",
+  "state_wiring": {
+   "family": "$route.family",
+   "route_probs": "$route.probabilities",
+   "picked": "$pick.picked",
+   "pick_dominant": "$pick.dominant",
+   "verify_status": "$verify.status",
+   "verify_prob": "$verify.confidence"
+  },
+  "bindings": {
+   "anchors": {
+    "anchors": "Anchors(case_id='boutique/startup/60', system='boutique', namespace='boutique', query='Partial Service Unreachability.', difficulty='easy', symptoms=['unavailable'], mentioned_apps=[], priors={'db_service': '', 'db_port': 0})"
+   },
+   "route": {
+    "family": "runtime",
+    "probabilities": {},
+    "route_why": "mechanism_mode"
+   },
+   "plan": {
+    "plan": "[{'name': 'describe_pod', 'key': 'describe:pod', 'tool': 'DescribeResource', 'args': <function _args_describe_pod at 0x10ee43ec0>, 'purpose': 'probe config, container state, restart reasons, scheduler events', 'when': <function compile_steps.<locals>.<lambda> at 0x110cee980>, 'gate': 'always', 'wave': 1}, {'name': 'app_yaml', 'key': 'appyaml', 'tool': 'GetAppYAML', 'args': <function _args_app_yaml at 0x10ee74040>, 'purpose': 'declared probes / limits / image / env', 'when': <function compile_steps.<locals>.<lambda> at 0x110ceea20>, 'gate': 'probe_or_restart_or_weak', 'wave': 2}, {'name': 'error_logs', 'key': 'errors', 'tool': 'GetErrorLogs', 'args': <function _args_error_logs at 0x10ee740e0>, 'purpose': 'application error logs', 'when': <function compile_steps.<locals>.<lambda> at 0x110ceeac0>, 'gate': 'restart_or_weak_strong', 'wave': 3}, {'name': 'node_kubelet', 'key': 'node:kubelet', 'tool': 'CheckNodeServiceStatus', 'args': <function _args_node_kubelet at 0x10ee74540>, 'purpose': 'kubelet status on the node hosting the stalled pod', 'when': <function compile_steps.<locals>.<lambda> at 0x110ceeb60>, 'gate': 'runtime_stall', 'wave': 4}, {'name': 'node_containerd', 'key': 'node:containerd', 'tool': 'CheckNodeServiceStatus', 'args': <function _args_node_containerd at 0x10ee745e0>, 'purpose': 'container runtime status on the same node', 'when': <function compile_steps.<locals>.<lambda> at 0x110ceec00>, 'gate': 'runtime_stall | node_all_healthy', 'wave': 5}]"
+   },
+   "derive": {
+    "candidates": "[Candidate(root_cause='volume_mount_permission_denied', object='app/redis-cart', score=0.77, evidence='volume mount rejected with permission denied', rule='volume_perm')]"
+   },
+   "pick": {
+    "picked": 0,
+    "dominant": true,
+    "pick_why": "no_new_evidence"
+   },
+   "verify": {
+    "status": "verified",
+    "confidence": null,
+    "verify_why": "dominant_candidate"
+   },
+   "escalate": {
+    "answer": null
+   },
+   "answer": {
+    "final": {
+     "key_evidence_summary": "volume mount rejected with permission denied",
+     "top_3_predictions": [
+      {
+       "rank": 1,
+       "fault_object": "app/redis-cart",
+       "root_cause": "volume_mount_permission_denied"
+      },
+      {
+       "rank": 2,
+       "fault_object": "app/redis-cart",
+       "root_cause": "volume_mount_permission_denied"
+      },
+      {
+       "rank": 3,
+       "fault_object": "app/redis-cart",
+       "root_cause": "volume_mount_permission_denied"
+      }
+     ]
+    }
+   }
+  },
+  "picked": {
+   "root_cause": "volume_mount_permission_denied",
+   "object": "app/redis-cart",
+   "score": 0.77,
+   "evidence": "volume mount rejected with permission denied",
+   "rule": "volume_perm"
+  },
+  "pick_why": "",
+  "verify_prob": null,
+  "verify_verdict": "verified",
+  "verified": true,
+  "escalated": false,
+  "escalate_reason": "",
+  "escalate_steps": 0,
+  "waves": 5,
+  "candidates": [
+   {
+    "root_cause": "volume_mount_permission_denied",
+    "object": "app/redis-cart",
+    "score": 0.77,
+    "evidence": "volume mount rejected with permission denied",
+    "rule": "volume_perm"
+   }
+  ],
+  "jev": [
+   {
+    "rid": "test:boutique/startup/60#route",
+    "kind": "route",
+    "node": "route",
+    "mode": "mechanism",
+    "options": [
+     "runtime",
+     "infrastructure"
+    ],
+    "status": "mechanical",
+    "guard": "unavailable",
+    "use": "first_option",
+    "choice": "runtime",
+    "why": "mechanism_mode",
+    "dominant": false,
+    "continue_loop": false,
+    "escalate": false
+   },
+   {
+    "rid": "test:boutique/startup/60#pick1",
+    "kind": "pick",
+    "node": "pick",
+    "mode": "mechanism",
+    "options": [],
+    "status": "mechanical",
+    "guard": "no_options",
+    "use": "none",
+    "choice": null,
+    "why": "no_candidates",
+    "dominant": false,
+    "continue_loop": false,
+    "escalate": false
+   },
+   {
+    "rid": "test:boutique/startup/60#verify1",
+    "kind": "verify",
+    "node": "verify",
+    "mode": "mechanism",
+    "options": [
+     "supported",
+     "insufficient",
+     "contradicted"
+    ],
+    "status": "mechanical",
+    "guard": "no_pick",
+    "use": "unverified",
+    "choice": "unverified",
+    "why": "nothing_to_verify",
+    "dominant": false,
+    "continue_loop": false,
+    "escalate": false
+   },
+   {
+    "rid": "test:boutique/startup/60#pick2",
+    "kind": "pick",
+    "node": "pick",
+    "mode": "mechanism",
+    "options": [],
+    "status": "mechanical",
+    "guard": "no_options",
+    "use": "none",
+    "choice": null,
+    "why": "no_candidates",
+    "dominant": false,
+    "continue_loop": false,
+    "escalate": false
+   },
+   {
+    "rid": "test:boutique/startup/60#verify2",
+    "kind": "verify",
+    "node": "verify",
+    "mode": "mechanism",
+    "options": [
+     "supported",
+     "insufficient",
+     "contradicted"
+    ],
+    "status": "mechanical",
+    "guard": "no_pick",
+    "use": "unverified",
+    "choice": "unverified",
+    "why": "nothing_to_verify",
+    "dominant": false,
+    "continue_loop": false,
+    "escalate": false
+   },
+   {
+    "rid": "test:boutique/startup/60#pick3",
+    "kind": "pick",
+    "node": "pick",
+    "mode": "mechanism",
+    "options": [
+     "c0"
+    ],
+    "status": "mechanical",
+    "guard": "top_over_second >= $params.dominance_ratio",
+    "use": "first_option",
+    "choice": 0,
+    "why": "dominance",
+    "dominant": true,
+    "continue_loop": false,
+    "escalate": false
+   },
+   {
+    "rid": "test:boutique/startup/60#verify3",
+    "kind": "verify",
+    "node": "verify",
+    "mode": "mechanism",
+    "options": [
+     "supported",
+     "insufficient",
+     "contradicted"
+    ],
+    "status": "mechanical",
+    "guard": "$pick.dominant",
+    "use": "verified",
+    "choice": "verified",
+    "why": "dominant_candidate",
+    "dominant": false,
+    "continue_loop": false,
+    "escalate": false
+   },
+   {
+    "rid": "test:boutique/startup/60#pick4",
+    "kind": "pick",
+    "node": "pick",
+    "mode": "mechanism",
+    "options": [
+     "c0"
+    ],
+    "status": "mechanical",
+    "guard": "unchanged_since_last",
+    "use": "previous",
+    "choice": 0,
+    "why": "no_new_evidence",
+    "dominant": true,
+    "continue_loop": false,
+    "escalate": false
+   },
+   {
+    "rid": "test:boutique/startup/60#verify4",
+    "kind": "verify",
+    "node": "verify",
+    "mode": "mechanism",
+    "options": [
+     "supported",
+     "insufficient",
+     "contradicted"
+    ],
+    "status": "mechanical",
+    "guard": "$pick.dominant",
+    "use": "verified",
+    "choice": "verified",
+    "why": "dominant_candidate",
+    "dominant": false,
+    "continue_loop": false,
+    "escalate": false
+   },
+   {
+    "rid": "test:boutique/startup/60#pick5",
+    "kind": "pick",
+    "node": "pick",
+    "mode": "mechanism",
+    "options": [
+     "c0"
+    ],
+    "status": "mechanical",
+    "guard": "unchanged_since_last",
+    "use": "previous",
+    "choice": 0,
+    "why": "no_new_evidence",
+    "dominant": true,
+    "continue_loop": false,
+    "escalate": false
+   },
+   {
+    "rid": "test:boutique/startup/60#verify5",
+    "kind": "verify",
+    "node": "verify",
+    "mode": "mechanism",
+    "options": [
+     "supported",
+     "insufficient",
+     "contradicted"
+    ],
+    "status": "mechanical",
+    "guard": "$pick.dominant",
+    "use": "verified",
+    "choice": "verified",
+    "why": "dominant_candidate",
+    "dominant": false,
+    "continue_loop": false,
+    "escalate": false
+   }
+  ],
+  "nodes": [
+   {
+    "node": "code",
+    "id": "anchors",
+    "anchors": {
+     "case_id": "boutique/startup/60",
+     "system": "boutique",
+     "namespace": "boutique",
+     "query": "Partial Service Unreachability.",
+     "difficulty": "easy",
+     "symptoms": [
+      "unavailable"
+     ],
+     "mentioned_apps": []
+    }
+   },
+   {
+    "node": "probes",
+    "plan": "census",
+    "wave": 0,
+    "executed": 1,
+    "steps": [
+     {
+      "key": "pods",
+      "tool": "GetResources",
+      "arguments": {
+       "namespace": "boutique",
+       "resource_type": "pods",
+       "output_wide": true
+      },
+      "gate": "always"
+     }
+    ],
+    "skipped": [
+     {
+      "step": "alerts",
+      "why": "gate healthy_system"
+     }
+    ]
+   },
+   {
+    "node": "decide",
+    "id": "route",
+    "rid": "test:boutique/startup/60#route",
+    "status": "mechanical",
+    "guard": "unavailable",
+    "use": "first_option",
+    "choice": "runtime",
+    "dominant": false,
+    "why": "mechanism_mode"
+   },
+   {
+    "node": "code",
+    "id": "plan",
+    "family": "runtime",
+    "plan": [
+     {
+      "step": "describe_pod",
+      "gate": "always",
+      "wave": 1
+     },
+     {
+      "step": "app_yaml",
+      "gate": "probe_or_restart_or_weak",
+      "wave": 2
+     },
+     {
+      "step": "error_logs",
+      "gate": "restart_or_weak_strong",
+      "wave": 3
+     },
+     {
+      "step": "node_kubelet",
+      "gate": "runtime_stall",
+      "wave": 4
+     },
+     {
+      "step": "node_containerd",
+      "gate": "runtime_stall | node_all_healthy",
+      "wave": 5
+     }
+    ]
+   },
+   {
+    "node": "probes",
+    "plan": "family",
+    "wave": 1,
+    "executed": 1,
+    "steps": [
+     {
+      "key": "describe:pod",
+      "tool": "DescribeResource",
+      "arguments": {
+       "namespace": "boutique",
+       "resource_type": "pods",
+       "name": "redis-cart-79598c9984-fs47p"
+      },
+      "gate": "always"
+     }
+    ],
+    "skipped": []
+   },
+   {
+    "node": "code",
+    "id": "derive",
+    "raw": 0,
+    "kept": 0,
+    "top": []
+   },
+   {
+    "node": "decide",
+    "id": "pick",
+    "rid": "test:boutique/startup/60#pick1",
+    "status": "mechanical",
+    "guard": "no_options",
+    "use": "none",
+    "choice": null,
+    "dominant": false,
+    "why": "no_candidates"
+   },
+   {
+    "node": "decide",
+    "id": "verify",
+    "rid": "test:boutique/startup/60#verify1",
+    "status": "mechanical",
+    "guard": "no_pick",
+    "use": "unverified",
+    "choice": "unverified",
+    "dominant": false,
+    "why": "nothing_to_verify"
+   },
+   {
+    "node": "probes",
+    "plan": "family",
+    "wave": 2,
+    "executed": 1,
+    "steps": [
+     {
+      "key": "appyaml",
+      "tool": "GetAppYAML",
+      "arguments": {
+       "app_name": "redis-cart"
+      },
+      "gate": "probe_or_restart_or_weak"
+     }
+    ],
+    "skipped": []
+   },
+   {
+    "node": "code",
+    "id": "derive",
+    "raw": 0,
+    "kept": 0,
+    "top": []
+   },
+   {
+    "node": "decide",
+    "id": "pick",
+    "rid": "test:boutique/startup/60#pick2",
+    "status": "mechanical",
+    "guard": "no_options",
+    "use": "none",
+    "choice": null,
+    "dominant": false,
+    "why": "no_candidates"
+   },
+   {
+    "node": "decide",
+    "id": "verify",
+    "rid": "test:boutique/startup/60#verify2",
+    "status": "mechanical",
+    "guard": "no_pick",
+    "use": "unverified",
+    "choice": "unverified",
+    "dominant": false,
+    "why": "nothing_to_verify"
+   },
+   {
+    "node": "probes",
+    "plan": "family",
+    "wave": 3,
+    "executed": 1,
+    "steps": [
+     {
+      "key": "errors",
+      "tool": "GetErrorLogs",
+      "arguments": {
+       "namespace": "boutique",
+       "service_name": "redis-cart"
+      },
+      "gate": "restart_or_weak_strong"
+     }
+    ],
+    "skipped": []
+   },
+   {
+    "node": "code",
+    "id": "derive",
+    "raw": 1,
+    "kept": 1,
+    "top": [
+     {
+      "root_cause": "volume_mount_permission_denied",
+      "object": "app/redis-cart",
+      "score": 0.77,
+      "evidence": "volume mount rejected with permission denied",
+      "rule": "volume_perm"
+     }
+    ]
+   },
+   {
+    "node": "decide",
+    "id": "pick",
+    "rid": "test:boutique/startup/60#pick3",
+    "status": "mechanical",
+    "guard": "top_over_second >= $params.dominance_ratio",
+    "use": "first_option",
+    "choice": 0,
+    "dominant": true,
+    "why": "dominance"
+   },
+   {
+    "node": "decide",
+    "id": "verify",
+    "rid": "test:boutique/startup/60#verify3",
+    "status": "mechanical",
+    "guard": "$pick.dominant",
+    "use": "verified",
+    "choice": "verified",
+    "dominant": false,
+    "why": "dominant_candidate"
+   },
+   {
+    "node": "probes",
+    "plan": "family",
+    "wave": 4,
+    "executed": 0,
+    "steps": [],
+    "skipped": [
+     {
+      "step": "node_kubelet",
+      "why": "gate runtime_stall"
+     }
+    ]
+   },
+   {
+    "node": "code",
+    "id": "derive",
+    "raw": 1,
+    "kept": 1,
+    "top": [
+     {
+      "root_cause": "volume_mount_permission_denied",
+      "object": "app/redis-cart",
+      "score": 0.77,
+      "evidence": "volume mount rejected with permission denied",
+      "rule": "volume_perm"
+     }
+    ]
+   },
+   {
+    "node": "decide",
+    "id": "pick",
+    "rid": "test:boutique/startup/60#pick4",
+    "status": "mechanical",
+    "guard": "unchanged_since_last",
+    "use": "previous",
+    "choice": 0,
+    "dominant": true,
+    "why": "no_new_evidence"
+   },
+   {
+    "node": "decide",
+    "id": "verify",
+    "rid": "test:boutique/startup/60#verify4",
+    "status": "mechanical",
+    "guard": "$pick.dominant",
+    "use": "verified",
+    "choice": "verified",
+    "dominant": false,
+    "why": "dominant_candidate"
+   },
+   {
+    "node": "probes",
+    "plan": "family",
+    "wave": 5,
+    "executed": 0,
+    "steps": [],
+    "skipped": [
+     {
+      "step": "node_containerd",
+      "why": "gate runtime_stall | node_all_healthy"
+     }
+    ]
+   },
+   {
+    "node": "code",
+    "id": "derive",
+    "raw": 1,
+    "kept": 1,
+    "top": [
+     {
+      "root_cause": "volume_mount_permission_denied",
+      "object": "app/redis-cart",
+      "score": 0.77,
+      "evidence": "volume mount rejected with permission denied",
+      "rule": "volume_perm"
+     }
+    ]
+   },
+   {
+    "node": "decide",
+    "id": "pick",
+    "rid": "test:boutique/startup/60#pick5",
+    "status": "mechanical",
+    "guard": "unchanged_since_last",
+    "use": "previous",
+    "choice": 0,
+    "dominant": true,
+    "why": "no_new_evidence"
+   },
+   {
+    "node": "decide",
+    "id": "verify",
+    "rid": "test:boutique/startup/60#verify5",
+    "status": "mechanical",
+    "guard": "$pick.dominant",
+    "use": "verified",
+    "choice": "verified",
+    "dominant": false,
+    "why": "dominant_candidate"
+   },
+   {
+    "node": "loop",
+    "id": "waves",
+    "stop": "plan_exhausted",
+    "wave": 5
+   },
+   {
+    "node": "escalate",
+    "id": "escalate",
+    "fired": false,
+    "reasons": [],
+    "why": "no reason"
+   },
+   {
+    "node": "code",
+    "id": "answer",
+    "predictions": [
+     {
+      "rank": 1,
+      "fault_object": "app/redis-cart",
+      "root_cause": "volume_mount_permission_denied"
+     },
+     {
+      "rank": 2,
+      "fault_object": "app/redis-cart",
+      "root_cause": "volume_mount_permission_denied"
+     },
+     {
+      "rank": 3,
+      "fault_object": "app/redis-cart",
+      "root_cause": "volume_mount_permission_denied"
+     }
+    ]
+   },
+   {
+    "node": "artifact",
+    "id": "persist",
+    "persisted": false,
+    "why": "written by the CLI driver"
+   }
+  ],
+  "notes": [],
+  "tool_calls": 4,
+  "model_calls": 0,
+  "tokens_in": 0,
+  "tokens_out": 0,
+  "wall_s": 0.07
+ }
+}

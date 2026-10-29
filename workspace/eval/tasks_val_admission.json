@@ -1,0 +1,49 @@
+{
+ "n": 6,
+ "cases": [
+  {
+   "id": "boutique/admission/18",
+   "system": "boutique",
+   "category": "admission",
+   "case": "18",
+   "difficulty": "medium"
+  },
+  {
+   "id": "boutique/admission/23",
+   "system": "boutique",
+   "category": "admission",
+   "case": "23",
+   "difficulty": "medium"
+  },
+  {
+   "id": "boutique/admission/43",
+   "system": "boutique",
+   "category": "admission",
+   "case": "43",
+   "difficulty": "medium"
+  },
+  {
+   "id": "boutique/admission/54",
+   "system": "boutique",
+   "category": "admission",
+   "case": "54",
+   "difficulty": "medium"
+  },
+  {
+   "id": "boutique/admission/55",
+   "system": "boutique",
+   "category": "admission",
+   "case": "55",
+   "difficulty": "medium"
+  },
+  {
+   "id": "boutique/admission/8",
+   "system": "boutique",
+   "category": "admission",
+   "case": "8",
+   "difficulty": "medium"
+  }
+ ],
+ "round": "admission",
+ "split": "val"
+}

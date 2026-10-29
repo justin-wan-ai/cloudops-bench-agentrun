@@ -1,0 +1,959 @@
+{
+ "case_id": "boutique/runtime/4",
+ "system_name": "boutique",
+ "question": "Service abnormal restart.",
+ "case_path": "/Users/justinwan/work/workspace/cloudops_bench_rsi/repo/benchmark/boutique/runtime/4",
+ "max_steps": 8,
+ "current_step": 6,
+ "finished": true,
+ "stop_reason": "submit",
+ "final_answer": "{\"key_evidence_summary\": \"no evidence-grounded hypothesis\", \"top_3_predictions\": []}",
+ "metadata": {
+  "namespace": "boutique",
+  "query": "Service abnormal restart.",
+  "fault_category": "runtime",
+  "model_name": "agentrun-v0.9"
+ },
+ "steps": [
+  {
+   "step_id": 0,
+   "action_type": "tool",
+   "action_name": "GetResources",
+   "action_input": {
+    "namespace": "boutique",
+    "resource_type": "pods",
+    "output_wide": true,
+    "show_labels": true
+   },
+   "observation": "Error: Error: Only one of '--show-labels' or '-o wide' can be specified at a time for kubectl get.",
+   "error": null,
+   "purpose": "pod readiness census",
+   "tool_latency": null
+  },
+  {
+   "step_id": 1,
+   "action_type": "tool",
+   "action_name": "GetAlerts",
+   "action_input": {},
+   "observation": "No active metric anomalies detected at this time.",
+   "error": null,
+   "purpose": "anomaly signature (routes performance/code families)",
+   "tool_latency": null
+  },
+  {
+   "step_id": 2,
+   "action_type": "tool",
+   "action_name": "GetClusterConfiguration",
+   "action_input": {},
+   "observation": "{'node_count': 4, 'nodes': [{'name': 'master', 'role': 'worker', 'status': 'Ready', 'conditions': {'MemoryPressure': 'False', 'DiskPressure': 'False', 'PIDPressure': 'False'}, 'taints': ['node.kubernetes.io/unschedulable:NoSchedule'], 'labels': {'beta.kubernetes.io/arch': 'amd64', 'beta.kubernetes.io/os': 'linux', 'kubernetes.io/arch': 'amd64', 'kubernetes.io/hostname': 'master', 'kubernetes.io/os': 'linux', 'kubernetes.io/role': 'master'}, 'allocatable_resources': {'cpu': '8', 'memory': '15671348Ki'}}, {'name': 'worker-01', 'role': 'worker', 'status': 'Ready', 'conditions': {'MemoryPressure': 'False', 'DiskPressure': 'False', 'PIDPressure': 'False'}, 'taints': [], 'labels': {'beta.kubernetes.io/arch': 'amd64', 'beta.kubernetes.io/os': 'linux', 'kubernetes.io/arch': 'amd64', 'kubernetes.io/hostname': 'worker-01', 'kubernetes.io/os': 'linux', 'kubernetes.io/role': 'node'}, 'allocatable_resources': {'cpu': '8', 'memory': '15671344Ki'}}, {'name': 'worker-02', 'role': 'worker', 'status': 'Ready', 'conditions': {'MemoryPressure': 'False', 'DiskPressure': 'False', 'PIDPressure': 'False'}, 'taints': [], 'labels': {'beta.kubernetes.io/arch': 'amd64', 'beta.kubernetes.io/os': 'linux', 'kubernetes.io/arch': 'amd64', 'kubernetes.io/hostname': 'worker-02', 'kubernetes.io/os': 'linux', 'kubernetes.io/role': 'node'}, 'allocatable_resources': {'cpu': '8', 'memory': '15671344Ki'}}, {'name': 'worker-03', 'role': 'worker', 'status': 'Ready', 'conditions': {'MemoryPressure': 'False', 'DiskPressure': 'False', 'PIDPressure': 'False'}, 'taints': [], 'labels': {'beta.kubernetes.io/arch': 'amd64', 'beta.kubernetes.io/os': 'linux', 'kubernetes.io/arch': 'amd64', 'kubernetes.io/hostname': 'worker-03', 'kubernetes.io/os': 'linux', 'kubernetes.io/role': 'node'}, 'allocatable_resources': {'cpu': '8', 'memory': '15671356Ki'}}]}",
+   "error": null,
+   "purpose": "cluster-wide node state",
+   "tool_latency": null
+  },
+  {
+   "step_id": 3,
+   "action_type": "tool",
+   "action_name": "CheckNodeServiceStatus",
+   "action_input": {
+    "node_name": "worker-01",
+    "service_name": "containerd"
+   },
+   "observation": "Service: containerd\nNode: worker-01\nStatus: ● containerd.service - containerd container runtime\n     Loaded: loaded (/etc/systemd/system/containerd.service; enabled; vendor preset: enabled)\n     Active: active (running) since Fri 2025-11-21 20:00:27 CST; 4h 49min ago\n       Docs: https://containerd.io\n    Process: 904 ExecStartPre=/sbin/modprobe overlay (code=exited, status=0/SUCCESS)\n   Main PID: 967 (containerd)\n      Tasks: 219 (limit: 18592)\n     Memory: 241.2M\n        CPU: 1min 6.367s\n     CGroup: /system.slice/containerd.service\n             ├─ 967 /opt/kube/bin/containerd-bin/containerd\n             ├─ 1926 /opt/kube/bin/containerd-bin/containerd-shim-runc-v2 -namespace k8s.io -id 3bf070c2b4154c57f783b03978d71fd8f0cd9b6512535faafb9afd16305ca14b -address /run/containerd/containerd.sock\n             ├─ 1970 /opt/kube/bin/containerd-bin/containerd-shim-runc-v2 -namespace k8s.io -id 91bd69a1109bbe1edb71ed4c5b6668a10d779f2192faff9af95422c29968d53c -address /run/containerd/containerd.sock\n             ├─ 2015 /opt/kube/bin/containerd-bin/containerd-shim-runc-v2 -namespace k8s.io -id cd9cd65d4a1042cb18ef77df2828bec0e785b99229fa529286f6108a03c773e9 -address /run/containerd/containerd.sock\n             ├─ 2207 /opt/kube/bin/containerd-bin/containerd-shim-runc-v2 -namespace k8s.io -id ee524f81276b63d7be636b23a093ddc2915e103a57fc39d8ca7ea05b4b08df12 -address /run/containerd/containerd.sock\n             ├─ 2952 /opt/kube/bin/containerd-bin/containerd-shim-runc-v2 -namespace k8s.io -id 5f9307410272c3ccb2819bc50e9bf566edde7c63ee5ff370bd2608f371099d39 -address /run/containerd/containerd.sock\n             ├─ 3161 /opt/kube/bin/containerd-bin/containerd-shim-runc-v2 -namespace k8s.io -id 18ae6f5e694754910ada18fd1ae92b2fdbf44d40b639b92de0a669fe8c7244c1 -address /run/containerd/containerd.sock\n             ├─ 3335 /opt/kube/bin/containerd-bin/containerd-shim-runc-v2 -namespace k8s.io -id 3cecf79722256e679605909bf005090a87ef709e2e37820044fd532584ee2baf -address /run/containerd/containerd.sock\n             ├─ 113107 /opt/kube/bin/containerd-bin/containerd-shim-runc-v2 -namespace k8s.io -id bd0154ef5b0d61cc0ad5bf165f8666f251c4fda98dabf995d918fa4a3558ad8c -address /run/containerd/containerd.sock\n             ├─ 113563 /opt/kube/bin/containerd-bin/containerd-shim-runc-v2 -namespace k8s.io -id 4aaf4fb3c477e05174818df5d79ecd2d27bf287bce99e5bc191382066fc9a0ff -address /run/containerd/containerd.sock\n             ├─ 113951 /opt/kube/bin/containerd-bin/containerd-shim-runc-v2 -namespace k8s.io -id 4ee6625c8111d6c6614bec4eee4ff77fbb3ae0a605d3890a518cd8de51a8f841 -address /run/containerd/containerd.sock\n             ├─ 114237 /opt/kube/bin/containerd-bin/containerd-shim-runc-v2 -namespace k8s.io -id 42c50485d3ed24c132c17be576ad9bcf8bf454b61b2e9eacf3faf406cfe1b4ce -address /run/containerd/containerd.sock\n             ├─ 114770 /opt/kube/bin/containerd-bin/containerd-shim-runc-v2 -namespace k8s.io -id c5f8f096e3a228520c0e6995761a013287fb1bc9c835b727da07a693282575d3 -address /run/containerd/containerd.sock\n             └─ 115165 /opt/kube/bin/containerd-bin/containerd-shim-runc-v2 -namespace k8s.io -id 37a2c597231c9942f52c777f72b0beea6f72d2008462adb28441d4e0f57a4df6 -address /run/containerd/containerd.sock\n\nNov 21 20:27:27 worker-01 containerd[967]: time=\"2025-11-21T20:27:27.000+08:00\" level=warning msg=\"cleaning up after shim disconnected\" id=99c7a287af4fbaba3bb01a1920cf3e29ce61df9c78128c1768db6f08a9394dba namespace=k8s.io\nNov 21 20:27:27 worker-01 containerd[967]: time=\"2025-11-21T20:27:27.000+08:00\" level=info msg=\"cleaning up dead shim\" namespace=k8s.io\nNov 21 20:27:27 worker-01 containerd[967]: time=\"2025-11-21T20:27:27.000+08:00\" level=info msg=\"CreateContainer within sandbox \"37a2c597231c9942f52c777f72b0beea6f72d2008462adb28441d4e0f57a4df6\" for container &ContainerMetadata{Name:server,Attempt:0,}\"\nNov 21 20:27:27 worker-01 containerd[967]: time=\"2025-11-21T20:27:27.000+08:00\" level=info msg=\"CreateContainer within sandbox \"37a2c597231c9942f52c777f72b0beea6f72d2008462adb28441d4e0f57a4df6\" for &ContainerMetadata{Name:server,Attempt:0,} returns container id \"5ca27f1fc26ad5aa11c263c6341c03d7362754d893b328ae4cf61fe287cfcb4b\"\"\nNov 21 20:27:27 worker-01 containerd[967]: time=\"2025-11-21T20:27:27.000+08:00\" level=info msg=\"StartContainer for \"5ca27f1fc26ad5aa11c263c6341c03d7362754d893b328ae4cf61fe287cfcb4b\"\"\nNov 21 20:27:27 worker-01 containerd[967]: time=\"2025-11-21T20:27:27.000+08:00\" level=info msg=\"StartContainer for \"5ca27f1fc26ad5aa11c263c6341c03d7362754d893b328ae4cf61fe287cfcb4b\" returns successfully\"\nNov 21 20:27:27 worker-01 containerd[967]: time=\"2025-11-21T20:27:27.000+08:00\" level=info msg=\"CreateContainer within sandbox \"37a2c597231c9942f52c777f72b0beea6f72d2008462adb28441d4e0f57a4df6\" for container &ContainerMetadata{Name:istio-proxy,Attempt:0,}\"\nNov 21 20:27:27 worker-01 containerd[967]: time=\"2025-11-21T20:27:27.000+08:00\" level=info msg=\"CreateContainer within sandbox \"37a2c597231c9942f52c777f72b0beea6f72d2008462adb28441d4e0f57a4df6\" for &ContainerMetadata{Name:istio-proxy,Attempt:0,} returns container id \"3dfd04cedeb34558910e97f9a68027157b7d1b6431d601fc3094efaa02400fe1\"\"\nNov 21 20:27:27 worker-01 containerd[967]: time=\"2025-11-21T20:27:27.000+08:00\" level=info msg=\"StartContainer for \"3dfd04cedeb34558910e97f9a68027157b7d1b6431d601fc3094efaa02400fe1\"\"\nNov 21 20:27:27 worker-01 containerd[967]: time=\"2025-11-21T20:27:27.000+08:00\" level=info msg=\"StartContainer for \"3dfd04cedeb34558910e97f9a68027157b7d1b6431d601fc3094efaa02400fe1\" returns successfully\"\n",
+   "error": null,
+   "purpose": "container runtime status on the same node",
+   "tool_latency": null
+  },
+  {
+   "step_id": 4,
+   "action_type": "tool",
+   "action_name": "CheckNodeServiceStatus",
+   "action_input": {
+    "node_name": "worker-01",
+    "service_name": "kube-proxy"
+   },
+   "observation": "Service: kube-proxy\nNode: worker-01\nStatus: ● kube-proxy.service - Kubernetes Kube-Proxy Server\n     Loaded: loaded (/etc/systemd/system/kube-proxy.service; enabled; vendor preset: enabled)\n     Active: active (running) since Fri 2025-11-21 20:00:27 CST; 4h 49min ago\n       Docs: https://github.com/GoogleCloudPlatform/kubernetes\n   Main PID: 414 (kube-proxy)\n      Tasks: 9 (limit: 18592)\n     Memory: 70.5M\n        CPU: 30.301s\n     CGroup: /system.slice/kube-proxy.service\n             └─414 /opt/kube/bin/kube-proxy --config=/var/lib/kube-proxy/kube-proxy-config.yaml\n\nNov 21 20:00:39 worker-01 kube-proxy[414]: I1121 20:00:39.000     414 config.go:199] \"Starting service config controller\"\nNov 21 20:00:39 worker-01 kube-proxy[414]: I1121 20:00:39.000     414 shared_informer.go:313] Waiting for caches to sync for service config\nNov 21 20:00:39 worker-01 kube-proxy[414]: I1121 20:00:39.000     414 config.go:105] \"Starting endpoint slice config controller\"\nNov 21 20:00:39 worker-01 kube-proxy[414]: I1121 20:00:39.000     414 shared_informer.go:313] Waiting for caches to sync for endpoint slice config\nNov 21 20:00:39 worker-01 kube-proxy[414]: I1121 20:00:39.000     414 config.go:328] \"Starting node config controller\"\nNov 21 20:00:39 worker-01 kube-proxy[414]: I1121 20:00:39.000     414 shared_informer.go:313] Waiting for caches to sync for node config\nNov 21 20:00:40 worker-01 kube-proxy[414]: I1121 20:00:40.000     414 shared_informer.go:320] Caches are synced for endpoint slice config\nNov 21 20:00:40 worker-01 kube-proxy[414]: I1121 20:00:40.000     414 shared_informer.go:320] Caches are synced for service config\nNov 21 20:00:40 worker-01 kube-proxy[414]: I1121 20:00:40.000     414 shared_informer.go:320] Caches are synced for node config\nNov 21 20:02:37 worker-01 kube-proxy[414]: I1121 20:02:37.000     414 graceful_termination.go:105] \"Removed real server from graceful delete real server list\" realServer=\"10.68.0.2:53/TCP/172.20.3.242:53\"\n",
+   "error": null,
+   "purpose": "kube-proxy status on the same node",
+   "tool_latency": null
+  },
+  {
+   "step_id": 5,
+   "action_type": "tool",
+   "action_name": "CheckNodeServiceStatus",
+   "action_input": {
+    "node_name": "master",
+    "service_name": "kube-scheduler"
+   },
+   "observation": "Service: kube-scheduler\nNode: master\nStatus: ● kube-scheduler.service - Kubernetes Scheduler\n     Loaded: loaded (/etc/systemd/system/kube-scheduler.service; enabled; vendor preset: enabled)\n     Active: active (running) since Fri 2025-11-21 20:00:27 CST; 4h 49min ago\n       Docs: https://github.com/GoogleCloudPlatform/kubernetes\n   Main PID: 578 (kube-scheduler)\n      Tasks: 17 (limit: 18592)\n     Memory: 77.8M\n        CPU: 13.618s\n     CGroup: /system.slice/kube-scheduler.service\n             └─578 /opt/kube/bin/kube-scheduler --authentication-kubeconfig=/etc/kubernetes/kube-scheduler.kubeconfig --authorization-kubeconfig=/etc/kubernetes/kube-scheduler.kubeconfig --bind-address=0.0.0.0 --kubeconfig=/etc/kubernetes/kube-scheduler.kubeconfig --leader-elect=true --v=2\n",
+   "error": null,
+   "purpose": "kube-scheduler status on master",
+   "tool_latency": null
+  }
+ ],
+ "agentrun": {
+  "tag": "test",
+  "dsl": "workspace/dsl_versions/v0.9.dsl.txt",
+  "dsl_version": "0.9",
+  "sop": {
+   "sop": "boutique-runtime-rca",
+   "scope": {
+    "system": "boutique",
+    "families": [
+     "runtime",
+     "admission",
+     "scheduling",
+     "startup",
+     "service",
+     "performance",
+     "infrastructure",
+     "codedefect"
+    ],
+    "severity": [
+     "SEV2",
+     "SEV3"
+    ]
+   },
+   "owner": "sre-platform",
+   "approved_by": [
+    "oncall-primary",
+    "sre-lead"
+   ],
+   "reviewed_at": "2026-10-23",
+   "change_ticket": "OPS-1237",
+   "boundaries": "只读诊断：本 SOP 不执行任何写操作（重启/回滚/扩缩容），也不做对外播报；\n它回答\"最可能的根因与受害对象\"，处置与沟通由值班按 runbook 人工执行。\n不覆盖 SEV1（需 incident commander 介入）与变更引发的问题（走变更回滚流程）。\n输入是冻结快照：诊断结论对\"快照时刻\"成立，恢复后需重新取证。\nR1 已知边界：PVC 的 requested size / accessMode 在本 benchmark 的工具面不可见，\n因此 pvc_capacity 与 pvc_access_mode 无法区分（同一分数并列，交给 jev 或升级）。\n"
+  },
+  "params": {
+   "cands_cap": 8,
+   "max_waves": 8,
+   "min_waves": 5,
+   "steps_per_wave": 1,
+   "dominance_ratio": 1.5,
+   "conf_min": 0.0,
+   "escalate": true,
+   "escalate_budget": 8,
+   "judge_on_codedefect": true,
+   "jev_route": true,
+   "jev_pick": true,
+   "jev_verify": true,
+   "route_fallback": "runtime"
+  },
+  "nodes_executed": [
+   "anchors:extract_anchors",
+   "census:probes",
+   "route:decide",
+   "plan:build_plan",
+   "probe:probes",
+   "derive:derive_candidates",
+   "pick:decide",
+   "verify:decide",
+   "probe:probes",
+   "derive:derive_candidates",
+   "pick:decide",
+   "verify:decide",
+   "probe:probes",
+   "derive:derive_candidates",
+   "pick:decide",
+   "verify:decide",
+   "probe:probes",
+   "derive:derive_candidates",
+   "pick:decide",
+   "verify:decide",
+   "probe:probes",
+   "derive:derive_candidates",
+   "pick:decide",
+   "verify:decide",
+   "probe:probes",
+   "derive:derive_candidates",
+   "pick:decide",
+   "verify:decide",
+   "probe:probes",
+   "derive:derive_candidates",
+   "pick:decide",
+   "verify:decide",
+   "escalate:escalate",
+   "answer:normalize_answer",
+   "persist:persist_trace"
+  ],
+  "census": [
+   {
+    "step": "pods",
+    "gate": "always"
+   },
+   {
+    "step": "alerts",
+    "gate": "healthy_system"
+   }
+  ],
+  "plan": [
+   {
+    "step": "describe_pod",
+    "gate": "always",
+    "wave": 1
+   },
+   {
+    "step": "cluster_config",
+    "gate": "always",
+    "wave": 2
+   },
+   {
+    "step": "node_kubelet",
+    "gate": "node_scoped_symptom",
+    "wave": 3
+   },
+   {
+    "step": "node_containerd",
+    "gate": "node_scoped_symptom | node_all_healthy",
+    "wave": 4
+   },
+   {
+    "step": "node_kube_proxy",
+    "gate": "node_scoped_symptom | node_all_healthy",
+    "wave": 5
+   },
+   {
+    "step": "node_scheduler",
+    "gate": "node_scoped_symptom | node_all_healthy",
+    "wave": 6
+   }
+  ],
+  "family": "infrastructure",
+  "state_wiring": {
+   "family": "$route.family",
+   "route_probs": "$route.probabilities",
+   "picked": "$pick.picked",
+   "pick_dominant": "$pick.dominant",
+   "verify_status": "$verify.status",
+   "verify_prob": "$verify.confidence"
+  },
+  "bindings": {
+   "anchors": {
+    "anchors": "Anchors(case_id='boutique/runtime/4', system='boutique', namespace='boutique', query='Service abnormal restart.', difficulty='easy', symptoms=['restart'], mentioned_apps=[], priors={'db_service': '', 'db_port': 0})"
+   },
+   "route": {
+    "family": "infrastructure",
+    "probabilities": {},
+    "route_why": "mechanism_mode"
+   },
+   "plan": {
+    "plan": "[{'name': 'describe_pod', 'key': 'describe:pod', 'tool': 'DescribeResource', 'args': <function _args_describe_pod at 0x10681fb00>, 'purpose': 'probe config, container state, restart reasons, scheduler events', 'when': <function compile_steps.<locals>.<lambda> at 0x106a40b80>, 'gate': 'always', 'wave': 1}, {'name': 'cluster_config', 'key': 'cluster', 'tool': 'GetClusterConfiguration', 'args': {}, 'purpose': 'cluster-wide node state', 'when': <function compile_steps.<locals>.<lambda> at 0x106a40d60>, 'gate': 'always', 'wave': 2}, {'name': 'node_kubelet', 'key': 'node:kubelet', 'tool': 'CheckNodeServiceStatus', 'args': <function _args_node_kubelet at 0x106844180>, 'purpose': 'kubelet status on the node hosting the stalled pod', 'when': <function compile_steps.<locals>.<lambda> at 0x106a40e00>, 'gate': 'node_scoped_symptom', 'wave': 3}, {'name': 'node_containerd', 'key': 'node:containerd', 'tool': 'CheckNodeServiceStatus', 'args': <function _args_node_containerd at 0x106844220>, 'purpose': 'container runtime status on the same node', 'when': <function compile_steps.<locals>.<lambda> at 0x106a40fe0>, 'gate': 'node_scoped_symptom | node_all_healthy', 'wave': 4}, {'name': 'node_kube_proxy', 'key': 'node:kube-proxy', 'tool': 'CheckNodeServiceStatus', 'args': <function _args_node_kube_proxy at 0x1068442c0>, 'purpose': 'kube-proxy status on the same node', 'when': <function compile_steps.<locals>.<lambda> at 0x106a40720>, 'gate': 'node_scoped_symptom | node_all_healthy', 'wave': 5}, {'name': 'node_scheduler', 'key': 'node:kube-scheduler', 'tool': 'CheckNodeServiceStatus', 'args': <function _args_node_scheduler at 0x106844360>, 'purpose': 'kube-scheduler status on master', 'when': <function compile_steps.<locals>.<lambda> at 0x106a40680>, 'gate': 'node_scoped_symptom | node_all_healthy', 'wave': 6}]"
+   },
+   "derive": {
+    "candidates": "[]"
+   },
+   "pick": {
+    "picked": null,
+    "dominant": false,
+    "pick_why": "no_candidates"
+   },
+   "verify": {
+    "status": "unverified",
+    "confidence": null,
+    "verify_why": "nothing_to_verify"
+   },
+   "escalate": {
+    "answer": null
+   },
+   "answer": {
+    "final": {
+     "key_evidence_summary": "no evidence-grounded hypothesis",
+     "top_3_predictions": []
+    }
+   }
+  },
+  "picked": null,
+  "pick_why": "",
+  "verify_prob": null,
+  "verify_verdict": "unverified",
+  "verified": false,
+  "escalated": false,
+  "escalate_reason": "no_candidates",
+  "escalate_steps": 0,
+  "waves": 7,
+  "candidates": [],
+  "jev": [
+   {
+    "rid": "test:boutique/runtime/4#route",
+    "kind": "route",
+    "node": "route",
+    "mode": "mechanism",
+    "options": [
+     "infrastructure"
+    ],
+    "status": "mechanical",
+    "guard": "unavailable",
+    "use": "first_option",
+    "choice": "infrastructure",
+    "why": "mechanism_mode",
+    "dominant": false,
+    "continue_loop": false,
+    "escalate": false
+   },
+   {
+    "rid": "test:boutique/runtime/4#pick1",
+    "kind": "pick",
+    "node": "pick",
+    "mode": "mechanism",
+    "options": [],
+    "status": "mechanical",
+    "guard": "no_options",
+    "use": "none",
+    "choice": null,
+    "why": "no_candidates",
+    "dominant": false,
+    "continue_loop": false,
+    "escalate": false
+   },
+   {
+    "rid": "test:boutique/runtime/4#verify1",
+    "kind": "verify",
+    "node": "verify",
+    "mode": "mechanism",
+    "options": [
+     "supported",
+     "insufficient",
+     "contradicted"
+    ],
+    "status": "mechanical",
+    "guard": "no_pick",
+    "use": "unverified",
+    "choice": "unverified",
+    "why": "nothing_to_verify",
+    "dominant": false,
+    "continue_loop": false,
+    "escalate": false
+   },
+   {
+    "rid": "test:boutique/runtime/4#pick2",
+    "kind": "pick",
+    "node": "pick",
+    "mode": "mechanism",
+    "options": [],
+    "status": "mechanical",
+    "guard": "no_options",
+    "use": "none",
+    "choice": null,
+    "why": "no_candidates",
+    "dominant": false,
+    "continue_loop": false,
+    "escalate": false
+   },
+   {
+    "rid": "test:boutique/runtime/4#verify2",
+    "kind": "verify",
+    "node": "verify",
+    "mode": "mechanism",
+    "options": [
+     "supported",
+     "insufficient",
+     "contradicted"
+    ],
+    "status": "mechanical",
+    "guard": "no_pick",
+    "use": "unverified",
+    "choice": "unverified",
+    "why": "nothing_to_verify",
+    "dominant": false,
+    "continue_loop": false,
+    "escalate": false
+   },
+   {
+    "rid": "test:boutique/runtime/4#pick3",
+    "kind": "pick",
+    "node": "pick",
+    "mode": "mechanism",
+    "options": [],
+    "status": "mechanical",
+    "guard": "no_options",
+    "use": "none",
+    "choice": null,
+    "why": "no_candidates",
+    "dominant": false,
+    "continue_loop": false,
+    "escalate": false
+   },
+   {
+    "rid": "test:boutique/runtime/4#verify3",
+    "kind": "verify",
+    "node": "verify",
+    "mode": "mechanism",
+    "options": [
+     "supported",
+     "insufficient",
+     "contradicted"
+    ],
+    "status": "mechanical",
+    "guard": "no_pick",
+    "use": "unverified",
+    "choice": "unverified",
+    "why": "nothing_to_verify",
+    "dominant": false,
+    "continue_loop": false,
+    "escalate": false
+   },
+   {
+    "rid": "test:boutique/runtime/4#pick4",
+    "kind": "pick",
+    "node": "pick",
+    "mode": "mechanism",
+    "options": [],
+    "status": "mechanical",
+    "guard": "no_options",
+    "use": "none",
+    "choice": null,
+    "why": "no_candidates",
+    "dominant": false,
+    "continue_loop": false,
+    "escalate": false
+   },
+   {
+    "rid": "test:boutique/runtime/4#verify4",
+    "kind": "verify",
+    "node": "verify",
+    "mode": "mechanism",
+    "options": [
+     "supported",
+     "insufficient",
+     "contradicted"
+    ],
+    "status": "mechanical",
+    "guard": "no_pick",
+    "use": "unverified",
+    "choice": "unverified",
+    "why": "nothing_to_verify",
+    "dominant": false,
+    "continue_loop": false,
+    "escalate": false
+   },
+   {
+    "rid": "test:boutique/runtime/4#pick5",
+    "kind": "pick",
+    "node": "pick",
+    "mode": "mechanism",
+    "options": [],
+    "status": "mechanical",
+    "guard": "no_options",
+    "use": "none",
+    "choice": null,
+    "why": "no_candidates",
+    "dominant": false,
+    "continue_loop": false,
+    "escalate": false
+   },
+   {
+    "rid": "test:boutique/runtime/4#verify5",
+    "kind": "verify",
+    "node": "verify",
+    "mode": "mechanism",
+    "options": [
+     "supported",
+     "insufficient",
+     "contradicted"
+    ],
+    "status": "mechanical",
+    "guard": "no_pick",
+    "use": "unverified",
+    "choice": "unverified",
+    "why": "nothing_to_verify",
+    "dominant": false,
+    "continue_loop": false,
+    "escalate": false
+   },
+   {
+    "rid": "test:boutique/runtime/4#pick6",
+    "kind": "pick",
+    "node": "pick",
+    "mode": "mechanism",
+    "options": [],
+    "status": "mechanical",
+    "guard": "no_options",
+    "use": "none",
+    "choice": null,
+    "why": "no_candidates",
+    "dominant": false,
+    "continue_loop": false,
+    "escalate": false
+   },
+   {
+    "rid": "test:boutique/runtime/4#verify6",
+    "kind": "verify",
+    "node": "verify",
+    "mode": "mechanism",
+    "options": [
+     "supported",
+     "insufficient",
+     "contradicted"
+    ],
+    "status": "mechanical",
+    "guard": "no_pick",
+    "use": "unverified",
+    "choice": "unverified",
+    "why": "nothing_to_verify",
+    "dominant": false,
+    "continue_loop": false,
+    "escalate": false
+   },
+   {
+    "rid": "test:boutique/runtime/4#pick7",
+    "kind": "pick",
+    "node": "pick",
+    "mode": "mechanism",
+    "options": [],
+    "status": "mechanical",
+    "guard": "no_options",
+    "use": "none",
+    "choice": null,
+    "why": "no_candidates",
+    "dominant": false,
+    "continue_loop": false,
+    "escalate": false
+   },
+   {
+    "rid": "test:boutique/runtime/4#verify7",
+    "kind": "verify",
+    "node": "verify",
+    "mode": "mechanism",
+    "options": [
+     "supported",
+     "insufficient",
+     "contradicted"
+    ],
+    "status": "mechanical",
+    "guard": "no_pick",
+    "use": "unverified",
+    "choice": "unverified",
+    "why": "nothing_to_verify",
+    "dominant": false,
+    "continue_loop": false,
+    "escalate": false
+   }
+  ],
+  "nodes": [
+   {
+    "node": "code",
+    "id": "anchors",
+    "anchors": {
+     "case_id": "boutique/runtime/4",
+     "system": "boutique",
+     "namespace": "boutique",
+     "query": "Service abnormal restart.",
+     "difficulty": "easy",
+     "symptoms": [
+      "restart"
+     ],
+     "mentioned_apps": []
+    }
+   },
+   {
+    "node": "probes",
+    "plan": "census",
+    "wave": 0,
+    "executed": 2,
+    "steps": [
+     {
+      "key": "pods",
+      "tool": "GetResources",
+      "arguments": {
+       "namespace": "boutique",
+       "resource_type": "pods",
+       "output_wide": true,
+       "show_labels": true
+      },
+      "gate": "always"
+     },
+     {
+      "key": "alerts",
+      "tool": "GetAlerts",
+      "arguments": {},
+      "gate": "healthy_system"
+     }
+    ],
+    "skipped": []
+   },
+   {
+    "node": "decide",
+    "id": "route",
+    "rid": "test:boutique/runtime/4#route",
+    "status": "mechanical",
+    "guard": "unavailable",
+    "use": "first_option",
+    "choice": "infrastructure",
+    "dominant": false,
+    "why": "mechanism_mode"
+   },
+   {
+    "node": "code",
+    "id": "plan",
+    "family": "infrastructure",
+    "plan": [
+     {
+      "step": "describe_pod",
+      "gate": "always",
+      "wave": 1
+     },
+     {
+      "step": "cluster_config",
+      "gate": "always",
+      "wave": 2
+     },
+     {
+      "step": "node_kubelet",
+      "gate": "node_scoped_symptom",
+      "wave": 3
+     },
+     {
+      "step": "node_containerd",
+      "gate": "node_scoped_symptom | node_all_healthy",
+      "wave": 4
+     },
+     {
+      "step": "node_kube_proxy",
+      "gate": "node_scoped_symptom | node_all_healthy",
+      "wave": 5
+     },
+     {
+      "step": "node_scheduler",
+      "gate": "node_scoped_symptom | node_all_healthy",
+      "wave": 6
+     }
+    ]
+   },
+   {
+    "node": "probes",
+    "plan": "family",
+    "wave": 1,
+    "executed": 0,
+    "steps": [],
+    "skipped": [
+     {
+      "step": "describe_pod",
+      "why": "args not applicable"
+     }
+    ]
+   },
+   {
+    "node": "code",
+    "id": "derive",
+    "raw": 0,
+    "kept": 0,
+    "top": []
+   },
+   {
+    "node": "decide",
+    "id": "pick",
+    "rid": "test:boutique/runtime/4#pick1",
+    "status": "mechanical",
+    "guard": "no_options",
+    "use": "none",
+    "choice": null,
+    "dominant": false,
+    "why": "no_candidates"
+   },
+   {
+    "node": "decide",
+    "id": "verify",
+    "rid": "test:boutique/runtime/4#verify1",
+    "status": "mechanical",
+    "guard": "no_pick",
+    "use": "unverified",
+    "choice": "unverified",
+    "dominant": false,
+    "why": "nothing_to_verify"
+   },
+   {
+    "node": "probes",
+    "plan": "family",
+    "wave": 2,
+    "executed": 1,
+    "steps": [
+     {
+      "key": "cluster",
+      "tool": "GetClusterConfiguration",
+      "arguments": {},
+      "gate": "always"
+     }
+    ],
+    "skipped": []
+   },
+   {
+    "node": "code",
+    "id": "derive",
+    "raw": 0,
+    "kept": 0,
+    "top": []
+   },
+   {
+    "node": "decide",
+    "id": "pick",
+    "rid": "test:boutique/runtime/4#pick2",
+    "status": "mechanical",
+    "guard": "no_options",
+    "use": "none",
+    "choice": null,
+    "dominant": false,
+    "why": "no_candidates"
+   },
+   {
+    "node": "decide",
+    "id": "verify",
+    "rid": "test:boutique/runtime/4#verify2",
+    "status": "mechanical",
+    "guard": "no_pick",
+    "use": "unverified",
+    "choice": "unverified",
+    "dominant": false,
+    "why": "nothing_to_verify"
+   },
+   {
+    "node": "probes",
+    "plan": "family",
+    "wave": 3,
+    "executed": 0,
+    "steps": [],
+    "skipped": [
+     {
+      "step": "node_kubelet",
+      "why": "gate node_scoped_symptom"
+     }
+    ]
+   },
+   {
+    "node": "code",
+    "id": "derive",
+    "raw": 0,
+    "kept": 0,
+    "top": []
+   },
+   {
+    "node": "decide",
+    "id": "pick",
+    "rid": "test:boutique/runtime/4#pick3",
+    "status": "mechanical",
+    "guard": "no_options",
+    "use": "none",
+    "choice": null,
+    "dominant": false,
+    "why": "no_candidates"
+   },
+   {
+    "node": "decide",
+    "id": "verify",
+    "rid": "test:boutique/runtime/4#verify3",
+    "status": "mechanical",
+    "guard": "no_pick",
+    "use": "unverified",
+    "choice": "unverified",
+    "dominant": false,
+    "why": "nothing_to_verify"
+   },
+   {
+    "node": "probes",
+    "plan": "family",
+    "wave": 4,
+    "executed": 1,
+    "steps": [
+     {
+      "key": "node:containerd",
+      "tool": "CheckNodeServiceStatus",
+      "arguments": {
+       "node_name": "worker-01",
+       "service_name": "containerd"
+      },
+      "gate": "node_scoped_symptom | node_all_healthy"
+     }
+    ],
+    "skipped": []
+   },
+   {
+    "node": "code",
+    "id": "derive",
+    "raw": 0,
+    "kept": 0,
+    "top": []
+   },
+   {
+    "node": "decide",
+    "id": "pick",
+    "rid": "test:boutique/runtime/4#pick4",
+    "status": "mechanical",
+    "guard": "no_options",
+    "use": "none",
+    "choice": null,
+    "dominant": false,
+    "why": "no_candidates"
+   },
+   {
+    "node": "decide",
+    "id": "verify",
+    "rid": "test:boutique/runtime/4#verify4",
+    "status": "mechanical",
+    "guard": "no_pick",
+    "use": "unverified",
+    "choice": "unverified",
+    "dominant": false,
+    "why": "nothing_to_verify"
+   },
+   {
+    "node": "probes",
+    "plan": "family",
+    "wave": 5,
+    "executed": 1,
+    "steps": [
+     {
+      "key": "node:kube-proxy",
+      "tool": "CheckNodeServiceStatus",
+      "arguments": {
+       "node_name": "worker-01",
+       "service_name": "kube-proxy"
+      },
+      "gate": "node_scoped_symptom | node_all_healthy"
+     }
+    ],
+    "skipped": []
+   },
+   {
+    "node": "code",
+    "id": "derive",
+    "raw": 0,
+    "kept": 0,
+    "top": []
+   },
+   {
+    "node": "decide",
+    "id": "pick",
+    "rid": "test:boutique/runtime/4#pick5",
+    "status": "mechanical",
+    "guard": "no_options",
+    "use": "none",
+    "choice": null,
+    "dominant": false,
+    "why": "no_candidates"
+   },
+   {
+    "node": "decide",
+    "id": "verify",
+    "rid": "test:boutique/runtime/4#verify5",
+    "status": "mechanical",
+    "guard": "no_pick",
+    "use": "unverified",
+    "choice": "unverified",
+    "dominant": false,
+    "why": "nothing_to_verify"
+   },
+   {
+    "node": "probes",
+    "plan": "family",
+    "wave": 6,
+    "executed": 1,
+    "steps": [
+     {
+      "key": "node:kube-scheduler",
+      "tool": "CheckNodeServiceStatus",
+      "arguments": {
+       "node_name": "master",
+       "service_name": "kube-scheduler"
+      },
+      "gate": "node_scoped_symptom | node_all_healthy"
+     }
+    ],
+    "skipped": []
+   },
+   {
+    "node": "code",
+    "id": "derive",
+    "raw": 0,
+    "kept": 0,
+    "top": []
+   },
+   {
+    "node": "decide",
+    "id": "pick",
+    "rid": "test:boutique/runtime/4#pick6",
+    "status": "mechanical",
+    "guard": "no_options",
+    "use": "none",
+    "choice": null,
+    "dominant": false,
+    "why": "no_candidates"
+   },
+   {
+    "node": "decide",
+    "id": "verify",
+    "rid": "test:boutique/runtime/4#verify6",
+    "status": "mechanical",
+    "guard": "no_pick",
+    "use": "unverified",
+    "choice": "unverified",
+    "dominant": false,
+    "why": "nothing_to_verify"
+   },
+   {
+    "node": "probes",
+    "plan": "family",
+    "wave": 7,
+    "executed": 0,
+    "why": "plan exhausted"
+   },
+   {
+    "node": "code",
+    "id": "derive",
+    "raw": 0,
+    "kept": 0,
+    "top": []
+   },
+   {
+    "node": "decide",
+    "id": "pick",
+    "rid": "test:boutique/runtime/4#pick7",
+    "status": "mechanical",
+    "guard": "no_options",
+    "use": "none",
+    "choice": null,
+    "dominant": false,
+    "why": "no_candidates"
+   },
+   {
+    "node": "decide",
+    "id": "verify",
+    "rid": "test:boutique/runtime/4#verify7",
+    "status": "mechanical",
+    "guard": "no_pick",
+    "use": "unverified",
+    "choice": "unverified",
+    "dominant": false,
+    "why": "nothing_to_verify"
+   },
+   {
+    "node": "loop",
+    "id": "waves",
+    "stop": "plan_exhausted",
+    "wave": 7
+   },
+   {
+    "node": "escalate",
+    "id": "escalate",
+    "fired": true,
+    "reasons": [
+     "no_candidates"
+    ],
+    "skipped": "mode=mechanism"
+   },
+   {
+    "node": "code",
+    "id": "answer",
+    "predictions": []
+   },
+   {
+    "node": "artifact",
+    "id": "persist",
+    "persisted": false,
+    "why": "written by the CLI driver"
+   }
+  ],
+  "notes": [],
+  "tool_calls": 6,
+  "model_calls": 0,
+  "tokens_in": 0,
+  "tokens_out": 0,
+  "wall_s": 0.02
+ }
+}

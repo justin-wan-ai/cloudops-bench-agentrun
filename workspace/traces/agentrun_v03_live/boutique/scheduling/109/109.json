@@ -1,0 +1,450 @@
+{
+ "case_id": "boutique/scheduling/109",
+ "system_name": "boutique",
+ "question": "Partial Service Unreachability.",
+ "case_path": "/Users/justinwan/work/workspace/cloudops_bench_rsi/repo/benchmark/boutique/scheduling/109",
+ "max_steps": 5,
+ "current_step": 4,
+ "finished": true,
+ "stop_reason": "submit",
+ "final_answer": "{\"key_evidence_summary\": \"0/4 nodes are available: 1 node(s) were unschedulable, 3 node(s) didn't match Pod's node affinity/selector.\", \"top_3_predictions\": [{\"rank\": 1, \"fault_object\": \"app/recommendationservice\", \"root_cause\": \"node_selector_mismatch\"}, {\"rank\": 2, \"fault_object\": \"app/recommendationservice\", \"root_cause\": \"node_selector_mismatch\"}, {\"rank\": 3, \"fault_object\": \"app/recommendationservice\", \"root_cause\": \"node_selector_mismatch\"}]}",
+ "metadata": {
+  "namespace": "boutique",
+  "query": "Partial Service Unreachability.",
+  "fault_category": "scheduling",
+  "model_name": "agentrun-v0.1"
+ },
+ "steps": [
+  {
+   "step_id": 0,
+   "action_type": "tool",
+   "action_name": "GetResources",
+   "action_input": {
+    "namespace": "boutique",
+    "resource_type": "pods"
+   },
+   "observation": "NAME                                     READY   STATUS    RESTARTS   AGE\nadservice-84dbdf99d-jv2cf                1/1     Running   0          72s\ncartservice-79b49f5555-d9qzp             1/1     Running   0          72s\ncheckoutservice-8445f8b6cb-9jpsh         1/1     Running   0          72s\ncurrencyservice-75686c9564-6m75x         1/1     Running   0          72s\nemailservice-b78fc569b-7b2hf             1/1     Running   0          72s\nfrontend-6778bd7b8b-zv64h                1/1     Running   0          71s\npaymentservice-78c5996648-m7bsl          1/1     Running   0          71s\nproductcatalogservice-ddb46fc86-4s65m    1/1     Running   0          71s\nrecommendationservice-54c95657c8-r4jxw   0/1     Pending   0          70s\nredis-cart-68db7b6f97-h4mfv              1/1     Running   0          71s\nshippingservice-7cbfcb6d68-mg24c         1/1     Running   0          71s\n",
+   "error": null,
+   "purpose": "pod readiness census",
+   "tool_latency": null
+  },
+  {
+   "step_id": 1,
+   "action_type": "tool",
+   "action_name": "DescribeResource",
+   "action_input": {
+    "namespace": "boutique",
+    "resource_type": "pods",
+    "name": "recommendationservice-54c95657c8-r4jxw"
+   },
+   "observation": "Name:             recommendationservice-54c95657c8-r4jxw\nNamespace:        boutique\nPriority:         0\nService Account:  recommendationservice\nNode:             <none>\nLabels:           app=recommendationservice\n                  pod-template-hash=54c95657c8\nAnnotations:      <none>\nStatus:           Pending\nIP:               \nIPs:              <none>\nControlled By:    ReplicaSet/recommendationservice-54c95657c8\nContainers:\n  server:\n    Image:      us-central1-docker.pkg.dev/google-samples/microservices-demo/recommendationservice:v0.10.3\n    Port:       8080/TCP\n    Host Port:  0/TCP\n    Limits:\n      cpu:     200m\n      memory:  450Mi\n    Requests:\n      cpu:      100m\n      memory:   220Mi\n    Liveness:   grpc <pod>:8080  delay=5s timeout=1s period=5s #success=1 #failure=3\n    Readiness:  grpc <pod>:8080  delay=5s timeout=1s period=5s #success=1 #failure=3\n    Environment:\n      PORT:                          8080\n      PRODUCT_CATALOG_SERVICE_ADDR:  productcatalogservice:3550\n      DISABLE_PROFILER:              1\n    Mounts:\n      /var/run/secrets/kubernetes.io/serviceaccount from kube-api-access-fg45r (ro)\nConditions:\n  Type           Status\n  PodScheduled   False \nVolumes:\n  kube-api-access-fg45r:\n    Type:                    Projected (a volume that contains injected data from multiple sources)\n    TokenExpirationSeconds:  3607\n    ConfigMapName:           kube-root-ca.crt\n    ConfigMapOptional:       <nil>\n    DownwardAPI:             true\nQoS Class:                   Burstable\nNode-Selectors:              disktype=ssd\nTolerations:                 node.kubernetes.io/not-ready:NoExecute op=Exists for 300s\n                             node.kubernetes.io/unreachable:NoExecute op=Exists for 300s\nEvents:\n  Type     Reason            Age   From               Message\n  ----     ------            ----  ----               -------\n  Warning  FailedScheduling  73s   default-scheduler  0/4 nodes are available: 1 node(s) were unschedulable, 3 node(s) didn't match Pod's node affinity/selector. preemption: 0/4 nodes are available: 4 Preemption is not helpful for scheduling.\n",
+   "error": null,
+   "purpose": "scheduler events on the Pending pod",
+   "tool_latency": null
+  },
+  {
+   "step_id": 2,
+   "action_type": "tool",
+   "action_name": "GetResources",
+   "action_input": {
+    "namespace": "boutique",
+    "resource_type": "pvcs"
+   },
+   "observation": "Error: Unknown resource type 'pvcs'",
+   "error": null,
+   "purpose": "volume binding state",
+   "tool_latency": null
+  },
+  {
+   "step_id": 3,
+   "action_type": "tool",
+   "action_name": "GetClusterConfiguration",
+   "action_input": {},
+   "observation": "{'node_count': 4, 'nodes': [{'name': 'master', 'role': 'worker', 'status': 'Ready', 'conditions': {'MemoryPressure': 'False', 'DiskPressure': 'False', 'PIDPressure': 'False'}, 'taints': ['node.kubernetes.io/unschedulable:NoSchedule'], 'labels': {'beta.kubernetes.io/arch': 'amd64', 'beta.kubernetes.io/os': 'linux', 'kubernetes.io/arch': 'amd64', 'kubernetes.io/hostname': 'master', 'kubernetes.io/os': 'linux', 'kubernetes.io/role': 'master'}, 'allocatable_resources': {'cpu': '8', 'memory': '15671352Ki'}}, {'name': 'worker-01', 'role': 'worker', 'status': 'Ready', 'conditions': {'MemoryPressure': 'False', 'DiskPressure': 'False', 'PIDPressure': 'False'}, 'taints': [], 'labels': {'beta.kubernetes.io/arch': 'amd64', 'beta.kubernetes.io/os': 'linux', 'disk-type': 'ssd', 'kubernetes.io/arch': 'amd64', 'kubernetes.io/hostname': 'worker-01', 'kubernetes.io/os': 'linux', 'kubernetes.io/role': 'node'}, 'allocatable_resources': {'cpu': '8', 'memory': '15671348Ki'}}, {'name': 'worker-02', 'role': 'worker', 'status': 'Ready', 'conditions': {'MemoryPressure': 'False', 'DiskPressure': 'False', 'PIDPressure': 'False'}, 'taints': [], 'labels': {'beta.kubernetes.io/arch': 'amd64', 'beta.kubernetes.io/os': 'linux', 'disk-type': 'ssd', 'kubernetes.io/arch': 'amd64', 'kubernetes.io/hostname': 'worker-02', 'kubernetes.io/os': 'linux', 'kubernetes.io/role': 'node'}, 'allocatable_resources': {'cpu': '8', 'memory': '15671344Ki'}}, {'name': 'worker-03', 'role': 'worker', 'status': 'Ready', 'conditions': {'MemoryPressure': 'False', 'DiskPressure': 'False', 'PIDPressure': 'False'}, 'taints': [], 'labels': {'beta.kubernetes.io/arch': 'amd64', 'beta.kubernetes.io/os': 'linux', 'disk-type': 'ssd', 'kubernetes.io/arch': 'amd64', 'kubernetes.io/hostname': 'worker-03', 'kubernetes.io/os': 'linux', 'kubernetes.io/role': 'node'}, 'allocatable_resources': {'cpu': '8', 'memory': '15671356Ki'}}]}",
+   "error": null,
+   "purpose": "node capacity / cordon state",
+   "tool_latency": null
+  }
+ ],
+ "agentrun": {
+  "tag": "test",
+  "dsl": "workspace/dsl_versions/v0.3.dsl.txt",
+  "dsl_version": "0.3",
+  "params": {
+   "cands_cap": 8,
+   "max_waves": 5,
+   "min_waves": 5,
+   "steps_per_wave": 1,
+   "dominance_ratio": 1.5,
+   "conf_min": 0.55,
+   "escalate": true,
+   "escalate_budget": 8,
+   "judge_on_codedefect": true,
+   "jev_route": true,
+   "jev_pick": true,
+   "jev_verify": true
+  },
+  "nodes_executed": [
+   "code:extract_anchors",
+   "call",
+   "jev",
+   "code:build_plan",
+   "call",
+   "code:derive_candidates",
+   "jev",
+   "jev",
+   "call",
+   "code:derive_candidates",
+   "jev",
+   "jev",
+   "call",
+   "code:derive_candidates",
+   "jev",
+   "jev",
+   "call",
+   "code:derive_candidates",
+   "jev",
+   "jev",
+   "code:normalize_answer"
+  ],
+  "family": "scheduling",
+  "route_probabilities": {
+   "scheduling": 0.43,
+   "infrastructure": 0.03,
+   "other": 0.54
+  },
+  "picked": {
+   "root_cause": "node_selector_mismatch",
+   "object": "app/recommendationservice",
+   "score": 0.99,
+   "evidence": "0/4 nodes are available: 1 node(s) were unschedulable, 3 node(s) didn't match Pod's node affinity/selector.",
+   "rule": "scheduling_event"
+  },
+  "pick_why": "dominant candidate (single candidate); no model call",
+  "verify_prob": null,
+  "verified": true,
+  "verify_verdict": "dominant",
+  "escalated": false,
+  "escalate_reason": "",
+  "escalate_steps": 0,
+  "waves": 4,
+  "candidates": [
+   {
+    "root_cause": "node_selector_mismatch",
+    "object": "app/recommendationservice",
+    "score": 0.99,
+    "evidence": "0/4 nodes are available: 1 node(s) were unschedulable, 3 node(s) didn't match Pod's node affinity/selector.",
+    "rule": "scheduling_event"
+   }
+  ],
+  "jev": [
+   {
+    "rid": "test:boutique/scheduling/109#route",
+    "kind": "route",
+    "mode": "live",
+    "choice": "scheduling",
+    "confidence": 0.3,
+    "probabilities": {
+     "scheduling": 0.43,
+     "infrastructure": 0.03,
+     "other": 0.54
+    },
+    "status": "abstain",
+    "why": "jev abstained ('other'); mechanical fallback scheduling",
+    "usage": {
+     "input_tokens": 172
+    }
+   },
+   {
+    "rid": "test:boutique/scheduling/109#pick1",
+    "kind": "pick",
+    "mode": "live",
+    "choice": 0,
+    "dominant": true,
+    "status": "mechanical",
+    "why": "dominant candidate (single candidate); no model call",
+    "confidence": null,
+    "probabilities": {}
+   }
+  ],
+  "nodes": [
+   {
+    "node": "code",
+    "logic": "extract_anchors",
+    "anchors": {
+     "case_id": "boutique/scheduling/109",
+     "system": "boutique",
+     "namespace": "boutique",
+     "query": "Partial Service Unreachability.",
+     "difficulty": "easy",
+     "symptoms": [
+      "unavailable"
+     ],
+     "mentioned_apps": []
+    }
+   },
+   {
+    "node": "call",
+    "target": "probe_batch",
+    "wave": 0,
+    "executed": 1,
+    "steps": [
+     {
+      "key": "pods",
+      "tool": "GetResources",
+      "arguments": {
+       "namespace": "boutique",
+       "resource_type": "pods"
+      }
+     }
+    ],
+    "skipped": [
+     {
+      "key": "alerts",
+      "why": "when=false"
+     }
+    ]
+   },
+   {
+    "node": "jev",
+    "rid": "test:boutique/scheduling/109#route",
+    "kind": "route",
+    "choice": "scheduling",
+    "confidence": 0.3,
+    "prob": null,
+    "status": "abstain",
+    "mode": "live"
+   },
+   {
+    "node": "code",
+    "logic": "build_plan",
+    "family": "scheduling",
+    "plan": [
+     {
+      "key": "describe:pod",
+      "tool": "DescribeResource",
+      "wave": 1
+     },
+     {
+      "key": "pvcs",
+      "tool": "GetResources",
+      "wave": 2
+     },
+     {
+      "key": "cluster",
+      "tool": "GetClusterConfiguration",
+      "wave": 3
+     }
+    ]
+   },
+   {
+    "node": "call",
+    "target": "probe_batch",
+    "wave": 1,
+    "executed": 1,
+    "steps": [
+     {
+      "key": "describe:pod",
+      "tool": "DescribeResource",
+      "arguments": {
+       "namespace": "boutique",
+       "resource_type": "pods",
+       "name": "recommendationservice-54c95657c8-r4jxw"
+      }
+     }
+    ],
+    "skipped": []
+   },
+   {
+    "node": "code",
+    "logic": "derive_candidates",
+    "raw": 1,
+    "kept": 1,
+    "top": [
+     {
+      "root_cause": "node_selector_mismatch",
+      "object": "app/recommendationservice",
+      "score": 0.99,
+      "evidence": "0/4 nodes are available: 1 node(s) were unschedulable, 3 node(s) didn't match Pod's node affinity/selector.",
+      "rule": "scheduling_event"
+     }
+    ]
+   },
+   {
+    "node": "jev",
+    "rid": "test:boutique/scheduling/109#pick1",
+    "kind": "pick",
+    "choice": 0,
+    "confidence": null,
+    "prob": null,
+    "status": "mechanical",
+    "mode": "live"
+   },
+   {
+    "node": "jev",
+    "kind": "verify",
+    "mode": "skipped",
+    "why": "dominant candidate: semantic gate suppressed by design",
+    "scores": [
+     0.99
+    ]
+   },
+   {
+    "node": "call",
+    "target": "probe_batch",
+    "wave": 2,
+    "executed": 1,
+    "steps": [
+     {
+      "key": "pvcs",
+      "tool": "GetResources",
+      "arguments": {
+       "namespace": "boutique",
+       "resource_type": "pvcs"
+      }
+     }
+    ],
+    "skipped": []
+   },
+   {
+    "node": "code",
+    "logic": "derive_candidates",
+    "raw": 1,
+    "kept": 1,
+    "top": [
+     {
+      "root_cause": "node_selector_mismatch",
+      "object": "app/recommendationservice",
+      "score": 0.99,
+      "evidence": "0/4 nodes are available: 1 node(s) were unschedulable, 3 node(s) didn't match Pod's node affinity/selector.",
+      "rule": "scheduling_event"
+     }
+    ]
+   },
+   {
+    "node": "jev",
+    "kind": "pick",
+    "mode": "skipped",
+    "why": "no new candidate evidence since last wave"
+   },
+   {
+    "node": "jev",
+    "kind": "verify",
+    "mode": "skipped",
+    "why": "no new evidence since last verify"
+   },
+   {
+    "node": "call",
+    "target": "probe_batch",
+    "wave": 3,
+    "executed": 1,
+    "steps": [
+     {
+      "key": "cluster",
+      "tool": "GetClusterConfiguration",
+      "arguments": {}
+     }
+    ],
+    "skipped": []
+   },
+   {
+    "node": "code",
+    "logic": "derive_candidates",
+    "raw": 1,
+    "kept": 1,
+    "top": [
+     {
+      "root_cause": "node_selector_mismatch",
+      "object": "app/recommendationservice",
+      "score": 0.99,
+      "evidence": "0/4 nodes are available: 1 node(s) were unschedulable, 3 node(s) didn't match Pod's node affinity/selector.",
+      "rule": "scheduling_event"
+     }
+    ]
+   },
+   {
+    "node": "jev",
+    "kind": "pick",
+    "mode": "skipped",
+    "why": "no new candidate evidence since last wave"
+   },
+   {
+    "node": "jev",
+    "kind": "verify",
+    "mode": "skipped",
+    "why": "no new evidence since last verify"
+   },
+   {
+    "node": "call",
+    "target": "probe_batch",
+    "wave": 4,
+    "executed": 0,
+    "why": "plan exhausted"
+   },
+   {
+    "node": "code",
+    "logic": "derive_candidates",
+    "raw": 1,
+    "kept": 1,
+    "top": [
+     {
+      "root_cause": "node_selector_mismatch",
+      "object": "app/recommendationservice",
+      "score": 0.99,
+      "evidence": "0/4 nodes are available: 1 node(s) were unschedulable, 3 node(s) didn't match Pod's node affinity/selector.",
+      "rule": "scheduling_event"
+     }
+    ]
+   },
+   {
+    "node": "jev",
+    "kind": "pick",
+    "mode": "skipped",
+    "why": "no new candidate evidence since last wave"
+   },
+   {
+    "node": "jev",
+    "kind": "verify",
+    "mode": "skipped",
+    "why": "no new evidence since last verify"
+   },
+   {
+    "node": "loop",
+    "until": "plan_exhausted",
+    "wave": 4
+   },
+   {
+    "node": "escalate",
+    "reason": "predicate_false",
+    "hits": []
+   },
+   {
+    "node": "code",
+    "logic": "normalize_answer",
+    "predictions": [
+     {
+      "rank": 1,
+      "fault_object": "app/recommendationservice",
+      "root_cause": "node_selector_mismatch"
+     },
+     {
+      "rank": 2,
+      "fault_object": "app/recommendationservice",
+      "root_cause": "node_selector_mismatch"
+     },
+     {
+      "rank": 3,
+      "fault_object": "app/recommendationservice",
+      "root_cause": "node_selector_mismatch"
+     }
+    ]
+   }
+  ],
+  "notes": [],
+  "tool_calls": 4,
+  "model_calls": 0,
+  "tokens_in": 0,
+  "tokens_out": 0,
+  "wall_s": 0.3
+ }
+}

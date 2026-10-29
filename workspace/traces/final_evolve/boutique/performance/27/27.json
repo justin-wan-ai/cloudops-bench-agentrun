@@ -1,0 +1,538 @@
+{
+ "case_id": "boutique/performance/27",
+ "system_name": "boutique",
+ "question": "Service latency increased significantly",
+ "case_path": "/Users/justinwan/work/workspace/cloudops_bench_rsi/repo/benchmark/boutique/performance/27",
+ "max_steps": 10,
+ "current_step": 3,
+ "finished": true,
+ "stop_reason": "submit",
+ "final_answer": "{\"key_evidence_summary\": \"2 nodes show TCP retransmission spikes; worker-02 is worst (6.67/s)\", \"top_3_predictions\": [{\"rank\": 1, \"fault_object\": \"node/worker-02\", \"root_cause\": \"node_network_packet_loss\"}, {\"rank\": 2, \"fault_object\": \"node/worker-02\", \"root_cause\": \"node_network_packet_loss\"}, {\"rank\": 3, \"fault_object\": \"node/worker-02\", \"root_cause\": \"node_network_packet_loss\"}]}",
+ "metadata": {
+  "namespace": "boutique",
+  "query": "Service latency increased significantly",
+  "fault_category": "performance",
+  "model_name": "agentrun-v0.13"
+ },
+ "steps": [
+  {
+   "step_id": 0,
+   "action_type": "tool",
+   "action_name": "GetResources",
+   "action_input": {
+    "namespace": "boutique",
+    "resource_type": "pods",
+    "output_wide": true
+   },
+   "observation": "NAME                                     READY   STATUS    RESTARTS   AGE     IP            NODE        NOMINATED NODE   READINESS GATES\nadservice-d68dfc56-gwgmr                 2/2     Running   0          5m45s   172.20.2.46   worker-02   <none>           <none>\ncartservice-7c5f46fc47-x4dc9             2/2     Running   0          5m44s   172.20.1.30   worker-01   <none>           <none>\ncheckoutservice-dbcdcb5fb-ssmhf          2/2     Running   0          5m44s   172.20.2.47   worker-02   <none>           <none>\ncurrencyservice-5cd6467fc4-2h5nw         2/2     Running   0          5m44s   172.20.1.31   worker-01   <none>           <none>\nemailservice-7dc7d85bcb-lt94s            2/2     Running   0          5m44s   172.20.2.48   worker-02   <none>           <none>\nfrontend-6778bd7b8b-58d8k                2/2     Running   0          5m44s   172.20.1.32   worker-01   <none>           <none>\npaymentservice-869f9f96cd-2rhnt          2/2     Running   0          5m43s   172.20.2.49   worker-02   <none>           <none>\nproductcatalogservice-6fb89f98f8-8v7zj   2/2     Running   0          5m43s   172.20.1.33   worker-01   <none>           <none>\nrecommendationservice-54dfdd6986-m59w9   2/2     Running   0          5m43s   172.20.2.50   worker-02   <none>           <none>\nredis-cart-58649b5469-ktkkf              2/2     Running   0          5m43s   172.20.1.34   worker-01   <none>           <none>\nshippingservice-674c8c548d-57mxl         2/2     Running   0          5m42s   172.20.2.51   worker-02   <none>           <none>\n",
+   "error": null,
+   "purpose": "pod readiness census",
+   "tool_latency": null
+  },
+  {
+   "step_id": 1,
+   "action_type": "tool",
+   "action_name": "GetAlerts",
+   "action_input": {},
+   "observation": "{'status': 'has_anomalies', 'alert_count': 5, 'alerts': [{'type': 'Service', 'name': 'adservice', 'time_range': '2025-12-26 12:32:28 ~ 2025-12-26 12:34:23', 'status': 'ABNORMAL', 'evidence': ['LATENCY_DEGRADATION [Slow Response] | adservice-p90latency: Normal=16.00ms -> Current=66.24ms (+314.1%)']}, {'type': 'Service', 'name': 'checkoutservice', 'time_range': '2025-12-26 12:32:28 ~ 2025-12-26 12:34:23', 'status': 'ABNORMAL', 'evidence': ['LATENCY_DEGRADATION [Slow Response] | checkoutservice-p90latency: Normal=93.94ms -> Current=800.96ms (+752.7%)']}, {'type': 'Service', 'name': 'recommendationservice', 'time_range': '2025-12-26 12:32:28 ~ 2025-12-26 12:34:23', 'status': 'ABNORMAL', 'evidence': ['LATENCY_DEGRADATION [Slow Response] | recommendationservice-p90latency: Normal=5.76ms -> Current=203.68ms (+3433.6%)']}, {'type': 'Node', 'name': 'worker-01', 'time_range': '2025-12-26 12:32:28 ~ 2025-12-26 12:34:23', 'status': 'ABNORMAL', 'evidence': ['NETWORK_QUALITY_DEGRADED [TCP Retransmission] | Normal=0.07retrans -> Current=0.61retrans (+810.7%)']}, {'type': 'Node', 'name': 'worker-02', 'time_range': '2025-12-26 12:32:28 ~ 2025-12-26 12:34:23', 'status': 'ABNORMAL', 'evidence': ['NETWORK_QUALITY_DEGRADED [TCP Retransmission] | Normal=0.00retrans -> Current=6.67retrans (New Spike)']}]}",
+   "error": null,
+   "purpose": "anomaly signature (routes performance/code families)",
+   "tool_latency": null
+  },
+  {
+   "step_id": 2,
+   "action_type": "tool",
+   "action_name": "GetServiceDependencies",
+   "action_input": {
+    "service_name": "frontend"
+   },
+   "observation": "[Service]: frontend (Entrypoint)\n[Upstream (Called By)]: (User Traffic)\n[Downstream (Calls)]:\nfrontend\n├── adservice\n├── recommendationservice\n│   └── productcatalogservice\n├── productcatalogservice\n├── checkoutservice\n│   ├── productcatalogservice\n│   ├── shippingservice\n│   ├── currencyservice\n│   ├── paymentservice\n│   ├── emailservice\n│   └── cartservice\n│       └── redis-cart  <-- (Database)\n├── shippingservice\n├── cartservice\n│   └── redis-cart      <-- (Database)\n└── currencyservice",
+   "error": null,
+   "purpose": "whole call graph from the entrypoint",
+   "tool_latency": null
+  }
+ ],
+ "agentrun": {
+  "tag": "test",
+  "dsl": "workspace/dsl_versions/v0.13.dsl.txt",
+  "dsl_version": "0.13",
+  "sop": {
+   "sop": "boutique-runtime-rca",
+   "scope": {
+    "system": "boutique",
+    "families": [
+     "runtime",
+     "admission",
+     "scheduling",
+     "startup",
+     "service",
+     "performance",
+     "infrastructure",
+     "codedefect"
+    ],
+    "severity": [
+     "SEV2",
+     "SEV3"
+    ]
+   },
+   "owner": "sre-platform",
+   "approved_by": [
+    "oncall-primary",
+    "sre-lead"
+   ],
+   "reviewed_at": "2026-10-23",
+   "change_ticket": "OPS-1241",
+   "boundaries": "R4 已知：`node_network_delay` 若快照里没有任何 Node 级 retrans 告警（例：performance/25），\n本 SOP 会退回 pod 级判断（当前工具面无法区分 pod 与 node 的延迟注入）。\n只读诊断：本 SOP 不执行任何写操作（重启/回滚/扩缩容），也不做对外播报；\n它回答\"最可能的根因与受害对象\"，处置与沟通由值班按 runbook 人工执行。\n不覆盖 SEV1（需 incident commander 介入）与变更引发的问题（走变更回滚流程）。\n输入是冻结快照：诊断结论对\"快照时刻\"成立，恢复后需重新取证。\nR1 已知边界：PVC 的 requested size / accessMode 在本 benchmark 的工具面不可见，\n因此 pvc_capacity 与 pvc_access_mode 无法区分（同一分数并列，交给 jev 或升级）。\n"
+  },
+  "params": {
+   "cands_cap": 8,
+   "max_waves": 10,
+   "min_waves": 5,
+   "steps_per_wave": 1,
+   "dominance_ratio": 1.5,
+   "conf_min": 0.0,
+   "escalate": true,
+   "escalate_budget": 8,
+   "judge_on_codedefect": true,
+   "jev_route": true,
+   "jev_pick": true,
+   "jev_verify": true,
+   "route_fallback": "runtime"
+  },
+  "nodes_executed": [
+   "anchors:extract_anchors",
+   "census:probes",
+   "route:decide",
+   "plan:build_plan",
+   "probe:probes",
+   "derive:derive_candidates",
+   "pick:decide",
+   "verify:decide",
+   "probe:probes",
+   "derive:derive_candidates",
+   "pick:decide",
+   "verify:decide",
+   "escalate:escalate",
+   "answer:normalize_answer",
+   "persist:persist_trace"
+  ],
+  "census": [
+   {
+    "step": "pods",
+    "gate": "always"
+   },
+   {
+    "step": "alerts",
+    "gate": "healthy_system"
+   }
+  ],
+  "plan": [
+   {
+    "step": "deps_entry",
+    "gate": "always",
+    "wave": 1
+   },
+   {
+    "step": "describe_pod",
+    "gate": "weak",
+    "wave": 2
+   }
+  ],
+  "family": "performance",
+  "state_wiring": {
+   "family": "$route.family",
+   "route_probs": "$route.probabilities",
+   "picked": "$pick.picked",
+   "pick_dominant": "$pick.dominant",
+   "verify_status": "$verify.status",
+   "verify_prob": "$verify.confidence"
+  },
+  "bindings": {
+   "anchors": {
+    "anchors": "Anchors(case_id='boutique/performance/27', system='boutique', namespace='boutique', query='Service latency increased significantly', difficulty='hard', symptoms=['degradation'], mentioned_apps=[], priors={'db_service': '', 'db_port': 0})"
+   },
+   "route": {
+    "family": "performance",
+    "probabilities": {},
+    "route_why": "mechanism_mode"
+   },
+   "plan": {
+    "plan": "[{'name': 'deps_entry', 'key': 'deps:entry', 'tool': 'GetServiceDependencies', 'args': <function _args_deps_entry at 0x10ee74a40>, 'purpose': 'whole call graph from the entrypoint', 'when': <function compile_steps.<locals>.<lambda> at 0x11020dbc0>, 'gate': 'always', 'wave': 1}, {'name': 'describe_pod', 'key': 'describe:pod', 'tool': 'DescribeResource', 'args': <function _args_describe_pod at 0x10ee43ec0>, 'purpose': 'probe config, container state, restart reasons, scheduler events', 'when': <function compile_steps.<locals>.<lambda> at 0x11020dda0>, 'gate': 'weak', 'wave': 2}]"
+   },
+   "derive": {
+    "candidates": "[Candidate(root_cause='node_network_packet_loss', object='node/worker-02', score=0.99, evidence='2 nodes show TCP retransmission spikes; worker-02 is worst (6.67/s)', rule='alert_node_retrans')]"
+   },
+   "pick": {
+    "picked": 0,
+    "dominant": true,
+    "pick_why": "no_new_evidence"
+   },
+   "verify": {
+    "status": "verified",
+    "confidence": null,
+    "verify_why": "dominant_candidate"
+   },
+   "escalate": {
+    "answer": null
+   },
+   "answer": {
+    "final": {
+     "key_evidence_summary": "2 nodes show TCP retransmission spikes; worker-02 is worst (6.67/s)",
+     "top_3_predictions": [
+      {
+       "rank": 1,
+       "fault_object": "node/worker-02",
+       "root_cause": "node_network_packet_loss"
+      },
+      {
+       "rank": 2,
+       "fault_object": "node/worker-02",
+       "root_cause": "node_network_packet_loss"
+      },
+      {
+       "rank": 3,
+       "fault_object": "node/worker-02",
+       "root_cause": "node_network_packet_loss"
+      }
+     ]
+    }
+   }
+  },
+  "picked": {
+   "root_cause": "node_network_packet_loss",
+   "object": "node/worker-02",
+   "score": 0.99,
+   "evidence": "2 nodes show TCP retransmission spikes; worker-02 is worst (6.67/s)",
+   "rule": "alert_node_retrans"
+  },
+  "pick_why": "",
+  "verify_prob": null,
+  "verify_verdict": "verified",
+  "verified": true,
+  "escalated": false,
+  "escalate_reason": "",
+  "escalate_steps": 0,
+  "waves": 2,
+  "candidates": [
+   {
+    "root_cause": "node_network_packet_loss",
+    "object": "node/worker-02",
+    "score": 0.99,
+    "evidence": "2 nodes show TCP retransmission spikes; worker-02 is worst (6.67/s)",
+    "rule": "alert_node_retrans"
+   }
+  ],
+  "jev": [
+   {
+    "rid": "test:boutique/performance/27#route",
+    "kind": "route",
+    "node": "route",
+    "mode": "mechanism",
+    "options": [
+     "performance",
+     "infrastructure"
+    ],
+    "status": "mechanical",
+    "guard": "unavailable",
+    "use": "first_option",
+    "choice": "performance",
+    "why": "mechanism_mode",
+    "dominant": false,
+    "continue_loop": false,
+    "escalate": false
+   },
+   {
+    "rid": "test:boutique/performance/27#pick1",
+    "kind": "pick",
+    "node": "pick",
+    "mode": "mechanism",
+    "options": [
+     "c0"
+    ],
+    "status": "mechanical",
+    "guard": "top_over_second >= $params.dominance_ratio",
+    "use": "first_option",
+    "choice": 0,
+    "why": "dominance",
+    "dominant": true,
+    "continue_loop": false,
+    "escalate": false
+   },
+   {
+    "rid": "test:boutique/performance/27#verify1",
+    "kind": "verify",
+    "node": "verify",
+    "mode": "mechanism",
+    "options": [
+     "supported",
+     "insufficient",
+     "contradicted"
+    ],
+    "status": "mechanical",
+    "guard": "$pick.dominant",
+    "use": "verified",
+    "choice": "verified",
+    "why": "dominant_candidate",
+    "dominant": false,
+    "continue_loop": false,
+    "escalate": false
+   },
+   {
+    "rid": "test:boutique/performance/27#pick2",
+    "kind": "pick",
+    "node": "pick",
+    "mode": "mechanism",
+    "options": [
+     "c0"
+    ],
+    "status": "mechanical",
+    "guard": "unchanged_since_last",
+    "use": "previous",
+    "choice": 0,
+    "why": "no_new_evidence",
+    "dominant": true,
+    "continue_loop": false,
+    "escalate": false
+   },
+   {
+    "rid": "test:boutique/performance/27#verify2",
+    "kind": "verify",
+    "node": "verify",
+    "mode": "mechanism",
+    "options": [
+     "supported",
+     "insufficient",
+     "contradicted"
+    ],
+    "status": "mechanical",
+    "guard": "$pick.dominant",
+    "use": "verified",
+    "choice": "verified",
+    "why": "dominant_candidate",
+    "dominant": false,
+    "continue_loop": false,
+    "escalate": false
+   }
+  ],
+  "nodes": [
+   {
+    "node": "code",
+    "id": "anchors",
+    "anchors": {
+     "case_id": "boutique/performance/27",
+     "system": "boutique",
+     "namespace": "boutique",
+     "query": "Service latency increased significantly",
+     "difficulty": "hard",
+     "symptoms": [
+      "degradation"
+     ],
+     "mentioned_apps": []
+    }
+   },
+   {
+    "node": "probes",
+    "plan": "census",
+    "wave": 0,
+    "executed": 2,
+    "steps": [
+     {
+      "key": "pods",
+      "tool": "GetResources",
+      "arguments": {
+       "namespace": "boutique",
+       "resource_type": "pods",
+       "output_wide": true
+      },
+      "gate": "always"
+     },
+     {
+      "key": "alerts",
+      "tool": "GetAlerts",
+      "arguments": {},
+      "gate": "healthy_system"
+     }
+    ],
+    "skipped": []
+   },
+   {
+    "node": "decide",
+    "id": "route",
+    "rid": "test:boutique/performance/27#route",
+    "status": "mechanical",
+    "guard": "unavailable",
+    "use": "first_option",
+    "choice": "performance",
+    "dominant": false,
+    "why": "mechanism_mode"
+   },
+   {
+    "node": "code",
+    "id": "plan",
+    "family": "performance",
+    "plan": [
+     {
+      "step": "deps_entry",
+      "gate": "always",
+      "wave": 1
+     },
+     {
+      "step": "describe_pod",
+      "gate": "weak",
+      "wave": 2
+     }
+    ]
+   },
+   {
+    "node": "probes",
+    "plan": "family",
+    "wave": 1,
+    "executed": 1,
+    "steps": [
+     {
+      "key": "deps:entry",
+      "tool": "GetServiceDependencies",
+      "arguments": {
+       "service_name": "frontend"
+      },
+      "gate": "always"
+     }
+    ],
+    "skipped": []
+   },
+   {
+    "node": "code",
+    "id": "derive",
+    "raw": 1,
+    "kept": 1,
+    "top": [
+     {
+      "root_cause": "node_network_packet_loss",
+      "object": "node/worker-02",
+      "score": 0.99,
+      "evidence": "2 nodes show TCP retransmission spikes; worker-02 is worst (6.67/s)",
+      "rule": "alert_node_retrans"
+     }
+    ]
+   },
+   {
+    "node": "decide",
+    "id": "pick",
+    "rid": "test:boutique/performance/27#pick1",
+    "status": "mechanical",
+    "guard": "top_over_second >= $params.dominance_ratio",
+    "use": "first_option",
+    "choice": 0,
+    "dominant": true,
+    "why": "dominance"
+   },
+   {
+    "node": "decide",
+    "id": "verify",
+    "rid": "test:boutique/performance/27#verify1",
+    "status": "mechanical",
+    "guard": "$pick.dominant",
+    "use": "verified",
+    "choice": "verified",
+    "dominant": false,
+    "why": "dominant_candidate"
+   },
+   {
+    "node": "probes",
+    "plan": "family",
+    "wave": 2,
+    "executed": 0,
+    "steps": [],
+    "skipped": [
+     {
+      "step": "describe_pod",
+      "why": "gate weak"
+     }
+    ]
+   },
+   {
+    "node": "code",
+    "id": "derive",
+    "raw": 1,
+    "kept": 1,
+    "top": [
+     {
+      "root_cause": "node_network_packet_loss",
+      "object": "node/worker-02",
+      "score": 0.99,
+      "evidence": "2 nodes show TCP retransmission spikes; worker-02 is worst (6.67/s)",
+      "rule": "alert_node_retrans"
+     }
+    ]
+   },
+   {
+    "node": "decide",
+    "id": "pick",
+    "rid": "test:boutique/performance/27#pick2",
+    "status": "mechanical",
+    "guard": "unchanged_since_last",
+    "use": "previous",
+    "choice": 0,
+    "dominant": true,
+    "why": "no_new_evidence"
+   },
+   {
+    "node": "decide",
+    "id": "verify",
+    "rid": "test:boutique/performance/27#verify2",
+    "status": "mechanical",
+    "guard": "$pick.dominant",
+    "use": "verified",
+    "choice": "verified",
+    "dominant": false,
+    "why": "dominant_candidate"
+   },
+   {
+    "node": "loop",
+    "id": "waves",
+    "stop": "plan_exhausted",
+    "wave": 2
+   },
+   {
+    "node": "escalate",
+    "id": "escalate",
+    "fired": false,
+    "reasons": [],
+    "why": "no reason"
+   },
+   {
+    "node": "code",
+    "id": "answer",
+    "predictions": [
+     {
+      "rank": 1,
+      "fault_object": "node/worker-02",
+      "root_cause": "node_network_packet_loss"
+     },
+     {
+      "rank": 2,
+      "fault_object": "node/worker-02",
+      "root_cause": "node_network_packet_loss"
+     },
+     {
+      "rank": 3,
+      "fault_object": "node/worker-02",
+      "root_cause": "node_network_packet_loss"
+     }
+    ]
+   },
+   {
+    "node": "artifact",
+    "id": "persist",
+    "persisted": false,
+    "why": "written by the CLI driver"
+   }
+  ],
+  "notes": [],
+  "tool_calls": 3,
+  "model_calls": 0,
+  "tokens_in": 0,
+  "tokens_out": 0,
+  "wall_s": 0.24
+ }
+}

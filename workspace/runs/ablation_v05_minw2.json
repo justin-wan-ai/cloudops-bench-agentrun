@@ -1,0 +1,87 @@
+{
+  "dsl": "workspace/dsl_versions/ablation/v05_min_waves2.dsl.txt",
+  "version": "0.5",
+  "params": {
+    "cands_cap": 8,
+    "max_waves": 5,
+    "min_waves": 2,
+    "steps_per_wave": 1,
+    "dominance_ratio": 1.5,
+    "conf_min": 0.0,
+    "escalate": true,
+    "escalate_budget": 8,
+    "judge_on_codedefect": true,
+    "jev_route": true,
+    "jev_pick": true,
+    "jev_verify": true,
+    "route_fallback": "runtime"
+  },
+  "jev_mode": "live",
+  "jev_usage": {
+    "calls": 7,
+    "input_tokens": 1593,
+    "model_latency_ms": 3344.5
+  },
+  "cases": [
+    {
+      "id": "trainticket/runtime/61",
+      "family": "runtime",
+      "tool_calls": 4,
+      "model_calls": 1,
+      "tokens_in": 170,
+      "tokens_out": 0,
+      "wall_s": 3.24,
+      "escalated": false,
+      "verified": true,
+      "verify_prob": null
+    },
+    {
+      "id": "boutique/codedefect/60",
+      "family": "codedefect",
+      "tool_calls": 4,
+      "model_calls": 3,
+      "tokens_in": 884,
+      "tokens_out": 0,
+      "wall_s": 0.71,
+      "escalated": false,
+      "verified": true,
+      "verify_prob": null
+    },
+    {
+      "id": "boutique/admission/32",
+      "family": "admission",
+      "tool_calls": 3,
+      "model_calls": 1,
+      "tokens_in": 151,
+      "tokens_out": 0,
+      "wall_s": 0.23,
+      "escalated": false,
+      "verified": true,
+      "verify_prob": null
+    },
+    {
+      "id": "boutique/scheduling/109",
+      "family": "scheduling",
+      "tool_calls": 3,
+      "model_calls": 1,
+      "tokens_in": 228,
+      "tokens_out": 0,
+      "wall_s": 0.24,
+      "escalated": false,
+      "verified": true,
+      "verify_prob": null
+    },
+    {
+      "id": "boutique/runtime/32",
+      "family": "runtime",
+      "tool_calls": 3,
+      "model_calls": 1,
+      "tokens_in": 160,
+      "tokens_out": 0,
+      "wall_s": 0.26,
+      "escalated": false,
+      "verified": true,
+      "verify_prob": null
+    }
+  ]
+}

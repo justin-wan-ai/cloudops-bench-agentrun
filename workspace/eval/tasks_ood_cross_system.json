@@ -1,0 +1,593 @@
+{
+ "n": 84,
+ "cases": [
+  {
+   "id": "trainticket/performance/1",
+   "system": "trainticket",
+   "category": "performance",
+   "case": "1",
+   "difficulty": "hard"
+  },
+  {
+   "id": "trainticket/performance/10",
+   "system": "trainticket",
+   "category": "performance",
+   "case": "10",
+   "difficulty": "hard"
+  },
+  {
+   "id": "trainticket/performance/11",
+   "system": "trainticket",
+   "category": "performance",
+   "case": "11",
+   "difficulty": "hard"
+  },
+  {
+   "id": "trainticket/performance/12",
+   "system": "trainticket",
+   "category": "performance",
+   "case": "12",
+   "difficulty": "hard"
+  },
+  {
+   "id": "trainticket/performance/13",
+   "system": "trainticket",
+   "category": "performance",
+   "case": "13",
+   "difficulty": "hard"
+  },
+  {
+   "id": "trainticket/performance/14",
+   "system": "trainticket",
+   "category": "performance",
+   "case": "14",
+   "difficulty": "hard"
+  },
+  {
+   "id": "trainticket/performance/15",
+   "system": "trainticket",
+   "category": "performance",
+   "case": "15",
+   "difficulty": "hard"
+  },
+  {
+   "id": "trainticket/performance/16",
+   "system": "trainticket",
+   "category": "performance",
+   "case": "16",
+   "difficulty": "hard"
+  },
+  {
+   "id": "trainticket/performance/17",
+   "system": "trainticket",
+   "category": "performance",
+   "case": "17",
+   "difficulty": "hard"
+  },
+  {
+   "id": "trainticket/performance/18",
+   "system": "trainticket",
+   "category": "performance",
+   "case": "18",
+   "difficulty": "hard"
+  },
+  {
+   "id": "trainticket/performance/19",
+   "system": "trainticket",
+   "category": "performance",
+   "case": "19",
+   "difficulty": "hard"
+  },
+  {
+   "id": "trainticket/performance/2",
+   "system": "trainticket",
+   "category": "performance",
+   "case": "2",
+   "difficulty": "hard"
+  },
+  {
+   "id": "trainticket/performance/20",
+   "system": "trainticket",
+   "category": "performance",
+   "case": "20",
+   "difficulty": "hard"
+  },
+  {
+   "id": "trainticket/performance/21",
+   "system": "trainticket",
+   "category": "performance",
+   "case": "21",
+   "difficulty": "hard"
+  },
+  {
+   "id": "trainticket/performance/22",
+   "system": "trainticket",
+   "category": "performance",
+   "case": "22",
+   "difficulty": "hard"
+  },
+  {
+   "id": "trainticket/performance/23",
+   "system": "trainticket",
+   "category": "performance",
+   "case": "23",
+   "difficulty": "hard"
+  },
+  {
+   "id": "trainticket/performance/24",
+   "system": "trainticket",
+   "category": "performance",
+   "case": "24",
+   "difficulty": "hard"
+  },
+  {
+   "id": "trainticket/performance/25",
+   "system": "trainticket",
+   "category": "performance",
+   "case": "25",
+   "difficulty": "hard"
+  },
+  {
+   "id": "trainticket/performance/26",
+   "system": "trainticket",
+   "category": "performance",
+   "case": "26",
+   "difficulty": "hard"
+  },
+  {
+   "id": "trainticket/performance/27",
+   "system": "trainticket",
+   "category": "performance",
+   "case": "27",
+   "difficulty": "hard"
+  },
+  {
+   "id": "trainticket/performance/28",
+   "system": "trainticket",
+   "category": "performance",
+   "case": "28",
+   "difficulty": "hard"
+  },
+  {
+   "id": "trainticket/performance/29",
+   "system": "trainticket",
+   "category": "performance",
+   "case": "29",
+   "difficulty": "hard"
+  },
+  {
+   "id": "trainticket/performance/3",
+   "system": "trainticket",
+   "category": "performance",
+   "case": "3",
+   "difficulty": "hard"
+  },
+  {
+   "id": "trainticket/performance/30",
+   "system": "trainticket",
+   "category": "performance",
+   "case": "30",
+   "difficulty": "hard"
+  },
+  {
+   "id": "trainticket/performance/31",
+   "system": "trainticket",
+   "category": "performance",
+   "case": "31",
+   "difficulty": "hard"
+  },
+  {
+   "id": "trainticket/performance/32",
+   "system": "trainticket",
+   "category": "performance",
+   "case": "32",
+   "difficulty": "hard"
+  },
+  {
+   "id": "trainticket/performance/33",
+   "system": "trainticket",
+   "category": "performance",
+   "case": "33",
+   "difficulty": "hard"
+  },
+  {
+   "id": "trainticket/performance/34",
+   "system": "trainticket",
+   "category": "performance",
+   "case": "34",
+   "difficulty": "hard"
+  },
+  {
+   "id": "trainticket/performance/35",
+   "system": "trainticket",
+   "category": "performance",
+   "case": "35",
+   "difficulty": "hard"
+  },
+  {
+   "id": "trainticket/performance/36",
+   "system": "trainticket",
+   "category": "performance",
+   "case": "36",
+   "difficulty": "hard"
+  },
+  {
+   "id": "trainticket/performance/37",
+   "system": "trainticket",
+   "category": "performance",
+   "case": "37",
+   "difficulty": "hard"
+  },
+  {
+   "id": "trainticket/performance/38",
+   "system": "trainticket",
+   "category": "performance",
+   "case": "38",
+   "difficulty": "hard"
+  },
+  {
+   "id": "trainticket/performance/39",
+   "system": "trainticket",
+   "category": "performance",
+   "case": "39",
+   "difficulty": "hard"
+  },
+  {
+   "id": "trainticket/performance/4",
+   "system": "trainticket",
+   "category": "performance",
+   "case": "4",
+   "difficulty": "hard"
+  },
+  {
+   "id": "trainticket/performance/40",
+   "system": "trainticket",
+   "category": "performance",
+   "case": "40",
+   "difficulty": "hard"
+  },
+  {
+   "id": "trainticket/performance/41",
+   "system": "trainticket",
+   "category": "performance",
+   "case": "41",
+   "difficulty": "hard"
+  },
+  {
+   "id": "trainticket/performance/42",
+   "system": "trainticket",
+   "category": "performance",
+   "case": "42",
+   "difficulty": "hard"
+  },
+  {
+   "id": "trainticket/performance/43",
+   "system": "trainticket",
+   "category": "performance",
+   "case": "43",
+   "difficulty": "hard"
+  },
+  {
+   "id": "trainticket/performance/44",
+   "system": "trainticket",
+   "category": "performance",
+   "case": "44",
+   "difficulty": "hard"
+  },
+  {
+   "id": "trainticket/performance/45",
+   "system": "trainticket",
+   "category": "performance",
+   "case": "45",
+   "difficulty": "hard"
+  },
+  {
+   "id": "trainticket/performance/46",
+   "system": "trainticket",
+   "category": "performance",
+   "case": "46",
+   "difficulty": "hard"
+  },
+  {
+   "id": "trainticket/performance/47",
+   "system": "trainticket",
+   "category": "performance",
+   "case": "47",
+   "difficulty": "hard"
+  },
+  {
+   "id": "trainticket/performance/5",
+   "system": "trainticket",
+   "category": "performance",
+   "case": "5",
+   "difficulty": "hard"
+  },
+  {
+   "id": "trainticket/performance/6",
+   "system": "trainticket",
+   "category": "performance",
+   "case": "6",
+   "difficulty": "hard"
+  },
+  {
+   "id": "trainticket/performance/7",
+   "system": "trainticket",
+   "category": "performance",
+   "case": "7",
+   "difficulty": "hard"
+  },
+  {
+   "id": "trainticket/performance/8",
+   "system": "trainticket",
+   "category": "performance",
+   "case": "8",
+   "difficulty": "hard"
+  },
+  {
+   "id": "trainticket/performance/9",
+   "system": "trainticket",
+   "category": "performance",
+   "case": "9",
+   "difficulty": "hard"
+  },
+  {
+   "id": "trainticket/service/1",
+   "system": "trainticket",
+   "category": "service",
+   "case": "1",
+   "difficulty": "medium"
+  },
+  {
+   "id": "trainticket/service/10",
+   "system": "trainticket",
+   "category": "service",
+   "case": "10",
+   "difficulty": "medium"
+  },
+  {
+   "id": "trainticket/service/11",
+   "system": "trainticket",
+   "category": "service",
+   "case": "11",
+   "difficulty": "medium"
+  },
+  {
+   "id": "trainticket/service/12",
+   "system": "trainticket",
+   "category": "service",
+   "case": "12",
+   "difficulty": "medium"
+  },
+  {
+   "id": "trainticket/service/13",
+   "system": "trainticket",
+   "category": "service",
+   "case": "13",
+   "difficulty": "medium"
+  },
+  {
+   "id": "trainticket/service/14",
+   "system": "trainticket",
+   "category": "service",
+   "case": "14",
+   "difficulty": "medium"
+  },
+  {
+   "id": "trainticket/service/15",
+   "system": "trainticket",
+   "category": "service",
+   "case": "15",
+   "difficulty": "medium"
+  },
+  {
+   "id": "trainticket/service/16",
+   "system": "trainticket",
+   "category": "service",
+   "case": "16",
+   "difficulty": "medium"
+  },
+  {
+   "id": "trainticket/service/17",
+   "system": "trainticket",
+   "category": "service",
+   "case": "17",
+   "difficulty": "medium"
+  },
+  {
+   "id": "trainticket/service/18",
+   "system": "trainticket",
+   "category": "service",
+   "case": "18",
+   "difficulty": "medium"
+  },
+  {
+   "id": "trainticket/service/19",
+   "system": "trainticket",
+   "category": "service",
+   "case": "19",
+   "difficulty": "medium"
+  },
+  {
+   "id": "trainticket/service/2",
+   "system": "trainticket",
+   "category": "service",
+   "case": "2",
+   "difficulty": "medium"
+  },
+  {
+   "id": "trainticket/service/20",
+   "system": "trainticket",
+   "category": "service",
+   "case": "20",
+   "difficulty": "medium"
+  },
+  {
+   "id": "trainticket/service/21",
+   "system": "trainticket",
+   "category": "service",
+   "case": "21",
+   "difficulty": "medium"
+  },
+  {
+   "id": "trainticket/service/22",
+   "system": "trainticket",
+   "category": "service",
+   "case": "22",
+   "difficulty": "medium"
+  },
+  {
+   "id": "trainticket/service/23",
+   "system": "trainticket",
+   "category": "service",
+   "case": "23",
+   "difficulty": "medium"
+  },
+  {
+   "id": "trainticket/service/24",
+   "system": "trainticket",
+   "category": "service",
+   "case": "24",
+   "difficulty": "medium"
+  },
+  {
+   "id": "trainticket/service/25",
+   "system": "trainticket",
+   "category": "service",
+   "case": "25",
+   "difficulty": "medium"
+  },
+  {
+   "id": "trainticket/service/26",
+   "system": "trainticket",
+   "category": "service",
+   "case": "26",
+   "difficulty": "medium"
+  },
+  {
+   "id": "trainticket/service/27",
+   "system": "trainticket",
+   "category": "service",
+   "case": "27",
+   "difficulty": "medium"
+  },
+  {
+   "id": "trainticket/service/28",
+   "system": "trainticket",
+   "category": "service",
+   "case": "28",
+   "difficulty": "medium"
+  },
+  {
+   "id": "trainticket/service/29",
+   "system": "trainticket",
+   "category": "service",
+   "case": "29",
+   "difficulty": "medium"
+  },
+  {
+   "id": "trainticket/service/3",
+   "system": "trainticket",
+   "category": "service",
+   "case": "3",
+   "difficulty": "medium"
+  },
+  {
+   "id": "trainticket/service/30",
+   "system": "trainticket",
+   "category": "service",
+   "case": "30",
+   "difficulty": "medium"
+  },
+  {
+   "id": "trainticket/service/31",
+   "system": "trainticket",
+   "category": "service",
+   "case": "31",
+   "difficulty": "medium"
+  },
+  {
+   "id": "trainticket/service/32",
+   "system": "trainticket",
+   "category": "service",
+   "case": "32",
+   "difficulty": "medium"
+  },
+  {
+   "id": "trainticket/service/33",
+   "system": "trainticket",
+   "category": "service",
+   "case": "33",
+   "difficulty": "medium"
+  },
+  {
+   "id": "trainticket/service/34",
+   "system": "trainticket",
+   "category": "service",
+   "case": "34",
+   "difficulty": "medium"
+  },
+  {
+   "id": "trainticket/service/35",
+   "system": "trainticket",
+   "category": "service",
+   "case": "35",
+   "difficulty": "medium"
+  },
+  {
+   "id": "trainticket/service/36",
+   "system": "trainticket",
+   "category": "service",
+   "case": "36",
+   "difficulty": "medium"
+  },
+  {
+   "id": "trainticket/service/37",
+   "system": "trainticket",
+   "category": "service",
+   "case": "37",
+   "difficulty": "medium"
+  },
+  {
+   "id": "trainticket/service/4",
+   "system": "trainticket",
+   "category": "service",
+   "case": "4",
+   "difficulty": "medium"
+  },
+  {
+   "id": "trainticket/service/5",
+   "system": "trainticket",
+   "category": "service",
+   "case": "5",
+   "difficulty": "medium"
+  },
+  {
+   "id": "trainticket/service/6",
+   "system": "trainticket",
+   "category": "service",
+   "case": "6",
+   "difficulty": "medium"
+  },
+  {
+   "id": "trainticket/service/7",
+   "system": "trainticket",
+   "category": "service",
+   "case": "7",
+   "difficulty": "medium"
+  },
+  {
+   "id": "trainticket/service/8",
+   "system": "trainticket",
+   "category": "service",
+   "case": "8",
+   "difficulty": "medium"
+  },
+  {
+   "id": "trainticket/service/9",
+   "system": "trainticket",
+   "category": "service",
+   "case": "9",
+   "difficulty": "medium"
+  }
+ ]
+}

@@ -1,0 +1,546 @@
+{
+ "n": 77,
+ "cases": [
+  {
+   "id": "boutique/runtime/23",
+   "system": "boutique",
+   "category": "runtime",
+   "case": "23",
+   "difficulty": "easy"
+  },
+  {
+   "id": "boutique/runtime/24",
+   "system": "boutique",
+   "category": "runtime",
+   "case": "24",
+   "difficulty": "easy"
+  },
+  {
+   "id": "boutique/runtime/26",
+   "system": "boutique",
+   "category": "runtime",
+   "case": "26",
+   "difficulty": "easy"
+  },
+  {
+   "id": "boutique/runtime/29",
+   "system": "boutique",
+   "category": "runtime",
+   "case": "29",
+   "difficulty": "easy"
+  },
+  {
+   "id": "boutique/runtime/30",
+   "system": "boutique",
+   "category": "runtime",
+   "case": "30",
+   "difficulty": "easy"
+  },
+  {
+   "id": "boutique/runtime/31",
+   "system": "boutique",
+   "category": "runtime",
+   "case": "31",
+   "difficulty": "easy"
+  },
+  {
+   "id": "boutique/runtime/32",
+   "system": "boutique",
+   "category": "runtime",
+   "case": "32",
+   "difficulty": "easy"
+  },
+  {
+   "id": "boutique/runtime/34",
+   "system": "boutique",
+   "category": "runtime",
+   "case": "34",
+   "difficulty": "easy"
+  },
+  {
+   "id": "boutique/runtime/37",
+   "system": "boutique",
+   "category": "runtime",
+   "case": "37",
+   "difficulty": "easy"
+  },
+  {
+   "id": "boutique/runtime/41",
+   "system": "boutique",
+   "category": "runtime",
+   "case": "41",
+   "difficulty": "easy"
+  },
+  {
+   "id": "boutique/runtime/42",
+   "system": "boutique",
+   "category": "runtime",
+   "case": "42",
+   "difficulty": "easy"
+  },
+  {
+   "id": "boutique/runtime/44",
+   "system": "boutique",
+   "category": "runtime",
+   "case": "44",
+   "difficulty": "easy"
+  },
+  {
+   "id": "trainticket/runtime/16",
+   "system": "trainticket",
+   "category": "runtime",
+   "case": "16",
+   "difficulty": "easy"
+  },
+  {
+   "id": "trainticket/runtime/17",
+   "system": "trainticket",
+   "category": "runtime",
+   "case": "17",
+   "difficulty": "easy"
+  },
+  {
+   "id": "trainticket/runtime/18",
+   "system": "trainticket",
+   "category": "runtime",
+   "case": "18",
+   "difficulty": "easy"
+  },
+  {
+   "id": "trainticket/runtime/19",
+   "system": "trainticket",
+   "category": "runtime",
+   "case": "19",
+   "difficulty": "easy"
+  },
+  {
+   "id": "trainticket/runtime/20",
+   "system": "trainticket",
+   "category": "runtime",
+   "case": "20",
+   "difficulty": "easy"
+  },
+  {
+   "id": "trainticket/runtime/22",
+   "system": "trainticket",
+   "category": "runtime",
+   "case": "22",
+   "difficulty": "easy"
+  },
+  {
+   "id": "trainticket/runtime/23",
+   "system": "trainticket",
+   "category": "runtime",
+   "case": "23",
+   "difficulty": "easy"
+  },
+  {
+   "id": "trainticket/runtime/25",
+   "system": "trainticket",
+   "category": "runtime",
+   "case": "25",
+   "difficulty": "easy"
+  },
+  {
+   "id": "trainticket/runtime/27",
+   "system": "trainticket",
+   "category": "runtime",
+   "case": "27",
+   "difficulty": "easy"
+  },
+  {
+   "id": "trainticket/runtime/28",
+   "system": "trainticket",
+   "category": "runtime",
+   "case": "28",
+   "difficulty": "easy"
+  },
+  {
+   "id": "trainticket/runtime/29",
+   "system": "trainticket",
+   "category": "runtime",
+   "case": "29",
+   "difficulty": "easy"
+  },
+  {
+   "id": "trainticket/runtime/31",
+   "system": "trainticket",
+   "category": "runtime",
+   "case": "31",
+   "difficulty": "easy"
+  },
+  {
+   "id": "trainticket/runtime/32",
+   "system": "trainticket",
+   "category": "runtime",
+   "case": "32",
+   "difficulty": "easy"
+  },
+  {
+   "id": "trainticket/runtime/34",
+   "system": "trainticket",
+   "category": "runtime",
+   "case": "34",
+   "difficulty": "easy"
+  },
+  {
+   "id": "trainticket/runtime/35",
+   "system": "trainticket",
+   "category": "runtime",
+   "case": "35",
+   "difficulty": "easy"
+  },
+  {
+   "id": "trainticket/runtime/36",
+   "system": "trainticket",
+   "category": "runtime",
+   "case": "36",
+   "difficulty": "easy"
+  },
+  {
+   "id": "trainticket/runtime/37",
+   "system": "trainticket",
+   "category": "runtime",
+   "case": "37",
+   "difficulty": "easy"
+  },
+  {
+   "id": "trainticket/runtime/39",
+   "system": "trainticket",
+   "category": "runtime",
+   "case": "39",
+   "difficulty": "easy"
+  },
+  {
+   "id": "trainticket/runtime/40",
+   "system": "trainticket",
+   "category": "runtime",
+   "case": "40",
+   "difficulty": "easy"
+  },
+  {
+   "id": "trainticket/runtime/41",
+   "system": "trainticket",
+   "category": "runtime",
+   "case": "41",
+   "difficulty": "easy"
+  },
+  {
+   "id": "trainticket/runtime/42",
+   "system": "trainticket",
+   "category": "runtime",
+   "case": "42",
+   "difficulty": "easy"
+  },
+  {
+   "id": "trainticket/runtime/43",
+   "system": "trainticket",
+   "category": "runtime",
+   "case": "43",
+   "difficulty": "easy"
+  },
+  {
+   "id": "trainticket/runtime/44",
+   "system": "trainticket",
+   "category": "runtime",
+   "case": "44",
+   "difficulty": "easy"
+  },
+  {
+   "id": "trainticket/runtime/45",
+   "system": "trainticket",
+   "category": "runtime",
+   "case": "45",
+   "difficulty": "easy"
+  },
+  {
+   "id": "trainticket/runtime/46",
+   "system": "trainticket",
+   "category": "runtime",
+   "case": "46",
+   "difficulty": "easy"
+  },
+  {
+   "id": "trainticket/runtime/47",
+   "system": "trainticket",
+   "category": "runtime",
+   "case": "47",
+   "difficulty": "easy"
+  },
+  {
+   "id": "trainticket/runtime/48",
+   "system": "trainticket",
+   "category": "runtime",
+   "case": "48",
+   "difficulty": "easy"
+  },
+  {
+   "id": "trainticket/runtime/49",
+   "system": "trainticket",
+   "category": "runtime",
+   "case": "49",
+   "difficulty": "easy"
+  },
+  {
+   "id": "trainticket/runtime/50",
+   "system": "trainticket",
+   "category": "runtime",
+   "case": "50",
+   "difficulty": "easy"
+  },
+  {
+   "id": "trainticket/runtime/53",
+   "system": "trainticket",
+   "category": "runtime",
+   "case": "53",
+   "difficulty": "easy"
+  },
+  {
+   "id": "trainticket/runtime/54",
+   "system": "trainticket",
+   "category": "runtime",
+   "case": "54",
+   "difficulty": "easy"
+  },
+  {
+   "id": "trainticket/runtime/55",
+   "system": "trainticket",
+   "category": "runtime",
+   "case": "55",
+   "difficulty": "easy"
+  },
+  {
+   "id": "trainticket/runtime/56",
+   "system": "trainticket",
+   "category": "runtime",
+   "case": "56",
+   "difficulty": "easy"
+  },
+  {
+   "id": "trainticket/runtime/57",
+   "system": "trainticket",
+   "category": "runtime",
+   "case": "57",
+   "difficulty": "easy"
+  },
+  {
+   "id": "trainticket/runtime/58",
+   "system": "trainticket",
+   "category": "runtime",
+   "case": "58",
+   "difficulty": "easy"
+  },
+  {
+   "id": "trainticket/runtime/59",
+   "system": "trainticket",
+   "category": "runtime",
+   "case": "59",
+   "difficulty": "easy"
+  },
+  {
+   "id": "trainticket/runtime/60",
+   "system": "trainticket",
+   "category": "runtime",
+   "case": "60",
+   "difficulty": "easy"
+  },
+  {
+   "id": "trainticket/runtime/61",
+   "system": "trainticket",
+   "category": "runtime",
+   "case": "61",
+   "difficulty": "easy"
+  },
+  {
+   "id": "trainticket/runtime/62",
+   "system": "trainticket",
+   "category": "runtime",
+   "case": "62",
+   "difficulty": "easy"
+  },
+  {
+   "id": "trainticket/runtime/63",
+   "system": "trainticket",
+   "category": "runtime",
+   "case": "63",
+   "difficulty": "easy"
+  },
+  {
+   "id": "trainticket/runtime/64",
+   "system": "trainticket",
+   "category": "runtime",
+   "case": "64",
+   "difficulty": "easy"
+  },
+  {
+   "id": "trainticket/runtime/65",
+   "system": "trainticket",
+   "category": "runtime",
+   "case": "65",
+   "difficulty": "easy"
+  },
+  {
+   "id": "trainticket/runtime/66",
+   "system": "trainticket",
+   "category": "runtime",
+   "case": "66",
+   "difficulty": "easy"
+  },
+  {
+   "id": "trainticket/runtime/68",
+   "system": "trainticket",
+   "category": "runtime",
+   "case": "68",
+   "difficulty": "easy"
+  },
+  {
+   "id": "trainticket/runtime/69",
+   "system": "trainticket",
+   "category": "runtime",
+   "case": "69",
+   "difficulty": "easy"
+  },
+  {
+   "id": "trainticket/runtime/70",
+   "system": "trainticket",
+   "category": "runtime",
+   "case": "70",
+   "difficulty": "easy"
+  },
+  {
+   "id": "trainticket/runtime/72",
+   "system": "trainticket",
+   "category": "runtime",
+   "case": "72",
+   "difficulty": "easy"
+  },
+  {
+   "id": "trainticket/runtime/74",
+   "system": "trainticket",
+   "category": "runtime",
+   "case": "74",
+   "difficulty": "easy"
+  },
+  {
+   "id": "trainticket/runtime/75",
+   "system": "trainticket",
+   "category": "runtime",
+   "case": "75",
+   "difficulty": "easy"
+  },
+  {
+   "id": "trainticket/runtime/76",
+   "system": "trainticket",
+   "category": "runtime",
+   "case": "76",
+   "difficulty": "easy"
+  },
+  {
+   "id": "trainticket/runtime/78",
+   "system": "trainticket",
+   "category": "runtime",
+   "case": "78",
+   "difficulty": "easy"
+  },
+  {
+   "id": "trainticket/runtime/79",
+   "system": "trainticket",
+   "category": "runtime",
+   "case": "79",
+   "difficulty": "easy"
+  },
+  {
+   "id": "trainticket/runtime/80",
+   "system": "trainticket",
+   "category": "runtime",
+   "case": "80",
+   "difficulty": "easy"
+  },
+  {
+   "id": "trainticket/runtime/81",
+   "system": "trainticket",
+   "category": "runtime",
+   "case": "81",
+   "difficulty": "easy"
+  },
+  {
+   "id": "trainticket/runtime/82",
+   "system": "trainticket",
+   "category": "runtime",
+   "case": "82",
+   "difficulty": "easy"
+  },
+  {
+   "id": "trainticket/runtime/83",
+   "system": "trainticket",
+   "category": "runtime",
+   "case": "83",
+   "difficulty": "easy"
+  },
+  {
+   "id": "trainticket/runtime/85",
+   "system": "trainticket",
+   "category": "runtime",
+   "case": "85",
+   "difficulty": "easy"
+  },
+  {
+   "id": "trainticket/runtime/88",
+   "system": "trainticket",
+   "category": "runtime",
+   "case": "88",
+   "difficulty": "easy"
+  },
+  {
+   "id": "trainticket/runtime/89",
+   "system": "trainticket",
+   "category": "runtime",
+   "case": "89",
+   "difficulty": "easy"
+  },
+  {
+   "id": "trainticket/runtime/90",
+   "system": "trainticket",
+   "category": "runtime",
+   "case": "90",
+   "difficulty": "easy"
+  },
+  {
+   "id": "trainticket/runtime/91",
+   "system": "trainticket",
+   "category": "runtime",
+   "case": "91",
+   "difficulty": "easy"
+  },
+  {
+   "id": "trainticket/runtime/92",
+   "system": "trainticket",
+   "category": "runtime",
+   "case": "92",
+   "difficulty": "easy"
+  },
+  {
+   "id": "trainticket/runtime/93",
+   "system": "trainticket",
+   "category": "runtime",
+   "case": "93",
+   "difficulty": "easy"
+  },
+  {
+   "id": "trainticket/runtime/94",
+   "system": "trainticket",
+   "category": "runtime",
+   "case": "94",
+   "difficulty": "easy"
+  },
+  {
+   "id": "trainticket/runtime/96",
+   "system": "trainticket",
+   "category": "runtime",
+   "case": "96",
+   "difficulty": "easy"
+  }
+ ],
+ "round": "runtime",
+ "split": "sealed"
+}

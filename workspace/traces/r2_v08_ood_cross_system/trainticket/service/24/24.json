@@ -1,0 +1,1045 @@
+{
+ "case_id": "trainticket/service/24",
+ "system_name": "trainticket",
+ "question": "Partial Service Unreachability.",
+ "case_path": "/Users/justinwan/work/workspace/cloudops_bench_rsi/repo/benchmark/trainticket/service/24",
+ "max_steps": 8,
+ "current_step": 5,
+ "finished": true,
+ "stop_reason": "submit",
+ "final_answer": "{\"key_evidence_summary\": \"JDBC connect refused; datastore reachability unknown\", \"top_3_predictions\": [{\"rank\": 1, \"fault_object\": \"app/ts-food-service\", \"root_cause\": \"mysql_invalid_port\"}, {\"rank\": 2, \"fault_object\": \"app/ts-food-service\", \"root_cause\": \"service_dns_resolution_failure\"}, {\"rank\": 3, \"fault_object\": \"app/ts-food-service\", \"root_cause\": \"readiness_probe_incorrect_port\"}]}",
+ "metadata": {
+  "namespace": "train-ticket",
+  "query": "Partial Service Unreachability.",
+  "fault_category": "service",
+  "model_name": "agentrun-v0.8"
+ },
+ "steps": [
+  {
+   "step_id": 0,
+   "action_type": "tool",
+   "action_name": "GetResources",
+   "action_input": {
+    "namespace": "train-ticket",
+    "resource_type": "pods",
+    "output_wide": true
+   },
+   "observation": "NAME                                            READY   STATUS             RESTARTS       AGE     IP             NODE        NOMINATED NODE   READINESS GATES\nnacos-0                                         1/1     Running            0              8d      172.20.2.76    worker-02   <none>           <none>\nnacos-1                                         1/1     Running            0              8d      172.20.1.247   worker-01   <none>           <none>\nnacos-2                                         1/1     Running            0              8d      172.20.3.7     worker-03   <none>           <none>\nnacosdb-mysql-0                                 3/3     Running            1 (8d ago)     8d      172.20.2.75    worker-02   <none>           <none>\nnacosdb-mysql-1                                 3/3     Running            2 (8d ago)     8d      172.20.1.246   worker-01   <none>           <none>\nnacosdb-mysql-2                                 3/3     Running            1 (8d ago)     8d      172.20.3.6     worker-03   <none>           <none>\nrabbitmq-57b4f9969c-4cndj                       1/1     Running            0              8d      172.20.2.77    worker-02   <none>           <none>\nts-assurance-service-88f65755-lsnwh             2/2     Running            0              5m6s    172.20.3.73    worker-03   <none>           <none>\nts-auth-service-656fb96d87-p9jwx                2/2     Running            0              5m14s   172.20.2.219   worker-02   <none>           <none>\nts-avatar-service-54fb8f5c57-mvmd6              2/2     Running            0              5m11s   172.20.2.225   worker-02   <none>           <none>\nts-basic-service-57fb684696-8gsl7               2/2     Running            0              5m14s   172.20.1.69    worker-01   <none>           <none>\nts-cancel-service-67fb7d5bb4-9wczr              2/2     Running            0              5m13s   172.20.2.221   worker-02   <none>           <none>\nts-config-service-65779cfcd7-f77g9              2/2     Running            0              5m7s    172.20.3.71    worker-03   <none>           <none>\nts-consign-price-service-b74c79d7-zvs4s         2/2     Running            0              67m     172.20.2.120   worker-02   <none>           <none>\nts-consign-service-846bdf46cc-5wgcz             2/2     Running            0              5m11s   172.20.3.64    worker-03   <none>           <none>\nts-contacts-service-7fc68f4bbc-mqrvc            2/2     Running            0              5m13s   172.20.2.222   worker-02   <none>           <none>\nts-delivery-service-659b5d4f75-vrdqj            2/2     Running            0              5m9s    172.20.2.228   worker-02   <none>           <none>\nts-execute-service-5f7c9df447-8v2mx             2/2     Running            0              5m11s   172.20.1.74    worker-01   <none>           <none>\nts-food-delivery-service-5b898fdbbf-cddbr       2/2     Running            0              5m7s    172.20.2.230   worker-02   <none>           <none>\nts-food-service-74f4df4f7-djvnb                 0/2     CrashLoopBackOff   4 (22s ago)    5m5s    172.20.1.82    worker-01   <none>           <none>\nts-gateway-service-ddc65b886-p95zp              2/2     Running            0              5m14s   172.20.1.68    worker-01   <none>           <none>\nts-inside-payment-service-5b98976c87-mw9rz      2/2     Running            0              5m10s   172.20.2.226   worker-02   <none>           <none>\nts-news-service-578fd9cd67-256x9                2/2     Running            0              5m5s    172.20.2.232   worker-02   <none>           <none>\nts-notification-service-6b579b64d7-9sw7s        2/2     Running            0              5m8s    172.20.3.69    worker-03   <none>           <none>\nts-order-other-service-788d947bdf-lvhbd         2/2     Running            0              5m12s   172.20.1.72    worker-01   <none>           <none>\nts-order-service-dd54d5df9-68qk4                2/2     Running            0              5m10s   172.20.1.76    worker-01   <none>           <none>\nts-payment-service-666d596f87-bvrpf             2/2     Running            0              5m6s    172.20.1.81    worker-01   <none>           <none>\nts-preserve-other-service-5f85fdfd7-xdlfk       2/2     Running            0              5m10s   172.20.1.75    worker-01   <none>           <none>\nts-preserve-service-6bccdc5454-lwppf            2/2     Running            0              5m7s    172.20.1.79    worker-01   <none>           <none>\nts-price-service-6c4b77845-nb5j6                2/2     Running            0              5m13s   172.20.1.71    worker-01   <none>           <none>\nts-rebook-service-75d676f77b-n9nx6              2/2     Running            0              5m11s   172.20.3.65    worker-03   <none>           <none>\nts-route-plan-service-695f545f8c-xq769          2/2     Running            0              5m12s   172.20.1.73    worker-01   <none>           <none>\nts-route-service-688dc779fc-qjztb               2/2     Running            0              5m13s   172.20.1.70    worker-01   <none>           <none>\nts-seat-service-5fc7c67c7f-gb7jg                2/2     Running            0              5m10s   172.20.3.67    worker-03   <none>           <none>\nts-security-service-5fb7f7fbff-fwblj            2/2     Running            0              5m8s    172.20.2.229   worker-02   <none>           <none>\nts-station-food-service-d99b9b859-54ctk         2/2     Running            0              5m13s   172.20.2.220   worker-02   <none>           <none>\nts-station-service-7cbf6b96c9-m27fc             2/2     Running            0              5m12s   172.20.3.63    worker-03   <none>           <none>\nts-ticket-office-service-6fd78bd9df-jdn9r       2/2     Running            0              5m12s   172.20.2.224   worker-02   <none>           <none>\nts-train-food-service-67cb5bdf99-9fztn          2/2     Running            0              5m9s    172.20.2.227   worker-02   <none>           <none>\nts-train-service-c4fb58df9-lwjhf                2/2     Running            0              5m8s    172.20.1.78    worker-01   <none>           <none>\nts-travel-plan-service-5985cdf6b6-9zcpv         2/2     Running            0              5m10s   172.20.3.66    worker-03   <none>           <none>\nts-travel-service-5b9b99c879-5bm9j              2/2     Running            0              5m6s    172.20.2.231   worker-02   <none>           <none>\nts-travel2-service-849bffcb7c-kwf49             2/2     Running            0              5m12s   172.20.2.223   worker-02   <none>           <none>\nts-ui-dashboard-554844f867-zmq4w                2/2     Running            0              5m9s    172.20.1.77    worker-01   <none>           <none>\nts-user-service-6886cbf9cf-klt4r                2/2     Running            0              5m7s    172.20.1.80    worker-01   <none>           <none>\nts-verification-code-service-7cbd896f77-dfhwd   2/2     Running            0              5m7s    172.20.3.72    worker-03   <none>           <none>\nts-voucher-service-5ffdd5456c-qwr4j             2/2     Running            1 (5m6s ago)   5m9s    172.20.3.68    worker-03   <none>           <none>\nts-wait-order-service-848dbb9dd7-8vzjr          2/2     Running            0              5m8s    172.20.3.70    worker-03   <none>           <none>\ntsdb-mysql-0                                    4/4     Running            1 (67m ago)    71m     172.20.1.214   worker-01   <none>           <none>\ntsdb-mysql-1                                    4/4     Running            1 (67m ago)    70m     172.20.2.116   worker-02   <none>           <none>\ntsdb-mysql-2                                    4/4     Running            1 (67m ago)    68m     172.20.3.235   worker-03   <none>           <none>\n",
+   "error": null,
+   "purpose": "pod readiness census",
+   "tool_latency": null
+  },
+  {
+   "step_id": 1,
+   "action_type": "tool",
+   "action_name": "DescribeResource",
+   "action_input": {
+    "namespace": "train-ticket",
+    "resource_type": "pods",
+    "name": "ts-food-service-74f4df4f7-djvnb"
+   },
+   "observation": "Name:             ts-food-service-74f4df4f7-djvnb\nNamespace:        train-ticket\nPriority:         0\nService Account:  default\nNode:             worker-01/192.168.0.222\nStart Time:       Tue, 17 Mar 2026 00:01:54 +0800\nLabels:           app=ts-food-service\n                  networking.istio.io/tunnel=http\n                  pod-template-hash=74f4df4f7\n                  security.istio.io/tlsMode=istio\n                  service.istio.io/canonical-name=ts-food-service\n                  service.istio.io/canonical-revision=latest\nAnnotations:      istio.io/rev: default\n                  kubectl.kubernetes.io/default-container: ts-food-service\n                  kubectl.kubernetes.io/default-logs-container: ts-food-service\n                  prometheus.io/path: /stats/prometheus\n                  prometheus.io/port: 15020\n                  prometheus.io/scrape: true\n                  sidecar.istio.io/interceptionMode: REDIRECT\n                  sidecar.istio.io/status:\n                    {\"initContainers\":[\"istio-validation\"],\"containers\":[\"istio-proxy\"],\"volumes\":[\"workload-socket\",\"credential-socket\",\"workload-certs\",\"ist...\n                  traffic.sidecar.istio.io/excludeInboundPorts: 15020\n                  traffic.sidecar.istio.io/includeInboundPorts: *\n                  traffic.sidecar.istio.io/includeOutboundIPRanges: *\nStatus:           Running\nIP:               172.20.1.82\nIPs:\n  IP:           172.20.1.82\nControlled By:  ReplicaSet/ts-food-service-74f4df4f7\nInit Containers:\n  istio-validation:\n    Container ID:  containerd://a4c6e15dd5a70db8b416e28abf0818a542d830144055accb8d380c0448c47e14\n    Image:         docker.io/istio/proxyv2:1.27.3-distroless\n    Image ID:      docker.io/istio/proxyv2@sha256:0ff2299890e3e5b9fe0e38391b048c0788900f69af27306a7aef3036a59220e1\n    Port:          <none>\n    Host Port:     <none>\n    Args:\n      istio-iptables\n      -p\n      15001\n      -z\n      15006\n      -u\n      1337\n      -m\n      REDIRECT\n      -i\n      *\n      -x\n      \n      -b\n      *\n      -d\n      15090,15021,15020\n      --log_output_level=default:info\n      --run-validation\n      --skip-rule-apply\n    State:          Terminated\n      Reason:       Completed\n      Exit Code:    0\n      Started:      Tue, 17 Mar 2026 00:01:55 +0800\n      Finished:     Tue, 17 Mar 2026 00:01:56 +0800\n    Ready:          True\n    Restart Count:  0\n    Limits:\n      cpu:     2\n      memory:  1Gi\n    Requests:\n      cpu:     100m\n      memory:  128Mi\n    Environment:\n      ISTIO_META_ENABLE_HBONE:  true\n    Mounts:\n      /var/run/secrets/kubernetes.io/serviceaccount from kube-api-access-wxb59 (ro)\nContainers:\n  ts-food-service:\n    Container ID:   containerd://b2703f7e74dc0610f20e5c088f1acbf437ec8e418eca596098101f2da1cdd52e\n    Image:          ghcr.io/sregym/ts-food-service:latest\n    Image ID:       ghcr.io/sregym/ts-food-service@sha256:c9f9f8f2edb15d7adad18f8488b9a5279e996c234da72645cd36dcd36d612224\n    Port:           18856/TCP\n    Host Port:      0/TCP\n    State:          Waiting\n      Reason:       CrashLoopBackOff\n    Last State:     Terminated\n      Reason:       Error\n      Exit Code:    1\n      Started:      Tue, 17 Mar 2026 00:05:58 +0800\n      Finished:     Tue, 17 Mar 2026 00:06:37 +0800\n    Ready:          False\n    Restart Count:  4\n    Limits:\n      cpu:     500m\n      memory:  512Mi\n    Requests:\n      cpu:      200m\n      memory:   350Mi\n    Readiness:  http-get http://:15020/app-health/ts-food-service/readyz delay=60s timeout=5s period=10s #success=1 #failure=3\n    Environment Variables from:\n      nacos          ConfigMap  Optional: false\n      rabbitmq       ConfigMap  Optional: false\n      ts-food-mysql  Secret     Optional: false\n    Environment:\n      SPRING_MAIN_ALLOW_CIRCULAR_REFERENCES:  true\n      NODE_IP:                                 (v1:status.hostIP)\n    Mounts:\n      /var/run/secrets/kubernetes.io/serviceaccount from kube-api-access-wxb59 (ro)\n  istio-proxy:\n    Container ID:  containerd://e030543231a4c00b618a580f488e48c9c0e98f029df7a426553c3969874c476c\n    Image:         docker.io/istio/proxyv2:1.27.3-distroless\n    Image ID:      docker.io/istio/proxyv2@sha256:0ff2299890e3e5b9fe0e38391b048c0788900f69af27306a7aef3036a59220e1\n    Port:          15090/TCP\n    Host Port:     0/TCP\n    Args:\n      proxy\n      sidecar\n      --domain\n      $(POD_NAMESPACE).svc.cluster.local\n      --proxyLogLevel=warning\n      --proxyComponentLogLevel=misc:error\n      --log_output_level=default:info\n    State:          Running\n      Started:      Tue, 17 Mar 2026 00:01:57 +0800\n    Ready:          False\n    Restart Count:  0\n    Limits:\n      cpu:     2\n      memory:  1Gi\n    Requests:\n      cpu:      100m\n      memory:   128Mi\n    Readiness:  http-get http://:15021/healthz/ready delay=0s timeout=3s period=15s #success=1 #failure=4\n    Startup:    http-get http://:15021/healthz/ready delay=0s timeout=3s period=1s #success=1 #failure=600\n    Environment:\n      PILOT_CERT_PROVIDER:           istiod\n      CA_ADDR:                       istiod.istio-system.svc:15012\n      POD_NAME:                      ts-food-service-74f4df4f7-djvnb (v1:metadata.name)\n      POD_NAMESPACE:                 train-ticket (v1:metadata.namespace)\n      INSTANCE_IP:                    (v1:status.podIP)\n      SERVICE_ACCOUNT:                (v1:spec.serviceAccountName)\n      HOST_IP:                        (v1:status.hostIP)\n      ISTIO_CPU_LIMIT:               2 (limits.cpu)\n      PROXY_CONFIG:                  {\"proxyMetadata\":{\"ISTIO_META_ENABLE_HBONE\":\"true\"},\"image\":{\"imageType\":\"distroless\"}}\n                                     \n      ISTIO_META_POD_PORTS:          [\n                                         {\"containerPort\":18856,\"protocol\":\"TCP\"}\n                                     ]\n      ISTIO_META_APP_CONTAINERS:     ts-food-service\n      GOMEMLIMIT:                    1073741824 (limits.memory)\n      GOMAXPROCS:                    2 (limits.cpu)\n      ISTIO_META_CLUSTER_ID:         Kubernetes\n      ISTIO_META_NODE_NAME:           (v1:spec.nodeName)\n      ISTIO_META_INTERCEPTION_MODE:  REDIRECT\n      ISTIO_META_WORKLOAD_NAME:      ts-food-service\n      ISTIO_META_OWNER:              kubernetes://apis/apps/v1/namespaces/train-ticket/deployments/ts-food-service\n      ISTIO_META_MESH_ID:            cluster.local\n      TRUST_DOMAIN:                  cluster.local\n      ISTIO_META_ENABLE_HBONE:       true\n      ISTIO_KUBE_APP_PROBERS:        {\"/app-health/ts-food-service/readyz\":{\"tcpSocket\":{\"port\":18856},\"timeoutSeconds\":5}}\n    Mounts:\n      /etc/istio/pod from istio-podinfo (rw)\n      /etc/istio/proxy from istio-envoy (rw)\n      /var/lib/istio/data from istio-data (rw)\n      /var/run/secrets/credential-uds from credential-socket (rw)\n      /var/run/secrets/istio from istiod-ca-cert (rw)\n      /var/run/secrets/istio/crl from istio-ca-crl (rw)\n      /var/run/secrets/kubernetes.io/serviceaccount from kube-api-access-wxb59 (ro)\n      /var/run/secrets/tokens from istio-token (rw)\n      /var/run/secrets/workload-spiffe-credentials from workload-certs (rw)\n      /var/run/secrets/workload-spiffe-uds from workload-socket (rw)\nConditions:\n  Type                        Status\n  PodReadyToStartContainers   True \n  Initialized                 True \n  Ready                       False \n  ContainersReady             False \n  PodScheduled                True \nVolumes:\n  workload-socket:\n    Type:       EmptyDir (a temporary directory that shares a pod's lifetime)\n    Medium:     \n    SizeLimit:  <unset>\n  credential-socket:\n    Type:       EmptyDir (a temporary directory that shares a pod's lifetime)\n    Medium:     \n    SizeLimit:  <unset>\n  workload-certs:\n    Type:       EmptyDir (a temporary directory that shares a pod's lifetime)\n    Medium:     \n    SizeLimit:  <unset>\n  istio-envoy:\n    Type:       EmptyDir (a temporary directory that shares a pod's lifetime)\n    Medium:     Memory\n    SizeLimit:  <unset>\n  istio-data:\n    Type:       EmptyDir (a temporary directory that shares a pod's lifetime)\n    Medium:     \n    SizeLimit:  <unset>\n  istio-podinfo:\n    Type:  DownwardAPI (a volume populated by information about the pod)\n    Items:\n      metadata.labels -> labels\n      metadata.annotations -> annotations\n  istio-token:\n    Type:                    Projected (a volume that contains injected data from multiple sources)\n    TokenExpirationSeconds:  43200\n  istiod-ca-cert:\n    Type:      ConfigMap (a volume populated by a ConfigMap)\n    Name:      istio-ca-root-cert\n    Optional:  false\n  istio-ca-crl:\n    Type:      ConfigMap (a volume populated by a ConfigMap)\n    Name:      istio-ca-crl\n    Optional:  true\n  kube-api-access-wxb59:\n    Type:                    Projected (a volume that contains injected data from multiple sources)\n    TokenExpirationSeconds:  3607\n    ConfigMapName:           kube-root-ca.crt\n    ConfigMapOptional:       <nil>\n    DownwardAPI:             true\nQoS Class:                   Burstable\nNode-Selectors:              <none>\nTolerations:                 node.kubernetes.io/not-ready:NoExecute op=Exists for 300s\n                             node.kubernetes.io/unreachable:NoExecute op=Exists for 300s\nEvents:\n  Type     Reason     Age                    From               Message\n  ----     ------     ----                   ----               -------\n  Normal   Scheduled  5m11s                  default-scheduler  Successfully assigned train-ticket/ts-food-service-74f4df4f7-djvnb to worker-01\n  Normal   Pulled     5m10s                  kubelet            Container image \"docker.io/istio/proxyv2:1.27.3-distroless\" already present on machine\n  Normal   Created    5m10s                  kubelet            Created container istio-validation\n  Normal   Started    5m9s                   kubelet            Started container istio-validation\n  Normal   Pulled     5m8s                   kubelet            Container image \"ghcr.io/sregym/ts-food-service:latest\" already present on machine\n  Normal   Created    5m8s                   kubelet            Created container ts-food-service\n  Normal   Started    5m8s                   kubelet            Started container ts-food-service\n  Normal   Pulled     5m8s                   kubelet            Container image \"docker.io/istio/proxyv2:1.27.3-distroless\" already present on machine\n  Normal   Created    5m8s                   kubelet            Created container istio-proxy\n  Normal   Started    5m8s                   kubelet            Started container istio-proxy\n  Warning  Unhealthy  4m52s (x16 over 5m7s)  kubelet            Startup probe failed: Get \"http://172.20.1.82:15021/healthz/ready\": dial tcp 172.20.1.82:15021: connect: connection refused\n",
+   "error": null,
+   "purpose": "probe config, container state, restart reasons, scheduler events",
+   "tool_latency": null
+  },
+  {
+   "step_id": 2,
+   "action_type": "tool",
+   "action_name": "GetAppYAML",
+   "action_input": {
+    "app_name": "ts-food-service"
+   },
+   "observation": "apiVersion: apps/v1\nkind: Deployment\nmetadata:\n  namespace: train-ticket\n  name: ts-food-service\nspec:\n  selector:\n    matchLabels:\n      app: ts-food-service\n  replicas: 1\n  template:\n    metadata:\n      labels:\n        app: ts-food-service\n    spec:\n      dnsPolicy: \"None\"\n      dnsConfig:\n        nameservers:\n          - 10.255.18.254\n      containers:\n      - name: ts-food-service\n        image: ghcr.io/sregym/ts-food-service:latest\n        imagePullPolicy: IfNotPresent\n        env:\n        - name: SPRING_MAIN_ALLOW_CIRCULAR_REFERENCES\n          value: 'true'\n        - name: NODE_IP\n          valueFrom:\n            fieldRef:\n              fieldPath: status.hostIP\n        envFrom:\n        - configMapRef:\n            name: nacos\n        - configMapRef:\n            name: rabbitmq\n        - secretRef:\n            name: ts-food-mysql\n        ports:\n        - containerPort: 18856\n        resources:\n          requests:\n            cpu: 200m\n            memory: 350Mi\n          limits:\n            cpu: 500m\n            memory: 512Mi\n        readinessProbe:\n          tcpSocket:\n            port: 18856\n          initialDelaySeconds: 60\n          periodSeconds: 10\n          timeoutSeconds: 5\n---\napiVersion: v1\nkind: Service\nmetadata:\n  namespace: train-ticket\n  name: ts-food-service\nspec:\n  ports:\n  - name: http\n    port: 18856\n  selector:\n    app: ts-food-service\n---\napiVersion: v1\nkind: Secret\nmetadata:\n  namespace: train-ticket\n  name: ts-food-mysql\ntype: Opaque\nstringData:\n  FOOD_MYSQL_HOST: tsdb-mysql-leader\n  FOOD_MYSQL_PORT: '3306'\n  FOOD_MYSQL_DATABASE: ts\n  FOOD_MYSQL_USER: ts\n  FOOD_MYSQL_PASSWORD: Ts_123456\n",
+   "error": null,
+   "purpose": "declared probes / limits / image / env",
+   "tool_latency": null
+  },
+  {
+   "step_id": 3,
+   "action_type": "tool",
+   "action_name": "GetErrorLogs",
+   "action_input": {
+    "namespace": "train-ticket",
+    "service_name": "ts-food-service"
+   },
+   "observation": "{\n  \"app\": [\n    \"2026-03-17T00:08:39.052969548+08:00 2026-03-17 00:08:39.052 ERROR 1 --- [           main] com.zaxxer.hikari.pool.HikariPool        : HikariPool-1 - Exception during pool initialization.\\n2026-03-17T00:08:39.052991409+08:00 \",\n    \"2026-03-17T00:08:39.052994575+08:00 com.mysql.cj.jdbc.exceptions.CommunicationsException: Communications link failure\\n2026-03-17T00:08:39.053165120+08:00 Caused by: com.mysql.cj.exceptions.CJCommunicationsException: Communications link failure\\n2026-03-17T00:08:39.053199300+08:00 Caused by: java.net.UnknownHostException: tsdb-mysql-leader: Temporary failure in name resolution\\n2026-03-17T00:08:39.053001815+08:00 \\tat com.mysql.cj.jdbc.exceptions.SQLError.createCommunicationsException(SQLError.java:175) ~[mysql-connector-j-8.0.33.jar!/:8.0.33]\\n2026-03-17T00:08:39.053003825+08:00 \\tat com.mysql.cj.jdbc.exceptions.SQLExceptionsMapping.translateException(SQLExceptionsMapping.java:64) ~[mysql-connector-j-8.0.33.jar!/:8.0.33]\\n2026-03-17T00:08:39.053005861+08:00 \\tat com.mysql.cj.jdbc.ConnectionImpl.createNewIO(ConnectionImpl.java:825) ~[mysql-connector-j-8.0.33.jar!/:8.0.33]\\n2026-03-17T00:08:39.053008492+08:00 \\tat com.mysql.cj.jdbc.ConnectionImpl.<init>(ConnectionImpl.java:446) ~[mysql-connector-j-8.0.33.jar!/:8.0.33]\",\n    \"2026-03-17T00:08:39.054708432+08:00 com.mysql.cj.jdbc.exceptions.CommunicationsException: Communications link failure\\n2026-03-17T00:08:39.054866754+08:00 Caused by: com.mysql.cj.exceptions.CJCommunicationsException: Communications link failure\\n2026-03-17T00:08:39.054900170+08:00 Caused by: java.net.UnknownHostException: tsdb-mysql-leader: Temporary failure in name resolution\\n2026-03-17T00:08:39.054714956+08:00 \\tat com.mysql.cj.jdbc.exceptions.SQLError.createCommunicationsException(SQLError.java:175) ~[mysql-connector-j-8.0.33.jar!/:8.0.33]\\n2026-03-17T00:08:39.054725689+08:00 \\tat com.mysql.cj.jdbc.exceptions.SQLExceptionsMapping.translateException(SQLExceptionsMapping.java:64) ~[mysql-connector-j-8.0.33.jar!/:8.0.33]\\n2026-03-17T00:08:39.054727632+08:00 \\tat com.mysql.cj.jdbc.ConnectionImpl.createNewIO(ConnectionImpl.java:825) ~[mysql-connector-j-8.0.33.jar!/:8.0.33]\\n2026-03-17T00:08:39.054729676+08:00 \\tat com.mysql.cj.jdbc.ConnectionImpl.<init>(ConnectionImpl.java:446) ~[mysql-connector-j-8.0.33.jar!/:8.0.33]\",\n    \"2026-03-17T00:08:42.256784342+08:00 2026-03-17 00:08:42.256 ERROR 1 --- [           main] com.zaxxer.hikari.pool.HikariPool        : HikariPool-1 - Exception during pool initialization.\\n2026-03-17T00:08:42.256800764+08:00 \",\n    \"2026-03-17T00:08:42.256803781+08:00 com.mysql.cj.jdbc.exceptions.CommunicationsException: Communications link failure\\n2026-03-17T00:08:42.256963905+08:00 Caused by: com.mysql.cj.exceptions.CJCommunicationsException: Communications link failure\\n2026-03-17T00:08:42.257001146+08:00 Caused by: java.net.UnknownHostException: tsdb-mysql-leader\\n2026-03-17T00:08:42.256810889+08:00 \\tat com.mysql.cj.jdbc.exceptions.SQLError.createCommunicationsException(SQLError.java:175) ~[mysql-connector-j-8.0.33.jar!/:8.0.33]\\n2026-03-17T00:08:42.256813135+08:00 \\tat com.mysql.cj.jdbc.exceptions.SQLExceptionsMapping.translateException(SQLExceptionsMapping.java:64) ~[mysql-connector-j-8.0.33.jar!/:8.0.33]\\n2026-03-17T00:08:42.256815303+08:00 \\tat com.mysql.cj.jdbc.ConnectionImpl.createNewIO(ConnectionImpl.java:825) ~[mysql-connector-j-8.0.33.jar!/:8.0.33]\\n2026-03-17T00:08:42.256828069+08:00 \\tat com.mysql.cj.jdbc.ConnectionImpl.<init>(ConnectionImpl.java:446) ~[mysql-connector-j-8.0.33.jar!/:8.0.33]\",\n    \"2026-03-17T00:08:42.257619482+08:00 2026-03-17 00:08:42.257  WARN 1 --- [           main] o.h.engine.jdbc.spi.SqlExceptionHelper   : SQL Error: 0, SQLState: 08S01\",\n    \"2026-03-17T00:08:42.257670050+08:00 2026-03-17 00:08:42.257 ERROR 1 --- [           main] o.h.engine.jdbc.spi.SqlExceptionHelper   : Communications link failure\\n2026-03-17T00:08:42.257673721+08:00 \\n2026-03-17T00:08:42.257676166+08:00 The last packet sent successfully to the server was 0 milliseconds ago. The driver has not received any packets from the server.\",\n    \"2026-03-17T00:08:42.262512498+08:00 2026-03-17 00:08:42.262 ERROR 1 --- [           main] j.LocalContainerEntityManagerFactoryBean : Failed to initialize JPA EntityManagerFactory: [PersistenceUnit: default] Unable to build Hibernate SessionFactory; nested exception is org.hibernate.exception.JDBCConnectionException: Unable to open JDBC Connection for DDL execution\",\n    \"2026-03-17T00:08:42.262952428+08:00 2026-03-17 00:08:42.262  WARN 1 --- [           main] ConfigServletWebServerApplicationContext : Exception encountered during context initialization - cancelling refresh attempt: org.springframework.beans.factory.BeanCreationException: Error creating bean with name 'entityManagerFactory' defined in class path resource [org/springframework/boot/autoconfigure/orm/jpa/HibernateJpaConfiguration.class]: Invocation of init method failed; nested exception is javax.persistence.PersistenceException: [PersistenceUnit: default] Unable to build Hibernate SessionFactory; nested exception is org.hibernate.exception.JDBCConnectionException: Unable to open JDBC Connection for DDL execution\",\n    \"2026-03-17T00:08:42.323151696+08:00 Error starting ApplicationContext. To display the conditions report re-run your application with 'debug' enabled.\",\n    \"2026-03-17T00:08:42.421011736+08:00 2026-03-17 00:08:42.420 ERROR 1 --- [           main] o.s.boot.SpringApplication               : Application run failed\\n2026-03-17T00:08:42.421028704+08:00 \",\n    \"2026-03-17T00:08:42.421031671+08:00 org.springframework.beans.factory.BeanCreationException: Error creating bean with name 'entityManagerFactory' defined in class path resource [org/springframework/boot/autoconfigure/orm/jpa/HibernateJpaConfiguration.class]: Invocation of init method failed; nested exception is javax.persistence.PersistenceException: [PersistenceUnit: default] Unable to build Hibernate SessionFactory; nested exception is org.hibernate.exception.JDBCConnectionException: Unable to open JDBC Connection for DDL execution\\n2026-03-17T00:08:42.421113057+08:00 Caused by: javax.persistence.PersistenceException: [PersistenceUnit: default] Unable to build Hibernate SessionFactory; nested exception is org.hibernate.exception.JDBCConnectionException: Unable to open JDBC Connection for DDL execution\\n2026-03-17T00:08:42.421134907+08:00 Caused by: org.hibernate.exception.JDBCConnectionException: Unable to open JDBC Connection for DDL execution\\n2026-03-17T00:08:42.421193357+08:00 Caused by: com.mysql.cj.jdbc.exceptions.CommunicationsException: Communications link failure\\n2026-03-17T00:08:42.421234975+08:00 Caused by: com.mysql.cj.exceptions.CJCommunicationsException: Communicati...\"\n  ],\n  \"istio-proxy\": {\n    \"total_log_count\": 237,\n    \"total_errors\": 72,\n    \"total_error_ratio\": 0.3038,\n    \"patterns\": [\n      {\n        \"count\": 20,\n        \"ratio\": 0.0844,\n        \"sample\": \"2026-03-16T16:02:39.916459Z\\twarning\\tenvoy config external/envoy/source/extensions/config_subscription/grpc/grpc_stream.h:226\\tDeltaAggregatedResources gRPC config stream to xds-grpc closed since 32s ago: 14, connection error: desc = \\\"transport: Error while dialing: dial tcp: lookup istiod.istio-system.svc on 10.255.18.254:53: read udp 172.20.1.82:44568->10.255.18.254:53: i/o timeout\\\"{via_upstream}\\tthread=14\"\n      },\n      {\n        \"count\": 17,\n        \"ratio\": 0.0717,\n        \"sample\": \"2026-03-16T16:02:09.210317Z\\terror\\tcitadelclient\\tfailed to sign CSR: create certificate: rpc error: code = Unavailable desc = connection error: desc = \\\"transport: Error while dialing: dial tcp: lookup istiod.istio-system.svc on 10.255.18.254:53: read udp 172.20.1.82:55518->10.255.18.254:53: i/o timeout\\\"\"\n      },\n      {\n        \"count\": 17,\n        \"ratio\": 0.0717,\n        \"sample\": \"2026-03-16T16:02:09.210880Z\\terror\\tcache\\tresource:default failed to sign: create certificate: rpc error: code = Unavailable desc = connection error: desc = \\\"transport: Error while dialing: dial tcp: lookup istiod.istio-system.svc on 10.255.18.254:53: read udp 172.20.1.82:55518->10.255.18.254:53: i/o timeout\\\"\"\n      },\n      {\n        \"count\": 17,\n        \"ratio\": 0.0717,\n        \"sample\": \"2026-03-16T16:02:09.210917Z\\twarn\\tsds\\tfailed to warm certificate: failed to generate workload certificate: create certificate: rpc error: code = Unavailable desc = connection error: desc = \\\"transport: Error while dialing: dial tcp: lookup istiod.istio-system.svc on 10.255.18.254:53: read udp 172.20.1.82:55518->10.255.18.254:53: i/o timeout\\\"\"\n      },\n      {\n        \"count\": 1,\n        \"ratio\": 0.0042,\n        \"sample\": \"2026-03-16T16:02:13.091702Z\\twarning\\tenvoy config external/envoy/source/extensions/config_subscription/grpc/grpc_subscription_impl.cc:130\\tgRPC config: initial fetch timed out for type.googleapis.com/istio.workload.Workload\\tthread=14\"\n      }\n    ]\n  }\n}",
+   "error": null,
+   "purpose": "application error logs",
+   "tool_latency": null
+  },
+  {
+   "step_id": 4,
+   "action_type": "tool",
+   "action_name": "CheckNodeServiceStatus",
+   "action_input": {
+    "node_name": "worker-01",
+    "service_name": "containerd"
+   },
+   "observation": "Service: containerd\nNode: worker-01\nStatus: ● containerd.service - containerd container runtime\n     Loaded: loaded (/etc/systemd/system/containerd.service; enabled; vendor preset: enabled)\n     Active: active (running) since Sat 2026-02-28 10:42:43 CST; 2 weeks 2 days ago\n       Docs: https://containerd.io\n   Main PID: 924 (containerd)\n      Tasks: 496 (limit: 18592)\n     Memory: 2.4G\n        CPU: 20h 20min 32.622s\n     CGroup: /system.slice/containerd.service\n             ├─    924 /opt/kube/bin/containerd-bin/containerd\n             ├─   2166 /opt/kube/bin/containerd-bin/containerd-shim-runc-v2 -namespace k8s.io -id 060e980d92a937fb18383bde78ed7793bb8a0c64194d77749d2fc558eeeb7f1b -address /run/containerd/containerd.sock\n             ├─   2167 /opt/kube/bin/containerd-bin/containerd-shim-runc-v2 -namespace k8s.io -id 675cec3eae5087e390af3840929ca811c64bbb26a70c777a023f9df43e100c17 -address /run/containerd/containerd.sock\n             ├─   2168 /opt/kube/bin/containerd-bin/containerd-shim-runc-v2 -namespace k8s.io -id eb32e6434c90b0ba047139c02c8161ebabdc7a3f1aee10c29165fb01eecdaa43 -address /run/containerd/containerd.sock\n             ├─   2169 /opt/kube/bin/containerd-bin/containerd-shim-runc-v2 -namespace k8s.io -id 46fe09b4d0c5c23eb65fae03dd6c8bbae5986aea4afe2dad95f7372b458d98d7 -address /run/containerd/containerd.sock\n             ├─   3191 /opt/kube/bin/containerd-bin/containerd-shim-runc-v2 -namespace k8s.io -id 3d626e2fb8679ef8e624b08b3316158975256d902da8a15e44ac42802476f289 -address /run/containerd/containerd.sock\n             ├─   3377 /opt/kube/bin/containerd-bin/containerd-shim-runc-v2 -namespace k8s.io -id 1d55a1e5c2d1c673ec9ce4ace0ed9465423a833b68895b1afeac0b87edad075d -address /run/containerd/containerd.sock\n             ├─   3597 /opt/kube/bin/containerd-bin/containerd-shim-runc-v2 -namespace k8s.io -id 8863bea5484e7ba7d6722fc223f5657d31ddf1c9ae29dac99e98c1fdbf62f40c -address /run/containerd/containerd.sock\n             ├─   3784 /opt/kube/bin/containerd-bin/containerd-shim-runc-v2 -namespace k8s.io -id 9e211d3112fa0687baca202e8717a6ed661095880c49231b35c30c3ec9a903ab -address /run/containerd/containerd.sock\n             ├─ 291690 /opt/kube/bin/containerd-bin/containerd-shim-runc-v2 -namespace k8s.io -id 9d8bfc1dcc2811a885b963166ca790af3f51cb0003ac2d01dd488888f7b5bbec -address /run/containerd/containerd.sock\n             ├─ 291847 /opt/kube/bin/containerd-bin/containerd-shim-runc-v2 -namespace k8s.io -id c3e7df7451c3a5224d9a3e43fab94ea23c2b36699748b7053bc5670776bddb21 -address /run/containerd/containerd.sock\n             ├─ 291853 /opt/kube/bin/containerd-bin/containerd-shim-runc-v2 -namespace k8s.io -id b55842640fdae61b17dbe998cfa6c609432d68b5527ac15d069e8cd4f5a3bd03 -address /run/containerd/containerd.sock\n             ├─ 293169 /opt/kube/bin/containerd-bin/containerd-shim-runc-v2 -namespace k8s.io -id 60ca5087e66c5e27948fc6a73abe1afbe54f171e262e5a69f6e089e320099141 -address /run/containerd/containerd.sock\n             ├─ 375449 /opt/kube/bin/containerd-bin/containerd-shim-runc-v2 -namespace k8s.io -id 225140cec49a8d1447985f28495813f86b6e0cd7b298de02a8e3ea46400ed3cf -address /run/containerd/containerd.sock\n             ├─ 377028 /opt/kube/bin/containerd-bin/containerd-shim-runc-v2 -namespace k8s.io -id 3984852e099eacc20e564ecc78ab630ff11c2a4c5ce176584c282f51b5fccdfc -address /run/containerd/containerd.sock\n             ├─ 377118 /opt/kube/bin/containerd-bin/containerd-shim-runc-v2 -namespace k8s.io -id 1be8cef7ba4ff0c2c9106e47ca8363805772e01782c7bf4313ef18f3a133b14b -address /run/containerd/containerd.sock\n             ├─ 392124 /opt/kube/bin/containerd-bin/containerd-shim-runc-v2 -namespace k8s.io -id fbcd574c7b4466c9e7323a6243eacf02af8969247d46ae8ba4680599eb181a1c -address /run/containerd/containerd.sock\n             ├─1484282 /opt/kube/bin/containerd-bin/containerd-shim-runc-v2 -namespace k8s.io -id 0be4c23a71ac611a2fe4073ce6fdfdaf6ae68e7c73b2ab90acfe3a941e5d5482 -address /run/containerd/containerd.sock\n             ├─1490696 /opt/kube/bin/containerd-bin/containerd-shim-runc-v2 -namespace k8s.io -id bade3b194cdd0954512b940aebc1311fb9ac4620f8215a855ef4d93ea8e25e6d -address /run/containerd/containerd.sock\n             ├─3671874 /opt/kube/bin/containerd-bin/containerd-shim-runc-v2 -namespace k8s.io -id 727b16bb86a6ed9351667def3a93a6c8da63131ff949aaafbf97819d97250b5c -address /run/containerd/containerd.sock\n             ├─3936981 /opt/kube/bin/containerd-bin/containerd-shim-runc-v2 -namespace k8s.io -id af50be0abbfad0b51854fbc61dd614a13069482e69309d4a6e387eba42c3b622 -address /run/containerd/containerd.sock\n             ├─3937271 /opt/kube/bin/containerd-bin/containerd-shim-runc-v2 -namespace k8s.io -id 670a59ed6adcd486f7bd7a089f8af2398f0912613b40b63e4002c1562e2937f1 -address /run/containerd/containerd.sock\n             ├─3937606 /opt/kube/bin/containerd-bin/containerd-shim-runc-v2 -namespace k8s.io -id 689208c5d1410b92b91d9a87f4da98330f06533797ddf6d695767e129042903c -address /run/containerd/containerd.sock\n             ├─3938098 /opt/kube/bin/containerd-bin/containerd-shim-runc-v2 -namespace k8s.io -id f092cfc9459b70b50900331771640ab53daafb19d64d0af926104597e392b457 -address /run/containerd/containerd.sock\n             ├─3938442 /opt/kube/bin/containerd-bin/containerd-shim-runc-v2 -namespace k8s.io -id 9b6428a82fe2e5c60d2870a0ab837644ea120e4bcd66771b72b72fec49779cae -address /run/containerd/containerd.sock\n             ├─3939122 /opt/kube/bin/containerd-bin/containerd-shim-runc-v2 -namespace k8s.io -id 69860237aade60c01184682d48ce9febcaf5302bd8d28dbe4ff6894918d7c6c7 -address /run/containerd/containerd.sock\n             ├─3939538 /opt/kube/bin/containerd-bin/containerd-shim-runc-v2 -namespace k8s.io -id 1b0fea7b88afb5ff724dcff37f0a1316efd2edc3155017d95bc54ea5e17538a2 -address /run/containerd/containerd.sock\n             ├─3939985 /opt/kube/bin/containerd-bin/containerd-shim-runc-v2 -namespace k8s.io -id bae18f85441c1f9ba5ab70d33d0c4c074dfefbdf9a907e2a42952e7200d9e8f2 -address /run/containerd/containerd.sock\n             ├─3940510 /opt/kube/bin/containerd-bin/containerd-shim-runc-v2 -namespace k8s.io -id 067d0b29e438d9b9e20ce2e11d0e3b85ee7c538721beb99091827deab2a00a4e -address /run/containerd/containerd.sock\n             ├─3941076 /opt/kube/bin/containerd-bin/containerd-shim-runc-v2 -namespace k8s.io -id 77df745447f221f2506c7759ebed679909199bf4f137b3a65c083fa6f507cfbd -address /run/containerd/containerd.sock\n             ├─3941355 /opt/kube/bin/containerd-bin/containerd-shim-runc-v2 -namespace k8s.io -id 0c6cbe9d51abc1980bf9d8a92c48f1db8d3d33a4e0706580252907e4f523f866 -address /run/containerd/containerd.sock\n             ├─3941929 /opt/kube/bin/containerd-bin/containerd-shim-runc-v2 -namespace k8s.io -id c27049a55d7505a141ebab333cf7c277691584cc543b7142b12311afb3129ff9 -address /run/containerd/containerd.sock\n             ├─3942368 /opt/kube/bin/containerd-bin/containerd-shim-runc-v2 -namespace k8s.io -id 5fa25210dc5800a4bba420f7de31c822ebdad0acb6073480fb27f48ef65a5ddd -address /run/containerd/containerd.sock\n             ├─3942779 /opt/kube/bin/containerd-bin/containerd-shim-runc-v2 -namespace k8s.io -id 343bbc5e4ecf68f6ad828e22f948bf10b5f0d543dd1bb04bb8bdffc367d8a220 -address /run/containerd/containerd.sock\n             └─3942949 /opt/kube/bin/containerd-bin/containerd-shim-runc-v2 -namespace k8s.io -id 4ca8770a8de104a9691fda9cec0fc956d063ef53e41f82300a30fc2ef77da32d -address /run/containerd/containerd.sock\n\nMar 17 00:08:03 worker-01 containerd[924]: time=\"2026-03-17T00:08:03.098584300+08:00\" level=info msg=\"CreateContainer within sandbox \\\"4ca8770a8de104a9691fda9cec0fc956d063ef53e41f82300a30fc2ef77da32d\\\" for container &ContainerMetadata{Name:ts-food-service,Attempt:5,}\"\nMar 17 00:08:03 worker-01 containerd[924]: time=\"2026-03-17T00:08:03.113210620+08:00\" level=info msg=\"CreateContainer within sandbox \\\"4ca8770a8de104a9691fda9cec0fc956d063ef53e41f82300a30fc2ef77da32d\\\" for &ContainerMetadata{Name:ts-food-service,Attempt:5,} returns container id \\\"fd4f0b594dbd3c5a43c7c4f32ce3508ee41c93b8fb12263ccfb6a6f51ce74643\\\"\"\nMar 17 00:08:03 worker-01 containerd[924]: time=\"2026-03-17T00:08:03.113626937+08:00\" level=info msg=\"StartContainer for \\\"fd4f0b594dbd3c5a43c7c4f32ce3508ee41c93b8fb12263ccfb6a6f51ce74643\\\"\"\nMar 17 00:08:03 worker-01 containerd[924]: time=\"2026-03-17T00:08:03.157239524+08:00\" level=info msg=\"StartContainer for \\\"fd4f0b594dbd3c5a43c7c4f32ce3508ee41c93b8fb12263ccfb6a6f51ce74643\\\" returns successfully\"\nMar 17 00:08:42 worker-01 containerd[924]: time=\"2026-03-17T00:08:42.458752998+08:00\" level=info msg=\"shim disconnected\" id=fd4f0b594dbd3c5a43c7c4f32ce3508ee41c93b8fb12263ccfb6a6f51ce74643 namespace=k8s.io\nMar 17 00:08:42 worker-01 containerd[924]: time=\"2026-03-17T00:08:42.458801153+08:00\" level=warning msg=\"cleaning up after shim disconnected\" id=fd4f0b594dbd3c5a43c7c4f32ce3508ee41c93b8fb12263ccfb6a6f51ce74643 namespace=k8s.io\nMar 17 00:08:42 worker-01 containerd[924]: time=\"2026-03-17T00:08:42.458811666+08:00\" level=info msg=\"cleaning up dead shim\" namespace=k8s.io\nMar 17 00:08:43 worker-01 containerd[924]: time=\"2026-03-17T00:08:43.447992564+08:00\" level=info msg=\"RemoveContainer for \\\"b2703f7e74dc0610f20e5c088f1acbf437ec8e418eca596098101f2da1cdd52e\\\"\"\nMar 17 00:08:43 worker-01 containerd[924]: time=\"2026-03-17T00:08:43.457297484+08:00\" level=info msg=\"RemoveContainer for \\\"b2703f7e74dc0610f20e5c088f1acbf437ec8e418eca596098101f2da1cdd52e\\\" returns successfully\"\nMar 17 00:08:46 worker-01 containerd[924]: time=\"2026-03-17T00:08:46.267195273+08:00\" level=error msg=\"ContainerStatus for \\\"b2703f7e74dc0610f20e5c088f1acbf437ec8e418eca596098101f2da1cdd52e\\\" failed\" error=\"rpc error: code = NotFound desc = an error occurred when try to find container \\\"b2703f7e74dc0610f20e5c088f1acbf437ec8e418eca596098101f2da1cdd52e\\\": not found\"",
+   "error": null,
+   "purpose": "container runtime status on the same node",
+   "tool_latency": null
+  }
+ ],
+ "agentrun": {
+  "tag": "test",
+  "dsl": "workspace/dsl_versions/v0.8.dsl.txt",
+  "dsl_version": "0.8",
+  "sop": {
+   "sop": "boutique-runtime-rca",
+   "scope": {
+    "system": "boutique",
+    "families": [
+     "runtime",
+     "admission",
+     "scheduling",
+     "startup",
+     "service",
+     "performance",
+     "infrastructure",
+     "codedefect"
+    ],
+    "severity": [
+     "SEV2",
+     "SEV3"
+    ]
+   },
+   "owner": "sre-platform",
+   "approved_by": [
+    "oncall-primary",
+    "sre-lead"
+   ],
+   "reviewed_at": "2026-10-23",
+   "change_ticket": "OPS-1236",
+   "boundaries": "只读诊断：本 SOP 不执行任何写操作（重启/回滚/扩缩容），也不做对外播报；\n它回答\"最可能的根因与受害对象\"，处置与沟通由值班按 runbook 人工执行。\n不覆盖 SEV1（需 incident commander 介入）与变更引发的问题（走变更回滚流程）。\n输入是冻结快照：诊断结论对\"快照时刻\"成立，恢复后需重新取证。\nR1 已知边界：PVC 的 requested size / accessMode 在本 benchmark 的工具面不可见，\n因此 pvc_capacity 与 pvc_access_mode 无法区分（同一分数并列，交给 jev 或升级）。\n"
+  },
+  "params": {
+   "cands_cap": 8,
+   "max_waves": 8,
+   "min_waves": 5,
+   "steps_per_wave": 1,
+   "dominance_ratio": 1.5,
+   "conf_min": 0.0,
+   "escalate": true,
+   "escalate_budget": 8,
+   "judge_on_codedefect": true,
+   "jev_route": true,
+   "jev_pick": true,
+   "jev_verify": true,
+   "route_fallback": "runtime"
+  },
+  "nodes_executed": [
+   "anchors:extract_anchors",
+   "census:probes",
+   "route:decide",
+   "plan:build_plan",
+   "probe:probes",
+   "derive:derive_candidates",
+   "pick:decide",
+   "verify:decide",
+   "probe:probes",
+   "derive:derive_candidates",
+   "pick:decide",
+   "verify:decide",
+   "probe:probes",
+   "derive:derive_candidates",
+   "pick:decide",
+   "verify:decide",
+   "probe:probes",
+   "derive:derive_candidates",
+   "pick:decide",
+   "verify:decide",
+   "probe:probes",
+   "derive:derive_candidates",
+   "pick:decide",
+   "verify:decide",
+   "probe:probes",
+   "derive:derive_candidates",
+   "pick:decide",
+   "verify:decide",
+   "escalate:escalate",
+   "answer:normalize_answer",
+   "persist:persist_trace"
+  ],
+  "census": [
+   {
+    "step": "pods",
+    "gate": "always"
+   },
+   {
+    "step": "alerts",
+    "gate": "healthy_system"
+   }
+  ],
+  "plan": [
+   {
+    "step": "describe_pod",
+    "gate": "always",
+    "wave": 1
+   },
+   {
+    "step": "app_yaml",
+    "gate": "probe_evidence | restart_evidence | weak",
+    "wave": 2
+   },
+   {
+    "step": "error_logs",
+    "gate": "restart_evidence | weak_strong",
+    "wave": 3
+   },
+   {
+    "step": "node_kubelet",
+    "gate": "runtime_stall",
+    "wave": 4
+   },
+   {
+    "step": "node_containerd",
+    "gate": "runtime_stall | node_all_healthy",
+    "wave": 5
+   }
+  ],
+  "family": "runtime",
+  "state_wiring": {
+   "family": "$route.family",
+   "route_probs": "$route.probabilities",
+   "picked": "$pick.picked",
+   "pick_dominant": "$pick.dominant",
+   "verify_status": "$verify.status",
+   "verify_prob": "$verify.confidence"
+  },
+  "bindings": {
+   "anchors": {
+    "anchors": "Anchors(case_id='trainticket/service/24', system='trainticket', namespace='train-ticket', query='Partial Service Unreachability.', difficulty='medium', symptoms=['unavailable'], mentioned_apps=[], priors={'db_service': 'tsdb-mysql-leader', 'db_port': 3306})"
+   },
+   "route": {
+    "family": "runtime",
+    "probabilities": {},
+    "route_why": "mechanism_mode"
+   },
+   "plan": {
+    "plan": "[{'name': 'describe_pod', 'key': 'describe:pod', 'tool': 'DescribeResource', 'args': <function _args_describe_pod at 0x107ddb560>, 'purpose': 'probe config, container state, restart reasons, scheduler events', 'when': <function compile_steps.<locals>.<lambda> at 0x1080de5c0>, 'gate': 'always', 'wave': 1}, {'name': 'app_yaml', 'key': 'appyaml', 'tool': 'GetAppYAML', 'args': <function _args_app_yaml at 0x107ddb6a0>, 'purpose': 'declared probes / limits / image / env', 'when': <function compile_steps.<locals>.<lambda> at 0x1080de520>, 'gate': 'probe_evidence | restart_evidence | weak', 'wave': 2}, {'name': 'error_logs', 'key': 'errors', 'tool': 'GetErrorLogs', 'args': <function _args_error_logs at 0x107ddb740>, 'purpose': 'application error logs', 'when': <function compile_steps.<locals>.<lambda> at 0x1080de700>, 'gate': 'restart_evidence | weak_strong', 'wave': 3}, {'name': 'node_kubelet', 'key': 'node:kubelet', 'tool': 'CheckNodeServiceStatus', 'args': <function _args_node_kubelet at 0x107ddbba0>, 'purpose': 'kubelet status on the node hosting the stalled pod', 'when': <function compile_steps.<locals>.<lambda> at 0x1080dec00>, 'gate': 'runtime_stall', 'wave': 4}, {'name': 'node_containerd', 'key': 'node:containerd', 'tool': 'CheckNodeServiceStatus', 'args': <function _args_node_containerd at 0x107ddbc40>, 'purpose': 'container runtime status on the same node', 'when': <function compile_steps.<locals>.<lambda> at 0x1080df9c0>, 'gate': 'runtime_stall | node_all_healthy', 'wave': 5}]"
+   },
+   "derive": {
+    "candidates": "[Candidate(root_cause='mysql_invalid_port', object='app/ts-food-service', score=0.72, evidence='JDBC connect refused; datastore reachability unknown', rule='db_port'), Candidate(root_cause='service_dns_resolution_failure', object='app/ts-food-service', score=0.67, evidence='DNS resolution failure in application logs', rule='dns_log'), Candidate(root_cause='readiness_probe_incorrect_port', object='app/ts-food-service', score=0.5700000000000001, evidence='readiness probe targets :15020 but the container listens on :18856', rule='probe_config')]"
+   },
+   "pick": {
+    "picked": 0,
+    "dominant": false,
+    "pick_why": "no_new_evidence"
+   },
+   "verify": {
+    "status": "verified",
+    "confidence": null,
+    "verify_why": "no_new_evidence"
+   },
+   "escalate": {
+    "answer": null
+   },
+   "answer": {
+    "final": {
+     "key_evidence_summary": "JDBC connect refused; datastore reachability unknown",
+     "top_3_predictions": [
+      {
+       "rank": 1,
+       "fault_object": "app/ts-food-service",
+       "root_cause": "mysql_invalid_port"
+      },
+      {
+       "rank": 2,
+       "fault_object": "app/ts-food-service",
+       "root_cause": "service_dns_resolution_failure"
+      },
+      {
+       "rank": 3,
+       "fault_object": "app/ts-food-service",
+       "root_cause": "readiness_probe_incorrect_port"
+      }
+     ]
+    }
+   }
+  },
+  "picked": {
+   "root_cause": "mysql_invalid_port",
+   "object": "app/ts-food-service",
+   "score": 0.72,
+   "evidence": "JDBC connect refused; datastore reachability unknown",
+   "rule": "db_port"
+  },
+  "pick_why": "",
+  "verify_prob": null,
+  "verify_verdict": "verified",
+  "verified": true,
+  "escalated": false,
+  "escalate_reason": "",
+  "escalate_steps": 0,
+  "waves": 6,
+  "candidates": [
+   {
+    "root_cause": "mysql_invalid_port",
+    "object": "app/ts-food-service",
+    "score": 0.72,
+    "evidence": "JDBC connect refused; datastore reachability unknown",
+    "rule": "db_port"
+   },
+   {
+    "root_cause": "service_dns_resolution_failure",
+    "object": "app/ts-food-service",
+    "score": 0.67,
+    "evidence": "DNS resolution failure in application logs",
+    "rule": "dns_log"
+   },
+   {
+    "root_cause": "readiness_probe_incorrect_port",
+    "object": "app/ts-food-service",
+    "score": 0.57,
+    "evidence": "readiness probe targets :15020 but the container listens on :18856",
+    "rule": "probe_config"
+   }
+  ],
+  "jev": [
+   {
+    "rid": "test:trainticket/service/24#route",
+    "kind": "route",
+    "node": "route",
+    "mode": "mechanism",
+    "options": [
+     "runtime",
+     "infrastructure"
+    ],
+    "status": "mechanical",
+    "guard": "unavailable",
+    "use": "first_option",
+    "choice": "runtime",
+    "why": "mechanism_mode",
+    "dominant": false,
+    "continue_loop": false,
+    "escalate": false
+   },
+   {
+    "rid": "test:trainticket/service/24#pick1",
+    "kind": "pick",
+    "node": "pick",
+    "mode": "mechanism",
+    "options": [
+     "c0"
+    ],
+    "status": "mechanical",
+    "guard": "top_over_second >= $params.dominance_ratio",
+    "use": "first_option",
+    "choice": 0,
+    "why": "dominance",
+    "dominant": true,
+    "continue_loop": false,
+    "escalate": false
+   },
+   {
+    "rid": "test:trainticket/service/24#verify1",
+    "kind": "verify",
+    "node": "verify",
+    "mode": "mechanism",
+    "options": [
+     "supported",
+     "insufficient",
+     "contradicted"
+    ],
+    "status": "mechanical",
+    "guard": "$pick.dominant",
+    "use": "verified",
+    "choice": "verified",
+    "why": "dominant_candidate",
+    "dominant": false,
+    "continue_loop": false,
+    "escalate": false
+   },
+   {
+    "rid": "test:trainticket/service/24#pick2",
+    "kind": "pick",
+    "node": "pick",
+    "mode": "mechanism",
+    "options": [
+     "c0"
+    ],
+    "status": "mechanical",
+    "guard": "unchanged_since_last",
+    "use": "previous",
+    "choice": 0,
+    "why": "no_new_evidence",
+    "dominant": true,
+    "continue_loop": false,
+    "escalate": false
+   },
+   {
+    "rid": "test:trainticket/service/24#verify2",
+    "kind": "verify",
+    "node": "verify",
+    "mode": "mechanism",
+    "options": [
+     "supported",
+     "insufficient",
+     "contradicted"
+    ],
+    "status": "mechanical",
+    "guard": "$pick.dominant",
+    "use": "verified",
+    "choice": "verified",
+    "why": "dominant_candidate",
+    "dominant": false,
+    "continue_loop": false,
+    "escalate": false
+   },
+   {
+    "rid": "test:trainticket/service/24#pick3",
+    "kind": "pick",
+    "node": "pick",
+    "mode": "mechanism",
+    "options": [
+     "c0",
+     "c1",
+     "c2"
+    ],
+    "status": "mechanical",
+    "guard": "unavailable",
+    "use": "first_option",
+    "choice": 0,
+    "why": "mechanism_mode",
+    "dominant": false,
+    "continue_loop": false,
+    "escalate": false
+   },
+   {
+    "rid": "test:trainticket/service/24#verify3",
+    "kind": "verify",
+    "node": "verify",
+    "mode": "mechanism",
+    "options": [
+     "supported",
+     "insufficient",
+     "contradicted"
+    ],
+    "status": "mechanical",
+    "guard": "unavailable",
+    "use": "verified",
+    "choice": "verified",
+    "why": "mechanism_mode",
+    "dominant": false,
+    "continue_loop": false,
+    "escalate": false
+   },
+   {
+    "rid": "test:trainticket/service/24#pick4",
+    "kind": "pick",
+    "node": "pick",
+    "mode": "mechanism",
+    "options": [
+     "c0",
+     "c1",
+     "c2"
+    ],
+    "status": "mechanical",
+    "guard": "unchanged_since_last",
+    "use": "previous",
+    "choice": 0,
+    "why": "no_new_evidence",
+    "dominant": false,
+    "continue_loop": false,
+    "escalate": false
+   },
+   {
+    "rid": "test:trainticket/service/24#verify4",
+    "kind": "verify",
+    "node": "verify",
+    "mode": "mechanism",
+    "options": [
+     "supported",
+     "insufficient",
+     "contradicted"
+    ],
+    "status": "mechanical",
+    "guard": "unchanged_since_last",
+    "use": "previous",
+    "choice": "verified",
+    "why": "no_new_evidence",
+    "dominant": false,
+    "continue_loop": false,
+    "escalate": false
+   },
+   {
+    "rid": "test:trainticket/service/24#pick5",
+    "kind": "pick",
+    "node": "pick",
+    "mode": "mechanism",
+    "options": [
+     "c0",
+     "c1",
+     "c2"
+    ],
+    "status": "mechanical",
+    "guard": "unchanged_since_last",
+    "use": "previous",
+    "choice": 0,
+    "why": "no_new_evidence",
+    "dominant": false,
+    "continue_loop": false,
+    "escalate": false
+   },
+   {
+    "rid": "test:trainticket/service/24#verify5",
+    "kind": "verify",
+    "node": "verify",
+    "mode": "mechanism",
+    "options": [
+     "supported",
+     "insufficient",
+     "contradicted"
+    ],
+    "status": "mechanical",
+    "guard": "unchanged_since_last",
+    "use": "previous",
+    "choice": "verified",
+    "why": "no_new_evidence",
+    "dominant": false,
+    "continue_loop": false,
+    "escalate": false
+   },
+   {
+    "rid": "test:trainticket/service/24#pick6",
+    "kind": "pick",
+    "node": "pick",
+    "mode": "mechanism",
+    "options": [
+     "c0",
+     "c1",
+     "c2"
+    ],
+    "status": "mechanical",
+    "guard": "unchanged_since_last",
+    "use": "previous",
+    "choice": 0,
+    "why": "no_new_evidence",
+    "dominant": false,
+    "continue_loop": false,
+    "escalate": false
+   },
+   {
+    "rid": "test:trainticket/service/24#verify6",
+    "kind": "verify",
+    "node": "verify",
+    "mode": "mechanism",
+    "options": [
+     "supported",
+     "insufficient",
+     "contradicted"
+    ],
+    "status": "mechanical",
+    "guard": "unchanged_since_last",
+    "use": "previous",
+    "choice": "verified",
+    "why": "no_new_evidence",
+    "dominant": false,
+    "continue_loop": false,
+    "escalate": false
+   }
+  ],
+  "nodes": [
+   {
+    "node": "code",
+    "id": "anchors",
+    "anchors": {
+     "case_id": "trainticket/service/24",
+     "system": "trainticket",
+     "namespace": "train-ticket",
+     "query": "Partial Service Unreachability.",
+     "difficulty": "medium",
+     "symptoms": [
+      "unavailable"
+     ],
+     "mentioned_apps": []
+    }
+   },
+   {
+    "node": "probes",
+    "plan": "census",
+    "wave": 0,
+    "executed": 1,
+    "steps": [
+     {
+      "key": "pods",
+      "tool": "GetResources",
+      "arguments": {
+       "namespace": "train-ticket",
+       "resource_type": "pods",
+       "output_wide": true
+      },
+      "gate": "always"
+     }
+    ],
+    "skipped": [
+     {
+      "step": "alerts",
+      "why": "gate healthy_system"
+     }
+    ]
+   },
+   {
+    "node": "decide",
+    "id": "route",
+    "rid": "test:trainticket/service/24#route",
+    "status": "mechanical",
+    "guard": "unavailable",
+    "use": "first_option",
+    "choice": "runtime",
+    "dominant": false,
+    "why": "mechanism_mode"
+   },
+   {
+    "node": "code",
+    "id": "plan",
+    "family": "runtime",
+    "plan": [
+     {
+      "step": "describe_pod",
+      "gate": "always",
+      "wave": 1
+     },
+     {
+      "step": "app_yaml",
+      "gate": "probe_evidence | restart_evidence | weak",
+      "wave": 2
+     },
+     {
+      "step": "error_logs",
+      "gate": "restart_evidence | weak_strong",
+      "wave": 3
+     },
+     {
+      "step": "node_kubelet",
+      "gate": "runtime_stall",
+      "wave": 4
+     },
+     {
+      "step": "node_containerd",
+      "gate": "runtime_stall | node_all_healthy",
+      "wave": 5
+     }
+    ]
+   },
+   {
+    "node": "probes",
+    "plan": "family",
+    "wave": 1,
+    "executed": 1,
+    "steps": [
+     {
+      "key": "describe:pod",
+      "tool": "DescribeResource",
+      "arguments": {
+       "namespace": "train-ticket",
+       "resource_type": "pods",
+       "name": "ts-food-service-74f4df4f7-djvnb"
+      },
+      "gate": "always"
+     }
+    ],
+    "skipped": []
+   },
+   {
+    "node": "code",
+    "id": "derive",
+    "raw": 1,
+    "kept": 1,
+    "top": [
+     {
+      "root_cause": "readiness_probe_incorrect_port",
+      "object": "app/ts-food-service",
+      "score": 0.57,
+      "evidence": "readiness probe targets :15020 but the container listens on :18856",
+      "rule": "probe_config"
+     }
+    ]
+   },
+   {
+    "node": "decide",
+    "id": "pick",
+    "rid": "test:trainticket/service/24#pick1",
+    "status": "mechanical",
+    "guard": "top_over_second >= $params.dominance_ratio",
+    "use": "first_option",
+    "choice": 0,
+    "dominant": true,
+    "why": "dominance"
+   },
+   {
+    "node": "decide",
+    "id": "verify",
+    "rid": "test:trainticket/service/24#verify1",
+    "status": "mechanical",
+    "guard": "$pick.dominant",
+    "use": "verified",
+    "choice": "verified",
+    "dominant": false,
+    "why": "dominant_candidate"
+   },
+   {
+    "node": "probes",
+    "plan": "family",
+    "wave": 2,
+    "executed": 1,
+    "steps": [
+     {
+      "key": "appyaml",
+      "tool": "GetAppYAML",
+      "arguments": {
+       "app_name": "ts-food-service"
+      },
+      "gate": "probe_evidence | restart_evidence | weak"
+     }
+    ],
+    "skipped": []
+   },
+   {
+    "node": "code",
+    "id": "derive",
+    "raw": 1,
+    "kept": 1,
+    "top": [
+     {
+      "root_cause": "readiness_probe_incorrect_port",
+      "object": "app/ts-food-service",
+      "score": 0.57,
+      "evidence": "readiness probe targets :15020 but the container listens on :18856",
+      "rule": "probe_config"
+     }
+    ]
+   },
+   {
+    "node": "decide",
+    "id": "pick",
+    "rid": "test:trainticket/service/24#pick2",
+    "status": "mechanical",
+    "guard": "unchanged_since_last",
+    "use": "previous",
+    "choice": 0,
+    "dominant": true,
+    "why": "no_new_evidence"
+   },
+   {
+    "node": "decide",
+    "id": "verify",
+    "rid": "test:trainticket/service/24#verify2",
+    "status": "mechanical",
+    "guard": "$pick.dominant",
+    "use": "verified",
+    "choice": "verified",
+    "dominant": false,
+    "why": "dominant_candidate"
+   },
+   {
+    "node": "probes",
+    "plan": "family",
+    "wave": 3,
+    "executed": 1,
+    "steps": [
+     {
+      "key": "errors",
+      "tool": "GetErrorLogs",
+      "arguments": {
+       "namespace": "train-ticket",
+       "service_name": "ts-food-service"
+      },
+      "gate": "restart_evidence | weak_strong"
+     }
+    ],
+    "skipped": []
+   },
+   {
+    "node": "code",
+    "id": "derive",
+    "raw": 3,
+    "kept": 3,
+    "top": [
+     {
+      "root_cause": "mysql_invalid_port",
+      "object": "app/ts-food-service",
+      "score": 0.72,
+      "evidence": "JDBC connect refused; datastore reachability unknown",
+      "rule": "db_port"
+     },
+     {
+      "root_cause": "service_dns_resolution_failure",
+      "object": "app/ts-food-service",
+      "score": 0.67,
+      "evidence": "DNS resolution failure in application logs",
+      "rule": "dns_log"
+     },
+     {
+      "root_cause": "readiness_probe_incorrect_port",
+      "object": "app/ts-food-service",
+      "score": 0.57,
+      "evidence": "readiness probe targets :15020 but the container listens on :18856",
+      "rule": "probe_config"
+     }
+    ]
+   },
+   {
+    "node": "decide",
+    "id": "pick",
+    "rid": "test:trainticket/service/24#pick3",
+    "status": "mechanical",
+    "guard": "unavailable",
+    "use": "first_option",
+    "choice": 0,
+    "dominant": false,
+    "why": "mechanism_mode"
+   },
+   {
+    "node": "decide",
+    "id": "verify",
+    "rid": "test:trainticket/service/24#verify3",
+    "status": "mechanical",
+    "guard": "unavailable",
+    "use": "verified",
+    "choice": "verified",
+    "dominant": false,
+    "why": "mechanism_mode"
+   },
+   {
+    "node": "probes",
+    "plan": "family",
+    "wave": 4,
+    "executed": 0,
+    "steps": [],
+    "skipped": [
+     {
+      "step": "node_kubelet",
+      "why": "gate runtime_stall"
+     }
+    ]
+   },
+   {
+    "node": "code",
+    "id": "derive",
+    "raw": 3,
+    "kept": 3,
+    "top": [
+     {
+      "root_cause": "mysql_invalid_port",
+      "object": "app/ts-food-service",
+      "score": 0.72,
+      "evidence": "JDBC connect refused; datastore reachability unknown",
+      "rule": "db_port"
+     },
+     {
+      "root_cause": "service_dns_resolution_failure",
+      "object": "app/ts-food-service",
+      "score": 0.67,
+      "evidence": "DNS resolution failure in application logs",
+      "rule": "dns_log"
+     },
+     {
+      "root_cause": "readiness_probe_incorrect_port",
+      "object": "app/ts-food-service",
+      "score": 0.57,
+      "evidence": "readiness probe targets :15020 but the container listens on :18856",
+      "rule": "probe_config"
+     }
+    ]
+   },
+   {
+    "node": "decide",
+    "id": "pick",
+    "rid": "test:trainticket/service/24#pick4",
+    "status": "mechanical",
+    "guard": "unchanged_since_last",
+    "use": "previous",
+    "choice": 0,
+    "dominant": false,
+    "why": "no_new_evidence"
+   },
+   {
+    "node": "decide",
+    "id": "verify",
+    "rid": "test:trainticket/service/24#verify4",
+    "status": "mechanical",
+    "guard": "unchanged_since_last",
+    "use": "previous",
+    "choice": "verified",
+    "dominant": false,
+    "why": "no_new_evidence"
+   },
+   {
+    "node": "probes",
+    "plan": "family",
+    "wave": 5,
+    "executed": 1,
+    "steps": [
+     {
+      "key": "node:containerd",
+      "tool": "CheckNodeServiceStatus",
+      "arguments": {
+       "node_name": "worker-01",
+       "service_name": "containerd"
+      },
+      "gate": "runtime_stall | node_all_healthy"
+     }
+    ],
+    "skipped": []
+   },
+   {
+    "node": "code",
+    "id": "derive",
+    "raw": 3,
+    "kept": 3,
+    "top": [
+     {
+      "root_cause": "mysql_invalid_port",
+      "object": "app/ts-food-service",
+      "score": 0.72,
+      "evidence": "JDBC connect refused; datastore reachability unknown",
+      "rule": "db_port"
+     },
+     {
+      "root_cause": "service_dns_resolution_failure",
+      "object": "app/ts-food-service",
+      "score": 0.67,
+      "evidence": "DNS resolution failure in application logs",
+      "rule": "dns_log"
+     },
+     {
+      "root_cause": "readiness_probe_incorrect_port",
+      "object": "app/ts-food-service",
+      "score": 0.57,
+      "evidence": "readiness probe targets :15020 but the container listens on :18856",
+      "rule": "probe_config"
+     }
+    ]
+   },
+   {
+    "node": "decide",
+    "id": "pick",
+    "rid": "test:trainticket/service/24#pick5",
+    "status": "mechanical",
+    "guard": "unchanged_since_last",
+    "use": "previous",
+    "choice": 0,
+    "dominant": false,
+    "why": "no_new_evidence"
+   },
+   {
+    "node": "decide",
+    "id": "verify",
+    "rid": "test:trainticket/service/24#verify5",
+    "status": "mechanical",
+    "guard": "unchanged_since_last",
+    "use": "previous",
+    "choice": "verified",
+    "dominant": false,
+    "why": "no_new_evidence"
+   },
+   {
+    "node": "probes",
+    "plan": "family",
+    "wave": 6,
+    "executed": 0,
+    "why": "plan exhausted"
+   },
+   {
+    "node": "code",
+    "id": "derive",
+    "raw": 3,
+    "kept": 3,
+    "top": [
+     {
+      "root_cause": "mysql_invalid_port",
+      "object": "app/ts-food-service",
+      "score": 0.72,
+      "evidence": "JDBC connect refused; datastore reachability unknown",
+      "rule": "db_port"
+     },
+     {
+      "root_cause": "service_dns_resolution_failure",
+      "object": "app/ts-food-service",
+      "score": 0.67,
+      "evidence": "DNS resolution failure in application logs",
+      "rule": "dns_log"
+     },
+     {
+      "root_cause": "readiness_probe_incorrect_port",
+      "object": "app/ts-food-service",
+      "score": 0.57,
+      "evidence": "readiness probe targets :15020 but the container listens on :18856",
+      "rule": "probe_config"
+     }
+    ]
+   },
+   {
+    "node": "decide",
+    "id": "pick",
+    "rid": "test:trainticket/service/24#pick6",
+    "status": "mechanical",
+    "guard": "unchanged_since_last",
+    "use": "previous",
+    "choice": 0,
+    "dominant": false,
+    "why": "no_new_evidence"
+   },
+   {
+    "node": "decide",
+    "id": "verify",
+    "rid": "test:trainticket/service/24#verify6",
+    "status": "mechanical",
+    "guard": "unchanged_since_last",
+    "use": "previous",
+    "choice": "verified",
+    "dominant": false,
+    "why": "no_new_evidence"
+   },
+   {
+    "node": "loop",
+    "id": "waves",
+    "stop": "plan_exhausted",
+    "wave": 6
+   },
+   {
+    "node": "escalate",
+    "id": "escalate",
+    "fired": false,
+    "reasons": [],
+    "why": "no reason"
+   },
+   {
+    "node": "code",
+    "id": "answer",
+    "predictions": [
+     {
+      "rank": 1,
+      "fault_object": "app/ts-food-service",
+      "root_cause": "mysql_invalid_port"
+     },
+     {
+      "rank": 2,
+      "fault_object": "app/ts-food-service",
+      "root_cause": "service_dns_resolution_failure"
+     },
+     {
+      "rank": 3,
+      "fault_object": "app/ts-food-service",
+      "root_cause": "readiness_probe_incorrect_port"
+     }
+    ]
+   },
+   {
+    "node": "artifact",
+    "id": "persist",
+    "persisted": false,
+    "why": "written by the CLI driver"
+   }
+  ],
+  "notes": [],
+  "tool_calls": 5,
+  "model_calls": 0,
+  "tokens_in": 0,
+  "tokens_out": 0,
+  "wall_s": 0.1
+ }
+}

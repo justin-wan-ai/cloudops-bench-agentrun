@@ -1,0 +1,35 @@
+{
+ "n": 4,
+ "cases": [
+  {
+   "id": "boutique/service/1",
+   "system": "boutique",
+   "category": "service",
+   "case": "1",
+   "difficulty": "medium"
+  },
+  {
+   "id": "boutique/service/10",
+   "system": "boutique",
+   "category": "service",
+   "case": "10",
+   "difficulty": "medium"
+  },
+  {
+   "id": "boutique/service/29",
+   "system": "boutique",
+   "category": "service",
+   "case": "29",
+   "difficulty": "medium"
+  },
+  {
+   "id": "boutique/service/35",
+   "system": "boutique",
+   "category": "service",
+   "case": "35",
+   "difficulty": "medium"
+  }
+ ],
+ "round": "service",
+ "split": "val"
+}

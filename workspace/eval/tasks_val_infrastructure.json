@@ -1,0 +1,35 @@
+{
+ "n": 4,
+ "cases": [
+  {
+   "id": "boutique/infrastructure/16",
+   "system": "boutique",
+   "category": "infrastructure",
+   "case": "16",
+   "difficulty": "medium"
+  },
+  {
+   "id": "boutique/infrastructure/29",
+   "system": "boutique",
+   "category": "infrastructure",
+   "case": "29",
+   "difficulty": "medium"
+  },
+  {
+   "id": "boutique/infrastructure/36",
+   "system": "boutique",
+   "category": "infrastructure",
+   "case": "36",
+   "difficulty": "medium"
+  },
+  {
+   "id": "boutique/infrastructure/9",
+   "system": "boutique",
+   "category": "infrastructure",
+   "case": "9",
+   "difficulty": "medium"
+  }
+ ],
+ "round": "infrastructure",
+ "split": "val"
+}

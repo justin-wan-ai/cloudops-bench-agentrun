@@ -1,0 +1,76 @@
+# AgentRun DSL v0.3 -- agentic root cause analysis over a frozen incident snapshot
+# (v0.1 / v0.2 are kept in this directory; see dsl_versions/README.md)
+#
+# Migration of the free ReAct loop (repo/agents/cloudops_agent) to
+#   fixed plan + typed jev decisions + escalate fallback.
+#
+# Semantics implemented by agentrun/runner.py:
+#   * node PRESENCE decides whether a step runs at all;
+#   * execution order is fixed (call -> derive -> pick -> verify), the DSL selects
+#     the chain, the loop bound and the parameters -- not line-by-line execution;
+#   * every parameter below must be able to change behaviour (P5 gate).
+#
+# Motivation per block (P4 distillation of the baseline traces):
+#   extract_anchors   the symptom/question is the only free-text input; everything
+#                     else (namespace, service list, priors) is deterministic.
+#   jev(route)        the baseline always spends 2-4 calls discovering which fault
+#                     domain it is in; one typed choice on the observed census replaces it.
+#                     The census probe (wave 0) is what makes the route restricted
+#                     (pattern B: deterministic first, model second).
+#   build_plan        probe sequences are stable per family -> compiled plans.
+#   loop(probe/pick)  the only genuinely ambiguous step is "which object is the
+#                     culprit" when several are plausible -> jev(pick) over <=cands_cap.
+#   jev(verify)       a calibration gate; low probability means "family right, cause
+#                     not pinned" -> escalate instead of guessing.
+#   escalate          code defects and unknown families cannot be compiled, so they
+#                     go back to a budgeted agent (structural no-downgrade).
+
+dsl: agentrun-rca
+version: "0.3"
+
+params:
+  cands_cap: 8              # candidates handed to jev(pick)
+  max_waves: 5              # bounded loop (one probe per wave in v0.2)
+  min_waves: 5              # keep collecting free deterministic evidence until the plan ends
+  steps_per_wave: 1         # one probe per wave: each probe can gate the next one
+  dominance_ratio: 1.5      # mechanical pick only when top score dominates
+  conf_min: 0.0             # absolute floor on P(supported); 0 = only require beating the alternatives
+  escalate: true
+  escalate_budget: 8        # judge agent tool-call budget
+  judge_on_codedefect: true # code defects are open-ended by construction
+  jev_route: true
+  jev_pick: true
+  jev_verify: true
+
+chain:
+  - code: extract_anchors
+  - call: probe_batch      # wave 0 = cheap census (alerts / pods / deployments)
+  - jev: route
+  - code: build_plan
+  - loop:
+      until: solved_or_exhausted
+      max_waves: 5
+      body:
+        - call: probe_batch
+        - code: derive_candidates
+        - jev: pick
+        - jev: verify
+  - escalate:
+      predicate: no_candidates | contradicted | family_unknown | weak_after_waves
+  - code: normalize_answer
+  - artifact: persist_trace
+
+# v0.3 change (single variable vs v0.2): min_waves 2 -> 5.
+#   Rationale: a snapshot probe costs ~5 ms and zero tokens, while a jev call costs a
+#   model round-trip.  Stopping early therefore *saves nothing* and only drops process
+#   grounding (v0.2 live: MC 0.753 vs v0.2 mechanism 0.820).  The loop now runs to plan
+#   exhaustion and only the *decisions* are gated by evidence novelty.
+#
+# v0.2 change (single variable vs v0.1): adaptive probe pruning.
+#   * census shrinks to pods + alerts (deployments moved into the admission plan);
+#   * every family step carries a `when(...)` gate, so a probe is only spent when the
+#     evidence collected so far cannot already explain the symptom;
+#   * one probe per wave, so wave N+1 sees the result of wave N.
+# Rationale: v0.1 spent 3 zero-credit calls per case (deployments, alerts, one blind
+# follow-up); see runs/score_agentrun_mechanism.json (EE 0.51) vs the marginal-credit
+# diagnostic in runs/marginal_credit.json.

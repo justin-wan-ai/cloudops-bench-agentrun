@@ -1,0 +1,55 @@
+{
+ "split": "pilot",
+ "n": 7,
+ "cases": [
+  {
+   "id": "boutique/codedefect/10",
+   "system": "boutique",
+   "category": "codedefect",
+   "case": "10",
+   "difficulty": "hard"
+  },
+  {
+   "id": "boutique/codedefect/34",
+   "system": "boutique",
+   "category": "codedefect",
+   "case": "34",
+   "difficulty": "hard"
+  },
+  {
+   "id": "boutique/codedefect/20",
+   "system": "boutique",
+   "category": "codedefect",
+   "case": "20",
+   "difficulty": "hard"
+  },
+  {
+   "id": "boutique/codedefect/11",
+   "system": "boutique",
+   "category": "codedefect",
+   "case": "11",
+   "difficulty": "hard"
+  },
+  {
+   "id": "boutique/codedefect/12",
+   "system": "boutique",
+   "category": "codedefect",
+   "case": "12",
+   "difficulty": "hard"
+  },
+  {
+   "id": "boutique/codedefect/1",
+   "system": "boutique",
+   "category": "codedefect",
+   "case": "1",
+   "difficulty": "hard"
+  },
+  {
+   "id": "boutique/codedefect/24",
+   "system": "boutique",
+   "category": "codedefect",
+   "case": "24",
+   "difficulty": "hard"
+  }
+ ]
+}

@@ -1,0 +1,673 @@
+{
+ "case_id": "boutique/performance/3",
+ "system_name": "boutique",
+ "question": "Service quality degradation.",
+ "case_path": "/Users/justinwan/work/workspace/cloudops_bench_rsi/repo/benchmark/boutique/performance/3",
+ "max_steps": 8,
+ "current_step": 3,
+ "finished": true,
+ "stop_reason": "submit",
+ "final_answer": "{\"key_evidence_summary\": \"network latency anomaly on the pod\", \"top_3_predictions\": [{\"rank\": 1, \"fault_object\": \"app/checkoutservice\", \"root_cause\": \"pod_network_delay\"}, {\"rank\": 2, \"fault_object\": \"app/worker-02\", \"root_cause\": \"pod_network_delay\"}, {\"rank\": 3, \"fault_object\": \"app/checkoutservice\", \"root_cause\": \"pod_network_delay\"}]}",
+ "metadata": {
+  "namespace": "boutique",
+  "query": "Service quality degradation.",
+  "fault_category": "performance",
+  "model_name": "agentrun-v0.9"
+ },
+ "steps": [
+  {
+   "step_id": 0,
+   "action_type": "tool",
+   "action_name": "GetResources",
+   "action_input": {
+    "namespace": "boutique",
+    "resource_type": "pods",
+    "output_wide": true,
+    "show_labels": true
+   },
+   "observation": "Error: Error: Only one of '--show-labels' or '-o wide' can be specified at a time for kubectl get.",
+   "error": null,
+   "purpose": "pod readiness census",
+   "tool_latency": null
+  },
+  {
+   "step_id": 1,
+   "action_type": "tool",
+   "action_name": "GetAlerts",
+   "action_input": {},
+   "observation": "{'status': 'has_anomalies', 'alert_count': 2, 'alerts': [{'type': 'Service', 'name': 'checkoutservice', 'time_range': '2025-12-25 15:57:53 ~ 2025-12-25 15:59:48', 'status': 'ABNORMAL', 'evidence': ['RESOURCE_SATURATION [cpu_cfs] | Val: 0.703s (Throttled)', 'RESOURCE_SATURATION [cpu core] | Normal=0.01 cores -> Current=0.15 cores (+1985.6%)', 'LATENCY_DEGRADATION [Slow Response] | checkoutservice-p95latency: Normal=28.83ms -> Current=93.18ms (+223.2%)']}, {'type': 'Node', 'name': 'worker-02', 'time_range': '2025-12-25 15:57:53 ~ 2025-12-25 15:59:48', 'status': 'ABNORMAL', 'evidence': ['RESOURCE_SATURATION [cpu utilization] | Normal=3.15% -> Current=5.12% (+62.9%)']}]}",
+   "error": null,
+   "purpose": "anomaly signature (routes performance/code families)",
+   "tool_latency": null
+  },
+  {
+   "step_id": 2,
+   "action_type": "tool",
+   "action_name": "GetRecentLogs",
+   "action_input": {
+    "namespace": "boutique",
+    "service_name": "checkoutservice"
+   },
+   "observation": "['From checkoutservice logs:', '2025-12-25T16:00:48.178956679+08:00 {\"message\":\"order confirmation email sent to \\\\\"roberto31@example.com\\\\\"\",\"severity\":\"info\",\"timestamp\":\"2025-12-25T08:00:48.178882158Z\"}', '2025-12-25T16:00:48.661413910+08:00 {\"message\":\"[PlaceOrder] user_id=\\\\\"1ff38312-85e7-49cd-b9eb-e68b9ff77b70\\\\\" user_currency=\\\\\"USD\\\\\"\",\"severity\":\"info\",\"timestamp\":\"2025-12-25T08:00:48.661311269Z\"}', '2025-12-25T16:00:48.667674689+08:00 {\"message\":\"payment went through (transaction_id: 0a2873d1-89c8-40c3-b5e2-4c48502546db)\",\"severity\":\"info\",\"timestamp\":\"2025-12-25T08:00:48.66758886Z\"}', '2025-12-25T16:00:48.671982035+08:00 {\"message\":\"order confirmation email sent to \\\\\"xyoung@example.net\\\\\"\",\"severity\":\"info\",\"timestamp\":\"2025-12-25T08:00:48.671908323Z\"}', '2025-12-25T16:00:48.906835621+08:00 {\"message\":\"[PlaceOrder] user_id=\\\\\"c3d3949d-27b8-497a-80ed-abd490176ce6\\\\\" user_currency=\\\\\"JPY\\\\\"\",\"severity\":\"info\",\"timestamp\":\"2025-12-25T08:00:48.906726659Z\"}', '2025-12-25T16:00:48.916157395+08:00 {\"message\":\"payment went through (transaction_id: abaee337-7c9d-4e55-96c4-ea5fc56fe683)\",\"severity\":\"info\",\"timestamp\":\"2025-12-25T08:00:48.91607117Z\"}', '2025-12-25T16:00:48.919551505+08:00 {\"message\":\"[PlaceOrder] user_id=\\\\\"87fbcc9a-149a-4631-9add-579c5453af12\\\\\" user_currency=\\\\\"EUR\\\\\"\",\"severity\":\"info\",\"timestamp\":\"2025-12-25T08:00:48.919479629Z\"}', '2025-12-25T16:00:48.920617894+08:00 {\"message\":\"order confirmation email sent to \\\\\"brownerica@example.net\\\\\"\",\"severity\":\"info\",\"timestamp\":\"2025-12-25T08:00:48.920561758Z\"}', '2025-12-25T16:00:48.924600455+08:00 {\"message\":\"payment went through (transaction_id: a48d7b87-b556-4026-99a5-8e1ecb06e5b4)\",\"severity\":\"info\",\"timestamp\":\"2025-12-25T08:00:48.924535186Z\"}', '2025-12-25T16:00:48.928477847+08:00 {\"message\":\"order confirmation email sent to \\\\\"hjimenez@example.org\\\\\"\",\"severity\":\"info\",\"timestamp\":\"2025-12-25T08:00:48.928407817Z\"}', '2025-12-25T16:00:49.136846379+08:00 {\"message\":\"[PlaceOrder] user_id=\\\\\"4bc1b983-645b-4944-a1ba-1ceb0b61d892\\\\\" user_currency=\\\\\"JPY\\\\\"\",\"severity\":\"info\",\"timestamp\":\"2025-12-25T08:00:49.136731415Z\"}', '2025-12-25T16:00:49.143206429+08:00 {\"message\":\"[PlaceOrder] user_id=\\\\\"5a8b0e4b-7aa1-47e8-916a-96abcb32c788\\\\\" user_currency=\\\\\"GBP\\\\\"\",\"severity\":\"info\",\"timestamp\":\"2025-12-25T08:00:49.143103579Z\"}', '2025-12-25T16:00:49.150001718+08:00 {\"message\":\"payment went through (transaction_id: 76c23737-b7df-421c-96e8-7269cf4542e4)\",\"severity\":\"info\",\"timestamp\":\"2025-12-25T08:00:49.149916021Z\"}', '2025-12-25T16:00:49.152325387+08:00 {\"message\":\"payment went through (transaction_id: 0a10a13d-ae94-459d-9eaf-c14ed93d4460)\",\"severity\":\"info\",\"timestamp\":\"2025-12-25T08:00:49.152250007Z\"}', '2025-12-25T16:00:49.154558109+08:00 {\"message\":\"order confirmation email sent to \\\\\"sarah53@example.com\\\\\"\",\"severity\":\"info\",\"timestamp\":\"2025-12-25T08:00:49.154474483Z\"}', '2025-12-25T16:00:49.156241497+08:00 {\"message\":\"order confirmation email sent to \\\\\"keith52@example.net\\\\\"\",\"severity\":\"info\",\"timestamp\":\"2025-12-25T08:00:49.15617226Z\"}', '2025-12-25T16:00:49.390570208+08:00 {\"message\":\"[PlaceOrder] user_id=\\\\\"a813f7d2-96fa-4cfd-bdae-0ea71c07a5b1\\\\\" user_currency=\\\\\"EUR\\\\\"\",\"severity\":\"info\",\"timestamp\":\"2025-12-25T08:00:49.390460342Z\"}', '2025-12-25T16:00:49.396995819+08:00 {\"message\":\"payment went through (transaction_id: c402225c-3ec4-4e3e-9701-0c237757eff1)\",\"severity\":\"info\",\"timestamp\":\"2025-12-25T08:00:49.39691184Z\"}', '2025-12-25T16:00:49.401245468+08:00 {\"message\":\"order confirmation email sent to \\\\\"david90@example.net\\\\\"\",\"severity\":\"info\",\"timestamp\":\"2025-12-25T08:00:49.401167712Z\"}', '2025-12-25T16:00:49.500439581+08:00 {\"message\":\"[PlaceOrder] user_id=\\\\\"4be3b7e3-4922-42e4-909b-31fa1813cd04\\\\\" user_currency=\\\\\"JPY\\\\\"\",\"severity\":\"info\",\"timestamp\":\"2025-12-25T08:00:49.50032742Z\"}', '2025-12-25T16:00:49.500476575+08:00 {\"message\":\"[PlaceOrder] user_id=\\\\\"e417a7df-de8c-4b49-a231-c806d56bfd25\\\\\" user_currency=\\\\\"CAD\\\\\"\",\"severity\":\"info\",\"timestamp\":\"2025-12-25T08:00:49.500333637Z\"}', '2025-12-25T16:00:49.509460559+08:00 {\"message\":\"payment went through (transaction_id: 63e2bab1-1878-440a-a41f-078de9820668)\",\"severity\":\"info\",\"timestamp\":\"2025-12-25T08:00:49.509376793Z\"}', '2025-12-25T16:00:49.513892106+08:00 {\"message\":\"order confirmation email sent to \\\\\"arthurcastaneda@example.com\\\\\"\",\"severity\":\"info\",\"timestamp\":\"2025-12-25T08:00:49.513821732Z\"}', '2025-12-25T16:00:50.176979184+08:00 {\"message\":\"[PlaceOrder] user_id=\\\\\"ba95d70d-21b0-46e0-a7ee-4589f8407366\\\\\" user_currency=\\\\\"TRY\\\\\"\",\"severity\":\"info\",\"timestamp\":\"2025-12-25T08:00:50.176878934Z\"}', '2025-12-25T16:00:50.183328330+08:00 {\"message\":\"payment went through (transaction_id: 7fd9292f-21f7-4f89-a3b1-a6a2d4a3d9fa)\",\"severity\":\"info\",\"timestamp\":\"2025-12-25T08:00:50.183247193Z\"}', '2025-12-25T16:00:50.187794597+08:00 {\"message\":\"order confirmation email sent to \\\\\"broberts@example.org\\\\\"\",\"severity\":\"info\",\"timestamp\":\"2025-12-25T08:00:50.187713507Z\"}', '2025-12-25T16:00:50.524326887+08:00 {\"message\":\"[PlaceOrder] user_id=\\\\\"d888c675-67cc-4599-938b-a0b96a73f6f4\\\\\" user_currency=\\\\\"TRY\\\\\"\",\"severity\":\"info\",\"timestamp\":\"2025-12-25T08:00:50.524221761Z\"}', '2025-12-25T16:00:50.530363924+08:00 {\"message\":\"payment went through (transaction_id: 2ed3edd1-9d1b-4a32-a64f-79d1ab5cc0c5)\",\"severity\":\"info\",\"timestamp\":\"2025-12-25T08:00:50.530281221Z\"}', '2025-12-25T16:00:50.534680946+08:00 {\"message\":\"order confirmation email sent to \\\\\"christopher58@example.com\\\\\"\",\"severity\":\"info\",\"timestamp\":\"2025-12-25T08:00:50.534602285Z\"}', '2025-12-25T16:00:50.884605273+08:00 {\"message\":\"[PlaceOrder] user_id=\\\\\"732206a7-8c7f-4155-9566-c1f1963e6591\\\\\" user_currency=\\\\\"GBP\\\\\"\",\"severity\":\"info\",\"timestamp\":\"2025-12-25T08:00:50.884511187Z\"}', '2025-12-25T16:00:50.890750808+08:00 {\"message\":\"payment went through (transaction_id: 4ea44ddd-7a88-40f6-b766-1de0f8b7256e)\",\"severity\":\"info\",\"timestamp\":\"2025-12-25T08:00:50.890683247Z\"}', '2025-12-25T16:00:50.894996741+08:00 {\"message\":\"order confirmation email sent to \\\\\"stacycortez@example.com\\\\\"\",\"severity\":\"info\",\"timestamp\":\"2025-12-25T08:00:50.894915653Z\"}', '2025-12-25T16:00:50.957244586+08:00 {\"message\":\"[PlaceOrder] user_id=\\\\\"8ad36165-9148-4532-91d8-ec8fe87ffe21\\\\\" user_currency=\\\\\"GBP\\\\\"\",\"severity\":\"info\",\"timestamp\":\"2025-12-25T08:00:50.957127631Z\"}', '2025-12-25T16:00:50.963083594+08:00 {\"message\":\"payment went through (transaction_id: fb96e24d-efeb-4d0f-b737-6458def0c198)\",\"severity\":\"info\",\"timestamp\":\"2025-12-25T08:00:50.963019681Z\"}', '2025-12-25T16:00:50.967414354+08:00 {\"message\":\"order confirmation email sent to \\\\\"cathyherrera@example.com\\\\\"\",\"severity\":\"info\",\"timestamp\":\"2025-12-25T08:00:50.967324845Z\"}', '2025-12-25T16:00:51.007431075+08:00 {\"message\":\"[PlaceOrder] user_id=\\\\\"34fd8811-6503-40ee-9f6d-d28c2581a5e7\\\\\" user_currency=\\\\\"EUR\\\\\"\",\"severity\":\"info\",\"timestamp\":\"2025-12-25T08:00:51.007351412Z\"}', '2025-12-25T16:00:51.013021013+08:00 {\"message\":\"payment went through (transaction_id: 9b17cf8f-8570-4548-84f3-b0b67a1102a3)\",\"severity\":\"info\",\"timestamp\":\"2025-12-25T08:00:51.012958268Z\"}', '2025-12-25T16:00:51.016960289+08:00 {\"message\":\"order confirmation email sent to \\\\\"lsmith@example.net\\\\\"\",\"severity\":\"info\",\"timestamp\":\"2025-12-25T08:00:51.016899917Z\"}', '2025-12-25T16:00:51.408297467+08:00 {\"message\":\"[PlaceOrder] user_id=\\\\\"7327d801-946a-43de-a62c-6d47529f518f\\\\\" user_currency=\\\\\"TRY\\\\\"\",\"severity\":\"info\",\"timestamp\":\"2025-12-25T08:00:51.40817405Z\"}', '2025-12-25T16:00:51.415097229+08:00 {\"message\":\"payment went through (transaction_id: 2809328c-6b78-4cc1-9f19-b84f9330f271)\",\"severity\":\"info\",\"timestamp\":\"2025-12-25T08:00:51.41500525Z\"}', '2025-12-25T16:00:51.419518169+08:00 {\"message\":\"order confirmation email sent to \\\\\"bowmanmichael@example.org\\\\\"\",\"severity\":\"info\",\"timestamp\":\"2025-12-25T08:00:51.419432584Z\"}', '2025-12-25T16:00:51.510105835+08:00 {\"message\":\"[PlaceOrder] user_id=\\\\\"27eff8bf-b892-476b-a8bf-1bb072a9ecf7\\\\\" user_currency=\\\\\"USD\\\\\"\",\"severity\":\"info\",\"timestamp\":\"2025-12-25T08:00:51.509999364Z\"}', '2025-12-25T16:00:51.520754526+08:00 {\"message\":\"payment went through (transaction_id: 18ee0b58-aa0e-4ab6-b088-4e5b3eca8971)\",\"severity\":\"info\",\"timestamp\":\"2025-12-25T08:00:51.520676593Z\"}', '2025-12-25T16:00:51.525203030+08:00 {\"message\":\"order confirmation email sent to \\\\\"freyjorge@example.org\\\\\"\",\"severity\":\"info\",\"timestamp\":\"2025-12-25T08:00:51.525119035Z\"}', '2025-12-25T16:00:51.562714908+08:00 {\"message\":\"[PlaceOrder] user_id=\\\\\"cc91b8cb-a62a-4d61-8d38-265ac90b62c3\\\\\" user_currency=\\\\\"CAD\\\\\"\",\"severity\":\"info\",\"timestamp\":\"2025-12-25T08:00:51.562625746Z\"}', '2025-12-25T16:00:51.571060185+08:00 {\"message\":\"payment went through (transaction_id: 3a7f02d0-ee18-4582-83fe-05f969d8e00b)\",\"severity\":\"info\",\"timestamp\":\"2025-12-25T08:00:51.570989878Z\"}', '2025-12-25T16:00:51.575386878+08:00 {\"message\":\"order confirmation email sent to \\\\\"vpeters@example.com\\\\\"\",\"severity\":\"info\",\"timestamp\":\"2025-12-25T08:00:51.575319904Z\"}', '2025-12-25T16:00:52.067796722+08:00 {\"message\":\"[PlaceOrder] user_id=\\\\\"5112933b-26e4-42e6-8339-cc353c9e2be1\\\\\" user_currency=\\\\\"TRY\\\\\"\",\"severity\":\"info\",\"timestamp\":\"2025-12-25T08:00:52.067690054Z\"}', '2025-12-25T16:00:52.077041678+08:00 {\"message\":\"payment went through (transaction_id: 4ffc4e4b-674c-41f1-97db-c6fa5e2e807f)\",\"severity\":\"info\",\"timestamp\":\"2025-12-25T08:00:52.07696557Z\"}', '2025-12-25T16:00:52.081635788+08:00 {\"message\":\"order confirmation email sent to \\\\\"mallory05@example.com\\\\\"\",\"severity\":\"info\",\"timestamp\":\"2025-12-25T08:00:52.081555771Z\"}']",
+   "error": null,
+   "purpose": "request latency / saturation logs",
+   "tool_latency": null
+  }
+ ],
+ "agentrun": {
+  "tag": "test",
+  "dsl": "workspace/dsl_versions/v0.9.dsl.txt",
+  "dsl_version": "0.9",
+  "sop": {
+   "sop": "boutique-runtime-rca",
+   "scope": {
+    "system": "boutique",
+    "families": [
+     "runtime",
+     "admission",
+     "scheduling",
+     "startup",
+     "service",
+     "performance",
+     "infrastructure",
+     "codedefect"
+    ],
+    "severity": [
+     "SEV2",
+     "SEV3"
+    ]
+   },
+   "owner": "sre-platform",
+   "approved_by": [
+    "oncall-primary",
+    "sre-lead"
+   ],
+   "reviewed_at": "2026-10-23",
+   "change_ticket": "OPS-1237",
+   "boundaries": "只读诊断：本 SOP 不执行任何写操作（重启/回滚/扩缩容），也不做对外播报；\n它回答\"最可能的根因与受害对象\"，处置与沟通由值班按 runbook 人工执行。\n不覆盖 SEV1（需 incident commander 介入）与变更引发的问题（走变更回滚流程）。\n输入是冻结快照：诊断结论对\"快照时刻\"成立，恢复后需重新取证。\nR1 已知边界：PVC 的 requested size / accessMode 在本 benchmark 的工具面不可见，\n因此 pvc_capacity 与 pvc_access_mode 无法区分（同一分数并列，交给 jev 或升级）。\n"
+  },
+  "params": {
+   "cands_cap": 8,
+   "max_waves": 8,
+   "min_waves": 5,
+   "steps_per_wave": 1,
+   "dominance_ratio": 1.5,
+   "conf_min": 0.0,
+   "escalate": true,
+   "escalate_budget": 8,
+   "judge_on_codedefect": true,
+   "jev_route": true,
+   "jev_pick": true,
+   "jev_verify": true,
+   "route_fallback": "runtime"
+  },
+  "nodes_executed": [
+   "anchors:extract_anchors",
+   "census:probes",
+   "route:decide",
+   "plan:build_plan",
+   "probe:probes",
+   "derive:derive_candidates",
+   "pick:decide",
+   "verify:decide",
+   "probe:probes",
+   "derive:derive_candidates",
+   "pick:decide",
+   "verify:decide",
+   "probe:probes",
+   "derive:derive_candidates",
+   "pick:decide",
+   "verify:decide",
+   "escalate:escalate",
+   "answer:normalize_answer",
+   "persist:persist_trace"
+  ],
+  "census": [
+   {
+    "step": "pods",
+    "gate": "always"
+   },
+   {
+    "step": "alerts",
+    "gate": "healthy_system"
+   }
+  ],
+  "plan": [
+   {
+    "step": "recent_logs",
+    "gate": "always",
+    "wave": 1
+   },
+   {
+    "step": "describe_pod",
+    "gate": "weak",
+    "wave": 2
+   },
+   {
+    "step": "deps",
+    "gate": "weak",
+    "wave": 3
+   }
+  ],
+  "family": "performance",
+  "state_wiring": {
+   "family": "$route.family",
+   "route_probs": "$route.probabilities",
+   "picked": "$pick.picked",
+   "pick_dominant": "$pick.dominant",
+   "verify_status": "$verify.status",
+   "verify_prob": "$verify.confidence"
+  },
+  "bindings": {
+   "anchors": {
+    "anchors": "Anchors(case_id='boutique/performance/3', system='boutique', namespace='boutique', query='Service quality degradation.', difficulty='hard', symptoms=['degradation'], mentioned_apps=[], priors={'db_service': '', 'db_port': 0})"
+   },
+   "route": {
+    "family": "performance",
+    "probabilities": {},
+    "route_why": "mechanism_mode"
+   },
+   "plan": {
+    "plan": "[{'name': 'recent_logs', 'key': 'recent', 'tool': 'GetRecentLogs', 'args': <function _args_error_logs at 0x10d4fbce0>, 'purpose': 'request latency / saturation logs', 'when': <function compile_steps.<locals>.<lambda> at 0x10dae5b20>, 'gate': 'always', 'wave': 1}, {'name': 'describe_pod', 'key': 'describe:pod', 'tool': 'DescribeResource', 'args': <function _args_describe_pod at 0x10d4fbb00>, 'purpose': 'probe config, container state, restart reasons, scheduler events', 'when': <function compile_steps.<locals>.<lambda> at 0x10f301c60>, 'gate': 'weak', 'wave': 2}, {'name': 'deps', 'key': 'deps', 'tool': 'GetServiceDependencies', 'args': <function _args_deps at 0x10d5245e0>, 'purpose': 'upstream/downstream call graph', 'when': <function compile_steps.<locals>.<lambda> at 0x10f3018a0>, 'gate': 'weak', 'wave': 3}]"
+   },
+   "derive": {
+    "candidates": "[Candidate(root_cause='pod_network_delay', object='app/checkoutservice', score=0.82, evidence='network latency anomaly on the pod', rule='delay_alert'), Candidate(root_cause='pod_network_delay', object='app/worker-02', score=0.82, evidence='network latency anomaly on the pod', rule='delay_alert')]"
+   },
+   "pick": {
+    "picked": 0,
+    "dominant": false,
+    "pick_why": "no_new_evidence"
+   },
+   "verify": {
+    "status": "verified",
+    "confidence": null,
+    "verify_why": "no_new_evidence"
+   },
+   "escalate": {
+    "answer": null
+   },
+   "answer": {
+    "final": {
+     "key_evidence_summary": "network latency anomaly on the pod",
+     "top_3_predictions": [
+      {
+       "rank": 1,
+       "fault_object": "app/checkoutservice",
+       "root_cause": "pod_network_delay"
+      },
+      {
+       "rank": 2,
+       "fault_object": "app/worker-02",
+       "root_cause": "pod_network_delay"
+      },
+      {
+       "rank": 3,
+       "fault_object": "app/checkoutservice",
+       "root_cause": "pod_network_delay"
+      }
+     ]
+    }
+   }
+  },
+  "picked": {
+   "root_cause": "pod_network_delay",
+   "object": "app/checkoutservice",
+   "score": 0.82,
+   "evidence": "network latency anomaly on the pod",
+   "rule": "delay_alert"
+  },
+  "pick_why": "",
+  "verify_prob": null,
+  "verify_verdict": "verified",
+  "verified": true,
+  "escalated": false,
+  "escalate_reason": "",
+  "escalate_steps": 0,
+  "waves": 3,
+  "candidates": [
+   {
+    "root_cause": "pod_network_delay",
+    "object": "app/checkoutservice",
+    "score": 0.82,
+    "evidence": "network latency anomaly on the pod",
+    "rule": "delay_alert"
+   },
+   {
+    "root_cause": "pod_network_delay",
+    "object": "app/worker-02",
+    "score": 0.82,
+    "evidence": "network latency anomaly on the pod",
+    "rule": "delay_alert"
+   }
+  ],
+  "jev": [
+   {
+    "rid": "test:boutique/performance/3#route",
+    "kind": "route",
+    "node": "route",
+    "mode": "mechanism",
+    "options": [
+     "performance",
+     "infrastructure"
+    ],
+    "status": "mechanical",
+    "guard": "unavailable",
+    "use": "first_option",
+    "choice": "performance",
+    "why": "mechanism_mode",
+    "dominant": false,
+    "continue_loop": false,
+    "escalate": false
+   },
+   {
+    "rid": "test:boutique/performance/3#pick1",
+    "kind": "pick",
+    "node": "pick",
+    "mode": "mechanism",
+    "options": [
+     "c0",
+     "c1"
+    ],
+    "status": "mechanical",
+    "guard": "unavailable",
+    "use": "first_option",
+    "choice": 0,
+    "why": "mechanism_mode",
+    "dominant": false,
+    "continue_loop": false,
+    "escalate": false
+   },
+   {
+    "rid": "test:boutique/performance/3#verify1",
+    "kind": "verify",
+    "node": "verify",
+    "mode": "mechanism",
+    "options": [
+     "supported",
+     "insufficient",
+     "contradicted"
+    ],
+    "status": "mechanical",
+    "guard": "unavailable",
+    "use": "verified",
+    "choice": "verified",
+    "why": "mechanism_mode",
+    "dominant": false,
+    "continue_loop": false,
+    "escalate": false
+   },
+   {
+    "rid": "test:boutique/performance/3#pick2",
+    "kind": "pick",
+    "node": "pick",
+    "mode": "mechanism",
+    "options": [
+     "c0",
+     "c1"
+    ],
+    "status": "mechanical",
+    "guard": "unchanged_since_last",
+    "use": "previous",
+    "choice": 0,
+    "why": "no_new_evidence",
+    "dominant": false,
+    "continue_loop": false,
+    "escalate": false
+   },
+   {
+    "rid": "test:boutique/performance/3#verify2",
+    "kind": "verify",
+    "node": "verify",
+    "mode": "mechanism",
+    "options": [
+     "supported",
+     "insufficient",
+     "contradicted"
+    ],
+    "status": "mechanical",
+    "guard": "unchanged_since_last",
+    "use": "previous",
+    "choice": "verified",
+    "why": "no_new_evidence",
+    "dominant": false,
+    "continue_loop": false,
+    "escalate": false
+   },
+   {
+    "rid": "test:boutique/performance/3#pick3",
+    "kind": "pick",
+    "node": "pick",
+    "mode": "mechanism",
+    "options": [
+     "c0",
+     "c1"
+    ],
+    "status": "mechanical",
+    "guard": "unchanged_since_last",
+    "use": "previous",
+    "choice": 0,
+    "why": "no_new_evidence",
+    "dominant": false,
+    "continue_loop": false,
+    "escalate": false
+   },
+   {
+    "rid": "test:boutique/performance/3#verify3",
+    "kind": "verify",
+    "node": "verify",
+    "mode": "mechanism",
+    "options": [
+     "supported",
+     "insufficient",
+     "contradicted"
+    ],
+    "status": "mechanical",
+    "guard": "unchanged_since_last",
+    "use": "previous",
+    "choice": "verified",
+    "why": "no_new_evidence",
+    "dominant": false,
+    "continue_loop": false,
+    "escalate": false
+   }
+  ],
+  "nodes": [
+   {
+    "node": "code",
+    "id": "anchors",
+    "anchors": {
+     "case_id": "boutique/performance/3",
+     "system": "boutique",
+     "namespace": "boutique",
+     "query": "Service quality degradation.",
+     "difficulty": "hard",
+     "symptoms": [
+      "degradation"
+     ],
+     "mentioned_apps": []
+    }
+   },
+   {
+    "node": "probes",
+    "plan": "census",
+    "wave": 0,
+    "executed": 2,
+    "steps": [
+     {
+      "key": "pods",
+      "tool": "GetResources",
+      "arguments": {
+       "namespace": "boutique",
+       "resource_type": "pods",
+       "output_wide": true,
+       "show_labels": true
+      },
+      "gate": "always"
+     },
+     {
+      "key": "alerts",
+      "tool": "GetAlerts",
+      "arguments": {},
+      "gate": "healthy_system"
+     }
+    ],
+    "skipped": []
+   },
+   {
+    "node": "decide",
+    "id": "route",
+    "rid": "test:boutique/performance/3#route",
+    "status": "mechanical",
+    "guard": "unavailable",
+    "use": "first_option",
+    "choice": "performance",
+    "dominant": false,
+    "why": "mechanism_mode"
+   },
+   {
+    "node": "code",
+    "id": "plan",
+    "family": "performance",
+    "plan": [
+     {
+      "step": "recent_logs",
+      "gate": "always",
+      "wave": 1
+     },
+     {
+      "step": "describe_pod",
+      "gate": "weak",
+      "wave": 2
+     },
+     {
+      "step": "deps",
+      "gate": "weak",
+      "wave": 3
+     }
+    ]
+   },
+   {
+    "node": "probes",
+    "plan": "family",
+    "wave": 1,
+    "executed": 1,
+    "steps": [
+     {
+      "key": "recent",
+      "tool": "GetRecentLogs",
+      "arguments": {
+       "namespace": "boutique",
+       "service_name": "checkoutservice"
+      },
+      "gate": "always"
+     }
+    ],
+    "skipped": []
+   },
+   {
+    "node": "code",
+    "id": "derive",
+    "raw": 2,
+    "kept": 2,
+    "top": [
+     {
+      "root_cause": "pod_network_delay",
+      "object": "app/checkoutservice",
+      "score": 0.82,
+      "evidence": "network latency anomaly on the pod",
+      "rule": "delay_alert"
+     },
+     {
+      "root_cause": "pod_network_delay",
+      "object": "app/worker-02",
+      "score": 0.82,
+      "evidence": "network latency anomaly on the pod",
+      "rule": "delay_alert"
+     }
+    ]
+   },
+   {
+    "node": "decide",
+    "id": "pick",
+    "rid": "test:boutique/performance/3#pick1",
+    "status": "mechanical",
+    "guard": "unavailable",
+    "use": "first_option",
+    "choice": 0,
+    "dominant": false,
+    "why": "mechanism_mode"
+   },
+   {
+    "node": "decide",
+    "id": "verify",
+    "rid": "test:boutique/performance/3#verify1",
+    "status": "mechanical",
+    "guard": "unavailable",
+    "use": "verified",
+    "choice": "verified",
+    "dominant": false,
+    "why": "mechanism_mode"
+   },
+   {
+    "node": "probes",
+    "plan": "family",
+    "wave": 2,
+    "executed": 0,
+    "steps": [],
+    "skipped": [
+     {
+      "step": "describe_pod",
+      "why": "gate weak"
+     }
+    ]
+   },
+   {
+    "node": "code",
+    "id": "derive",
+    "raw": 2,
+    "kept": 2,
+    "top": [
+     {
+      "root_cause": "pod_network_delay",
+      "object": "app/checkoutservice",
+      "score": 0.82,
+      "evidence": "network latency anomaly on the pod",
+      "rule": "delay_alert"
+     },
+     {
+      "root_cause": "pod_network_delay",
+      "object": "app/worker-02",
+      "score": 0.82,
+      "evidence": "network latency anomaly on the pod",
+      "rule": "delay_alert"
+     }
+    ]
+   },
+   {
+    "node": "decide",
+    "id": "pick",
+    "rid": "test:boutique/performance/3#pick2",
+    "status": "mechanical",
+    "guard": "unchanged_since_last",
+    "use": "previous",
+    "choice": 0,
+    "dominant": false,
+    "why": "no_new_evidence"
+   },
+   {
+    "node": "decide",
+    "id": "verify",
+    "rid": "test:boutique/performance/3#verify2",
+    "status": "mechanical",
+    "guard": "unchanged_since_last",
+    "use": "previous",
+    "choice": "verified",
+    "dominant": false,
+    "why": "no_new_evidence"
+   },
+   {
+    "node": "probes",
+    "plan": "family",
+    "wave": 3,
+    "executed": 0,
+    "steps": [],
+    "skipped": [
+     {
+      "step": "deps",
+      "why": "gate weak"
+     }
+    ]
+   },
+   {
+    "node": "code",
+    "id": "derive",
+    "raw": 2,
+    "kept": 2,
+    "top": [
+     {
+      "root_cause": "pod_network_delay",
+      "object": "app/checkoutservice",
+      "score": 0.82,
+      "evidence": "network latency anomaly on the pod",
+      "rule": "delay_alert"
+     },
+     {
+      "root_cause": "pod_network_delay",
+      "object": "app/worker-02",
+      "score": 0.82,
+      "evidence": "network latency anomaly on the pod",
+      "rule": "delay_alert"
+     }
+    ]
+   },
+   {
+    "node": "decide",
+    "id": "pick",
+    "rid": "test:boutique/performance/3#pick3",
+    "status": "mechanical",
+    "guard": "unchanged_since_last",
+    "use": "previous",
+    "choice": 0,
+    "dominant": false,
+    "why": "no_new_evidence"
+   },
+   {
+    "node": "decide",
+    "id": "verify",
+    "rid": "test:boutique/performance/3#verify3",
+    "status": "mechanical",
+    "guard": "unchanged_since_last",
+    "use": "previous",
+    "choice": "verified",
+    "dominant": false,
+    "why": "no_new_evidence"
+   },
+   {
+    "node": "loop",
+    "id": "waves",
+    "stop": "plan_exhausted",
+    "wave": 3
+   },
+   {
+    "node": "escalate",
+    "id": "escalate",
+    "fired": false,
+    "reasons": [],
+    "why": "no reason"
+   },
+   {
+    "node": "code",
+    "id": "answer",
+    "predictions": [
+     {
+      "rank": 1,
+      "fault_object": "app/checkoutservice",
+      "root_cause": "pod_network_delay"
+     },
+     {
+      "rank": 2,
+      "fault_object": "app/worker-02",
+      "root_cause": "pod_network_delay"
+     },
+     {
+      "rank": 3,
+      "fault_object": "app/checkoutservice",
+      "root_cause": "pod_network_delay"
+     }
+    ]
+   },
+   {
+    "node": "artifact",
+    "id": "persist",
+    "persisted": false,
+    "why": "written by the CLI driver"
+   }
+  ],
+  "notes": [],
+  "tool_calls": 3,
+  "model_calls": 0,
+  "tokens_in": 0,
+  "tokens_out": 0,
+  "wall_s": 0.16
+ }
+}

@@ -1,0 +1,654 @@
+{
+ "case_id": "boutique/codedefect/76",
+ "system_name": "boutique",
+ "question": "Service Availability Disruption.",
+ "case_path": "/Users/justinwan/work/workspace/cloudops_bench_rsi/repo/benchmark/boutique/codedefect/76",
+ "max_steps": 8,
+ "current_step": 4,
+ "finished": true,
+ "stop_reason": "submit",
+ "final_answer": "{\"key_evidence_summary\": \"no evidence-grounded hypothesis\", \"top_3_predictions\": []}",
+ "metadata": {
+  "namespace": "boutique",
+  "query": "Service Availability Disruption.",
+  "fault_category": "codedefect",
+  "model_name": "agentrun-v0.8"
+ },
+ "steps": [
+  {
+   "step_id": 0,
+   "action_type": "tool",
+   "action_name": "GetResources",
+   "action_input": {
+    "namespace": "boutique",
+    "resource_type": "pods",
+    "output_wide": true
+   },
+   "observation": "NAME                                     READY   STATUS    RESTARTS   AGE     IP             NODE        NOMINATED NODE   READINESS GATES\nadservice-6f89c99b76-ftljq               2/2     Running   0          5m38s   172.20.2.162   worker-02   <none>           <none>\ncartservice-7c5f46fc47-gb9tp             2/2     Running   0          5m37s   172.20.1.67    worker-01   <none>           <none>\ncheckoutservice-5b97d6df88-v45ch         2/2     Running   0          5m37s   172.20.2.163   worker-02   <none>           <none>\ncurrencyservice-5bc9dbdf66-tp6j5         2/2     Running   0          5m37s   172.20.1.68    worker-01   <none>           <none>\nemailservice-c86b9b8f6-wv25l             2/2     Running   0          5m37s   172.20.2.164   worker-02   <none>           <none>\nfrontend-79bb68d59d-m47hd                2/2     Running   0          5m37s   172.20.1.70    worker-01   <none>           <none>\npaymentservice-64b6c744b5-s5tt5          2/2     Running   0          5m36s   172.20.2.165   worker-02   <none>           <none>\nproductcatalogservice-867cb6fc4d-69n26   2/2     Running   0          2m26s   172.20.1.73    worker-01   <none>           <none>\nrecommendationservice-786899779d-g8hjp   2/2     Running   0          5m36s   172.20.2.166   worker-02   <none>           <none>\nredis-cart-64b9db6f79-w5xwj              2/2     Running   0          5m36s   172.20.1.72    worker-01   <none>           <none>\nshippingservice-799cbfbc76-n4mrn         2/2     Running   0          5m35s   172.20.2.167   worker-02   <none>           <none>",
+   "error": null,
+   "purpose": "pod readiness census",
+   "tool_latency": null
+  },
+  {
+   "step_id": 1,
+   "action_type": "tool",
+   "action_name": "GetAlerts",
+   "action_input": {},
+   "observation": "{'status': 'has_anomalies', 'alert_count': 3, 'alerts': [{'type': 'Service', 'name': 'frontend', 'time_range': '2026-05-18 18:38:48 ~ 2026-05-18 18:41:23', 'status': 'ABNORMAL', 'evidence': ['ERROR_SPIKE [Success Rate Drop] | Normal=90.5% -> Cur=66.6% (-23.9%)']}, {'type': 'Service', 'name': 'recommendationservice', 'time_range': '2026-05-18 18:38:48 ~ 2026-05-18 18:41:23', 'status': 'ABNORMAL', 'evidence': ['AVAILABILITY_MISSING [Data Loss] | success_rate vanished']}, {'request_method': 'GET', 'business_action': 'View product detail', 'entry_service': 'frontend', 'url': '/product/{id}', 'occurrences': 553, 'raw_error': \"HTTPError('500 Server Error: Internal Server Error')\"}]}",
+   "error": null,
+   "purpose": "anomaly signature (routes performance/code families)",
+   "tool_latency": null
+  },
+  {
+   "step_id": 2,
+   "action_type": "tool",
+   "action_name": "GetRecentLogs",
+   "action_input": {
+    "namespace": "boutique",
+    "service_name": "frontend"
+   },
+   "observation": "['From frontend logs:', '2026-05-18T18:41:36.298324689+08:00 {\"http.req.id\":\"2929531d-b9a9-4030-926f-8b128b667c01\",\"http.req.method\":\"GET\",\"http.req.path\":\"/product/1YMWWN1N4O\",\"message\":\"request started\",\"session\":\"2f920ecf-6b7c-4e76-8c3e-c3498611f3fc\",\"severity\":\"debug\",\"timestamp\":\"2026-05-18T10:41:36.29819616Z\"}', '2026-05-18T18:41:36.298340881+08:00 {\"currency\":\"USD\",\"http.req.id\":\"2929531d-b9a9-4030-926f-8b128b667c01\",\"http.req.method\":\"GET\",\"http.req.path\":\"/product/1YMWWN1N4O\",\"id\":\"1YMWWN1N4O\",\"message\":\"serving product page\",\"session\":\"2f920ecf-6b7c-4e76-8c3e-c3498611f3fc\",\"severity\":\"debug\",\"timestamp\":\"2026-05-18T10:41:36.298235012Z\"}', '2026-05-18T18:41:36.299723181+08:00 {\"error\":\"could not retrieve product: rpc error: code = Unknown desc = Query product error.\",\"http.req.id\":\"2929531d-b9a9-4030-926f-8b128b667c01\",\"http.req.method\":\"GET\",\"http.req.path\":\"/product/1YMWWN1N4O\",\"message\":\"request error\",\"session\":\"2f920ecf-6b7c-4e76-8c3e-c3498611f3fc\",\"severity\":\"error\",\"timestamp\":\"2026-05-18T10:41:36.299638458Z\"}', '2026-05-18T18:41:36.299950722+08:00 {\"http.req.id\":\"2929531d-b9a9-4030-926f-8b128b667c01\",\"http.req.method\":\"GET\",\"http.req.path\":\"/product/1YMWWN1N4O\",\"http.resp.bytes\":4995,\"http.resp.status\":500,\"http.resp.took_ms\":1,\"message\":\"request complete\",\"session\":\"2f920ecf-6b7c-4e76-8c3e-c3498611f3fc\",\"severity\":\"debug\",\"timestamp\":\"2026-05-18T10:41:36.299860871Z\"}', '2026-05-18T18:41:36.388777632+08:00 {\"http.req.id\":\"c314444d-2a7b-4243-bdf9-b7545e9da4e7\",\"http.req.method\":\"GET\",\"http.req.path\":\"/product/L9ECAV7KIM\",\"message\":\"request started\",\"session\":\"a40b3cad-7516-46d9-b359-bfed5d9250db\",\"severity\":\"debug\",\"timestamp\":\"2026-05-18T10:41:36.388650716Z\"}', '2026-05-18T18:41:36.388798032+08:00 {\"currency\":\"USD\",\"http.req.id\":\"c314444d-2a7b-4243-bdf9-b7545e9da4e7\",\"http.req.method\":\"GET\",\"http.req.path\":\"/product/L9ECAV7KIM\",\"id\":\"L9ECAV7KIM\",\"message\":\"serving product page\",\"session\":\"a40b3cad-7516-46d9-b359-bfed5d9250db\",\"severity\":\"debug\",\"timestamp\":\"2026-05-18T10:41:36.388695667Z\"}', '2026-05-18T18:41:36.390162233+08:00 {\"error\":\"could not retrieve product: rpc error: code = Unknown desc = Query product error.\",\"http.req.id\":\"c314444d-2a7b-4243-bdf9-b7545e9da4e7\",\"http.req.method\":\"GET\",\"http.req.path\":\"/product/L9ECAV7KIM\",\"message\":\"request error\",\"session\":\"a40b3cad-7516-46d9-b359-bfed5d9250db\",\"severity\":\"error\",\"timestamp\":\"2026-05-18T10:41:36.390078033Z\"}', '2026-05-18T18:41:36.390389294+08:00 {\"http.req.id\":\"c314444d-2a7b-4243-bdf9-b7545e9da4e7\",\"http.req.method\":\"GET\",\"http.req.path\":\"/product/L9ECAV7KIM\",\"http.resp.bytes\":4995,\"http.resp.status\":500,\"http.resp.took_ms\":1,\"message\":\"request complete\",\"session\":\"a40b3cad-7516-46d9-b359-bfed5d9250db\",\"severity\":\"debug\",\"timestamp\":\"2026-05-18T10:41:36.390292229Z\"}', '2026-05-18T18:41:36.545461122+08:00 {\"http.req.id\":\"7797180c-a9fb-4412-85ee-7b4b2dd5a00c\",\"http.req.method\":\"GET\",\"http.req.path\":\"/\",\"message\":\"request started\",\"session\":\"802e5ff9-b485-4b9d-b311-55bbdf82465a\",\"severity\":\"debug\",\"timestamp\":\"2026-05-18T10:41:36.54533308Z\"}', '2026-05-18T18:41:36.545476180+08:00 {\"currency\":\"USD\",\"http.req.id\":\"7797180c-a9fb-4412-85ee-7b4b2dd5a00c\",\"http.req.method\":\"GET\",\"http.req.path\":\"/\",\"message\":\"home\",\"session\":\"802e5ff9-b485-4b9d-b311-55bbdf82465a\",\"severity\":\"info\",\"timestamp\":\"2026-05-18T10:41:36.545368156Z\"}', '2026-05-18T18:41:36.560106207+08:00 env platform is either empty or invalid', '2026-05-18T18:41:36.560459922+08:00 {\"http.req.id\":\"7797180c-a9fb-4412-85ee-7b4b2dd5a00c\",\"http.req.method\":\"GET\",\"http.req.path\":\"/\",\"message\":\"ENV_PLATFORM is: local\",\"session\":\"802e5ff9-b485-4b9d-b311-55bbdf82465a\",\"severity\":\"debug\",\"timestamp\":\"2026-05-18T10:41:36.560392307Z\"}', '2026-05-18T18:41:36.563052532+08:00 {\"http.req.id\":\"7797180c-a9fb-4412-85ee-7b4b2dd5a00c\",\"http.req.method\":\"GET\",\"http.req.path\":\"/\",\"http.resp.bytes\":10499,\"http.resp.status\":200,\"http.resp.took_ms\":17,\"message\":\"request complete\",\"session\":\"802e5ff9-b485-4b9d-b311-55bbdf82465a\",\"severity\":\"debug\",\"timestamp\":\"2026-05-18T10:41:36.562982169Z\"}', '2026-05-18T18:41:36.573700188+08:00 {\"http.req.id\":\"4c8d7cef-04fd-4a61-8a42-ee8b45eeef0d\",\"http.req.method\":\"GET\",\"http.req.path\":\"/\",\"message\":\"request started\",\"session\":\"92e91392-6d38-465d-ba7d-f14d2bbcf4ff\",\"severity\":\"debug\",\"timestamp\":\"2026-05-18T10:41:36.573606678Z\"}', '2026-05-18T18:41:36.573711831+08:00 {\"currency\":\"USD\",\"http.req.id\":\"4c8d7cef-04fd-4a61-8a42-ee8b45eeef0d\",\"http.req.method\":\"GET\",\"http.req.path\":\"/\",\"message\":\"home\",\"session\":\"92e91392-6d38-465d-ba7d-f14d2bbcf4ff\",\"severity\":\"info\",\"timestamp\":\"2026-05-18T10:41:36.573633459Z\"}', '2026-05-18T18:41:36.586615998+08:00 env platform is either empty or invalid', '2026-05-18T18:41:36.587011806+08:00 {\"http.req.id\":\"4c8d7cef-04fd-4a61-8a42-ee8b45eeef0d\",\"http.req.method\":\"GET\",\"http.req.path\":\"/\",\"message\":\"ENV_PLATFORM is: local\",\"session\":\"92e91392-6d38-465d-ba7d-f14d2bbcf4ff\",\"severity\":\"debug\",\"timestamp\":\"2026-05-18T10:41:36.586931149Z\"}', '2026-05-18T18:41:36.589285611+08:00 {\"http.req.id\":\"4c8d7cef-04fd-4a61-8a42-ee8b45eeef0d\",\"http.req.method\":\"GET\",\"http.req.path\":\"/\",\"http.resp.bytes\":10499,\"http.resp.status\":200,\"http.resp.took_ms\":15,\"message\":\"request complete\",\"session\":\"92e91392-6d38-465d-ba7d-f14d2bbcf4ff\",\"severity\":\"debug\",\"timestamp\":\"2026-05-18T10:41:36.589211052Z\"}', '2026-05-18T18:41:36.769229882+08:00 {\"http.req.id\":\"35786577-9870-4454-aa2b-40508b2585fc\",\"http.req.method\":\"GET\",\"http.req.path\":\"/\",\"message\":\"request started\",\"session\":\"973ea63f-0f28-482e-89a7-3bef95e20e79\",\"severity\":\"debug\",\"timestamp\":\"2026-05-18T10:41:36.769106321Z\"}', '2026-05-18T18:41:36.769248924+08:00 {\"currency\":\"USD\",\"http.req.id\":\"35786577-9870-4454-aa2b-40508b2585fc\",\"http.req.method\":\"GET\",\"http.req.path\":\"/\",\"message\":\"home\",\"session\":\"973ea63f-0f28-482e-89a7-3bef95e20e79\",\"severity\":\"info\",\"timestamp\":\"2026-05-18T10:41:36.769138457Z\"}', '2026-05-18T18:41:36.783793294+08:00 env platform is either empty or invalid', '2026-05-18T18:41:36.784196657+08:00 {\"http.req.id\":\"35786577-9870-4454-aa2b-40508b2585fc\",\"http.req.method\":\"GET\",\"http.req.path\":\"/\",\"message\":\"ENV_PLATFORM is: local\",\"session\":\"973ea63f-0f28-482e-89a7-3bef95e20e79\",\"severity\":\"debug\",\"timestamp\":\"2026-05-18T10:41:36.784127028Z\"}', '2026-05-18T18:41:36.786680756+08:00 {\"http.req.id\":\"35786577-9870-4454-aa2b-40508b2585fc\",\"http.req.method\":\"GET\",\"http.req.path\":\"/\",\"http.resp.bytes\":10499,\"http.resp.status\":200,\"http.resp.took_ms\":17,\"message\":\"request complete\",\"session\":\"973ea63f-0f28-482e-89a7-3bef95e20e79\",\"severity\":\"debug\",\"timestamp\":\"2026-05-18T10:41:36.786614104Z\"}', '2026-05-18T18:41:36.909568861+08:00 {\"http.req.id\":\"bd910d3f-7e9a-410e-a9e2-350fd267f657\",\"http.req.method\":\"GET\",\"http.req.path\":\"/product/L9ECAV7KIM\",\"message\":\"request started\",\"session\":\"f2e5bebf-8503-4bb3-b52f-8f40cb698808\",\"severity\":\"debug\",\"timestamp\":\"2026-05-18T10:41:36.90945265Z\"}', '2026-05-18T18:41:36.909586076+08:00 {\"currency\":\"USD\",\"http.req.id\":\"bd910d3f-7e9a-410e-a9e2-350fd267f657\",\"http.req.method\":\"GET\",\"http.req.path\":\"/product/L9ECAV7KIM\",\"id\":\"L9ECAV7KIM\",\"message\":\"serving product page\",\"session\":\"f2e5bebf-8503-4bb3-b52f-8f40cb698808\",\"severity\":\"debug\",\"timestamp\":\"2026-05-18T10:41:36.909494349Z\"}', '2026-05-18T18:41:36.911068127+08:00 {\"error\":\"could not retrieve product: rpc error: code = Unknown desc = Query product error.\",\"http.req.id\":\"bd910d3f-7e9a-410e-a9e2-350fd267f657\",\"http.req.method\":\"GET\",\"http.req.path\":\"/product/L9ECAV7KIM\",\"message\":\"request error\",\"session\":\"f2e5bebf-8503-4bb3-b52f-8f40cb698808\",\"severity\":\"error\",\"timestamp\":\"2026-05-18T10:41:36.910984369Z\"}', '2026-05-18T18:41:36.911262908+08:00 {\"http.req.id\":\"bd910d3f-7e9a-410e-a9e2-350fd267f657\",\"http.req.method\":\"GET\",\"http.req.path\":\"/product/L9ECAV7KIM\",\"http.resp.bytes\":4995,\"http.resp.status\":500,\"http.resp.took_ms\":1,\"message\":\"request complete\",\"session\":\"f2e5bebf-8503-4bb3-b52f-8f40cb698808\",\"severity\":\"debug\",\"timestamp\":\"2026-05-18T10:41:36.911194498Z\"}', '2026-05-18T18:41:36.940020601+08:00 {\"http.req.id\":\"f586e2ae-437e-4b15-a862-a3f3ed792bb3\",\"http.req.method\":\"GET\",\"http.req.path\":\"/\",\"message\":\"request started\",\"session\":\"46f8d955-1ede-46e7-b1bc-272282bed6d9\",\"severity\":\"debug\",\"timestamp\":\"2026-05-18T10:41:36.939935139Z\"}', '2026-05-18T18:41:36.940034710+08:00 {\"currency\":\"USD\",\"http.req.id\":\"f586e2ae-437e-4b15-a862-a3f3ed792bb3\",\"http.req.method\":\"GET\",\"http.req.path\":\"/\",\"message\":\"home\",\"session\":\"46f8d955-1ede-46e7-b1bc-272282bed6d9\",\"severity\":\"info\",\"timestamp\":\"2026-05-18T10:41:36.939962129Z\"}', '2026-05-18T18:41:36.953410915+08:00 env platform is either empty or invalid', '2026-05-18T18:41:36.953741662+08:00 {\"http.req.id\":\"f586e2ae-437e-4b15-a862-a3f3ed792bb3\",\"http.req.method\":\"GET\",\"http.req.path\":\"/\",\"message\":\"ENV_PLATFORM is: local\",\"session\":\"46f8d955-1ede-46e7-b1bc-272282bed6d9\",\"severity\":\"debug\",\"timestamp\":\"2026-05-18T10:41:36.953689447Z\"}', '2026-05-18T18:41:36.956279248+08:00 {\"http.req.id\":\"f586e2ae-437e-4b15-a862-a3f3ed792bb3\",\"http.req.method\":\"GET\",\"http.req.path\":\"/\",\"http.resp.bytes\":10499,\"http.resp.status\":200,\"http.resp.took_ms\":16,\"message\":\"request complete\",\"session\":\"46f8d955-1ede-46e7-b1bc-272282bed6d9\",\"severity\":\"debug\",\"timestamp\":\"2026-05-18T10:41:36.956199376Z\"}', '2026-05-18T18:41:37.130194392+08:00 {\"http.req.id\":\"14830fa2-1d43-46a0-8819-9c6f6aa5b7e4\",\"http.req.method\":\"GET\",\"http.req.path\":\"/product/9SIQT8TOJO\",\"message\":\"request started\",\"session\":\"ea6e74b2-ed93-4bd2-86ca-6f2b5e998f5b\",\"severity\":\"debug\",\"timestamp\":\"2026-05-18T10:41:37.130073289Z\"}', '2026-05-18T18:41:37.130214398+08:00 {\"currency\":\"USD\",\"http.req.id\":\"14830fa2-1d43-46a0-8819-9c6f6aa5b7e4\",\"http.req.method\":\"GET\",\"http.req.path\":\"/product/9SIQT8TOJO\",\"id\":\"9SIQT8TOJO\",\"message\":\"serving product page\",\"session\":\"ea6e74b2-ed93-4bd2-86ca-6f2b5e998f5b\",\"severity\":\"debug\",\"timestamp\":\"2026-05-18T10:41:37.130114404Z\"}', '2026-05-18T18:41:37.131722859+08:00 {\"error\":\"could not retrieve product: rpc error: code = Unknown desc = Query product error.\",\"http.req.id\":\"14830fa2-1d43-46a0-8819-9c6f6aa5b7e4\",\"http.req.method\":\"GET\",\"http.req.path\":\"/product/9SIQT8TOJO\",\"message\":\"request error\",\"session\":\"ea6e74b2-ed93-4bd2-86ca-6f2b5e998f5b\",\"severity\":\"error\",\"timestamp\":\"2026-05-18T10:41:37.131627514Z\"}', '2026-05-18T18:41:37.132024206+08:00 {\"http.req.id\":\"14830fa2-1d43-46a0-8819-9c6f6aa5b7e4\",\"http.req.method\":\"GET\",\"http.req.path\":\"/product/9SIQT8TOJO\",\"http.resp.bytes\":4995,\"http.resp.status\":500,\"http.resp.took_ms\":1,\"message\":\"request complete\",\"session\":\"ea6e74b2-ed93-4bd2-86ca-6f2b5e998f5b\",\"severity\":\"debug\",\"timestamp\":\"2026-05-18T10:41:37.131951083Z\"}', '2026-05-18T18:41:37.212763985+08:00 {\"http.req.id\":\"82e9824b-f496-4ea5-b500-f31b3ed5616b\",\"http.req.method\":\"GET\",\"http.req.path\":\"/\",\"message\":\"request started\",\"session\":\"25f1da55-3620-4595-899c-242f32871d8b\",\"severity\":\"debug\",\"timestamp\":\"2026-05-18T10:41:37.21266627Z\"}', '2026-05-18T18:41:37.212781241+08:00 {\"currency\":\"USD\",\"http.req.id\":\"82e9824b-f496-4ea5-b500-f31b3ed5616b\",\"http.req.method\":\"GET\",\"http.req.path\":\"/\",\"message\":\"home\",\"session\":\"25f1da55-3620-4595-899c-242f32871d8b\",\"severity\":\"info\",\"timestamp\":\"2026-05-18T10:41:37.212701491Z\"}', '2026-05-18T18:41:37.226480195+08:00 env platform is either empty or invalid', '2026-05-18T18:41:37.226781147+08:00 {\"http.req.id\":\"82e9824b-f496-4ea5-b500-f31b3ed5616b\",\"http.req.method\":\"GET\",\"http.req.path\":\"/\",\"message\":\"ENV_PLATFORM is: local\",\"session\":\"25f1da55-3620-4595-899c-242f32871d8b\",\"severity\":\"debug\",\"timestamp\":\"2026-05-18T10:41:37.226717482Z\"}', '2026-05-18T18:41:37.229379252+08:00 {\"http.req.id\":\"82e9824b-f496-4ea5-b500-f31b3ed5616b\",\"http.req.method\":\"GET\",\"http.req.path\":\"/\",\"http.resp.bytes\":10499,\"http.resp.status\":200,\"http.resp.took_ms\":16,\"message\":\"request complete\",\"session\":\"25f1da55-3620-4595-899c-242f32871d8b\",\"severity\":\"debug\",\"timestamp\":\"2026-05-18T10:41:37.229306523Z\"}', '2026-05-18T18:41:37.276699839+08:00 {\"http.req.id\":\"36ed37bd-fbe3-4066-bf87-11d4360ffc08\",\"http.req.method\":\"GET\",\"http.req.path\":\"/product/0PUK6V6EV0\",\"message\":\"request started\",\"session\":\"4e5c332a-a915-4b5f-bdbe-aba7a751eb2c\",\"severity\":\"debug\",\"timestamp\":\"2026-05-18T10:41:37.276601209Z\"}', '2026-05-18T18:41:37.276715495+08:00 {\"currency\":\"USD\",\"http.req.id\":\"36ed37bd-fbe3-4066-bf87-11d4360ffc08\",\"http.req.method\":\"GET\",\"http.req.path\":\"/product/0PUK6V6EV0\",\"id\":\"0PUK6V6EV0\",\"message\":\"serving product page\",\"session\":\"4e5c332a-a915-4b5f-bdbe-aba7a751eb2c\",\"severity\":\"debug\",\"timestamp\":\"2026-05-18T10:41:37.276637096Z\"}', '2026-05-18T18:41:37.278048315+08:00 {\"error\":\"could not retrieve product: rpc error: code = Unknown desc = Query product error.\",\"http.req.id\":\"36ed37bd-fbe3-4066-bf87-11d4360ffc08\",\"http.req.method\":\"GET\",\"http.req.path\":\"/product/0PUK6V6EV0\",\"message\":\"request error\",\"session\":\"4e5c332a-a915-4b5f-bdbe-aba7a751eb2c\",\"severity\":\"error\",\"timestamp\":\"2026-05-18T10:41:37.277974561Z\"}', '2026-05-18T18:41:37.278259353+08:00 {\"http.req.id\":\"36ed37bd-fbe3-4066-bf87-11d4360ffc08\",\"http.req.method\":\"GET\",\"http.req.path\":\"/product/0PUK6V6EV0\",\"http.resp.bytes\":4995,\"http.resp.status\":500,\"http.resp.took_ms\":1,\"message\":\"request complete\",\"session\":\"4e5c332a-a915-4b5f-bdbe-aba7a751eb2c\",\"severity\":\"debug\",\"timestamp\":\"2026-05-18T10:41:37.278195256Z\"}', '2026-05-18T18:41:37.311040809+08:00 {\"http.req.id\":\"8aa6fc6b-1854-4de9-b3b4-365b1d0a6c06\",\"http.req.method\":\"GET\",\"http.req.path\":\"/\",\"message\":\"request started\",\"session\":\"bf3f23c1-e3ee-4412-b41e-62b17d10ee48\",\"severity\":\"debug\",\"timestamp\":\"2026-05-18T10:41:37.310934871Z\"}', '2026-05-18T18:41:37.311058300+08:00 {\"currency\":\"USD\",\"http.req.id\":\"8aa6fc6b-1854-4de9-b3b4-365b1d0a6c06\",\"http.req.method\":\"GET\",\"http.req.path\":\"/\",\"message\":\"home\",\"session\":\"bf3f23c1-e3ee-4412-b41e-62b17d10ee48\",\"severity\":\"info\",\"timestamp\":\"2026-05-18T10:41:37.310963093Z\"}', '2026-05-18T18:41:37.324414729+08:00 env platform is either empty or invalid', '2026-05-18T18:41:37.324737622+08:00 {\"http.req.id\":\"8aa6fc6b-1854-4de9-b3b4-365b1d0a6c06\",\"http.req.method\":\"GET\",\"http.req.path\":\"/\",\"message\":\"ENV_PLATFORM is: local\",\"session\":\"bf3f23c1-e3ee-4412-b41e-62b17d10ee48\",\"severity\":\"debug\",\"timestamp\":\"2026-05-18T10:41:37.324665882Z\"}', '2026-05-18T18:41:37.327161377+08:00 {\"http.req.id\":\"8aa6fc6b-1854-4de9-b3b4-365b1d0a6c06\",\"http.req.method\":\"GET\",\"http.req.path\":\"/\",\"http.resp.bytes\":10499,\"http.resp.status\":200,\"http.resp.took_ms\":16,\"message\":\"request complete\",\"session\":\"bf3f23c1-e3ee-4412-b41e-62b17d10ee48\",\"severity\":\"debug\",\"timestamp\":\"2026-05-18T10:41:37.327092603Z\"}', '', 'From istio-proxy logs:', '2026-05-18T10:35:50.492634Z\\tinfo\\tFLAG: --proxyLogLevel=\"warning\"', '2026-05-18T10:35:50.492636Z\\tinfo\\tFLAG: --serviceCluster=\"istio-proxy\"', '2026-05-18T10:35:50.492638Z\\tinfo\\tFLAG: --stsPort=\"0\"', '2026-05-18T10:35:50.492640Z\\tinfo\\tFLAG: --templateFile=\"\"', '2026-05-18T10:35:50.492642Z\\tinfo\\tFLAG: --tokenManagerPlugin=\"\"', '2026-05-18T10:35:50.492645Z\\tinfo\\tFLAG: --vklog=\"0\"', '2026-05-18T10:35:50.492648Z\\tinfo\\tVersion 1.27.3-df538c2279a633544e6c0961a03ab772729933be-Clean', '2026-05-18T10:35:50.492784Z\\tinfo\\tProxy role\\tips=[172.20.1.70] type=sidecar id=frontend-79bb68d59d-m47hd.boutique domain=boutique.svc.cluster.local', '2026-05-18T10:35:50.492864Z\\tinfo\\tApply proxy config from env {\"proxyMetadata\":{\"ISTIO_META_ENABLE_HBONE\":\"true\"},\"image\":{\"imageType\":\"distroless\"}}', '2026-05-18T10:35:50.494079Z\\tinfo\\tcpu limit detected as 2, setting concurrency', '2026-05-18T10:35:50.494306Z\\tinfo\\tEffective config: binaryPath: /usr/local/bin/envoy', 'concurrency: 2', 'configPath: ./etc/istio/proxy', 'controlPlaneAuthPolicy: MUTUAL_TLS', 'discoveryAddress: istiod.istio-system.svc:15012', 'drainDuration: 45s', 'image:', 'imageType: distroless', 'proxyAdminPort: 15000', 'proxyMetadata:', 'ISTIO_META_ENABLE_HBONE: \"true\"', 'serviceCluster: istio-proxy', 'statNameLength: 189', 'statusPort: 15020', 'terminationDrainDuration: 5s', '2026-05-18T10:35:50.494321Z\\tinfo\\tJWT policy is third-party-jwt', '2026-05-18T10:35:50.494324Z\\tinfo\\tusing credential fetcher of JWT type in cluster.local trust domain', '2026-05-18T10:35:50.521563Z\\tinfo\\tStarting default Istio SDS Server', '2026-05-18T10:35:50.521559Z\\tinfo\\tOpening status port 15020', '2026-05-18T10:35:50.521583Z\\tinfo\\tCA Endpoint istiod.istio-system.svc:15012, provider Citadel', '2026-05-18T10:35:50.521598Z\\tinfo\\tUsing CA istiod.istio-system.svc:15012 cert with certs: var/run/secrets/istio/root-cert.pem', '2026-05-18T10:35:50.522235Z\\tinfo\\txdsproxy\\tInitializing with upstream address \"istiod.istio-system.svc:15012\" and cluster \"Kubernetes\"', '2026-05-18T10:35:50.522397Z\\tinfo\\tsds\\tStarting SDS grpc server', '2026-05-18T10:35:50.522416Z\\tinfo\\tsds\\tStarting SDS server for workload certificates, will listen on \"var/run/secrets/workload-spiffe-uds/socket\"', '2026-05-18T10:35:50.523488Z\\tinfo\\tPilot SAN: [istiod.istio-system.svc]', '2026-05-18T10:35:50.524305Z\\tinfo\\tStarting proxy agent', '2026-05-18T10:35:50.524339Z\\tinfo\\tEnvoy command: [-c etc/istio/proxy/envoy-rev.json --drain-time-s 45 --drain-strategy immediate --local-address-ip-version v4 --file-flush-interval-msec 1000 --disable-hot-restart --allow-unknown-static-fields -l warning --component-log-level misc:error --skip-deprecated-logs --concurrency 2]', '2026-05-18T10:35:50.581866Z\\twarning\\tenvoy main external/envoy/source/server/server.cc:905\\tUsage of the deprecated runtime key overload.global_downstream_max_connections, consider switching to `envoy.resource_monitors.global_downstream_max_connections` instead.This runtime key will be removed in future.\\tthread=14', '2026-05-18T10:35:50.584173Z\\twarning\\tenvoy main external/envoy/source/server/server.cc:1001\\tThere is no configured limit to the number of allowed active downstream connections. Configure a limit in `envoy.resource_monitors.global_downstream_max_connections` resource monitor.\\tthread=14', '2026-05-18T10:35:50.590707Z\\tinfo\\txdsproxy\\tconnected to delta upstream XDS server: istiod.istio-system.svc:15012\\tid=1', '2026-05-18T10:35:50.629795Z\\tinfo\\tads\\tADS: new connection for node:1', '2026-05-18T10:35:50.630754Z\\tinfo\\tads\\tADS: new connection for node:2', '2026-05-18T10:35:50.935808Z\\tinfo\\tcache\\tgenerated new workload certificate\\tresourceName=default latency=413.305801ms ttl=23h59m59.06419576s', '2026-05-18T10:35:50.935858Z\\tinfo\\tcache\\tRoot cert has changed, start rotating root cert', '2026-05-18T10:35:50.935905Z\\tinfo\\tcache\\treturned workload trust anchor from cache\\tttl=23h59m59.064099914s', '2026-05-18T10:35:50.935926Z\\tinfo\\tcache\\treturned workload certificate from cache\\tttl=23h59m59.064074441s', '2026-05-18T10:35:50.936030Z\\tinfo\\tcache\\treturned workload trust anchor from cache\\tttl=23h59m59.063977725s', '2026-05-18T10:35:50.936347Z\\tinfo\\tcache\\treturned workload trust anchor from cache\\tttl=23h59m59.063653974s', '2026-05-18T10:35:52.310846Z\\tinfo\\tReadiness succeeded in 1.821432145s', '2026-05-18T10:35:52.311127Z\\tinfo\\tEnvoy proxy is ready']",
+   "error": null,
+   "purpose": "request latency / saturation logs",
+   "tool_latency": null
+  },
+  {
+   "step_id": 3,
+   "action_type": "tool",
+   "action_name": "GetServiceDependencies",
+   "action_input": {
+    "service_name": "frontend"
+   },
+   "observation": "[Service]: frontend (Entrypoint)\n[Upstream (Called By)]: (User Traffic)\n[Downstream (Calls)]:\nfrontend\n├── adservice\n├── recommendationservice\n│   └── productcatalogservice\n├── productcatalogservice\n├── checkoutservice\n│   ├── productcatalogservice\n│   ├── shippingservice\n│   ├── currencyservice\n│   ├── paymentservice\n│   ├── emailservice\n│   └── cartservice\n│       └── redis-cart  <-- (Database)\n├── shippingservice\n├── cartservice\n│   └── redis-cart      <-- (Database)\n└── currencyservice",
+   "error": null,
+   "purpose": "upstream/downstream call graph",
+   "tool_latency": null
+  }
+ ],
+ "agentrun": {
+  "tag": "test",
+  "dsl": "workspace/dsl_versions/v0.8.dsl.txt",
+  "dsl_version": "0.8",
+  "sop": {
+   "sop": "boutique-runtime-rca",
+   "scope": {
+    "system": "boutique",
+    "families": [
+     "runtime",
+     "admission",
+     "scheduling",
+     "startup",
+     "service",
+     "performance",
+     "infrastructure",
+     "codedefect"
+    ],
+    "severity": [
+     "SEV2",
+     "SEV3"
+    ]
+   },
+   "owner": "sre-platform",
+   "approved_by": [
+    "oncall-primary",
+    "sre-lead"
+   ],
+   "reviewed_at": "2026-10-23",
+   "change_ticket": "OPS-1236",
+   "boundaries": "只读诊断：本 SOP 不执行任何写操作（重启/回滚/扩缩容），也不做对外播报；\n它回答\"最可能的根因与受害对象\"，处置与沟通由值班按 runbook 人工执行。\n不覆盖 SEV1（需 incident commander 介入）与变更引发的问题（走变更回滚流程）。\n输入是冻结快照：诊断结论对\"快照时刻\"成立，恢复后需重新取证。\nR1 已知边界：PVC 的 requested size / accessMode 在本 benchmark 的工具面不可见，\n因此 pvc_capacity 与 pvc_access_mode 无法区分（同一分数并列，交给 jev 或升级）。\n"
+  },
+  "params": {
+   "cands_cap": 8,
+   "max_waves": 8,
+   "min_waves": 5,
+   "steps_per_wave": 1,
+   "dominance_ratio": 1.5,
+   "conf_min": 0.0,
+   "escalate": true,
+   "escalate_budget": 8,
+   "judge_on_codedefect": true,
+   "jev_route": true,
+   "jev_pick": true,
+   "jev_verify": true,
+   "route_fallback": "runtime"
+  },
+  "nodes_executed": [
+   "anchors:extract_anchors",
+   "census:probes",
+   "route:decide",
+   "plan:build_plan",
+   "probe:probes",
+   "derive:derive_candidates",
+   "pick:decide",
+   "verify:decide",
+   "probe:probes",
+   "derive:derive_candidates",
+   "pick:decide",
+   "verify:decide",
+   "probe:probes",
+   "derive:derive_candidates",
+   "pick:decide",
+   "verify:decide",
+   "probe:probes",
+   "derive:derive_candidates",
+   "pick:decide",
+   "verify:decide",
+   "escalate:escalate",
+   "answer:normalize_answer",
+   "persist:persist_trace"
+  ],
+  "census": [
+   {
+    "step": "pods",
+    "gate": "always"
+   },
+   {
+    "step": "alerts",
+    "gate": "healthy_system"
+   }
+  ],
+  "plan": [
+   {
+    "step": "recent_logs",
+    "gate": "always",
+    "wave": 1
+   },
+   {
+    "step": "describe_pod",
+    "gate": "weak",
+    "wave": 2
+   },
+   {
+    "step": "deps",
+    "gate": "weak",
+    "wave": 3
+   }
+  ],
+  "family": "performance",
+  "state_wiring": {
+   "family": "$route.family",
+   "route_probs": "$route.probabilities",
+   "picked": "$pick.picked",
+   "pick_dominant": "$pick.dominant",
+   "verify_status": "$verify.status",
+   "verify_prob": "$verify.confidence"
+  },
+  "bindings": {
+   "anchors": {
+    "anchors": "Anchors(case_id='boutique/codedefect/76', system='boutique', namespace='boutique', query='Service Availability Disruption.', difficulty='hard', symptoms=[], mentioned_apps=[], priors={'db_service': '', 'db_port': 0})"
+   },
+   "route": {
+    "family": "performance",
+    "probabilities": {},
+    "route_why": "mechanism_mode"
+   },
+   "plan": {
+    "plan": "[{'name': 'recent_logs', 'key': 'recent', 'tool': 'GetRecentLogs', 'args': <function _args_error_logs at 0x10c64b740>, 'purpose': 'request latency / saturation logs', 'when': <function compile_steps.<locals>.<lambda> at 0x10cc7c400>, 'gate': 'always', 'wave': 1}, {'name': 'describe_pod', 'key': 'describe:pod', 'tool': 'DescribeResource', 'args': <function _args_describe_pod at 0x10c64b560>, 'purpose': 'probe config, container state, restart reasons, scheduler events', 'when': <function compile_steps.<locals>.<lambda> at 0x10cc7c2c0>, 'gate': 'weak', 'wave': 2}, {'name': 'deps', 'key': 'deps', 'tool': 'GetServiceDependencies', 'args': <function _args_deps at 0x10c64be20>, 'purpose': 'upstream/downstream call graph', 'when': <function compile_steps.<locals>.<lambda> at 0x10cc7c220>, 'gate': 'weak', 'wave': 3}]"
+   },
+   "derive": {
+    "candidates": "[]"
+   },
+   "pick": {
+    "picked": null,
+    "dominant": false,
+    "pick_why": "no_candidates"
+   },
+   "verify": {
+    "status": "unverified",
+    "confidence": null,
+    "verify_why": "nothing_to_verify"
+   },
+   "escalate": {
+    "answer": null
+   },
+   "answer": {
+    "final": {
+     "key_evidence_summary": "no evidence-grounded hypothesis",
+     "top_3_predictions": []
+    }
+   }
+  },
+  "picked": null,
+  "pick_why": "",
+  "verify_prob": null,
+  "verify_verdict": "unverified",
+  "verified": false,
+  "escalated": false,
+  "escalate_reason": "no_candidates",
+  "escalate_steps": 0,
+  "waves": 4,
+  "candidates": [],
+  "jev": [
+   {
+    "rid": "test:boutique/codedefect/76#route",
+    "kind": "route",
+    "node": "route",
+    "mode": "mechanism",
+    "options": [
+     "performance",
+     "infrastructure"
+    ],
+    "status": "mechanical",
+    "guard": "unavailable",
+    "use": "first_option",
+    "choice": "performance",
+    "why": "mechanism_mode",
+    "dominant": false,
+    "continue_loop": false,
+    "escalate": false
+   },
+   {
+    "rid": "test:boutique/codedefect/76#pick1",
+    "kind": "pick",
+    "node": "pick",
+    "mode": "mechanism",
+    "options": [],
+    "status": "mechanical",
+    "guard": "no_options",
+    "use": "none",
+    "choice": null,
+    "why": "no_candidates",
+    "dominant": false,
+    "continue_loop": false,
+    "escalate": false
+   },
+   {
+    "rid": "test:boutique/codedefect/76#verify1",
+    "kind": "verify",
+    "node": "verify",
+    "mode": "mechanism",
+    "options": [
+     "supported",
+     "insufficient",
+     "contradicted"
+    ],
+    "status": "mechanical",
+    "guard": "no_pick",
+    "use": "unverified",
+    "choice": "unverified",
+    "why": "nothing_to_verify",
+    "dominant": false,
+    "continue_loop": false,
+    "escalate": false
+   },
+   {
+    "rid": "test:boutique/codedefect/76#pick2",
+    "kind": "pick",
+    "node": "pick",
+    "mode": "mechanism",
+    "options": [],
+    "status": "mechanical",
+    "guard": "no_options",
+    "use": "none",
+    "choice": null,
+    "why": "no_candidates",
+    "dominant": false,
+    "continue_loop": false,
+    "escalate": false
+   },
+   {
+    "rid": "test:boutique/codedefect/76#verify2",
+    "kind": "verify",
+    "node": "verify",
+    "mode": "mechanism",
+    "options": [
+     "supported",
+     "insufficient",
+     "contradicted"
+    ],
+    "status": "mechanical",
+    "guard": "no_pick",
+    "use": "unverified",
+    "choice": "unverified",
+    "why": "nothing_to_verify",
+    "dominant": false,
+    "continue_loop": false,
+    "escalate": false
+   },
+   {
+    "rid": "test:boutique/codedefect/76#pick3",
+    "kind": "pick",
+    "node": "pick",
+    "mode": "mechanism",
+    "options": [],
+    "status": "mechanical",
+    "guard": "no_options",
+    "use": "none",
+    "choice": null,
+    "why": "no_candidates",
+    "dominant": false,
+    "continue_loop": false,
+    "escalate": false
+   },
+   {
+    "rid": "test:boutique/codedefect/76#verify3",
+    "kind": "verify",
+    "node": "verify",
+    "mode": "mechanism",
+    "options": [
+     "supported",
+     "insufficient",
+     "contradicted"
+    ],
+    "status": "mechanical",
+    "guard": "no_pick",
+    "use": "unverified",
+    "choice": "unverified",
+    "why": "nothing_to_verify",
+    "dominant": false,
+    "continue_loop": false,
+    "escalate": false
+   },
+   {
+    "rid": "test:boutique/codedefect/76#pick4",
+    "kind": "pick",
+    "node": "pick",
+    "mode": "mechanism",
+    "options": [],
+    "status": "mechanical",
+    "guard": "no_options",
+    "use": "none",
+    "choice": null,
+    "why": "no_candidates",
+    "dominant": false,
+    "continue_loop": false,
+    "escalate": false
+   },
+   {
+    "rid": "test:boutique/codedefect/76#verify4",
+    "kind": "verify",
+    "node": "verify",
+    "mode": "mechanism",
+    "options": [
+     "supported",
+     "insufficient",
+     "contradicted"
+    ],
+    "status": "mechanical",
+    "guard": "no_pick",
+    "use": "unverified",
+    "choice": "unverified",
+    "why": "nothing_to_verify",
+    "dominant": false,
+    "continue_loop": false,
+    "escalate": false
+   }
+  ],
+  "nodes": [
+   {
+    "node": "code",
+    "id": "anchors",
+    "anchors": {
+     "case_id": "boutique/codedefect/76",
+     "system": "boutique",
+     "namespace": "boutique",
+     "query": "Service Availability Disruption.",
+     "difficulty": "hard",
+     "symptoms": [],
+     "mentioned_apps": []
+    }
+   },
+   {
+    "node": "probes",
+    "plan": "census",
+    "wave": 0,
+    "executed": 2,
+    "steps": [
+     {
+      "key": "pods",
+      "tool": "GetResources",
+      "arguments": {
+       "namespace": "boutique",
+       "resource_type": "pods",
+       "output_wide": true
+      },
+      "gate": "always"
+     },
+     {
+      "key": "alerts",
+      "tool": "GetAlerts",
+      "arguments": {},
+      "gate": "healthy_system"
+     }
+    ],
+    "skipped": []
+   },
+   {
+    "node": "decide",
+    "id": "route",
+    "rid": "test:boutique/codedefect/76#route",
+    "status": "mechanical",
+    "guard": "unavailable",
+    "use": "first_option",
+    "choice": "performance",
+    "dominant": false,
+    "why": "mechanism_mode"
+   },
+   {
+    "node": "code",
+    "id": "plan",
+    "family": "performance",
+    "plan": [
+     {
+      "step": "recent_logs",
+      "gate": "always",
+      "wave": 1
+     },
+     {
+      "step": "describe_pod",
+      "gate": "weak",
+      "wave": 2
+     },
+     {
+      "step": "deps",
+      "gate": "weak",
+      "wave": 3
+     }
+    ]
+   },
+   {
+    "node": "probes",
+    "plan": "family",
+    "wave": 1,
+    "executed": 1,
+    "steps": [
+     {
+      "key": "recent",
+      "tool": "GetRecentLogs",
+      "arguments": {
+       "namespace": "boutique",
+       "service_name": "frontend"
+      },
+      "gate": "always"
+     }
+    ],
+    "skipped": []
+   },
+   {
+    "node": "code",
+    "id": "derive",
+    "raw": 0,
+    "kept": 0,
+    "top": []
+   },
+   {
+    "node": "decide",
+    "id": "pick",
+    "rid": "test:boutique/codedefect/76#pick1",
+    "status": "mechanical",
+    "guard": "no_options",
+    "use": "none",
+    "choice": null,
+    "dominant": false,
+    "why": "no_candidates"
+   },
+   {
+    "node": "decide",
+    "id": "verify",
+    "rid": "test:boutique/codedefect/76#verify1",
+    "status": "mechanical",
+    "guard": "no_pick",
+    "use": "unverified",
+    "choice": "unverified",
+    "dominant": false,
+    "why": "nothing_to_verify"
+   },
+   {
+    "node": "probes",
+    "plan": "family",
+    "wave": 2,
+    "executed": 0,
+    "steps": [],
+    "skipped": [
+     {
+      "step": "describe_pod",
+      "why": "args not applicable"
+     }
+    ]
+   },
+   {
+    "node": "code",
+    "id": "derive",
+    "raw": 0,
+    "kept": 0,
+    "top": []
+   },
+   {
+    "node": "decide",
+    "id": "pick",
+    "rid": "test:boutique/codedefect/76#pick2",
+    "status": "mechanical",
+    "guard": "no_options",
+    "use": "none",
+    "choice": null,
+    "dominant": false,
+    "why": "no_candidates"
+   },
+   {
+    "node": "decide",
+    "id": "verify",
+    "rid": "test:boutique/codedefect/76#verify2",
+    "status": "mechanical",
+    "guard": "no_pick",
+    "use": "unverified",
+    "choice": "unverified",
+    "dominant": false,
+    "why": "nothing_to_verify"
+   },
+   {
+    "node": "probes",
+    "plan": "family",
+    "wave": 3,
+    "executed": 1,
+    "steps": [
+     {
+      "key": "deps",
+      "tool": "GetServiceDependencies",
+      "arguments": {
+       "service_name": "frontend"
+      },
+      "gate": "weak"
+     }
+    ],
+    "skipped": []
+   },
+   {
+    "node": "code",
+    "id": "derive",
+    "raw": 0,
+    "kept": 0,
+    "top": []
+   },
+   {
+    "node": "decide",
+    "id": "pick",
+    "rid": "test:boutique/codedefect/76#pick3",
+    "status": "mechanical",
+    "guard": "no_options",
+    "use": "none",
+    "choice": null,
+    "dominant": false,
+    "why": "no_candidates"
+   },
+   {
+    "node": "decide",
+    "id": "verify",
+    "rid": "test:boutique/codedefect/76#verify3",
+    "status": "mechanical",
+    "guard": "no_pick",
+    "use": "unverified",
+    "choice": "unverified",
+    "dominant": false,
+    "why": "nothing_to_verify"
+   },
+   {
+    "node": "probes",
+    "plan": "family",
+    "wave": 4,
+    "executed": 0,
+    "why": "plan exhausted"
+   },
+   {
+    "node": "code",
+    "id": "derive",
+    "raw": 0,
+    "kept": 0,
+    "top": []
+   },
+   {
+    "node": "decide",
+    "id": "pick",
+    "rid": "test:boutique/codedefect/76#pick4",
+    "status": "mechanical",
+    "guard": "no_options",
+    "use": "none",
+    "choice": null,
+    "dominant": false,
+    "why": "no_candidates"
+   },
+   {
+    "node": "decide",
+    "id": "verify",
+    "rid": "test:boutique/codedefect/76#verify4",
+    "status": "mechanical",
+    "guard": "no_pick",
+    "use": "unverified",
+    "choice": "unverified",
+    "dominant": false,
+    "why": "nothing_to_verify"
+   },
+   {
+    "node": "loop",
+    "id": "waves",
+    "stop": "plan_exhausted",
+    "wave": 4
+   },
+   {
+    "node": "escalate",
+    "id": "escalate",
+    "fired": true,
+    "reasons": [
+     "no_candidates"
+    ],
+    "skipped": "mode=mechanism"
+   },
+   {
+    "node": "code",
+    "id": "answer",
+    "predictions": []
+   },
+   {
+    "node": "artifact",
+    "id": "persist",
+    "persisted": false,
+    "why": "written by the CLI driver"
+   }
+  ],
+  "notes": [],
+  "tool_calls": 4,
+  "model_calls": 0,
+  "tokens_in": 0,
+  "tokens_out": 0,
+  "wall_s": 0.07
+ }
+}

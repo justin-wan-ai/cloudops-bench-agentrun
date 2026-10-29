@@ -1,0 +1,654 @@
+{
+ "case_id": "trainticket/service/18",
+ "system_name": "trainticket",
+ "question": "Service Availability Disruption.",
+ "case_path": "/Users/justinwan/work/workspace/cloudops_bench_rsi/repo/benchmark/trainticket/service/18",
+ "max_steps": 8,
+ "current_step": 4,
+ "finished": true,
+ "stop_reason": "submit",
+ "final_answer": "{\"key_evidence_summary\": \"no evidence-grounded hypothesis\", \"top_3_predictions\": []}",
+ "metadata": {
+  "namespace": "train-ticket",
+  "query": "Service Availability Disruption.",
+  "fault_category": "service",
+  "model_name": "agentrun-v0.8"
+ },
+ "steps": [
+  {
+   "step_id": 0,
+   "action_type": "tool",
+   "action_name": "GetResources",
+   "action_input": {
+    "namespace": "train-ticket",
+    "resource_type": "pods",
+    "output_wide": true
+   },
+   "observation": "NAME                                            READY   STATUS    RESTARTS        AGE     IP             NODE        NOMINATED NODE   READINESS GATES\nnacos-0                                         1/1     Running   0               9d      172.20.2.76    worker-02   <none>           <none>\nnacos-1                                         1/1     Running   0               9d      172.20.1.247   worker-01   <none>           <none>\nnacos-2                                         1/1     Running   0               9d      172.20.3.7     worker-03   <none>           <none>\nnacosdb-mysql-0                                 3/3     Running   1 (9d ago)      9d      172.20.2.75    worker-02   <none>           <none>\nnacosdb-mysql-1                                 3/3     Running   2 (9d ago)      9d      172.20.1.246   worker-01   <none>           <none>\nnacosdb-mysql-2                                 3/3     Running   1 (9d ago)      9d      172.20.3.6     worker-03   <none>           <none>\nrabbitmq-57b4f9969c-4cndj                       1/1     Running   0               9d      172.20.2.77    worker-02   <none>           <none>\nts-assurance-service-88f65755-xp6kx             2/2     Running   0               5m6s    172.20.3.55    worker-03   <none>           <none>\nts-auth-service-656fb96d87-2sdjj                2/2     Running   0               5m14s   172.20.1.215   worker-01   <none>           <none>\nts-avatar-service-54fb8f5c57-c6tkl              2/2     Running   0               5m11s   172.20.3.47    worker-03   <none>           <none>\nts-basic-service-57fb684696-79mm2               2/2     Running   0               5m14s   172.20.2.92    worker-02   <none>           <none>\nts-cancel-service-67fb7d5bb4-dt25j              2/2     Running   0               5m13s   172.20.1.217   worker-01   <none>           <none>\nts-config-service-65779cfcd7-pt42d              2/2     Running   0               5m7s    172.20.1.226   worker-01   <none>           <none>\nts-consign-price-service-b74c79d7-zvs4s         2/2     Running   0               16h     172.20.2.120   worker-02   <none>           <none>\nts-consign-service-846bdf46cc-wp2vt             2/2     Running   0               5m11s   172.20.3.46    worker-03   <none>           <none>\nts-contacts-service-7fc68f4bbc-8wvwc            2/2     Running   0               5m13s   172.20.1.218   worker-01   <none>           <none>\nts-delivery-service-659b5d4f75-dfnbf            2/2     Running   0               5m9s    172.20.1.224   worker-01   <none>           <none>\nts-execute-service-5f7c9df447-j6gst             2/2     Running   0               5m11s   172.20.2.97    worker-02   <none>           <none>\nts-food-delivery-service-5b898fdbbf-prqdf       2/2     Running   0               5m7s    172.20.3.53    worker-03   <none>           <none>\nts-food-service-59c58c74cc-dwpxd                2/2     Running   0               5m7s    172.20.2.103   worker-02   <none>           <none>\nts-gateway-service-88868597f-4vqh8              2/2     Running   0               5m5s    172.20.1.229   worker-01   <none>           <none>\nts-inside-payment-service-5b98976c87-62vqg      2/2     Running   0               5m10s   172.20.3.48    worker-03   <none>           <none>\nts-news-service-578fd9cd67-b57hl                2/2     Running   0               5m5s    172.20.2.105   worker-02   <none>           <none>\nts-notification-service-6b579b64d7-fvgnk        2/2     Running   0               5m8s    172.20.3.51    worker-03   <none>           <none>\nts-order-other-service-788d947bdf-zm55k         2/2     Running   0               5m12s   172.20.2.95    worker-02   <none>           <none>\nts-order-service-dd54d5df9-zmbmv                2/2     Running   0               5m10s   172.20.3.49    worker-03   <none>           <none>\nts-payment-service-666d596f87-5pccf             2/2     Running   0               5m6s    172.20.3.54    worker-03   <none>           <none>\nts-preserve-other-service-5f85fdfd7-pjwm2       2/2     Running   0               5m11s   172.20.2.98    worker-02   <none>           <none>\nts-preserve-service-6bccdc5454-84rmc            2/2     Running   0               5m8s    172.20.3.52    worker-03   <none>           <none>\nts-price-service-6c4b77845-l9ssv                2/2     Running   0               5m13s   172.20.2.94    worker-02   <none>           <none>\nts-rebook-service-75d676f77b-7f6pd              2/2     Running   0               5m11s   172.20.1.221   worker-01   <none>           <none>\nts-route-plan-service-695f545f8c-56pw9          2/2     Running   0               5m12s   172.20.1.220   worker-01   <none>           <none>\nts-route-service-688dc779fc-zhdqg               2/2     Running   0               5m13s   172.20.2.93    worker-02   <none>           <none>\nts-seat-service-5fc7c67c7f-zp87c                2/2     Running   0               5m10s   172.20.2.99    worker-02   <none>           <none>\nts-security-service-5fb7f7fbff-jb24r            2/2     Running   0               5m8s    172.20.2.102   worker-02   <none>           <none>\nts-station-food-service-d99b9b859-xjn4h         2/2     Running   0               5m13s   172.20.1.216   worker-01   <none>           <none>\nts-station-service-7cbf6b96c9-sgjt8             2/2     Running   0               5m12s   172.20.1.219   worker-01   <none>           <none>\nts-ticket-office-service-6fd78bd9df-f48kj       2/2     Running   0               5m12s   172.20.2.96    worker-02   <none>           <none>\nts-train-food-service-67cb5bdf99-nv2kk          2/2     Running   0               5m9s    172.20.1.223   worker-01   <none>           <none>\nts-train-service-c4fb58df9-82mlr                2/2     Running   0               5m9s    172.20.2.101   worker-02   <none>           <none>\nts-travel-plan-service-5985cdf6b6-9q82l         2/2     Running   0               5m10s   172.20.1.222   worker-01   <none>           <none>\nts-travel-service-5b9b99c879-dhq6n              2/2     Running   0               5m6s    172.20.1.228   worker-01   <none>           <none>\nts-travel2-service-849bffcb7c-9l5qk             2/2     Running   0               5m12s   172.20.3.45    worker-03   <none>           <none>\nts-ui-dashboard-554844f867-cm646                2/2     Running   3 (4m49s ago)   5m9s    172.20.2.100   worker-02   <none>           <none>\nts-user-service-6886cbf9cf-85bxc                2/2     Running   0               5m7s    172.20.1.227   worker-01   <none>           <none>\nts-verification-code-service-7cbd896f77-6wsbz   2/2     Running   0               5m6s    172.20.2.104   worker-02   <none>           <none>\nts-voucher-service-5ffdd5456c-9njw6             2/2     Running   0               5m9s    172.20.3.50    worker-03   <none>           <none>\nts-wait-order-service-848dbb9dd7-5cpkq          2/2     Running   0               5m8s    172.20.1.225   worker-01   <none>           <none>\ntsdb-mysql-0                                    4/4     Running   1 (16h ago)     16h     172.20.1.214   worker-01   <none>           <none>\ntsdb-mysql-1                                    4/4     Running   1 (16h ago)     16h     172.20.2.116   worker-02   <none>           <none>\ntsdb-mysql-2                                    4/4     Running   1 (16h ago)     16h     172.20.3.235   worker-03   <none>           <none>\n",
+   "error": null,
+   "purpose": "pod readiness census",
+   "tool_latency": null
+  },
+  {
+   "step_id": 1,
+   "action_type": "tool",
+   "action_name": "GetAlerts",
+   "action_input": {},
+   "observation": "{'status': 'has_anomalies', 'alert_count': 2, 'alerts': [{'request_method': 'POST', 'business_action': 'Search ticket', 'entry_service': 'ts-travel-service', 'url': '/api/v1/travelservice/trips/left', 'occurrences': 19, 'raw_error': \"HTTPError('404 Client Error: Not Found')\"}, {'request_method': 'POST', 'business_action': 'Process payment', 'entry_service': 'ts-inside-payment-service', 'url': '/api/v1/inside_pay_service/inside_payment', 'occurrences': 5, 'raw_error': \"HTTPError('500 Server Error: Internal Server Error')\"}]}",
+   "error": null,
+   "purpose": "anomaly signature (routes performance/code families)",
+   "tool_latency": null
+  },
+  {
+   "step_id": 2,
+   "action_type": "tool",
+   "action_name": "GetRecentLogs",
+   "action_input": {
+    "namespace": "train-ticket",
+    "service_name": "ts-travel-service"
+   },
+   "observation": "['From ts-travel-service logs:', '2026-03-17T15:52:28.096873362+08:00 2026-03-17 15:52:28.096  INFO 1 --- [io-12346-exec-5] travel.service.TravelServiceImpl         : [getRestTicketNumber][Seat request][request: Seat(travelDate=2026-03-18, trainNumber=G1234, startStation=nanjing, destStation=shanghai, seatType=3, totalNum=2147483647, stations=[nanjing, zhenjiang, wuxi, suzhou, shanghai])]', '2026-03-17T15:52:28.126793010+08:00 2026-03-17 15:52:28.126  INFO 1 --- [io-12346-exec-6] travel.service.TravelServiceImpl         : [getRestTicketNumber][Seat request][request: Seat(travelDate=2026-03-21, trainNumber=G1237, startStation=suzhou, destStation=shanghai, seatType=2, totalNum=2147483647, stations=[suzhou, shanghai])]', '2026-03-17T15:52:28.197249307+08:00 2026-03-17 15:52:28.197  INFO 1 --- [io-12346-exec-5] travel.service.TravelServiceImpl         : [getRestTicketNumber][Get Rest tickets num][num is: Response(status=1, msg=Get Left Ticket of Internal Success, data=1073741760)]', '2026-03-17T15:52:28.197434644+08:00 2026-03-17 15:52:28.197  INFO 1 --- [io-12346-exec-5] travel.service.TravelServiceImpl         : [getTickets][Calculate distance][calculate time：0  time: Sat May 04 09:00:00 CST 2013]', '2026-03-17T15:52:28.197584735+08:00 2026-03-17 15:52:28.197  INFO 1 --- [io-12346-exec-5] travel.service.TravelServiceImpl         : [getTickets][Calculate distance][calculate time：60  time: Sat May 04 10:00:00 CST 2013]', '2026-03-17T15:52:28.197767502+08:00 2026-03-17 15:52:28.197  INFO 1 --- [io-12346-exec-6] travel.service.TravelServiceImpl         : [getRestTicketNumber][Get Rest tickets num][num is: Response(status=1, msg=Get Left Ticket of Internal Success, data=1073741757)]', '2026-03-17T15:52:28.197792263+08:00 2026-03-17 15:52:28.197  INFO 1 --- [io-12346-exec-6] travel.service.TravelServiceImpl         : [getRestTicketNumber][Seat request][request: Seat(travelDate=2026-03-21, trainNumber=G1237, startStation=suzhou, destStation=shanghai, seatType=3, totalNum=2147483647, stations=[suzhou, shanghai])]', '2026-03-17T15:52:28.394217823+08:00 2026-03-17 15:52:28.394  INFO 1 --- [io-12346-exec-6] travel.service.TravelServiceImpl         : [getRestTicketNumber][Get Rest tickets num][num is: Response(status=1, msg=Get Left Ticket of Internal Success, data=1073741757)]', '2026-03-17T15:52:28.394425429+08:00 2026-03-17 15:52:28.394  INFO 1 --- [io-12346-exec-6] travel.service.TravelServiceImpl         : [getTickets][Calculate distance][calculate time：0  time: Sat May 04 08:00:00 CST 2013]', '2026-03-17T15:52:28.394594098+08:00 2026-03-17 15:52:28.394  INFO 1 --- [io-12346-exec-6] travel.service.TravelServiceImpl         : [getTickets][Calculate distance][calculate time：15  time: Sat May 04 08:15:00 CST 2013]', '2026-03-17T15:52:28.430399798+08:00 2026-03-17 15:52:28.430  INFO 1 --- [io-12346-exec-4] travel.controller.TravelController       : [getTripAllDetailInfo][Get trip detail][TripId: G1237]', '2026-03-17T15:52:28.433321008+08:00 2026-03-17 15:52:28.433  INFO 1 --- [io-12346-exec-4] travel.service.TravelServiceImpl         : [today date][y: 2026][m:2][d: 17]', '2026-03-17T15:52:28.433334599+08:00 2026-03-17 15:52:28.433  INFO 1 --- [io-12346-exec-4] travel.service.TravelServiceImpl         : [departrue date][y: 2026][m:2][d: 19]', '2026-03-17T15:52:28.433338220+08:00 2026-03-17 15:52:28.433  INFO 1 --- [io-12346-exec-4] travel.service.TravelServiceImpl         : [getTickets][before get basic][trip: Trip(id=b61398ce-50b8-4296-ad53-6b314a324228, tripId=G1237, trainTypeName=GaoTieTwo, routeId=084837bb-53c8-4438-87c8-0321a4d09917, startStationName=shanghai, stationsName=suzhou, terminalStationName=taiyuan, startTime=2013-05-04 08:00:00, endTime=2013-05-04 17:21:52)]', '2026-03-17T15:52:28.629438875+08:00 2026-03-17 15:52:28.629  INFO 1 --- [io-12346-exec-4] travel.service.TravelServiceImpl         : [getRestTicketNumber][Seat request][request: Seat(travelDate=2026-03-19, trainNumber=G1237, startStation=suzhou, destStation=shanghai, seatType=2, totalNum=2147483647, stations=[suzhou, shanghai])]', '2026-03-17T15:52:28.698052066+08:00 2026-03-17 15:52:28.697  INFO 1 --- [io-12346-exec-4] travel.service.TravelServiceImpl         : [getRestTicketNumber][Get Rest tickets num][num is: Response(status=1, msg=Get Left Ticket of Internal Success, data=1073741771)]', '2026-03-17T15:52:28.698065059+08:00 2026-03-17 15:52:28.697  INFO 1 --- [io-12346-exec-4] travel.service.TravelServiceImpl         : [getRestTicketNumber][Seat request][request: Seat(travelDate=2026-03-19, trainNumber=G1237, startStation=suzhou, destStation=shanghai, seatType=3, totalNum=2147483647, stations=[suzhou, shanghai])]', '2026-03-17T15:52:28.736858176+08:00 2026-03-17 15:52:28.736  INFO 1 --- [io-12346-exec-4] travel.service.TravelServiceImpl         : [getRestTicketNumber][Get Rest tickets num][num is: Response(status=1, msg=Get Left Ticket of Internal Success, data=1073741771)]', '2026-03-17T15:52:28.737037061+08:00 2026-03-17 15:52:28.736  INFO 1 --- [io-12346-exec-4] travel.service.TravelServiceImpl         : [getTickets][Calculate distance][calculate time：0  time: Sat May 04 08:00:00 CST 2013]', '2026-03-17T15:52:28.737169878+08:00 2026-03-17 15:52:28.737  INFO 1 --- [io-12346-exec-4] travel.service.TravelServiceImpl         : [getTickets][Calculate distance][calculate time：15  time: Sat May 04 08:15:00 CST 2013]', '2026-03-17T15:52:48.674045310+08:00 2026-03-17 15:52:48.673  INFO 1 --- [o-12346-exec-10] travel.controller.TravelController       : [getTripAllDetailInfo][Get trip detail][TripId: D1345]', '2026-03-17T15:52:48.676971612+08:00 2026-03-17 15:52:48.676  INFO 1 --- [o-12346-exec-10] travel.service.TravelServiceImpl         : [today date][y: 2026][m:2][d: 17]', '2026-03-17T15:52:48.676980249+08:00 2026-03-17 15:52:48.676  INFO 1 --- [o-12346-exec-10] travel.service.TravelServiceImpl         : [departrue date][y: 2026][m:2][d: 21]', '2026-03-17T15:52:48.677003689+08:00 2026-03-17 15:52:48.676  INFO 1 --- [o-12346-exec-10] travel.service.TravelServiceImpl         : [getTickets][before get basic][trip: Trip(id=c1cba2e7-ed6d-47c3-982b-22339822f5b4, tripId=D1345, trainTypeName=DongCheOne, routeId=f3d4d4ef-693b-4456-8eed-59c0d717dd08, startStationName=shanghai, stationsName=suzhou, terminalStationName=taiyuan, startTime=2013-05-04 07:00:00, endTime=2013-05-04 19:59:52)]', '2026-03-17T15:52:48.739266697+08:00 2026-03-17 15:52:48.739  INFO 1 --- [o-12346-exec-10] travel.service.TravelServiceImpl         : [getRestTicketNumber][Seat request][request: Seat(travelDate=2026-03-21, trainNumber=D1345, startStation=shanghai, destStation=suzhou, seatType=2, totalNum=2147483647, stations=[shanghai, suzhou])]', '2026-03-17T15:52:48.764712790+08:00 2026-03-17 15:52:48.764  INFO 1 --- [o-12346-exec-10] travel.service.TravelServiceImpl         : [getRestTicketNumber][Get Rest tickets num][num is: Response(status=1, msg=Get Left Ticket of Internal Success, data=1073741767)]', '2026-03-17T15:52:48.764730238+08:00 2026-03-17 15:52:48.764  INFO 1 --- [o-12346-exec-10] travel.service.TravelServiceImpl         : [getRestTicketNumber][Seat request][request: Seat(travelDate=2026-03-21, trainNumber=D1345, startStation=shanghai, destStation=suzhou, seatType=3, totalNum=2147483647, stations=[shanghai, suzhou])]', '2026-03-17T15:52:48.784653202+08:00 2026-03-17 15:52:48.784  INFO 1 --- [o-12346-exec-10] travel.service.TravelServiceImpl         : [getRestTicketNumber][Get Rest tickets num][num is: Response(status=1, msg=Get Left Ticket of Internal Success, data=1073741767)]', '2026-03-17T15:52:48.784831392+08:00 2026-03-17 15:52:48.784  INFO 1 --- [o-12346-exec-10] travel.service.TravelServiceImpl         : [getTickets][Calculate distance][calculate time：0  time: Sat May 04 07:00:00 CST 2013]', '2026-03-17T15:52:48.784966178+08:00 2026-03-17 15:52:48.784  INFO 1 --- [o-12346-exec-10] travel.service.TravelServiceImpl         : [getTickets][Calculate distance][calculate time：16  time: Sat May 04 07:16:00 CST 2013]', '2026-03-17T15:52:48.903149482+08:00 2026-03-17 15:52:48.902  INFO 1 --- [io-12346-exec-8] travel.controller.TravelController       : [getTripAllDetailInfo][Get trip detail][TripId: G1237]', '2026-03-17T15:52:48.905807059+08:00 2026-03-17 15:52:48.905  INFO 1 --- [io-12346-exec-8] travel.service.TravelServiceImpl         : [today date][y: 2026][m:2][d: 17]', '2026-03-17T15:52:48.905813625+08:00 2026-03-17 15:52:48.905  INFO 1 --- [io-12346-exec-8] travel.service.TravelServiceImpl         : [departrue date][y: 2026][m:2][d: 20]', '2026-03-17T15:52:48.905845654+08:00 2026-03-17 15:52:48.905  INFO 1 --- [io-12346-exec-8] travel.service.TravelServiceImpl         : [getTickets][before get basic][trip: Trip(id=b61398ce-50b8-4296-ad53-6b314a324228, tripId=G1237, trainTypeName=GaoTieTwo, routeId=084837bb-53c8-4438-87c8-0321a4d09917, startStationName=shanghai, stationsName=suzhou, terminalStationName=taiyuan, startTime=2013-05-04 08:00:00, endTime=2013-05-04 17:21:52)]', '2026-03-17T15:52:48.953398149+08:00 2026-03-17 15:52:48.953  INFO 1 --- [io-12346-exec-9] travel.controller.TravelController       : [getTripAllDetailInfo][Get trip detail][TripId: G1234]', '2026-03-17T15:52:48.954106808+08:00 2026-03-17 15:52:48.953  INFO 1 --- [io-12346-exec-8] travel.service.TravelServiceImpl         : [getRestTicketNumber][Seat request][request: Seat(travelDate=2026-03-20, trainNumber=G1237, startStation=suzhou, destStation=shanghai, seatType=2, totalNum=2147483647, stations=[suzhou, shanghai])]', '2026-03-17T15:52:49.016033323+08:00 2026-03-17 15:52:49.015  INFO 1 --- [io-12346-exec-9] travel.service.TravelServiceImpl         : [today date][y: 2026][m:2][d: 17]', '2026-03-17T15:52:49.016050660+08:00 2026-03-17 15:52:49.015  INFO 1 --- [io-12346-exec-9] travel.service.TravelServiceImpl         : [departrue date][y: 2026][m:2][d: 20]', '2026-03-17T15:52:49.016069397+08:00 2026-03-17 15:52:49.015  INFO 1 --- [io-12346-exec-9] travel.service.TravelServiceImpl         : [getTickets][before get basic][trip: Trip(id=099b499d-d011-4a43-8910-89a5742a04a6, tripId=G1234, trainTypeName=GaoTieOne, routeId=92708982-77af-4318-be25-57ccb0ff69ad, startStationName=shanghai, stationsName=suzhou, terminalStationName=taiyuan, startTime=2013-05-04 09:00:00, endTime=2013-05-04 15:51:52)]', '2026-03-17T15:52:49.016469762+08:00 2026-03-17 15:52:49.016  INFO 1 --- [io-12346-exec-8] travel.service.TravelServiceImpl         : [getRestTicketNumber][Get Rest tickets num][num is: Response(status=1, msg=Get Left Ticket of Internal Success, data=1073741768)]', '2026-03-17T15:52:49.016491007+08:00 2026-03-17 15:52:49.016  INFO 1 --- [io-12346-exec-8] travel.service.TravelServiceImpl         : [getRestTicketNumber][Seat request][request: Seat(travelDate=2026-03-20, trainNumber=G1237, startStation=suzhou, destStation=shanghai, seatType=3, totalNum=2147483647, stations=[suzhou, shanghai])]', '2026-03-17T15:52:49.037634276+08:00 2026-03-17 15:52:49.037  INFO 1 --- [io-12346-exec-8] travel.service.TravelServiceImpl         : [getRestTicketNumber][Get Rest tickets num][num is: Response(status=1, msg=Get Left Ticket of Internal Success, data=1073741768)]', '2026-03-17T15:52:49.037814539+08:00 2026-03-17 15:52:49.037  INFO 1 --- [io-12346-exec-8] travel.service.TravelServiceImpl         : [getTickets][Calculate distance][calculate time：0  time: Sat May 04 08:00:00 CST 2013]', '2026-03-17T15:52:49.037950125+08:00 2026-03-17 15:52:49.037  INFO 1 --- [io-12346-exec-8] travel.service.TravelServiceImpl         : [getTickets][Calculate distance][calculate time：15  time: Sat May 04 08:15:00 CST 2013]', '2026-03-17T15:52:49.065139205+08:00 2026-03-17 15:52:49.064  INFO 1 --- [io-12346-exec-9] travel.service.TravelServiceImpl         : [getRestTicketNumber][Seat request][request: Seat(travelDate=2026-03-20, trainNumber=G1234, startStation=nanjing, destStation=shanghai, seatType=2, totalNum=2147483647, stations=[nanjing, zhenjiang, wuxi, suzhou, shanghai])]', '2026-03-17T15:52:49.139194542+08:00 2026-03-17 15:52:49.139  INFO 1 --- [io-12346-exec-9] travel.service.TravelServiceImpl         : [getRestTicketNumber][Get Rest tickets num][num is: Response(status=1, msg=Get Left Ticket of Internal Success, data=1073741766)]', '2026-03-17T15:52:49.139211274+08:00 2026-03-17 15:52:49.139  INFO 1 --- [io-12346-exec-9] travel.service.TravelServiceImpl         : [getRestTicketNumber][Seat request][request: Seat(travelDate=2026-03-20, trainNumber=G1234, startStation=nanjing, destStation=shanghai, seatType=3, totalNum=2147483647, stations=[nanjing, zhenjiang, wuxi, suzhou, shanghai])]', '2026-03-17T15:52:49.236722694+08:00 2026-03-17 15:52:49.236  INFO 1 --- [io-12346-exec-9] travel.service.TravelServiceImpl         : [getRestTicketNumber][Get Rest tickets num][num is: Response(status=1, msg=Get Left Ticket of Internal Success, data=1073741766)]', '2026-03-17T15:52:49.236895216+08:00 2026-03-17 15:52:49.236  INFO 1 --- [io-12346-exec-9] travel.service.TravelServiceImpl         : [getTickets][Calculate distance][calculate time：0  time: Sat May 04 09:00:00 CST 2013]', '2026-03-17T15:52:49.236999554+08:00 2026-03-17 15:52:49.236  INFO 1 --- [io-12346-exec-9] travel.service.TravelServiceImpl         : [getTickets][Calculate distance][calculate time：60  time: Sat May 04 10:00:00 CST 2013]', '', 'From previous container logs:', 'Error: Error from server (BadRequest): previous terminated container \"ts-travel-service\" in pod \"ts-travel-service-5b9b99c879-dhq6n\" not found', '', 'From istio-proxy logs:', '2026-03-17T07:48:47.212526Z\\tinfo\\tFLAG: --proxyLogLevel=\"warning\"', '2026-03-17T07:48:47.214258Z\\tinfo\\tFLAG: --serviceCluster=\"istio-proxy\"', '2026-03-17T07:48:47.214307Z\\tinfo\\tFLAG: --stsPort=\"0\"', '2026-03-17T07:48:47.214331Z\\tinfo\\tFLAG: --templateFile=\"\"', '2026-03-17T07:48:47.214376Z\\tinfo\\tFLAG: --tokenManagerPlugin=\"\"', '2026-03-17T07:48:47.214410Z\\tinfo\\tFLAG: --vklog=\"0\"', '2026-03-17T07:48:47.214423Z\\tinfo\\tVersion 1.27.3-df538c2279a633544e6c0961a03ab772729933be-Clean', '2026-03-17T07:48:47.214632Z\\tinfo\\tProxy role\\tips=[172.20.1.228] type=sidecar id=ts-travel-service-5b9b99c879-dhq6n.train-ticket domain=train-ticket.svc.cluster.local', '2026-03-17T07:48:47.214711Z\\tinfo\\tApply proxy config from env {\"proxyMetadata\":{\"ISTIO_META_ENABLE_HBONE\":\"true\"},\"image\":{\"imageType\":\"distroless\"}}', '2026-03-17T07:48:47.216242Z\\tinfo\\tcpu limit detected as 2, setting concurrency', '2026-03-17T07:48:47.216665Z\\tinfo\\tEffective config: binaryPath: /usr/local/bin/envoy', 'concurrency: 2', 'configPath: ./etc/istio/proxy', 'controlPlaneAuthPolicy: MUTUAL_TLS', 'discoveryAddress: istiod.istio-system.svc:15012', 'drainDuration: 45s', 'image:', '  imageType: distroless', 'proxyAdminPort: 15000', 'proxyMetadata:', '  ISTIO_META_ENABLE_HBONE: \"true\"', 'serviceCluster: istio-proxy', 'statNameLength: 189', 'statusPort: 15020', 'terminationDrainDuration: 5s', '2026-03-17T07:48:47.216702Z\\tinfo\\tJWT policy is third-party-jwt', '2026-03-17T07:48:47.236554Z\\tinfo\\tusing credential fetcher of JWT type in cluster.local trust domain', '2026-03-17T07:48:47.289532Z\\tinfo\\tStarting default Istio SDS Server', '2026-03-17T07:48:47.297644Z\\tinfo\\tCA Endpoint istiod.istio-system.svc:15012, provider Citadel', '2026-03-17T07:48:47.297815Z\\tinfo\\tUsing CA istiod.istio-system.svc:15012 cert with certs: var/run/secrets/istio/root-cert.pem', '2026-03-17T07:48:47.291724Z\\tinfo\\tOpening status port 15020', '2026-03-17T07:48:47.306754Z\\tinfo\\txdsproxy\\tInitializing with upstream address \"istiod.istio-system.svc:15012\" and cluster \"Kubernetes\"', '2026-03-17T07:48:47.394828Z\\tinfo\\tPilot SAN: [istiod.istio-system.svc]', '2026-03-17T07:48:47.408788Z\\tinfo\\tStarting proxy agent', '2026-03-17T07:48:47.399911Z\\tinfo\\tsds\\tStarting SDS grpc server', '2026-03-17T07:48:47.447781Z\\tinfo\\tsds\\tStarting SDS server for workload certificates, will listen on \"var/run/secrets/workload-spiffe-uds/socket\"', '2026-03-17T07:48:47.447895Z\\tinfo\\tEnvoy command: [-c etc/istio/proxy/envoy-rev.json --drain-time-s 45 --drain-strategy immediate --local-address-ip-version v4 --file-flush-interval-msec 1000 --disable-hot-restart --allow-unknown-static-fields -l warning --component-log-level misc:error --skip-deprecated-logs --concurrency 2]', '2026-03-17T07:48:47.792327Z\\twarning\\tenvoy main external/envoy/source/server/server.cc:905\\tUsage of the deprecated runtime key overload.global_downstream_max_connections, consider switching to `envoy.resource_monitors.global_downstream_max_connections` instead.This runtime key will be removed in future.\\tthread=14', '2026-03-17T07:48:47.811208Z\\twarning\\tenvoy main external/envoy/source/server/server.cc:1001\\tThere is no configured limit to the number of allowed active downstream connections. Configure a limit in `envoy.resource_monitors.global_downstream_max_connections` resource monitor.\\tthread=14', '2026-03-17T07:48:48.011908Z\\tinfo\\txdsproxy\\tconnected to delta upstream XDS server: istiod.istio-system.svc:15012\\tid=1', '2026-03-17T07:48:48.314314Z\\tinfo\\tads\\tADS: new connection for node:1', '2026-03-17T07:48:48.350990Z\\tinfo\\tads\\tADS: new connection for node:2', '2026-03-17T07:48:49.524009Z\\tinfo\\tcache\\tgenerated new workload certificate\\tresourceName=default latency=2.127905472s ttl=23h59m59.475995622s', '2026-03-17T07:48:49.524207Z\\tinfo\\tcache\\tRoot cert has changed, start rotating root cert', '2026-03-17T07:48:49.524324Z\\tinfo\\tcache\\treturned workload certificate from cache\\tttl=23h59m59.475680037s', '2026-03-17T07:48:49.524402Z\\tinfo\\tcache\\treturned workload trust anchor from cache\\tttl=23h59m59.475598814s', '2026-03-17T07:48:49.532747Z\\tinfo\\tcache\\treturned workload trust anchor from cache\\tttl=23h59m59.467257706s', '2026-03-17T07:48:49.533956Z\\tinfo\\tcache\\treturned workload trust anchor from cache\\tttl=23h59m59.46604523s', '2026-03-17T07:48:50.857490Z\\tinfo\\tReadiness succeeded in 3.647065998s', '2026-03-17T07:48:50.857803Z\\tinfo\\tEnvoy proxy is ready']",
+   "error": null,
+   "purpose": "request latency / saturation logs",
+   "tool_latency": null
+  },
+  {
+   "step_id": 3,
+   "action_type": "tool",
+   "action_name": "GetServiceDependencies",
+   "action_input": {
+    "service_name": "ts-travel-service"
+   },
+   "observation": "[Service]: ts-travel-service\n[Upstream (Called By)]: ts-gateway-service, ts-preserve-service, ts-travel-plan-service, ts-route-plan-service, ts-rebook-service, ts-food-service\n[Downstream (Calls)]:\nts-travel-service\n├── ts-basic-service\n├── ts-route-service\n├── ts-train-service\n└── ts-seat-service",
+   "error": null,
+   "purpose": "upstream/downstream call graph",
+   "tool_latency": null
+  }
+ ],
+ "agentrun": {
+  "tag": "test",
+  "dsl": "workspace/dsl_versions/v0.8.dsl.txt",
+  "dsl_version": "0.8",
+  "sop": {
+   "sop": "boutique-runtime-rca",
+   "scope": {
+    "system": "boutique",
+    "families": [
+     "runtime",
+     "admission",
+     "scheduling",
+     "startup",
+     "service",
+     "performance",
+     "infrastructure",
+     "codedefect"
+    ],
+    "severity": [
+     "SEV2",
+     "SEV3"
+    ]
+   },
+   "owner": "sre-platform",
+   "approved_by": [
+    "oncall-primary",
+    "sre-lead"
+   ],
+   "reviewed_at": "2026-10-23",
+   "change_ticket": "OPS-1236",
+   "boundaries": "只读诊断：本 SOP 不执行任何写操作（重启/回滚/扩缩容），也不做对外播报；\n它回答\"最可能的根因与受害对象\"，处置与沟通由值班按 runbook 人工执行。\n不覆盖 SEV1（需 incident commander 介入）与变更引发的问题（走变更回滚流程）。\n输入是冻结快照：诊断结论对\"快照时刻\"成立，恢复后需重新取证。\nR1 已知边界：PVC 的 requested size / accessMode 在本 benchmark 的工具面不可见，\n因此 pvc_capacity 与 pvc_access_mode 无法区分（同一分数并列，交给 jev 或升级）。\n"
+  },
+  "params": {
+   "cands_cap": 8,
+   "max_waves": 8,
+   "min_waves": 5,
+   "steps_per_wave": 1,
+   "dominance_ratio": 1.5,
+   "conf_min": 0.0,
+   "escalate": true,
+   "escalate_budget": 8,
+   "judge_on_codedefect": true,
+   "jev_route": true,
+   "jev_pick": true,
+   "jev_verify": true,
+   "route_fallback": "runtime"
+  },
+  "nodes_executed": [
+   "anchors:extract_anchors",
+   "census:probes",
+   "route:decide",
+   "plan:build_plan",
+   "probe:probes",
+   "derive:derive_candidates",
+   "pick:decide",
+   "verify:decide",
+   "probe:probes",
+   "derive:derive_candidates",
+   "pick:decide",
+   "verify:decide",
+   "probe:probes",
+   "derive:derive_candidates",
+   "pick:decide",
+   "verify:decide",
+   "probe:probes",
+   "derive:derive_candidates",
+   "pick:decide",
+   "verify:decide",
+   "escalate:escalate",
+   "answer:normalize_answer",
+   "persist:persist_trace"
+  ],
+  "census": [
+   {
+    "step": "pods",
+    "gate": "always"
+   },
+   {
+    "step": "alerts",
+    "gate": "healthy_system"
+   }
+  ],
+  "plan": [
+   {
+    "step": "recent_logs",
+    "gate": "always",
+    "wave": 1
+   },
+   {
+    "step": "describe_pod",
+    "gate": "weak",
+    "wave": 2
+   },
+   {
+    "step": "deps",
+    "gate": "weak",
+    "wave": 3
+   }
+  ],
+  "family": "performance",
+  "state_wiring": {
+   "family": "$route.family",
+   "route_probs": "$route.probabilities",
+   "picked": "$pick.picked",
+   "pick_dominant": "$pick.dominant",
+   "verify_status": "$verify.status",
+   "verify_prob": "$verify.confidence"
+  },
+  "bindings": {
+   "anchors": {
+    "anchors": "Anchors(case_id='trainticket/service/18', system='trainticket', namespace='train-ticket', query='Service Availability Disruption.', difficulty='medium', symptoms=[], mentioned_apps=[], priors={'db_service': 'tsdb-mysql-leader', 'db_port': 3306})"
+   },
+   "route": {
+    "family": "performance",
+    "probabilities": {},
+    "route_why": "mechanism_mode"
+   },
+   "plan": {
+    "plan": "[{'name': 'recent_logs', 'key': 'recent', 'tool': 'GetRecentLogs', 'args': <function _args_error_logs at 0x107ddb740>, 'purpose': 'request latency / saturation logs', 'when': <function compile_steps.<locals>.<lambda> at 0x107fefce0>, 'gate': 'always', 'wave': 1}, {'name': 'describe_pod', 'key': 'describe:pod', 'tool': 'DescribeResource', 'args': <function _args_describe_pod at 0x107ddb560>, 'purpose': 'probe config, container state, restart reasons, scheduler events', 'when': <function compile_steps.<locals>.<lambda> at 0x107fefec0>, 'gate': 'weak', 'wave': 2}, {'name': 'deps', 'key': 'deps', 'tool': 'GetServiceDependencies', 'args': <function _args_deps at 0x107ddbe20>, 'purpose': 'upstream/downstream call graph', 'when': <function compile_steps.<locals>.<lambda> at 0x107fefe20>, 'gate': 'weak', 'wave': 3}]"
+   },
+   "derive": {
+    "candidates": "[]"
+   },
+   "pick": {
+    "picked": null,
+    "dominant": false,
+    "pick_why": "no_candidates"
+   },
+   "verify": {
+    "status": "unverified",
+    "confidence": null,
+    "verify_why": "nothing_to_verify"
+   },
+   "escalate": {
+    "answer": null
+   },
+   "answer": {
+    "final": {
+     "key_evidence_summary": "no evidence-grounded hypothesis",
+     "top_3_predictions": []
+    }
+   }
+  },
+  "picked": null,
+  "pick_why": "",
+  "verify_prob": null,
+  "verify_verdict": "unverified",
+  "verified": false,
+  "escalated": false,
+  "escalate_reason": "no_candidates",
+  "escalate_steps": 0,
+  "waves": 4,
+  "candidates": [],
+  "jev": [
+   {
+    "rid": "test:trainticket/service/18#route",
+    "kind": "route",
+    "node": "route",
+    "mode": "mechanism",
+    "options": [
+     "performance",
+     "infrastructure"
+    ],
+    "status": "mechanical",
+    "guard": "unavailable",
+    "use": "first_option",
+    "choice": "performance",
+    "why": "mechanism_mode",
+    "dominant": false,
+    "continue_loop": false,
+    "escalate": false
+   },
+   {
+    "rid": "test:trainticket/service/18#pick1",
+    "kind": "pick",
+    "node": "pick",
+    "mode": "mechanism",
+    "options": [],
+    "status": "mechanical",
+    "guard": "no_options",
+    "use": "none",
+    "choice": null,
+    "why": "no_candidates",
+    "dominant": false,
+    "continue_loop": false,
+    "escalate": false
+   },
+   {
+    "rid": "test:trainticket/service/18#verify1",
+    "kind": "verify",
+    "node": "verify",
+    "mode": "mechanism",
+    "options": [
+     "supported",
+     "insufficient",
+     "contradicted"
+    ],
+    "status": "mechanical",
+    "guard": "no_pick",
+    "use": "unverified",
+    "choice": "unverified",
+    "why": "nothing_to_verify",
+    "dominant": false,
+    "continue_loop": false,
+    "escalate": false
+   },
+   {
+    "rid": "test:trainticket/service/18#pick2",
+    "kind": "pick",
+    "node": "pick",
+    "mode": "mechanism",
+    "options": [],
+    "status": "mechanical",
+    "guard": "no_options",
+    "use": "none",
+    "choice": null,
+    "why": "no_candidates",
+    "dominant": false,
+    "continue_loop": false,
+    "escalate": false
+   },
+   {
+    "rid": "test:trainticket/service/18#verify2",
+    "kind": "verify",
+    "node": "verify",
+    "mode": "mechanism",
+    "options": [
+     "supported",
+     "insufficient",
+     "contradicted"
+    ],
+    "status": "mechanical",
+    "guard": "no_pick",
+    "use": "unverified",
+    "choice": "unverified",
+    "why": "nothing_to_verify",
+    "dominant": false,
+    "continue_loop": false,
+    "escalate": false
+   },
+   {
+    "rid": "test:trainticket/service/18#pick3",
+    "kind": "pick",
+    "node": "pick",
+    "mode": "mechanism",
+    "options": [],
+    "status": "mechanical",
+    "guard": "no_options",
+    "use": "none",
+    "choice": null,
+    "why": "no_candidates",
+    "dominant": false,
+    "continue_loop": false,
+    "escalate": false
+   },
+   {
+    "rid": "test:trainticket/service/18#verify3",
+    "kind": "verify",
+    "node": "verify",
+    "mode": "mechanism",
+    "options": [
+     "supported",
+     "insufficient",
+     "contradicted"
+    ],
+    "status": "mechanical",
+    "guard": "no_pick",
+    "use": "unverified",
+    "choice": "unverified",
+    "why": "nothing_to_verify",
+    "dominant": false,
+    "continue_loop": false,
+    "escalate": false
+   },
+   {
+    "rid": "test:trainticket/service/18#pick4",
+    "kind": "pick",
+    "node": "pick",
+    "mode": "mechanism",
+    "options": [],
+    "status": "mechanical",
+    "guard": "no_options",
+    "use": "none",
+    "choice": null,
+    "why": "no_candidates",
+    "dominant": false,
+    "continue_loop": false,
+    "escalate": false
+   },
+   {
+    "rid": "test:trainticket/service/18#verify4",
+    "kind": "verify",
+    "node": "verify",
+    "mode": "mechanism",
+    "options": [
+     "supported",
+     "insufficient",
+     "contradicted"
+    ],
+    "status": "mechanical",
+    "guard": "no_pick",
+    "use": "unverified",
+    "choice": "unverified",
+    "why": "nothing_to_verify",
+    "dominant": false,
+    "continue_loop": false,
+    "escalate": false
+   }
+  ],
+  "nodes": [
+   {
+    "node": "code",
+    "id": "anchors",
+    "anchors": {
+     "case_id": "trainticket/service/18",
+     "system": "trainticket",
+     "namespace": "train-ticket",
+     "query": "Service Availability Disruption.",
+     "difficulty": "medium",
+     "symptoms": [],
+     "mentioned_apps": []
+    }
+   },
+   {
+    "node": "probes",
+    "plan": "census",
+    "wave": 0,
+    "executed": 2,
+    "steps": [
+     {
+      "key": "pods",
+      "tool": "GetResources",
+      "arguments": {
+       "namespace": "train-ticket",
+       "resource_type": "pods",
+       "output_wide": true
+      },
+      "gate": "always"
+     },
+     {
+      "key": "alerts",
+      "tool": "GetAlerts",
+      "arguments": {},
+      "gate": "healthy_system"
+     }
+    ],
+    "skipped": []
+   },
+   {
+    "node": "decide",
+    "id": "route",
+    "rid": "test:trainticket/service/18#route",
+    "status": "mechanical",
+    "guard": "unavailable",
+    "use": "first_option",
+    "choice": "performance",
+    "dominant": false,
+    "why": "mechanism_mode"
+   },
+   {
+    "node": "code",
+    "id": "plan",
+    "family": "performance",
+    "plan": [
+     {
+      "step": "recent_logs",
+      "gate": "always",
+      "wave": 1
+     },
+     {
+      "step": "describe_pod",
+      "gate": "weak",
+      "wave": 2
+     },
+     {
+      "step": "deps",
+      "gate": "weak",
+      "wave": 3
+     }
+    ]
+   },
+   {
+    "node": "probes",
+    "plan": "family",
+    "wave": 1,
+    "executed": 1,
+    "steps": [
+     {
+      "key": "recent",
+      "tool": "GetRecentLogs",
+      "arguments": {
+       "namespace": "train-ticket",
+       "service_name": "ts-travel-service"
+      },
+      "gate": "always"
+     }
+    ],
+    "skipped": []
+   },
+   {
+    "node": "code",
+    "id": "derive",
+    "raw": 0,
+    "kept": 0,
+    "top": []
+   },
+   {
+    "node": "decide",
+    "id": "pick",
+    "rid": "test:trainticket/service/18#pick1",
+    "status": "mechanical",
+    "guard": "no_options",
+    "use": "none",
+    "choice": null,
+    "dominant": false,
+    "why": "no_candidates"
+   },
+   {
+    "node": "decide",
+    "id": "verify",
+    "rid": "test:trainticket/service/18#verify1",
+    "status": "mechanical",
+    "guard": "no_pick",
+    "use": "unverified",
+    "choice": "unverified",
+    "dominant": false,
+    "why": "nothing_to_verify"
+   },
+   {
+    "node": "probes",
+    "plan": "family",
+    "wave": 2,
+    "executed": 0,
+    "steps": [],
+    "skipped": [
+     {
+      "step": "describe_pod",
+      "why": "args not applicable"
+     }
+    ]
+   },
+   {
+    "node": "code",
+    "id": "derive",
+    "raw": 0,
+    "kept": 0,
+    "top": []
+   },
+   {
+    "node": "decide",
+    "id": "pick",
+    "rid": "test:trainticket/service/18#pick2",
+    "status": "mechanical",
+    "guard": "no_options",
+    "use": "none",
+    "choice": null,
+    "dominant": false,
+    "why": "no_candidates"
+   },
+   {
+    "node": "decide",
+    "id": "verify",
+    "rid": "test:trainticket/service/18#verify2",
+    "status": "mechanical",
+    "guard": "no_pick",
+    "use": "unverified",
+    "choice": "unverified",
+    "dominant": false,
+    "why": "nothing_to_verify"
+   },
+   {
+    "node": "probes",
+    "plan": "family",
+    "wave": 3,
+    "executed": 1,
+    "steps": [
+     {
+      "key": "deps",
+      "tool": "GetServiceDependencies",
+      "arguments": {
+       "service_name": "ts-travel-service"
+      },
+      "gate": "weak"
+     }
+    ],
+    "skipped": []
+   },
+   {
+    "node": "code",
+    "id": "derive",
+    "raw": 0,
+    "kept": 0,
+    "top": []
+   },
+   {
+    "node": "decide",
+    "id": "pick",
+    "rid": "test:trainticket/service/18#pick3",
+    "status": "mechanical",
+    "guard": "no_options",
+    "use": "none",
+    "choice": null,
+    "dominant": false,
+    "why": "no_candidates"
+   },
+   {
+    "node": "decide",
+    "id": "verify",
+    "rid": "test:trainticket/service/18#verify3",
+    "status": "mechanical",
+    "guard": "no_pick",
+    "use": "unverified",
+    "choice": "unverified",
+    "dominant": false,
+    "why": "nothing_to_verify"
+   },
+   {
+    "node": "probes",
+    "plan": "family",
+    "wave": 4,
+    "executed": 0,
+    "why": "plan exhausted"
+   },
+   {
+    "node": "code",
+    "id": "derive",
+    "raw": 0,
+    "kept": 0,
+    "top": []
+   },
+   {
+    "node": "decide",
+    "id": "pick",
+    "rid": "test:trainticket/service/18#pick4",
+    "status": "mechanical",
+    "guard": "no_options",
+    "use": "none",
+    "choice": null,
+    "dominant": false,
+    "why": "no_candidates"
+   },
+   {
+    "node": "decide",
+    "id": "verify",
+    "rid": "test:trainticket/service/18#verify4",
+    "status": "mechanical",
+    "guard": "no_pick",
+    "use": "unverified",
+    "choice": "unverified",
+    "dominant": false,
+    "why": "nothing_to_verify"
+   },
+   {
+    "node": "loop",
+    "id": "waves",
+    "stop": "plan_exhausted",
+    "wave": 4
+   },
+   {
+    "node": "escalate",
+    "id": "escalate",
+    "fired": true,
+    "reasons": [
+     "no_candidates"
+    ],
+    "skipped": "mode=mechanism"
+   },
+   {
+    "node": "code",
+    "id": "answer",
+    "predictions": []
+   },
+   {
+    "node": "artifact",
+    "id": "persist",
+    "persisted": false,
+    "why": "written by the CLI driver"
+   }
+  ],
+  "notes": [],
+  "tool_calls": 4,
+  "model_calls": 0,
+  "tokens_in": 0,
+  "tokens_out": 0,
+  "wall_s": 0.1
+ }
+}

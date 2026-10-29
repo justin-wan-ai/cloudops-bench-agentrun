@@ -1,0 +1,950 @@
+{
+ "case_id": "trainticket/performance/4",
+ "system_name": "trainticket",
+ "question": "Service quality degradation.",
+ "case_path": "/Users/justinwan/work/workspace/cloudops_bench_rsi/repo/benchmark/trainticket/performance/4",
+ "max_steps": 8,
+ "current_step": 3,
+ "finished": true,
+ "stop_reason": "submit",
+ "final_answer": "{\"key_evidence_summary\": \"network latency anomaly on the pod\", \"top_3_predictions\": [{\"rank\": 1, \"fault_object\": \"app/ts-auth-service\", \"root_cause\": \"pod_network_delay\"}, {\"rank\": 2, \"fault_object\": \"app/ts-basic-service\", \"root_cause\": \"pod_network_delay\"}, {\"rank\": 3, \"fault_object\": \"app/ts-cancel-service\", \"root_cause\": \"pod_network_delay\"}]}",
+ "metadata": {
+  "namespace": "train-ticket",
+  "query": "Service quality degradation.",
+  "fault_category": "performance",
+  "model_name": "agentrun-v0.9"
+ },
+ "steps": [
+  {
+   "step_id": 0,
+   "action_type": "tool",
+   "action_name": "GetResources",
+   "action_input": {
+    "namespace": "train-ticket",
+    "resource_type": "pods",
+    "output_wide": true,
+    "show_labels": true
+   },
+   "observation": "Error: Error: Only one of '--show-labels' or '-o wide' can be specified at a time for kubectl get.",
+   "error": null,
+   "purpose": "pod readiness census",
+   "tool_latency": null
+  },
+  {
+   "step_id": 1,
+   "action_type": "tool",
+   "action_name": "GetAlerts",
+   "action_input": {},
+   "observation": "{'status': 'has_anomalies', 'alert_count': 21, 'alerts': [{'type': 'Service', 'name': 'ts-auth-service', 'entity_type': 'Service', 'entity_name': 'ts-auth-service', 'time_range': '2026-03-16 15:11:01 ~ 2026-03-16 15:12:51', 'status': 'ABNORMAL', 'metric_category': 'TRAFFIC_ANOMALY', 'evidence': ['TRAFFIC_ANOMALY [Network Drop] | Inbound: Normal=8.45pps -> Current=4.33pps (-48.8%) | Outbound: Normal=11.55pps -> Current=5.41pps (-53.2%)']}, {'type': 'Service', 'name': 'ts-basic-service', 'entity_type': 'Service', 'entity_name': 'ts-basic-service', 'time_range': '2026-03-16 15:11:01 ~ 2026-03-16 15:12:51', 'status': 'ABNORMAL', 'metric_category': 'THROUGHPUT_DROP, TRAFFIC_ANOMALY', 'evidence': ['TRAFFIC_ANOMALY [Network Drop] | Inbound: Normal=22.51pps -> Current=10.37pps (-53.9%) | Outbound: Normal=24.03pps -> Current=10.92pps (-54.6%)', 'THROUGHPUT_DROP [RPS] | Normal=1.55req/s -> Current=0.54req/s (-65.3%)']}, {'type': 'Service', 'name': 'ts-cancel-service', 'entity_type': 'Service', 'entity_name': 'ts-cancel-service', 'time_range': '2026-03-16 15:11:01 ~ 2026-03-16 15:12:51', 'status': 'ABNORMAL', 'metric_category': 'TRAFFIC_ANOMALY', 'evidence': ['TRAFFIC_ANOMALY [Network Drop] | Inbound: Normal=12.91pps -> Current=6.31pps (-51.1%) | Outbound: Normal=14.59pps -> Current=6.98pps (-52.2%)']}, {'type': 'Service', 'name': 'ts-config-service', 'entity_type': 'Service', 'entity_name': 'ts-config-service', 'time_range': '2026-03-16 15:11:01 ~ 2026-03-16 15:12:51', 'status': 'ABNORMAL', 'metric_category': 'THROUGHPUT_DROP, TRAFFIC_ANOMALY', 'evidence': ['TRAFFIC_ANOMALY [Network Drop] | Inbound: Normal=8.60pps -> Current=4.58pps (-46.8%) | Outbound: Normal=10.88pps -> Current=5.27pps (-51.6%)', 'THROUGHPUT_DROP [RPS] | Normal=1.58req/s -> Current=0.52req/s (-66.9%)']}, {'type': 'Service', 'name': 'ts-contacts-service', 'entity_type': 'Service', 'entity_name': 'ts-contacts-service', 'time_range': '2026-03-16 15:11:01 ~ 2026-03-16 15:12:51', 'status': 'ABNORMAL', 'metric_category': 'THROUGHPUT_DROP, TRAFFIC_ANOMALY', 'evidence': ['TRAFFIC_ANOMALY [Network Drop] | Inbound: Normal=12.79pps -> Current=7.22pps (-43.6%) | Outbound: Normal=14.73pps -> Current=7.97pps (-45.9%)', 'THROUGHPUT_DROP [RPS] | Normal=1.55req/s -> Current=0.51req/s (-66.8%)']}, {'type': 'Service', 'name': 'ts-delivery-service', 'entity_type': 'Service', 'entity_name': 'ts-delivery-service', 'time_range': '2026-03-16 15:11:01 ~ 2026-03-16 15:12:51', 'status': 'ABNORMAL', 'metric_category': 'TRAFFIC_ANOMALY', 'evidence': ['TRAFFIC_ANOMALY [Network Drop] | Inbound: Normal=7.73pps -> Current=4.60pps (-40.5%) | Outbound: Normal=8.11pps -> Current=4.56pps (-43.7%)']}, {'type': 'Service', 'name': 'ts-food-service', 'entity_type': 'Service', 'entity_name': 'ts-food-service', 'time_range': '2026-03-16 15:11:01 ~ 2026-03-16 15:12:51', 'status': 'ABNORMAL', 'metric_category': 'TRAFFIC_ANOMALY', 'evidence': ['TRAFFIC_ANOMALY [Network Drop] | Inbound: Normal=10.02pps -> Current=5.22pps (-47.9%) | Outbound: Normal=11.59pps -> Current=6.07pps (-47.7%)']}, {'type': 'Service', 'name': 'ts-gateway-service', 'entity_type': 'Service', 'entity_name': 'ts-gateway-service', 'time_range': '2026-03-16 15:11:01 ~ 2026-03-16 15:12:51', 'status': 'ABNORMAL', 'metric_category': 'LATENCY_DEGRADATION, THROUGHPUT_DROP, TRAFFIC_ANOMALY', 'evidence': ['TRAFFIC_ANOMALY [Network Drop] | Normal=181.82pps -> Current=102.24pps (-43.8%)', 'THROUGHPUT_DROP [RPS] | Normal=6.92req/s -> Current=1.53req/s (-77.8%)', 'LATENCY_DEGRADATION [Slow Response] | p50latency: Normal=27.03ms -> Current=1928.57ms (+7035.6%) | Peak=2031.25ms | p90latency: Normal=204.84ms -> Current=8000.00ms (+3805.5%) | Peak=55500.00ms']}, {'type': 'Service', 'name': 'ts-inside-payment-service', 'entity_type': 'Service', 'entity_name': 'ts-inside-payment-service', 'time_range': '2026-03-16 15:11:01 ~ 2026-03-16 15:12:51', 'status': 'ABNORMAL', 'metric_category': 'THROUGHPUT_DROP, TRAFFIC_ANOMALY', 'evidence': ['TRAFFIC_ANOMALY [Network Drop] | Inbound: Normal=36.58pps -> Current=10.79pps (-70.5%) | Outbound: Normal=33.35pps -> Current=9.64pps (-71.1%)', 'THROUGHPUT_DROP [RPS] | Normal=1.47req/s -> Current=0.43req/s (-70.8%)']}, {'type': 'Service', 'name': 'ts-order-service', 'entity_type': 'Service', 'entity_name': 'ts-order-service', 'time_range': '2026-03-16 15:11:01 ~ 2026-03-16 15:12:51', 'status': 'ABNORMAL', 'metric_category': 'THROUGHPUT_DROP, TRAFFIC_ANOMALY', 'evidence': ['TRAFFIC_ANOMALY [Network Drop] | Inbound: Normal=227.69pps -> Current=90.29pps (-60.3%) | Outbound: Normal=213.71pps -> Current=101.25pps (-52.6%)', 'THROUGHPUT_DROP [RPS] | Normal=8.22req/s -> Current=2.76req/s (-66.5%)']}, {'type': 'Service', 'name': 'ts-payment-service', 'entity_type': 'Service', 'entity_name': 'ts-payment-service', 'time_range': '2026-03-16 15:11:01 ~ 2026-03-16 15:12:51', 'status': 'ABNORMAL', 'metric_category': 'TRAFFIC_ANOMALY', 'evidence': ['TRAFFIC_ANOMALY [Network Drop] | Inbound: Normal=7.64pps -> Current=3.96pps (-48.1%) | Outbound: Normal=9.00pps -> Current=3.99pps (-55.7%)']}, {'type': 'Service', 'name': 'ts-preserve-service', 'entity_type': 'Service', 'entity_name': 'ts-preserve-service', 'time_range': '2026-03-16 15:11:01 ~ 2026-03-16 15:12:51', 'status': 'ABNORMAL', 'metric_category': 'TRAFFIC_ANOMALY', 'evidence': ['TRAFFIC_ANOMALY [Network Drop] | Inbound: Normal=25.24pps -> Current=12.00pps (-52.5%) | Outbound: Normal=25.39pps -> Current=11.99pps (-52.8%)']}, {'type': 'Service', 'name': 'ts-price-service', 'entity_type': 'Service', 'entity_name': 'ts-price-service', 'time_range': '2026-03-16 15:11:01 ~ 2026-03-16 15:12:51', 'status': 'ABNORMAL', 'metric_category': 'THROUGHPUT_DROP, TRAFFIC_ANOMALY', 'evidence': ['TRAFFIC_ANOMALY [Network Drop] | Inbound: Normal=8.79pps -> Current=4.98pps (-43.4%) | Outbound: Normal=10.79pps -> Current=5.56pps (-48.5%)', 'THROUGHPUT_DROP [RPS] | Normal=1.58req/s -> Current=0.52req/s (-67.0%)']}, {'type': 'Service', 'name': 'ts-route-service', 'entity_type': 'Service', 'entity_name': 'ts-route-service', 'time_range': '2026-03-16 15:11:01 ~ 2026-03-16 15:12:51', 'status': 'ABNORMAL', 'metric_category': 'THROUGHPUT_DROP, TRAFFIC_ANOMALY', 'evidence': ['TRAFFIC_ANOMALY [Network Drop] | Inbound: Normal=20.64pps -> Current=8.98pps (-56.5%) | Outbound: Normal=22.69pps -> Current=9.66pps (-57.4%)', 'THROUGHPUT_DROP [RPS] | Normal=1.59req/s -> Current=0.55req/s (-65.4%)']}, {'type': 'Service', 'name': 'ts-seat-service', 'entity_type': 'Service', 'entity_name': 'ts-seat-service', 'time_range': '2026-03-16 15:11:01 ~ 2026-03-16 15:12:51', 'status': 'ABNORMAL', 'metric_category': 'THROUGHPUT_DROP, TRAFFIC_ANOMALY', 'evidence': ['TRAFFIC_ANOMALY [Network Drop] | Inbound: Normal=17.77pps -> Current=8.77pps (-50.7%) | Outbound: Normal=20.23pps -> Current=9.52pps (-53.0%)', 'THROUGHPUT_DROP [RPS] | Normal=2.33req/s -> Current=0.86req/s (-63.0%)']}, {'type': 'Service', 'name': 'ts-security-service', 'entity_type': 'Service', 'entity_name': 'ts-security-service', 'time_range': '2026-03-16 15:11:01 ~ 2026-03-16 15:12:51', 'status': 'ABNORMAL', 'metric_category': 'TRAFFIC_ANOMALY', 'evidence': ['TRAFFIC_ANOMALY [Network Drop] | Inbound: Normal=10.33pps -> Current=5.35pps (-48.2%) | Outbound: Normal=12.11pps -> Current=5.68pps (-53.1%)']}, {'type': 'Service', 'name': 'ts-station-service', 'entity_type': 'Service', 'entity_name': 'ts-station-service', 'time_range': '2026-03-16 15:11:01 ~ 2026-03-16 15:12:51', 'status': 'ABNORMAL', 'metric_category': 'THROUGHPUT_DROP, TRAFFIC_ANOMALY', 'evidence': ['TRAFFIC_ANOMALY [Network Drop] | Inbound: Normal=13.87pps -> Current=6.35pps (-54.2%) | Outbound: Normal=18.70pps -> Current=8.29pps (-55.7%)', 'THROUGHPUT_DROP [RPS] | Normal=3.18req/s -> Current=1.10req/s (-65.4%)']}, {'type': 'Service', 'name': 'ts-train-service', 'entity_type': 'Service', 'entity_name': 'ts-train-service', 'time_range': '2026-03-16 15:11:01 ~ 2026-03-16 15:12:51', 'status': 'ABNORMAL', 'metric_category': 'THROUGHPUT_DROP, TRAFFIC_ANOMALY', 'evidence': ['TRAFFIC_ANOMALY [Network Drop] | Inbound: Normal=8.75pps -> Current=4.88pps (-44.2%) | Outbound: Normal=10.71pps -> Current=5.61pps (-47.6%)', 'THROUGHPUT_DROP [RPS] | Normal=1.51req/s -> Current=0.54req/s (-63.9%)']}, {'type': 'Service', 'name': 'ts-travel-service', 'entity_type': 'Service', 'entity_name': 'ts-travel-service', 'time_range': '2026-03-16 15:11:01 ~ 2026-03-16 15:12:51', 'status': 'ABNORMAL', 'metric_category': 'THROUGHPUT_DROP, TRAFFIC_ANOMALY', 'evidence': ['TRAFFIC_ANOMALY [Network Drop] | Inbound: Normal=14.49pps -> Current=7.28pps (-49.8%) | Outbound: Normal=16.49pps -> Current=7.84pps (-52.4%)', 'THROUGHPUT_DROP [RPS] | Normal=1.53req/s -> Current=0.55req/s (-63.7%)']}, {'type': 'Service', 'name': 'ts-ui-dashboard', 'entity_type': 'Service', 'entity_name': 'ts-ui-dashboard', 'time_range': '2026-03-16 15:11:01 ~ 2026-03-16 15:12:51', 'status': 'ABNORMAL', 'metric_category': 'LATENCY_DEGRADATION, THROUGHPUT_DROP, TRAFFIC_ANOMALY', 'evidence': ['TRAFFIC_ANOMALY [Network Drop] | Inbound: Normal=230.25pps -> Current=104.73pps (-54.5%) | Outbound: Normal=171.87pps -> Current=89.12pps (-48.1%)', 'THROUGHPUT_DROP [RPS] | Normal=6.88req/s -> Current=2.36req/s (-65.7%)', 'LATENCY_DEGRADATION [Slow Response] | p50latency: Normal=29.71ms -> Current=1928.57ms (+6390.7%) | Peak=2031.25ms | p90latency: Normal=206.64ms -> Current=8000.00ms (+3771.5%) | Peak=55500.00ms']}, {'type': 'Service', 'name': 'ts-user-service', 'entity_type': 'Service', 'entity_name': 'ts-user-service', 'time_range': '2026-03-16 15:11:01 ~ 2026-03-16 15:12:51', 'status': 'ABNORMAL', 'metric_category': 'THROUGHPUT_DROP, TRAFFIC_ANOMALY', 'evidence': ['TRAFFIC_ANOMALY [Network Drop] | Inbound: Normal=11.02pps -> Current=5.38pps (-51.2%) | Outbound: Normal=12.65pps -> Current=5.81pps (-54.1%)', 'THROUGHPUT_DROP [RPS] | Normal=1.60req/s -> Current=0.50req/s (-69.0%)']}]}",
+   "error": null,
+   "purpose": "anomaly signature (routes performance/code families)",
+   "tool_latency": null
+  },
+  {
+   "step_id": 2,
+   "action_type": "tool",
+   "action_name": "GetRecentLogs",
+   "action_input": {
+    "namespace": "train-ticket",
+    "service_name": "ts-auth-service"
+   },
+   "observation": "['From ts-auth-service logs:', '2026-03-16T15:13:34.799299682+08:00 2026-03-16 15:13:34.799  INFO 1 --- [io-12340-exec-5] auth.controller.UserController           : Login request of username: fdse_microservice', '2026-03-16T15:13:34.799324947+08:00 2026-03-16 15:13:34.799  INFO 1 --- [io-12340-exec-5] auth.security.UserDetailsServiceImpl     : [loadUserByUsername][load UsernamePasswordAuthenticationToken][username: fdse_microservice]', '2026-03-16T15:13:34.917328752+08:00 2026-03-16 15:13:34.917  INFO 1 --- [io-12340-exec-5] auth.service.impl.TokenServiceImpl       : [getToken][success][USER TOKEN: eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJmZHNlX21pY3Jvc2VydmljZSIsInJvbGVzIjpbIlJPTEVfVVNFUiJdLCJpZCI6IjRkMmE0NmM3LTcxY2ItNGNmMS1iNWJiLWI2ODQwNmQ5ZGE2ZiIsImlhdCI6MTc3MzY0NTIxNCwiZXhwIjoxNzczNjQ4ODE0fQ.Fz-CtqXH-caopehXtIjy3nTP984be6-gkxFnwPNmD9M USER ID: 4d2a46c7-71cb-4cf1-b5bb-b68406d9da6f]', '2026-03-16T15:13:36.730862047+08:00 2026-03-16 15:13:36.730  INFO 1 --- [io-12340-exec-1] auth.controller.UserController           : Login request of username: fdse_microservice', '2026-03-16T15:13:36.730881893+08:00 2026-03-16 15:13:36.730  INFO 1 --- [io-12340-exec-1] auth.security.UserDetailsServiceImpl     : [loadUserByUsername][load UsernamePasswordAuthenticationToken][username: fdse_microservice]', '2026-03-16T15:13:36.909057894+08:00 2026-03-16 15:13:36.908  INFO 1 --- [io-12340-exec-1] auth.service.impl.TokenServiceImpl       : [getToken][success][USER TOKEN: eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJmZHNlX21pY3Jvc2VydmljZSIsInJvbGVzIjpbIlJPTEVfVVNFUiJdLCJpZCI6IjRkMmE0NmM3LTcxY2ItNGNmMS1iNWJiLWI2ODQwNmQ5ZGE2ZiIsImlhdCI6MTc3MzY0NTIxNiwiZXhwIjoxNzczNjQ4ODE2fQ.OmdUMCqXTqYo0UD_8NRxpgyXiymgHD7U3NVIw8QEq3I USER ID: 4d2a46c7-71cb-4cf1-b5bb-b68406d9da6f]', '2026-03-16T15:13:37.326031972+08:00 2026-03-16 15:13:37.325  INFO 1 --- [io-12340-exec-8] auth.controller.UserController           : Login request of username: fdse_microservice', '2026-03-16T15:13:37.326056649+08:00 2026-03-16 15:13:37.325  INFO 1 --- [io-12340-exec-8] auth.security.UserDetailsServiceImpl     : [loadUserByUsername][load UsernamePasswordAuthenticationToken][username: fdse_microservice]', '2026-03-16T15:13:37.416287404+08:00 2026-03-16 15:13:37.416  INFO 1 --- [io-12340-exec-8] auth.service.impl.TokenServiceImpl       : [getToken][success][USER TOKEN: eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJmZHNlX21pY3Jvc2VydmljZSIsInJvbGVzIjpbIlJPTEVfVVNFUiJdLCJpZCI6IjRkMmE0NmM3LTcxY2ItNGNmMS1iNWJiLWI2ODQwNmQ5ZGE2ZiIsImlhdCI6MTc3MzY0NTIxNywiZXhwIjoxNzczNjQ4ODE3fQ.qH0dB-tIv3Gwp03TyEr2cT_2YQ9DlBR0RrSz3FJAEzo USER ID: 4d2a46c7-71cb-4cf1-b5bb-b68406d9da6f]', '2026-03-16T15:13:38.460360421+08:00 2026-03-16 15:13:38.460  INFO 1 --- [io-12340-exec-7] auth.controller.UserController           : Login request of username: fdse_microservice', '2026-03-16T15:13:38.460379327+08:00 2026-03-16 15:13:38.460  INFO 1 --- [io-12340-exec-7] auth.security.UserDetailsServiceImpl     : [loadUserByUsername][load UsernamePasswordAuthenticationToken][username: fdse_microservice]', '2026-03-16T15:13:38.594384428+08:00 2026-03-16 15:13:38.594  INFO 1 --- [io-12340-exec-7] auth.service.impl.TokenServiceImpl       : [getToken][success][USER TOKEN: eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJmZHNlX21pY3Jvc2VydmljZSIsInJvbGVzIjpbIlJPTEVfVVNFUiJdLCJpZCI6IjRkMmE0NmM3LTcxY2ItNGNmMS1iNWJiLWI2ODQwNmQ5ZGE2ZiIsImlhdCI6MTc3MzY0NTIxOCwiZXhwIjoxNzczNjQ4ODE4fQ.EroiEfDsC5FDqmXaMJ8T-ZUjMCeYGEm-B8qJwzfj2wg USER ID: 4d2a46c7-71cb-4cf1-b5bb-b68406d9da6f]', '2026-03-16T15:13:38.807794558+08:00 2026-03-16 15:13:38.807  INFO 1 --- [io-12340-exec-3] auth.controller.UserController           : Login request of username: fdse_microservice', '2026-03-16T15:13:38.807812248+08:00 2026-03-16 15:13:38.807  INFO 1 --- [io-12340-exec-3] auth.security.UserDetailsServiceImpl     : [loadUserByUsername][load UsernamePasswordAuthenticationToken][username: fdse_microservice]', '2026-03-16T15:13:38.913249580+08:00 2026-03-16 15:13:38.913  INFO 1 --- [io-12340-exec-3] auth.service.impl.TokenServiceImpl       : [getToken][success][USER TOKEN: eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJmZHNlX21pY3Jvc2VydmljZSIsInJvbGVzIjpbIlJPTEVfVVNFUiJdLCJpZCI6IjRkMmE0NmM3LTcxY2ItNGNmMS1iNWJiLWI2ODQwNmQ5ZGE2ZiIsImlhdCI6MTc3MzY0NTIxOCwiZXhwIjoxNzczNjQ4ODE4fQ.EroiEfDsC5FDqmXaMJ8T-ZUjMCeYGEm-B8qJwzfj2wg USER ID: 4d2a46c7-71cb-4cf1-b5bb-b68406d9da6f]', '2026-03-16T15:13:39.213871874+08:00 2026-03-16 15:13:39.213  INFO 1 --- [o-12340-exec-11] auth.controller.UserController           : Login request of username: fdse_microservice', '2026-03-16T15:13:39.213886787+08:00 2026-03-16 15:13:39.213  INFO 1 --- [o-12340-exec-11] auth.security.UserDetailsServiceImpl     : [loadUserByUsername][load UsernamePasswordAuthenticationToken][username: fdse_microservice]', '2026-03-16T15:13:39.302023252+08:00 2026-03-16 15:13:39.301  INFO 1 --- [io-12340-exec-4] auth.controller.UserController           : Login request of username: fdse_microservice', '2026-03-16T15:13:39.302039785+08:00 2026-03-16 15:13:39.301  INFO 1 --- [io-12340-exec-4] auth.security.UserDetailsServiceImpl     : [loadUserByUsername][load UsernamePasswordAuthenticationToken][username: fdse_microservice]', '2026-03-16T15:13:39.316616375+08:00 2026-03-16 15:13:39.316  INFO 1 --- [o-12340-exec-11] auth.service.impl.TokenServiceImpl       : [getToken][success][USER TOKEN: eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJmZHNlX21pY3Jvc2VydmljZSIsInJvbGVzIjpbIlJPTEVfVVNFUiJdLCJpZCI6IjRkMmE0NmM3LTcxY2ItNGNmMS1iNWJiLWI2ODQwNmQ5ZGE2ZiIsImlhdCI6MTc3MzY0NTIxOSwiZXhwIjoxNzczNjQ4ODE5fQ.gAoFK04vM59dxvWi_zqXaY1KkrL8wf1rJ7m2xSMILvo USER ID: 4d2a46c7-71cb-4cf1-b5bb-b68406d9da6f]', '2026-03-16T15:13:39.496076337+08:00 2026-03-16 15:13:39.495  INFO 1 --- [io-12340-exec-4] auth.service.impl.TokenServiceImpl       : [getToken][success][USER TOKEN: eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJmZHNlX21pY3Jvc2VydmljZSIsInJvbGVzIjpbIlJPTEVfVVNFUiJdLCJpZCI6IjRkMmE0NmM3LTcxY2ItNGNmMS1iNWJiLWI2ODQwNmQ5ZGE2ZiIsImlhdCI6MTc3MzY0NTIxOSwiZXhwIjoxNzczNjQ4ODE5fQ.gAoFK04vM59dxvWi_zqXaY1KkrL8wf1rJ7m2xSMILvo USER ID: 4d2a46c7-71cb-4cf1-b5bb-b68406d9da6f]', '2026-03-16T15:13:43.484550372+08:00 2026-03-16 15:13:43.484  INFO 1 --- [io-12340-exec-6] auth.controller.UserController           : Login request of username: fdse_microservice', '2026-03-16T15:13:43.484566842+08:00 2026-03-16 15:13:43.484  INFO 1 --- [io-12340-exec-6] auth.security.UserDetailsServiceImpl     : [loadUserByUsername][load UsernamePasswordAuthenticationToken][username: fdse_microservice]', '2026-03-16T15:13:43.613964161+08:00 2026-03-16 15:13:43.613  INFO 1 --- [io-12340-exec-6] auth.service.impl.TokenServiceImpl       : [getToken][success][USER TOKEN: eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJmZHNlX21pY3Jvc2VydmljZSIsInJvbGVzIjpbIlJPTEVfVVNFUiJdLCJpZCI6IjRkMmE0NmM3LTcxY2ItNGNmMS1iNWJiLWI2ODQwNmQ5ZGE2ZiIsImlhdCI6MTc3MzY0NTIyMywiZXhwIjoxNzczNjQ4ODIzfQ.JsJXP0zkMaWfywFj-idffyWQSrRhWnc-I_ZRWOusTxQ USER ID: 4d2a46c7-71cb-4cf1-b5bb-b68406d9da6f]', '2026-03-16T15:13:44.234801143+08:00 2026-03-16 15:13:44.234  INFO 1 --- [io-12340-exec-9] auth.controller.UserController           : Login request of username: fdse_microservice', '2026-03-16T15:13:44.234831620+08:00 2026-03-16 15:13:44.234  INFO 1 --- [io-12340-exec-9] auth.security.UserDetailsServiceImpl     : [loadUserByUsername][load UsernamePasswordAuthenticationToken][username: fdse_microservice]', '2026-03-16T15:13:44.315993014+08:00 2026-03-16 15:13:44.315  INFO 1 --- [io-12340-exec-9] auth.service.impl.TokenServiceImpl       : [getToken][success][USER TOKEN: eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJmZHNlX21pY3Jvc2VydmljZSIsInJvbGVzIjpbIlJPTEVfVVNFUiJdLCJpZCI6IjRkMmE0NmM3LTcxY2ItNGNmMS1iNWJiLWI2ODQwNmQ5ZGE2ZiIsImlhdCI6MTc3MzY0NTIyNCwiZXhwIjoxNzczNjQ4ODI0fQ.uEvzV4nSGLDjWZVEy52bSXvcbzxw6LdwpljSK70Lprg USER ID: 4d2a46c7-71cb-4cf1-b5bb-b68406d9da6f]', '2026-03-16T15:13:46.298454771+08:00 2026-03-16 15:13:46.298  INFO 1 --- [io-12340-exec-5] auth.controller.UserController           : Login request of username: fdse_microservice', '2026-03-16T15:13:46.298476212+08:00 2026-03-16 15:13:46.298  INFO 1 --- [io-12340-exec-5] auth.security.UserDetailsServiceImpl     : [loadUserByUsername][load UsernamePasswordAuthenticationToken][username: fdse_microservice]', '2026-03-16T15:13:46.412163834+08:00 2026-03-16 15:13:46.411  INFO 1 --- [io-12340-exec-5] auth.service.impl.TokenServiceImpl       : [getToken][success][USER TOKEN: eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJmZHNlX21pY3Jvc2VydmljZSIsInJvbGVzIjpbIlJPTEVfVVNFUiJdLCJpZCI6IjRkMmE0NmM3LTcxY2ItNGNmMS1iNWJiLWI2ODQwNmQ5ZGE2ZiIsImlhdCI6MTc3MzY0NTIyNiwiZXhwIjoxNzczNjQ4ODI2fQ.1JuJDZ4l91Pdk5sSkdcVSaIROhAWoZtMgvLhJwnvWLo USER ID: 4d2a46c7-71cb-4cf1-b5bb-b68406d9da6f]', '2026-03-16T15:13:47.098097892+08:00 2026-03-16 15:13:47.097  INFO 1 --- [io-12340-exec-1] auth.controller.UserController           : Login request of username: fdse_microservice', '2026-03-16T15:13:47.098110792+08:00 2026-03-16 15:13:47.098  INFO 1 --- [io-12340-exec-1] auth.security.UserDetailsServiceImpl     : [loadUserByUsername][load UsernamePasswordAuthenticationToken][username: fdse_microservice]', '2026-03-16T15:13:47.211422272+08:00 2026-03-16 15:13:47.211  INFO 1 --- [io-12340-exec-1] auth.service.impl.TokenServiceImpl       : [getToken][success][USER TOKEN: eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJmZHNlX21pY3Jvc2VydmljZSIsInJvbGVzIjpbIlJPTEVfVVNFUiJdLCJpZCI6IjRkMmE0NmM3LTcxY2ItNGNmMS1iNWJiLWI2ODQwNmQ5ZGE2ZiIsImlhdCI6MTc3MzY0NTIyNywiZXhwIjoxNzczNjQ4ODI3fQ.9XoQM3FiQNBKhTCkmHMSwgAeHUmoO3n40HfMWpJHA9A USER ID: 4d2a46c7-71cb-4cf1-b5bb-b68406d9da6f]', '2026-03-16T15:13:47.797761831+08:00 2026-03-16 15:13:47.797  INFO 1 --- [io-12340-exec-8] auth.controller.UserController           : Login request of username: fdse_microservice', '2026-03-16T15:13:47.797779004+08:00 2026-03-16 15:13:47.797  INFO 1 --- [io-12340-exec-8] auth.security.UserDetailsServiceImpl     : [loadUserByUsername][load UsernamePasswordAuthenticationToken][username: fdse_microservice]', '2026-03-16T15:13:47.915327335+08:00 2026-03-16 15:13:47.915  INFO 1 --- [io-12340-exec-8] auth.service.impl.TokenServiceImpl       : [getToken][success][USER TOKEN: eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJmZHNlX21pY3Jvc2VydmljZSIsInJvbGVzIjpbIlJPTEVfVVNFUiJdLCJpZCI6IjRkMmE0NmM3LTcxY2ItNGNmMS1iNWJiLWI2ODQwNmQ5ZGE2ZiIsImlhdCI6MTc3MzY0NTIyNywiZXhwIjoxNzczNjQ4ODI3fQ.9XoQM3FiQNBKhTCkmHMSwgAeHUmoO3n40HfMWpJHA9A USER ID: 4d2a46c7-71cb-4cf1-b5bb-b68406d9da6f]', '2026-03-16T15:13:50.231933337+08:00 2026-03-16 15:13:50.231  INFO 1 --- [io-12340-exec-7] auth.controller.UserController           : Login request of username: fdse_microservice', '2026-03-16T15:13:50.231968183+08:00 2026-03-16 15:13:50.231  INFO 1 --- [io-12340-exec-7] auth.security.UserDetailsServiceImpl     : [loadUserByUsername][load UsernamePasswordAuthenticationToken][username: fdse_microservice]', '2026-03-16T15:13:50.315447156+08:00 2026-03-16 15:13:50.315  INFO 1 --- [io-12340-exec-7] auth.service.impl.TokenServiceImpl       : [getToken][success][USER TOKEN: eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJmZHNlX21pY3Jvc2VydmljZSIsInJvbGVzIjpbIlJPTEVfVVNFUiJdLCJpZCI6IjRkMmE0NmM3LTcxY2ItNGNmMS1iNWJiLWI2ODQwNmQ5ZGE2ZiIsImlhdCI6MTc3MzY0NTIzMCwiZXhwIjoxNzczNjQ4ODMwfQ.ZNLkUnFJ6BNIB8T4JC6pMl83l7HeCvUwm1ahjA0SAAo USER ID: 4d2a46c7-71cb-4cf1-b5bb-b68406d9da6f]', '2026-03-16T15:13:50.467820046+08:00 2026-03-16 15:13:50.467  INFO 1 --- [io-12340-exec-3] auth.controller.UserController           : Login request of username: fdse_microservice', '2026-03-16T15:13:50.467836383+08:00 2026-03-16 15:13:50.467  INFO 1 --- [io-12340-exec-3] auth.security.UserDetailsServiceImpl     : [loadUserByUsername][load UsernamePasswordAuthenticationToken][username: fdse_microservice]', '2026-03-16T15:13:50.594755366+08:00 2026-03-16 15:13:50.594  INFO 1 --- [io-12340-exec-3] auth.service.impl.TokenServiceImpl       : [getToken][success][USER TOKEN: eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJmZHNlX21pY3Jvc2VydmljZSIsInJvbGVzIjpbIlJPTEVfVVNFUiJdLCJpZCI6IjRkMmE0NmM3LTcxY2ItNGNmMS1iNWJiLWI2ODQwNmQ5ZGE2ZiIsImlhdCI6MTc3MzY0NTIzMCwiZXhwIjoxNzczNjQ4ODMwfQ.ZNLkUnFJ6BNIB8T4JC6pMl83l7HeCvUwm1ahjA0SAAo USER ID: 4d2a46c7-71cb-4cf1-b5bb-b68406d9da6f]', '2026-03-16T15:13:51.122254940+08:00 2026-03-16 15:13:51.122  INFO 1 --- [o-12340-exec-11] auth.controller.UserController           : Login request of username: fdse_microservice', '2026-03-16T15:13:51.122271211+08:00 2026-03-16 15:13:51.122  INFO 1 --- [o-12340-exec-11] auth.security.UserDetailsServiceImpl     : [loadUserByUsername][load UsernamePasswordAuthenticationToken][username: fdse_microservice]', '2026-03-16T15:13:51.211468682+08:00 2026-03-16 15:13:51.211  INFO 1 --- [o-12340-exec-11] auth.service.impl.TokenServiceImpl       : [getToken][success][USER TOKEN: eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJmZHNlX21pY3Jvc2VydmljZSIsInJvbGVzIjpbIlJPTEVfVVNFUiJdLCJpZCI6IjRkMmE0NmM3LTcxY2ItNGNmMS1iNWJiLWI2ODQwNmQ5ZGE2ZiIsImlhdCI6MTc3MzY0NTIzMSwiZXhwIjoxNzczNjQ4ODMxfQ.JzYrqFiVA6gQ_rY_6njSDuC2Dbv9hlQCBICiffb9iz4 USER ID: 4d2a46c7-71cb-4cf1-b5bb-b68406d9da6f]', '2026-03-16T15:13:52.394862150+08:00 2026-03-16 15:13:52.394  INFO 1 --- [io-12340-exec-2] auth.controller.UserController           : Login request of username: fdse_microservice', '2026-03-16T15:13:52.394881139+08:00 2026-03-16 15:13:52.394  INFO 1 --- [io-12340-exec-2] auth.security.UserDetailsServiceImpl     : [loadUserByUsername][load UsernamePasswordAuthenticationToken][username: fdse_microservice]', '2026-03-16T15:13:52.515933742+08:00 2026-03-16 15:13:52.515  INFO 1 --- [io-12340-exec-2] auth.service.impl.TokenServiceImpl       : [getToken][success][USER TOKEN: eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJmZHNlX21pY3Jvc2VydmljZSIsInJvbGVzIjpbIlJPTEVfVVNFUiJdLCJpZCI6IjRkMmE0NmM3LTcxY2ItNGNmMS1iNWJiLWI2ODQwNmQ5ZGE2ZiIsImlhdCI6MTc3MzY0NTIzMiwiZXhwIjoxNzczNjQ4ODMyfQ.DM6lyMDGkewO42Aka5mH5l9RX7eVjKEwigYxsSqntAU USER ID: 4d2a46c7-71cb-4cf1-b5bb-b68406d9da6f]', '2026-03-16T15:13:54.985247601+08:00 2026-03-16 15:13:54.985  INFO 1 --- [io-12340-exec-6] auth.controller.UserController           : Login request of username: fdse_microservice', '2026-03-16T15:13:54.985268046+08:00 2026-03-16 15:13:54.985  INFO 1 --- [io-12340-exec-6] auth.security.UserDetailsServiceImpl     : [loadUserByUsername][load UsernamePasswordAuthenticationToken][username: fdse_microservice]', '', 'From previous container logs:', 'Error: Error from server (BadRequest): previous terminated container \"ts-auth-service\" in pod \"ts-auth-service-656fb96d87-pbmr7\" not found']",
+   "error": null,
+   "purpose": "request latency / saturation logs",
+   "tool_latency": null
+  }
+ ],
+ "agentrun": {
+  "tag": "test",
+  "dsl": "workspace/dsl_versions/v0.9.dsl.txt",
+  "dsl_version": "0.9",
+  "sop": {
+   "sop": "boutique-runtime-rca",
+   "scope": {
+    "system": "boutique",
+    "families": [
+     "runtime",
+     "admission",
+     "scheduling",
+     "startup",
+     "service",
+     "performance",
+     "infrastructure",
+     "codedefect"
+    ],
+    "severity": [
+     "SEV2",
+     "SEV3"
+    ]
+   },
+   "owner": "sre-platform",
+   "approved_by": [
+    "oncall-primary",
+    "sre-lead"
+   ],
+   "reviewed_at": "2026-10-23",
+   "change_ticket": "OPS-1237",
+   "boundaries": "只读诊断：本 SOP 不执行任何写操作（重启/回滚/扩缩容），也不做对外播报；\n它回答\"最可能的根因与受害对象\"，处置与沟通由值班按 runbook 人工执行。\n不覆盖 SEV1（需 incident commander 介入）与变更引发的问题（走变更回滚流程）。\n输入是冻结快照：诊断结论对\"快照时刻\"成立，恢复后需重新取证。\nR1 已知边界：PVC 的 requested size / accessMode 在本 benchmark 的工具面不可见，\n因此 pvc_capacity 与 pvc_access_mode 无法区分（同一分数并列，交给 jev 或升级）。\n"
+  },
+  "params": {
+   "cands_cap": 8,
+   "max_waves": 8,
+   "min_waves": 5,
+   "steps_per_wave": 1,
+   "dominance_ratio": 1.5,
+   "conf_min": 0.0,
+   "escalate": true,
+   "escalate_budget": 8,
+   "judge_on_codedefect": true,
+   "jev_route": true,
+   "jev_pick": true,
+   "jev_verify": true,
+   "route_fallback": "runtime"
+  },
+  "nodes_executed": [
+   "anchors:extract_anchors",
+   "census:probes",
+   "route:decide",
+   "plan:build_plan",
+   "probe:probes",
+   "derive:derive_candidates",
+   "pick:decide",
+   "verify:decide",
+   "probe:probes",
+   "derive:derive_candidates",
+   "pick:decide",
+   "verify:decide",
+   "probe:probes",
+   "derive:derive_candidates",
+   "pick:decide",
+   "verify:decide",
+   "escalate:escalate",
+   "answer:normalize_answer",
+   "persist:persist_trace"
+  ],
+  "census": [
+   {
+    "step": "pods",
+    "gate": "always"
+   },
+   {
+    "step": "alerts",
+    "gate": "healthy_system"
+   }
+  ],
+  "plan": [
+   {
+    "step": "recent_logs",
+    "gate": "always",
+    "wave": 1
+   },
+   {
+    "step": "describe_pod",
+    "gate": "weak",
+    "wave": 2
+   },
+   {
+    "step": "deps",
+    "gate": "weak",
+    "wave": 3
+   }
+  ],
+  "family": "performance",
+  "state_wiring": {
+   "family": "$route.family",
+   "route_probs": "$route.probabilities",
+   "picked": "$pick.picked",
+   "pick_dominant": "$pick.dominant",
+   "verify_status": "$verify.status",
+   "verify_prob": "$verify.confidence"
+  },
+  "bindings": {
+   "anchors": {
+    "anchors": "Anchors(case_id='trainticket/performance/4', system='trainticket', namespace='train-ticket', query='Service quality degradation.', difficulty='hard', symptoms=['degradation'], mentioned_apps=[], priors={'db_service': 'tsdb-mysql-leader', 'db_port': 3306})"
+   },
+   "route": {
+    "family": "performance",
+    "probabilities": {},
+    "route_why": "mechanism_mode"
+   },
+   "plan": {
+    "plan": "[{'name': 'recent_logs', 'key': 'recent', 'tool': 'GetRecentLogs', 'args': <function _args_error_logs at 0x10d557ce0>, 'purpose': 'request latency / saturation logs', 'when': <function compile_steps.<locals>.<lambda> at 0x10d6620c0>, 'gate': 'always', 'wave': 1}, {'name': 'describe_pod', 'key': 'describe:pod', 'tool': 'DescribeResource', 'args': <function _args_describe_pod at 0x10d557b00>, 'purpose': 'probe config, container state, restart reasons, scheduler events', 'when': <function compile_steps.<locals>.<lambda> at 0x10d662020>, 'gate': 'weak', 'wave': 2}, {'name': 'deps', 'key': 'deps', 'tool': 'GetServiceDependencies', 'args': <function _args_deps at 0x10d57c5e0>, 'purpose': 'upstream/downstream call graph', 'when': <function compile_steps.<locals>.<lambda> at 0x10d661f80>, 'gate': 'weak', 'wave': 3}]"
+   },
+   "derive": {
+    "candidates": "[Candidate(root_cause='pod_network_delay', object='app/ts-auth-service', score=0.82, evidence='network latency anomaly on the pod', rule='delay_alert'), Candidate(root_cause='pod_network_delay', object='app/ts-basic-service', score=0.82, evidence='network latency anomaly on the pod', rule='delay_alert'), Candidate(root_cause='pod_network_delay', object='app/ts-cancel-service', score=0.82, evidence='network latency anomaly on the pod', rule='delay_alert'), Candidate(root_cause='pod_network_delay', object='app/ts-config-service', score=0.82, evidence='network latency anomaly on the pod', rule='delay_alert'), Candidate(root_cause='pod_network_delay', object='app/ts-contacts-service', score=0.82, evidence='network latency anomaly on the pod', rule='delay_alert'), Candidate(root_cause='pod_network_delay', object='app/ts-delivery-service', score=0.82, evidence='network latency anomaly on the pod', rule='delay_alert'), Candidate(root_cause='pod_network_delay', object='app/ts-food-service', score=0.82, evidence='network latency anomaly on the pod', rule='delay_alert'), Candidate(root_cause='pod_network_delay', object='app/ts-gateway-service', score=0.82, evidence='network latency anomaly on the pod', rule='delay_alert'), Candidate(root_cause='pod_network_delay', object='app/ts-inside-payment-service', score=0.82, evidence='network latency anomaly on the pod', rule='delay_alert'), Candidate(root_cause='pod_network_delay', object='app/ts-order-service', score=0.82, evidence='network latency anomaly on the pod', rule='delay_alert'), Candidate(root_cause='pod_network_delay', object='app/ts-payment-service', score=0.82, evidence='network latency anomaly on the pod', rule='delay_alert'), Candidate(root_cause='pod_network_delay', object='app/ts-preserve-service', score=0.82, evidence='network latency anomaly on the pod', rule='delay_alert'), Candidate(root_cause='pod_network_delay', object='app/ts-price-service', score=0.82, evidence='network latency anomaly on the pod', rule='delay_alert'), Candidate(root_cause='pod_network_delay', object='app/ts-route-service', score=0.82, evidence='network latency anomaly on the pod', rule='delay_alert'), Candidate(root_cause='pod_network_delay', object='app/ts-seat-service', score=0.82, evidence='network latency anomaly on the pod', rule='delay_alert'), Candidate(root_cause='pod_network_delay', object='app/ts-security-service', score=0.82, evidence='network latency anomaly on the pod', rule='delay_alert'), Candidate(root_cause='pod_network_delay', object='app/ts-station-service', score=0.82, evidence='network latency anomaly on the pod', rule='delay_alert'), Candidate(root_cause='pod_network_delay', object='app/ts-train-service', score=0.82, evidence='network latency anomaly on the pod', rule='delay_alert'), Candidate(root_cause='pod_network_delay', object='app/ts-travel-service', score=0.82, evidence='network latency anomaly on the pod', rule='delay_alert'), Candidate(root_cause='pod_network_delay', object='app/ts-ui-dashboard', score=0.82, evidence='network latency anomaly on the pod', rule='delay_alert'), Candidate(root_cause='pod_network_delay', object='app/ts-user-service', score=0.82, evidence='network latency anomaly on the pod', rule='delay_alert')]"
+   },
+   "pick": {
+    "picked": 0,
+    "dominant": false,
+    "pick_why": "no_new_evidence"
+   },
+   "verify": {
+    "status": "verified",
+    "confidence": null,
+    "verify_why": "no_new_evidence"
+   },
+   "escalate": {
+    "answer": null
+   },
+   "answer": {
+    "final": {
+     "key_evidence_summary": "network latency anomaly on the pod",
+     "top_3_predictions": [
+      {
+       "rank": 1,
+       "fault_object": "app/ts-auth-service",
+       "root_cause": "pod_network_delay"
+      },
+      {
+       "rank": 2,
+       "fault_object": "app/ts-basic-service",
+       "root_cause": "pod_network_delay"
+      },
+      {
+       "rank": 3,
+       "fault_object": "app/ts-cancel-service",
+       "root_cause": "pod_network_delay"
+      }
+     ]
+    }
+   }
+  },
+  "picked": {
+   "root_cause": "pod_network_delay",
+   "object": "app/ts-auth-service",
+   "score": 0.82,
+   "evidence": "network latency anomaly on the pod",
+   "rule": "delay_alert"
+  },
+  "pick_why": "",
+  "verify_prob": null,
+  "verify_verdict": "verified",
+  "verified": true,
+  "escalated": false,
+  "escalate_reason": "",
+  "escalate_steps": 0,
+  "waves": 3,
+  "candidates": [
+   {
+    "root_cause": "pod_network_delay",
+    "object": "app/ts-auth-service",
+    "score": 0.82,
+    "evidence": "network latency anomaly on the pod",
+    "rule": "delay_alert"
+   },
+   {
+    "root_cause": "pod_network_delay",
+    "object": "app/ts-basic-service",
+    "score": 0.82,
+    "evidence": "network latency anomaly on the pod",
+    "rule": "delay_alert"
+   },
+   {
+    "root_cause": "pod_network_delay",
+    "object": "app/ts-cancel-service",
+    "score": 0.82,
+    "evidence": "network latency anomaly on the pod",
+    "rule": "delay_alert"
+   },
+   {
+    "root_cause": "pod_network_delay",
+    "object": "app/ts-config-service",
+    "score": 0.82,
+    "evidence": "network latency anomaly on the pod",
+    "rule": "delay_alert"
+   },
+   {
+    "root_cause": "pod_network_delay",
+    "object": "app/ts-contacts-service",
+    "score": 0.82,
+    "evidence": "network latency anomaly on the pod",
+    "rule": "delay_alert"
+   },
+   {
+    "root_cause": "pod_network_delay",
+    "object": "app/ts-delivery-service",
+    "score": 0.82,
+    "evidence": "network latency anomaly on the pod",
+    "rule": "delay_alert"
+   },
+   {
+    "root_cause": "pod_network_delay",
+    "object": "app/ts-food-service",
+    "score": 0.82,
+    "evidence": "network latency anomaly on the pod",
+    "rule": "delay_alert"
+   },
+   {
+    "root_cause": "pod_network_delay",
+    "object": "app/ts-gateway-service",
+    "score": 0.82,
+    "evidence": "network latency anomaly on the pod",
+    "rule": "delay_alert"
+   },
+   {
+    "root_cause": "pod_network_delay",
+    "object": "app/ts-inside-payment-service",
+    "score": 0.82,
+    "evidence": "network latency anomaly on the pod",
+    "rule": "delay_alert"
+   },
+   {
+    "root_cause": "pod_network_delay",
+    "object": "app/ts-order-service",
+    "score": 0.82,
+    "evidence": "network latency anomaly on the pod",
+    "rule": "delay_alert"
+   },
+   {
+    "root_cause": "pod_network_delay",
+    "object": "app/ts-payment-service",
+    "score": 0.82,
+    "evidence": "network latency anomaly on the pod",
+    "rule": "delay_alert"
+   },
+   {
+    "root_cause": "pod_network_delay",
+    "object": "app/ts-preserve-service",
+    "score": 0.82,
+    "evidence": "network latency anomaly on the pod",
+    "rule": "delay_alert"
+   },
+   {
+    "root_cause": "pod_network_delay",
+    "object": "app/ts-price-service",
+    "score": 0.82,
+    "evidence": "network latency anomaly on the pod",
+    "rule": "delay_alert"
+   },
+   {
+    "root_cause": "pod_network_delay",
+    "object": "app/ts-route-service",
+    "score": 0.82,
+    "evidence": "network latency anomaly on the pod",
+    "rule": "delay_alert"
+   },
+   {
+    "root_cause": "pod_network_delay",
+    "object": "app/ts-seat-service",
+    "score": 0.82,
+    "evidence": "network latency anomaly on the pod",
+    "rule": "delay_alert"
+   },
+   {
+    "root_cause": "pod_network_delay",
+    "object": "app/ts-security-service",
+    "score": 0.82,
+    "evidence": "network latency anomaly on the pod",
+    "rule": "delay_alert"
+   },
+   {
+    "root_cause": "pod_network_delay",
+    "object": "app/ts-station-service",
+    "score": 0.82,
+    "evidence": "network latency anomaly on the pod",
+    "rule": "delay_alert"
+   },
+   {
+    "root_cause": "pod_network_delay",
+    "object": "app/ts-train-service",
+    "score": 0.82,
+    "evidence": "network latency anomaly on the pod",
+    "rule": "delay_alert"
+   },
+   {
+    "root_cause": "pod_network_delay",
+    "object": "app/ts-travel-service",
+    "score": 0.82,
+    "evidence": "network latency anomaly on the pod",
+    "rule": "delay_alert"
+   },
+   {
+    "root_cause": "pod_network_delay",
+    "object": "app/ts-ui-dashboard",
+    "score": 0.82,
+    "evidence": "network latency anomaly on the pod",
+    "rule": "delay_alert"
+   },
+   {
+    "root_cause": "pod_network_delay",
+    "object": "app/ts-user-service",
+    "score": 0.82,
+    "evidence": "network latency anomaly on the pod",
+    "rule": "delay_alert"
+   }
+  ],
+  "jev": [
+   {
+    "rid": "test:trainticket/performance/4#route",
+    "kind": "route",
+    "node": "route",
+    "mode": "mechanism",
+    "options": [
+     "performance",
+     "infrastructure"
+    ],
+    "status": "mechanical",
+    "guard": "unavailable",
+    "use": "first_option",
+    "choice": "performance",
+    "why": "mechanism_mode",
+    "dominant": false,
+    "continue_loop": false,
+    "escalate": false
+   },
+   {
+    "rid": "test:trainticket/performance/4#pick1",
+    "kind": "pick",
+    "node": "pick",
+    "mode": "mechanism",
+    "options": [
+     "c0",
+     "c1",
+     "c2",
+     "c3",
+     "c4",
+     "c5",
+     "c6",
+     "c7"
+    ],
+    "status": "mechanical",
+    "guard": "unavailable",
+    "use": "first_option",
+    "choice": 0,
+    "why": "mechanism_mode",
+    "dominant": false,
+    "continue_loop": false,
+    "escalate": false
+   },
+   {
+    "rid": "test:trainticket/performance/4#verify1",
+    "kind": "verify",
+    "node": "verify",
+    "mode": "mechanism",
+    "options": [
+     "supported",
+     "insufficient",
+     "contradicted"
+    ],
+    "status": "mechanical",
+    "guard": "unavailable",
+    "use": "verified",
+    "choice": "verified",
+    "why": "mechanism_mode",
+    "dominant": false,
+    "continue_loop": false,
+    "escalate": false
+   },
+   {
+    "rid": "test:trainticket/performance/4#pick2",
+    "kind": "pick",
+    "node": "pick",
+    "mode": "mechanism",
+    "options": [
+     "c0",
+     "c1",
+     "c2",
+     "c3",
+     "c4",
+     "c5",
+     "c6",
+     "c7"
+    ],
+    "status": "mechanical",
+    "guard": "unchanged_since_last",
+    "use": "previous",
+    "choice": 0,
+    "why": "no_new_evidence",
+    "dominant": false,
+    "continue_loop": false,
+    "escalate": false
+   },
+   {
+    "rid": "test:trainticket/performance/4#verify2",
+    "kind": "verify",
+    "node": "verify",
+    "mode": "mechanism",
+    "options": [
+     "supported",
+     "insufficient",
+     "contradicted"
+    ],
+    "status": "mechanical",
+    "guard": "unchanged_since_last",
+    "use": "previous",
+    "choice": "verified",
+    "why": "no_new_evidence",
+    "dominant": false,
+    "continue_loop": false,
+    "escalate": false
+   },
+   {
+    "rid": "test:trainticket/performance/4#pick3",
+    "kind": "pick",
+    "node": "pick",
+    "mode": "mechanism",
+    "options": [
+     "c0",
+     "c1",
+     "c2",
+     "c3",
+     "c4",
+     "c5",
+     "c6",
+     "c7"
+    ],
+    "status": "mechanical",
+    "guard": "unchanged_since_last",
+    "use": "previous",
+    "choice": 0,
+    "why": "no_new_evidence",
+    "dominant": false,
+    "continue_loop": false,
+    "escalate": false
+   },
+   {
+    "rid": "test:trainticket/performance/4#verify3",
+    "kind": "verify",
+    "node": "verify",
+    "mode": "mechanism",
+    "options": [
+     "supported",
+     "insufficient",
+     "contradicted"
+    ],
+    "status": "mechanical",
+    "guard": "unchanged_since_last",
+    "use": "previous",
+    "choice": "verified",
+    "why": "no_new_evidence",
+    "dominant": false,
+    "continue_loop": false,
+    "escalate": false
+   }
+  ],
+  "nodes": [
+   {
+    "node": "code",
+    "id": "anchors",
+    "anchors": {
+     "case_id": "trainticket/performance/4",
+     "system": "trainticket",
+     "namespace": "train-ticket",
+     "query": "Service quality degradation.",
+     "difficulty": "hard",
+     "symptoms": [
+      "degradation"
+     ],
+     "mentioned_apps": []
+    }
+   },
+   {
+    "node": "probes",
+    "plan": "census",
+    "wave": 0,
+    "executed": 2,
+    "steps": [
+     {
+      "key": "pods",
+      "tool": "GetResources",
+      "arguments": {
+       "namespace": "train-ticket",
+       "resource_type": "pods",
+       "output_wide": true,
+       "show_labels": true
+      },
+      "gate": "always"
+     },
+     {
+      "key": "alerts",
+      "tool": "GetAlerts",
+      "arguments": {},
+      "gate": "healthy_system"
+     }
+    ],
+    "skipped": []
+   },
+   {
+    "node": "decide",
+    "id": "route",
+    "rid": "test:trainticket/performance/4#route",
+    "status": "mechanical",
+    "guard": "unavailable",
+    "use": "first_option",
+    "choice": "performance",
+    "dominant": false,
+    "why": "mechanism_mode"
+   },
+   {
+    "node": "code",
+    "id": "plan",
+    "family": "performance",
+    "plan": [
+     {
+      "step": "recent_logs",
+      "gate": "always",
+      "wave": 1
+     },
+     {
+      "step": "describe_pod",
+      "gate": "weak",
+      "wave": 2
+     },
+     {
+      "step": "deps",
+      "gate": "weak",
+      "wave": 3
+     }
+    ]
+   },
+   {
+    "node": "probes",
+    "plan": "family",
+    "wave": 1,
+    "executed": 1,
+    "steps": [
+     {
+      "key": "recent",
+      "tool": "GetRecentLogs",
+      "arguments": {
+       "namespace": "train-ticket",
+       "service_name": "ts-auth-service"
+      },
+      "gate": "always"
+     }
+    ],
+    "skipped": []
+   },
+   {
+    "node": "code",
+    "id": "derive",
+    "raw": 21,
+    "kept": 21,
+    "top": [
+     {
+      "root_cause": "pod_network_delay",
+      "object": "app/ts-auth-service",
+      "score": 0.82,
+      "evidence": "network latency anomaly on the pod",
+      "rule": "delay_alert"
+     },
+     {
+      "root_cause": "pod_network_delay",
+      "object": "app/ts-basic-service",
+      "score": 0.82,
+      "evidence": "network latency anomaly on the pod",
+      "rule": "delay_alert"
+     },
+     {
+      "root_cause": "pod_network_delay",
+      "object": "app/ts-cancel-service",
+      "score": 0.82,
+      "evidence": "network latency anomaly on the pod",
+      "rule": "delay_alert"
+     },
+     {
+      "root_cause": "pod_network_delay",
+      "object": "app/ts-config-service",
+      "score": 0.82,
+      "evidence": "network latency anomaly on the pod",
+      "rule": "delay_alert"
+     },
+     {
+      "root_cause": "pod_network_delay",
+      "object": "app/ts-contacts-service",
+      "score": 0.82,
+      "evidence": "network latency anomaly on the pod",
+      "rule": "delay_alert"
+     },
+     {
+      "root_cause": "pod_network_delay",
+      "object": "app/ts-delivery-service",
+      "score": 0.82,
+      "evidence": "network latency anomaly on the pod",
+      "rule": "delay_alert"
+     },
+     {
+      "root_cause": "pod_network_delay",
+      "object": "app/ts-food-service",
+      "score": 0.82,
+      "evidence": "network latency anomaly on the pod",
+      "rule": "delay_alert"
+     },
+     {
+      "root_cause": "pod_network_delay",
+      "object": "app/ts-gateway-service",
+      "score": 0.82,
+      "evidence": "network latency anomaly on the pod",
+      "rule": "delay_alert"
+     }
+    ]
+   },
+   {
+    "node": "decide",
+    "id": "pick",
+    "rid": "test:trainticket/performance/4#pick1",
+    "status": "mechanical",
+    "guard": "unavailable",
+    "use": "first_option",
+    "choice": 0,
+    "dominant": false,
+    "why": "mechanism_mode"
+   },
+   {
+    "node": "decide",
+    "id": "verify",
+    "rid": "test:trainticket/performance/4#verify1",
+    "status": "mechanical",
+    "guard": "unavailable",
+    "use": "verified",
+    "choice": "verified",
+    "dominant": false,
+    "why": "mechanism_mode"
+   },
+   {
+    "node": "probes",
+    "plan": "family",
+    "wave": 2,
+    "executed": 0,
+    "steps": [],
+    "skipped": [
+     {
+      "step": "describe_pod",
+      "why": "gate weak"
+     }
+    ]
+   },
+   {
+    "node": "code",
+    "id": "derive",
+    "raw": 21,
+    "kept": 21,
+    "top": [
+     {
+      "root_cause": "pod_network_delay",
+      "object": "app/ts-auth-service",
+      "score": 0.82,
+      "evidence": "network latency anomaly on the pod",
+      "rule": "delay_alert"
+     },
+     {
+      "root_cause": "pod_network_delay",
+      "object": "app/ts-basic-service",
+      "score": 0.82,
+      "evidence": "network latency anomaly on the pod",
+      "rule": "delay_alert"
+     },
+     {
+      "root_cause": "pod_network_delay",
+      "object": "app/ts-cancel-service",
+      "score": 0.82,
+      "evidence": "network latency anomaly on the pod",
+      "rule": "delay_alert"
+     },
+     {
+      "root_cause": "pod_network_delay",
+      "object": "app/ts-config-service",
+      "score": 0.82,
+      "evidence": "network latency anomaly on the pod",
+      "rule": "delay_alert"
+     },
+     {
+      "root_cause": "pod_network_delay",
+      "object": "app/ts-contacts-service",
+      "score": 0.82,
+      "evidence": "network latency anomaly on the pod",
+      "rule": "delay_alert"
+     },
+     {
+      "root_cause": "pod_network_delay",
+      "object": "app/ts-delivery-service",
+      "score": 0.82,
+      "evidence": "network latency anomaly on the pod",
+      "rule": "delay_alert"
+     },
+     {
+      "root_cause": "pod_network_delay",
+      "object": "app/ts-food-service",
+      "score": 0.82,
+      "evidence": "network latency anomaly on the pod",
+      "rule": "delay_alert"
+     },
+     {
+      "root_cause": "pod_network_delay",
+      "object": "app/ts-gateway-service",
+      "score": 0.82,
+      "evidence": "network latency anomaly on the pod",
+      "rule": "delay_alert"
+     }
+    ]
+   },
+   {
+    "node": "decide",
+    "id": "pick",
+    "rid": "test:trainticket/performance/4#pick2",
+    "status": "mechanical",
+    "guard": "unchanged_since_last",
+    "use": "previous",
+    "choice": 0,
+    "dominant": false,
+    "why": "no_new_evidence"
+   },
+   {
+    "node": "decide",
+    "id": "verify",
+    "rid": "test:trainticket/performance/4#verify2",
+    "status": "mechanical",
+    "guard": "unchanged_since_last",
+    "use": "previous",
+    "choice": "verified",
+    "dominant": false,
+    "why": "no_new_evidence"
+   },
+   {
+    "node": "probes",
+    "plan": "family",
+    "wave": 3,
+    "executed": 0,
+    "steps": [],
+    "skipped": [
+     {
+      "step": "deps",
+      "why": "gate weak"
+     }
+    ]
+   },
+   {
+    "node": "code",
+    "id": "derive",
+    "raw": 21,
+    "kept": 21,
+    "top": [
+     {
+      "root_cause": "pod_network_delay",
+      "object": "app/ts-auth-service",
+      "score": 0.82,
+      "evidence": "network latency anomaly on the pod",
+      "rule": "delay_alert"
+     },
+     {
+      "root_cause": "pod_network_delay",
+      "object": "app/ts-basic-service",
+      "score": 0.82,
+      "evidence": "network latency anomaly on the pod",
+      "rule": "delay_alert"
+     },
+     {
+      "root_cause": "pod_network_delay",
+      "object": "app/ts-cancel-service",
+      "score": 0.82,
+      "evidence": "network latency anomaly on the pod",
+      "rule": "delay_alert"
+     },
+     {
+      "root_cause": "pod_network_delay",
+      "object": "app/ts-config-service",
+      "score": 0.82,
+      "evidence": "network latency anomaly on the pod",
+      "rule": "delay_alert"
+     },
+     {
+      "root_cause": "pod_network_delay",
+      "object": "app/ts-contacts-service",
+      "score": 0.82,
+      "evidence": "network latency anomaly on the pod",
+      "rule": "delay_alert"
+     },
+     {
+      "root_cause": "pod_network_delay",
+      "object": "app/ts-delivery-service",
+      "score": 0.82,
+      "evidence": "network latency anomaly on the pod",
+      "rule": "delay_alert"
+     },
+     {
+      "root_cause": "pod_network_delay",
+      "object": "app/ts-food-service",
+      "score": 0.82,
+      "evidence": "network latency anomaly on the pod",
+      "rule": "delay_alert"
+     },
+     {
+      "root_cause": "pod_network_delay",
+      "object": "app/ts-gateway-service",
+      "score": 0.82,
+      "evidence": "network latency anomaly on the pod",
+      "rule": "delay_alert"
+     }
+    ]
+   },
+   {
+    "node": "decide",
+    "id": "pick",
+    "rid": "test:trainticket/performance/4#pick3",
+    "status": "mechanical",
+    "guard": "unchanged_since_last",
+    "use": "previous",
+    "choice": 0,
+    "dominant": false,
+    "why": "no_new_evidence"
+   },
+   {
+    "node": "decide",
+    "id": "verify",
+    "rid": "test:trainticket/performance/4#verify3",
+    "status": "mechanical",
+    "guard": "unchanged_since_last",
+    "use": "previous",
+    "choice": "verified",
+    "dominant": false,
+    "why": "no_new_evidence"
+   },
+   {
+    "node": "loop",
+    "id": "waves",
+    "stop": "plan_exhausted",
+    "wave": 3
+   },
+   {
+    "node": "escalate",
+    "id": "escalate",
+    "fired": false,
+    "reasons": [],
+    "why": "no reason"
+   },
+   {
+    "node": "code",
+    "id": "answer",
+    "predictions": [
+     {
+      "rank": 1,
+      "fault_object": "app/ts-auth-service",
+      "root_cause": "pod_network_delay"
+     },
+     {
+      "rank": 2,
+      "fault_object": "app/ts-basic-service",
+      "root_cause": "pod_network_delay"
+     },
+     {
+      "rank": 3,
+      "fault_object": "app/ts-cancel-service",
+      "root_cause": "pod_network_delay"
+     }
+    ]
+   },
+   {
+    "node": "artifact",
+    "id": "persist",
+    "persisted": false,
+    "why": "written by the CLI driver"
+   }
+  ],
+  "notes": [],
+  "tool_calls": 3,
+  "model_calls": 0,
+  "tokens_in": 0,
+  "tokens_out": 0,
+  "wall_s": 0.11
+ }
+}

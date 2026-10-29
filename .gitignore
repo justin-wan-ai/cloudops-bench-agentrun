@@ -1,0 +1,47 @@
+# ---- secrets ----------------------------------------------------------------
+# real credentials never leave the machine; only the template is versioned
+.env
+.env.local
+.env.*.local
+workspace/.env
+!workspace/.env.template
+!*.env.template
+
+# ---- raw benchmark data -----------------------------------------------------
+# Cloud-OpsBench checkout (3.8 GB): re-clone instead of committing.
+#   git clone --depth 1 https://github.com/LLM4Ops/Cloud-OpsBench.git repo
+repo/
+benchmark/
+process-label/
+
+# ---- python / env -----------------------------------------------------------
+__pycache__/
+*.py[cod]
+*.egg-info/
+.venv/
+venv/
+.pytest_cache/
+.mypy_cache/
+.ruff_cache/
+
+# ---- macOS / editors --------------------------------------------------------
+.DS_Store
+.idea/
+.vscode/
+*.swp
+
+# ---- transient run output ---------------------------------------------------
+# traces are reproducible evidence, but the throw-away ones are not worth tracking
+workspace/traces/ablation*/
+workspace/traces/determinism*/
+workspace/traces/agentrun_mechanism/
+workspace/traces/agentrun/
+workspace/.runs/
+workspace/runs/*.log
+*.log
+!workspace/runs/compare_report.md
+
+# ---- local scratch ----------------------------------------------------------
+tmp/
+scratch/
+*.tmp

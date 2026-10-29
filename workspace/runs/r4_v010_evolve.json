@@ -1,0 +1,143 @@
+{
+  "dsl": "workspace/dsl_versions/v0.10.dsl.txt",
+  "version": "0.10",
+  "params": {
+    "cands_cap": 8,
+    "max_waves": 8,
+    "min_waves": 5,
+    "steps_per_wave": 1,
+    "dominance_ratio": 1.5,
+    "conf_min": 0.0,
+    "escalate": true,
+    "escalate_budget": 8,
+    "judge_on_codedefect": true,
+    "jev_route": true,
+    "jev_pick": true,
+    "jev_verify": true,
+    "route_fallback": "runtime"
+  },
+  "jev_mode": "mechanism",
+  "jev_usage": {},
+  "cases": [
+    {
+      "id": "boutique/performance/11",
+      "family": "performance",
+      "tool_calls": 3,
+      "model_calls": 0,
+      "tokens_in": 0,
+      "tokens_out": 0,
+      "wall_s": 0.16,
+      "escalated": false,
+      "verified": true,
+      "verify_prob": null
+    },
+    {
+      "id": "boutique/performance/13",
+      "family": "performance",
+      "tool_calls": 3,
+      "model_calls": 0,
+      "tokens_in": 0,
+      "tokens_out": 0,
+      "wall_s": 0.13,
+      "escalated": false,
+      "verified": true,
+      "verify_prob": null
+    },
+    {
+      "id": "boutique/performance/15",
+      "family": "performance",
+      "tool_calls": 3,
+      "model_calls": 0,
+      "tokens_in": 0,
+      "tokens_out": 0,
+      "wall_s": 0.13,
+      "escalated": false,
+      "verified": true,
+      "verify_prob": null
+    },
+    {
+      "id": "boutique/performance/16",
+      "family": "performance",
+      "tool_calls": 3,
+      "model_calls": 0,
+      "tokens_in": 0,
+      "tokens_out": 0,
+      "wall_s": 0.15,
+      "escalated": false,
+      "verified": true,
+      "verify_prob": null
+    },
+    {
+      "id": "boutique/performance/2",
+      "family": "performance",
+      "tool_calls": 3,
+      "model_calls": 0,
+      "tokens_in": 0,
+      "tokens_out": 0,
+      "wall_s": 0.15,
+      "escalated": false,
+      "verified": true,
+      "verify_prob": null
+    },
+    {
+      "id": "boutique/performance/23",
+      "family": "performance",
+      "tool_calls": 3,
+      "model_calls": 0,
+      "tokens_in": 0,
+      "tokens_out": 0,
+      "wall_s": 0.11,
+      "escalated": false,
+      "verified": true,
+      "verify_prob": null
+    },
+    {
+      "id": "boutique/performance/25",
+      "family": "performance",
+      "tool_calls": 3,
+      "model_calls": 0,
+      "tokens_in": 0,
+      "tokens_out": 0,
+      "wall_s": 0.1,
+      "escalated": false,
+      "verified": true,
+      "verify_prob": null
+    },
+    {
+      "id": "boutique/performance/27",
+      "family": "performance",
+      "tool_calls": 3,
+      "model_calls": 0,
+      "tokens_in": 0,
+      "tokens_out": 0,
+      "wall_s": 0.15,
+      "escalated": false,
+      "verified": true,
+      "verify_prob": null
+    },
+    {
+      "id": "boutique/performance/28",
+      "family": "performance",
+      "tool_calls": 3,
+      "model_calls": 0,
+      "tokens_in": 0,
+      "tokens_out": 0,
+      "wall_s": 0.12,
+      "escalated": false,
+      "verified": true,
+      "verify_prob": null
+    },
+    {
+      "id": "boutique/performance/3",
+      "family": "performance",
+      "tool_calls": 3,
+      "model_calls": 0,
+      "tokens_in": 0,
+      "tokens_out": 0,
+      "wall_s": 0.14,
+      "escalated": false,
+      "verified": true,
+      "verify_prob": null
+    }
+  ]
+}

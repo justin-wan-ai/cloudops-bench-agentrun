@@ -1,0 +1,1386 @@
+{
+ "case_id": "boutique/infrastructure/17",
+ "system_name": "boutique",
+ "question": "Service Availability Disruption.",
+ "case_path": "/Users/justinwan/work/workspace/cloudops_bench_rsi/repo/benchmark/boutique/infrastructure/17",
+ "max_steps": 10,
+ "current_step": 10,
+ "finished": true,
+ "stop_reason": "submit",
+ "final_answer": "{\"key_evidence_summary\": \"kube-proxy.service is inactive on worker-01\", \"top_3_predictions\": [{\"rank\": 1, \"fault_object\": \"node/worker-01\", \"root_cause\": \"kube_proxy_unavailable\"}, {\"rank\": 2, \"fault_object\": \"node/worker-01\", \"root_cause\": \"kube_proxy_unavailable\"}, {\"rank\": 3, \"fault_object\": \"node/worker-01\", \"root_cause\": \"kube_proxy_unavailable\"}]}",
+ "metadata": {
+  "namespace": "boutique",
+  "query": "Service Availability Disruption.",
+  "fault_category": "infrastructure",
+  "model_name": "agentrun-v0.13"
+ },
+ "steps": [
+  {
+   "step_id": 0,
+   "action_type": "tool",
+   "action_name": "GetResources",
+   "action_input": {
+    "namespace": "boutique",
+    "resource_type": "pods",
+    "output_wide": true
+   },
+   "observation": "NAME                                     READY   STATUS    RESTARTS   AGE   IP             NODE        NOMINATED NODE   READINESS GATES\nadservice-d68dfc56-cwsr7                 1/1     Running   0          72s   172.20.2.239   worker-02   <none>           <none>\ncartservice-7c5f46fc47-l6slw             1/1     Running   0          74s   172.20.2.236   worker-02   <none>           <none>\ncheckoutservice-dbcdcb5fb-mxk5l          1/1     Running   0          72s   172.20.2.240   worker-02   <none>           <none>\ncurrencyservice-5cd6467fc4-n2x84         1/1     Running   0          73s   172.20.1.201   worker-01   <none>           <none>\nemailservice-7dc7d85bcb-2hnl4            1/1     Running   0          73s   172.20.2.237   worker-02   <none>           <none>\nfrontend-6778bd7b8b-p6kg9                1/1     Running   0          73s   172.20.2.238   worker-02   <none>           <none>\npaymentservice-869f9f96cd-w75r5          1/1     Running   0          72s   172.20.1.203   worker-01   <none>           <none>\nproductcatalogservice-6fb89f98f8-s7g4w   1/1     Running   0          73s   172.20.1.202   worker-01   <none>           <none>\nrecommendationservice-54dfdd6986-l5lxq   1/1     Running   0          74s   172.20.2.235   worker-02   <none>           <none>\nredis-cart-58649b5469-pwvd8              1/1     Running   0          74s   172.20.1.200   worker-01   <none>           <none>\nshippingservice-674c8c548d-5gfxw         1/1     Running   0          72s   172.20.2.241   worker-02   <none>           <none>\n",
+   "error": null,
+   "purpose": "pod readiness census",
+   "tool_latency": null
+  },
+  {
+   "step_id": 1,
+   "action_type": "tool",
+   "action_name": "GetAlerts",
+   "action_input": {},
+   "observation": "No active metric anomalies detected at this time.",
+   "error": null,
+   "purpose": "anomaly signature (routes performance/code families)",
+   "tool_latency": null
+  },
+  {
+   "step_id": 2,
+   "action_type": "tool",
+   "action_name": "GetResources",
+   "action_input": {
+    "namespace": "boutique",
+    "resource_type": "pods",
+    "show_labels": true
+   },
+   "observation": "NAME                                     READY   STATUS    RESTARTS   AGE   LABELS\nadservice-d68dfc56-cwsr7                 1/1     Running   0          72s   app=adservice,pod-template-hash=d68dfc56\ncartservice-7c5f46fc47-l6slw             1/1     Running   0          74s   app=cartservice,pod-template-hash=7c5f46fc47\ncheckoutservice-dbcdcb5fb-mxk5l          1/1     Running   0          72s   app=checkoutservice,pod-template-hash=dbcdcb5fb\ncurrencyservice-5cd6467fc4-n2x84         1/1     Running   0          73s   app=currencyservice,pod-template-hash=5cd6467fc4\nemailservice-7dc7d85bcb-2hnl4            1/1     Running   0          73s   app=emailservice,pod-template-hash=7dc7d85bcb\nfrontend-6778bd7b8b-p6kg9                1/1     Running   0          73s   app=frontend,pod-template-hash=6778bd7b8b\npaymentservice-869f9f96cd-w75r5          1/1     Running   0          72s   app=paymentservice,pod-template-hash=869f9f96cd\nproductcatalogservice-6fb89f98f8-s7g4w   1/1     Running   0          73s   app=productcatalogservice,pod-template-hash=6fb89f98f8\nrecommendationservice-54dfdd6986-l5lxq   1/1     Running   0          74s   app=recommendationservice,pod-template-hash=54dfdd6986\nredis-cart-58649b5469-pwvd8              1/1     Running   0          74s   app=redis-cart,pod-template-hash=58649b5469\nshippingservice-674c8c548d-5gfxw         1/1     Running   0          72s   app=shippingservice,pod-template-hash=674c8c548d\n",
+   "error": null,
+   "purpose": "pod labels (service selector check)",
+   "tool_latency": null
+  },
+  {
+   "step_id": 3,
+   "action_type": "tool",
+   "action_name": "GetResources",
+   "action_input": {
+    "namespace": "boutique",
+    "resource_type": "services"
+   },
+   "observation": "NAME                    TYPE        CLUSTER-IP      EXTERNAL-IP   PORT(S)        AGE\nadservice               ClusterIP   10.68.250.28    <none>        9555/TCP       75s\ncartservice             ClusterIP   10.68.96.106    <none>        7070/TCP       76s\ncheckoutservice         ClusterIP   10.68.222.190   <none>        5050/TCP       74s\ncurrencyservice         ClusterIP   10.68.127.27    <none>        7000/TCP       75s\nemailservice            ClusterIP   10.68.58.21     <none>        5000/TCP       75s\nfrontend                ClusterIP   10.68.209.172   <none>        80/TCP         75s\nfrontend-external       NodePort    10.68.154.112   <none>        80:30080/TCP   75s\npaymentservice          ClusterIP   10.68.8.115     <none>        50051/TCP      74s\nproductcatalogservice   ClusterIP   10.68.5.79      <none>        3550/TCP       75s\nrecommendationservice   ClusterIP   10.68.244.141   <none>        8080/TCP       76s\nredis-cart              ClusterIP   10.68.85.220    <none>        6379/TCP       76s\nshippingservice         ClusterIP   10.68.26.147    <none>        50051/TCP      74s\n",
+   "error": null,
+   "purpose": "service ports and selectors",
+   "tool_latency": null
+  },
+  {
+   "step_id": 4,
+   "action_type": "tool",
+   "action_name": "GetErrorLogs",
+   "action_input": {
+    "namespace": "boutique",
+    "service_name": "frontend"
+   },
+   "observation": "\"{\\n  \\\"total_log_count\\\": 851,\\n  \\\"total_errors\\\": 47,\\n  \\\"total_error_ratio\\\": 0.0552,\\n  \\\"patterns\\\": [\\n    {\\n      \\\"count\\\": 18,\\n      \\\"ratio\\\": 0.0212,\\n      \\\"sample\\\": \\\"2026-01-02T15:57:19.120200979+08:00 {\\\\\\\"error\\\\\\\":\\\\\\\"failed to get ads: rpc error: code = DeadlineExceeded desc = context deadline exceeded\\\\\\\",\\\\\\\"http.req.id\\\\\\\":\\\\\\\"84e40a9d-badf-4bf2-8c37-04c38e94ecec\\\\\\\",\\\\\\\"http.req.method\\\\\\\":\\\\\\\"GET\\\\\\\",\\\\\\\"http.req.path\\\\\\\":\\\\\\\"/\\\\\\\",\\\\\\\"message\\\\\\\":\\\\\\\"failed to retrieve ads\\\\\\\",\\\\\\\"session\\\\\\\":\\\\\\\"73385f6d-842b-4567-9a47-98d610612236\\\\\\\",\\\\\\\"severity\\\\\\\":\\\\\\\"warning\\\\\\\",\\\\\\\"timestamp\\\\\\\":\\\\\\\"2026-01-02T07:57:19.117763586Z\\\\\\\"}\\\"\\n    },\\n    {\\n      \\\"count\\\": 14,\\n      \\\"ratio\\\": 0.0165,\\n      \\\"sample\\\": \\\"2026-01-02T15:57:23.056676307+08:00 {\\\\\\\"error\\\\\\\":\\\\\\\"failed to get shipping quote: rpc error: code = Unavailable desc = connection error: desc = \\\\\\\\\\\\\\\"transport: Error while dialing: dial tcp: lookup shippingservice on 169.254.20.10:53: no such host\\\\\\\\\\\\\\\"\\\\\\\",\\\\\\\"http.req.id\\\\\\\":\\\\\\\"2bfbe843-0a1b-43c3-9d20-b2a7576bef90\\\\\\\",\\\\\\\"http.req.method\\\\\\\":\\\\\\\"GET\\\\\\\",\\\\\\\"http.req.path\\\\\\\":\\\\\\\"/cart\\\\\\\",\\\\\\\"message\\\\\\\":\\\\\\\"request error\\\\\\\",\\\\\\\"session\\\\\\\":\\\\\\\"5f560436-877a-4342-b5f4-0f45676c28c8\\\\\\\",\\\\\\\"severity\\\\\\\":\\\\\\\"error\\\\\\\",\\\\\\\"timestamp\\\\\\\":\\\\\\\"2026-01-02T07:57:23.056605599Z\\\\\\\"}\\\"\\n    },\\n    {\\n      \\\"count\\\": 12,\\n      \\\"ratio\\\": 0.0141,\\n      \\\"sample\\\": \\\"2026-01-02T15:57:21.449195979+08:00 {\\\\\\\"error\\\\\\\":\\\\\\\"failed to complete the order: rpc error: code = Internal desc = shipping quote failure: failed to get shipping quote: rpc error: code = Unavailable desc = connection error: desc = \\\\\\\\\\\\\\\"transport: Error while dialing: dial tcp: lookup shippingservice on 169.254.20.10:53: no such host\\\\\\\\\\\\\\\"\\\\\\\",\\\\\\\"http.req.id\\\\\\\":\\\\\\\"366399f8-74da-4618-846c-207a9f1477c1\\\\\\\",\\\\\\\"http.req.method\\\\\\\":\\\\\\\"POST\\\\\\\",\\\\\\\"http.req.path\\\\\\\":\\\\\\\"/cart/checkout\\\\\\\",\\\\\\\"message\\\\\\\":\\\\\\\"request error\\\\\\\",\\\\\\\"session\\\\\\\":\\\\\\\"57838795-8579-4161-a511-5b558249533e\\\\\\\",\\\\\\\"severity\\\\\\\":\\\\\\\"error\\\\\\\",\\\\\\\"timestamp\\\\\\\":\\\\\\\"2026-01-02T07:57:21.449086997Z\\\\\\\"}\\\"\\n    },\\n    {\\n      \\\"count\\\": 1,\\n      \\\"ratio\\\": 0.0012,\\n      \\\"sample\\\": \\\"2026-01-02T15:56:38.517277126+08:00 {\\\\\\\"message\\\\\\\":\\\\\\\"Failed to fetch the name of the cluster in which the pod is runningmetadata: GCE metadata \\\\\\\\\\\\\\\"instance/attributes/cluster-name\\\\\\\\\\\\\\\" not defined\\\\\\\",\\\\\\\"severity\\\\\\\":\\\\\\\"error\\\\\\\",\\\\\\\"timestamp\\\\\\\":\\\\\\\"2026-01-02T07:56:38.516609409Z\\\\\\\"}\\\"\\n    },\\n    {\\n      \\\"count\\\": 1,\\n      \\\"ratio\\\": 0.0012,\\n      \\\"sample\\\": \\\"2026-01-02T15:56:38.529970453+08:00 {\\\\\\\"message\\\\\\\":\\\\\\\"Failed to fetch the Zone of the node where the pod is scheduledmetadata: GCE metadata \\\\\\\\\\\\\\\"instance/zone\\\\\\\\\\\\\\\" not defined\\\\\\\",\\\\\\\"severity\\\\\\\":\\\\\\\"error\\\\\\\",\\\\\\\"timestamp\\\\\\\":\\\\\\\"2026-01-02T07:56:38.529832758Z\\\\\\\"}\\\"\\n    },\\n    {\\n      \\\"count\\\": 1,\\n      \\\"ratio\\\": 0.0012,\\n      \\\"sample\\\": \\\"2026-01-02T15:57:45.194335976+08:00 {\\\\\\\"error\\\\\\\":\\\\\\\"failed to complete the order: rpc error: code = Canceled desc = context canceled\\\\\\\",\\\\\\\"http.req.id\\\\\\\":\\\\\\\"6d056869-75e6-49bd-ac25-d7c87bb797c5\\\\\\\",\\\\\\\"http.req.method\\\\\\\":\\\\\\\"POST\\\\\\\",\\\\\\\"http.req.path\\\\\\\":\\\\\\\"/cart/checkout\\\\\\\",\\\\\\\"message\\\\\\\":\\\\\\\"request error\\\\\\\",\\\\\\\"session\\\\\\\":\\\\\\\"2d2894e3-0299-4178-a57c-e1bcf16f48f8\\\\\\\",\\\\\\\"severity\\\\\\\":\\\\\\\"error\\\\\\\",\\\\\\\"timestamp\\\\\\\":\\\\\\\"2026-01-02T07:57:45.194250506Z\\\\\\\"}\\\"\\n    }\\n  ]\\n}\"",
+   "error": null,
+   "purpose": "entry-service errors: which dependency is failing",
+   "tool_latency": null
+  },
+  {
+   "step_id": 5,
+   "action_type": "tool",
+   "action_name": "GetAppYAML",
+   "action_input": {
+    "app_name": "shippingservice"
+   },
+   "observation": "apiVersion: apps/v1\nkind: Deployment\nmetadata:\n  name: shippingservice\n  namespace: boutique\n  labels:\n    app: shippingservice\nspec:\n  selector:\n    matchLabels:\n      app: shippingservice\n  template:\n    metadata:\n      labels:\n        app: shippingservice\n    spec:\n      serviceAccountName: shippingservice\n      securityContext:\n        fsGroup: 1000\n        runAsGroup: 1000\n        runAsNonRoot: true\n        runAsUser: 1000\n      containers:\n      - name: server\n        securityContext:\n          allowPrivilegeEscalation: false\n          capabilities:\n            drop:\n              - ALL\n          privileged: false\n          readOnlyRootFilesystem: true\n        image: us-central1-docker.pkg.dev/google-samples/microservices-demo/shippingservice:v0.10.3\n        ports:\n        - containerPort: 50051\n        env:\n        - name: PORT\n          value: \"50051\"\n        - name: DISABLE_PROFILER\n          value: \"1\"\n        # readinessProbe:\n        #   initialDelaySeconds: 5\n        #   grpc:\n        #     port: 50051\n        # livenessProbe:\n        #   initialDelaySeconds: 5\n        #   grpc:\n        #     port: 50051\n        resources:\n          requests:\n            cpu: 100m\n            memory: 64Mi\n          limits:\n            cpu: 200m\n            memory: 128Mi\n---\napiVersion: v1\nkind: Service\nmetadata:\n  name: shippingservice\n  namespace: boutique\n  labels:\n    app: shippingservice\nspec:\n  type: ClusterIP\n  selector:\n    app: shippingservice\n  ports:\n  - name: grpc\n    port: 50051\n    targetPort: 50051\n---\napiVersion: v1\nkind: ServiceAccount\nmetadata:\n  name: shippingservice\n  namespace: boutique",
+   "error": null,
+   "purpose": "env wiring of the first mentioned app",
+   "tool_latency": null
+  },
+  {
+   "step_id": 6,
+   "action_type": "tool",
+   "action_name": "GetAppYAML",
+   "action_input": {
+    "app_name": "frontend"
+   },
+   "observation": "apiVersion: apps/v1\nkind: Deployment\nmetadata:\n  name: frontend\n  namespace: boutique\n  labels:\n    app: frontend\nspec:\n  selector:\n    matchLabels:\n      app: frontend\n  template:\n    metadata:\n      labels:\n        app: frontend\n      annotations:\n        sidecar.istio.io/rewriteAppHTTPProbers: \"true\"\n    spec:\n      serviceAccountName: frontend\n      securityContext:\n        fsGroup: 1000\n        runAsGroup: 1000\n        runAsNonRoot: true\n        runAsUser: 1000\n      containers:\n        - name: server\n          securityContext:\n            allowPrivilegeEscalation: false\n            capabilities:\n              drop:\n                - ALL\n            privileged: false\n            readOnlyRootFilesystem: true\n          image: us-central1-docker.pkg.dev/google-samples/microservices-demo/frontend:v0.10.3\n          ports:\n          - containerPort: 8080\n          # readinessProbe:\n          #   initialDelaySeconds: 5\n          #   httpGet:\n          #     path: \"/_healthz\"\n          #     port: 8080\n          #     httpHeaders:\n          #     - name: \"Cookie\"\n          #       value: \"shop_session-id=x-readiness-probe\"\n          # livenessProbe:\n          #   initialDelaySeconds: 5\n          #   httpGet:\n          #     path: \"/_healthz\"\n          #     port: 8080\n          #     httpHeaders:\n          #     - name: \"Cookie\"\n          #       value: \"shop_session-id=x-liveness-probe\"\n          env:\n          - name: PORT\n            value: \"8080\"\n          - name: PRODUCT_CATALOG_SERVICE_ADDR\n            value: \"productcatalogservice:3550\"\n          - name: CURRENCY_SERVICE_ADDR\n            value: \"currencyservice:7000\"\n          - name: CART_SERVICE_ADDR\n            value: \"cartservice:7070\"\n          - name: RECOMMENDATION_SERVICE_ADDR\n            value: \"recommendationservice:8080\"\n          - name: SHIPPING_SERVICE_ADDR\n            value: \"shippingservice:50051\"\n          - name: CHECKOUT_SERVICE_ADDR\n            value: \"checkoutservice:5050\"\n          - name: AD_SERVICE_ADDR\n            value: \"adservice:9555\"\n          - name: SHOPPING_ASSISTANT_SERVICE_ADDR\n            value: \"shoppingassistantservice:80\"\n          # # ENV_PLATFORM: One of: local, gcp, aws, azure, onprem, alibaba\n          # # When not set, defaults to \"local\" unless running in GKE, otherwies auto-sets to gcp\n          # - name: ENV_PLATFORM\n          #   value: \"aws\"\n          - name: ENABLE_PROFILER\n            value: \"0\"\n          # - name: CYMBAL_BRANDING\n          #   value: \"true\"\n          # - name: ENABLE_ASSISTANT\n          #   value: \"true\"\n          # - name: FRONTEND_MESSAGE\n          #   value: \"Replace this with a message you want to display on all pages.\"\n          # As part of an optional Google Cloud demo, you can run an optional microservice called the \"packaging service\".\n          # - name: PACKAGING_SERVICE_URL\n          #   value: \"\" # This value would look like \"http://123.123.123\"\n          resources:\n            requests:\n              cpu: 100m\n              memory: 64Mi\n            limits:\n              cpu: 200m\n              memory: 128Mi\n---\napiVersion: v1\nkind: Service\nmetadata:\n  name: frontend\n  namespace: boutique\n  labels:\n    app: frontend\nspec:\n  type: ClusterIP\n  selector:\n    app: frontend\n  ports:\n  - name: http\n    port: 80\n    targetPort: 8080\n\n---\napiVersion: v1\nkind: ServiceAccount\nmetadata:\n  name: frontend\n  namespace: boutique\n\n---\napiVersion: v1\nkind: Service\nmetadata:\n  name: frontend-external\n  namespace: boutique\n  labels:\n    app: frontend\nspec:\n  type: NodePort  # 核心修改：将 LoadBalancer 改为 NodePort\n  selector:\n    app: frontend\n  ports:\n  - name: http\n    port: 80  # Service 暴露的集群内部端口（ClusterIP:80）\n    targetPort: 8080  # 后端 Pod 的实际监听端口\n    nodePort: 30080  # 可选：指定节点端口（必须在 30000-32767 范围内），不指定则系统自动分配 30080",
+   "error": null,
+   "purpose": "env wiring of the second mentioned app",
+   "tool_latency": null
+  },
+  {
+   "step_id": 7,
+   "action_type": "tool",
+   "action_name": "GetResources",
+   "action_input": {
+    "namespace": "boutique",
+    "resource_type": "deployments"
+   },
+   "observation": "NAME                    READY   UP-TO-DATE   AVAILABLE   AGE\nadservice               1/1     1            1           78s\ncartservice             1/1     1            1           79s\ncheckoutservice         1/1     1            1           77s\ncurrencyservice         1/1     1            1           78s\nemailservice            1/1     1            1           78s\nfrontend                1/1     1            1           78s\npaymentservice          1/1     1            1           77s\nproductcatalogservice   1/1     1            1           78s\nrecommendationservice   1/1     1            1           79s\nredis-cart              1/1     1            1           79s\nshippingservice         1/1     1            1           77s\n",
+   "error": null,
+   "purpose": "which deployment never got a pod",
+   "tool_latency": null
+  },
+  {
+   "step_id": 8,
+   "action_type": "tool",
+   "action_name": "CheckServiceConnectivity",
+   "action_input": {
+    "namespace": "boutique",
+    "service_name": "adservice",
+    "port": 9555
+   },
+   "observation": "=== Service adservice:9555 Connectivity test report ===\nDebug Pod test results deployed on worker-01: punt!\nTerminated\nConnection Failed\nDebug Pod test results deployed on worker-02: adservice (10.68.250.28:9555) open\nConnection Succeeded\nDebug Pod test results deployed on worker-03: adservice (10.68.250.28:9555) open\nConnection Succeeded",
+   "error": null,
+   "purpose": "in-cluster TCP reachability",
+   "tool_latency": null
+  },
+  {
+   "step_id": 9,
+   "action_type": "tool",
+   "action_name": "CheckNodeServiceStatus",
+   "action_input": {
+    "node_name": "worker-01",
+    "service_name": "kube-proxy"
+   },
+   "observation": "Service: kube-proxy\nNode: worker-01\nStatus: ○ kube-proxy.service - Kubernetes Kube-Proxy Server\n     Loaded: loaded (/etc/systemd/system/kube-proxy.service; enabled; vendor preset: enabled)\n     Active: inactive (dead) since Fri 2026-01-02 15:56:16 CST; 4min 15s ago\n       Docs: https://github.com/GoogleCloudPlatform/kubernetes\n    Process: 202795 ExecStart=/opt/kube/bin/kube-proxy --config=/var/lib/kube-proxy/kube-proxy-config.yaml (code=killed, signal=TERM)\n   Main PID: 202795 (code=killed, signal=TERM)\n        CPU: 785ms\n\nJan 02 15:55:41 worker-01 kube-proxy[202795]: I0102 15:55:41.937001  202795 shared_informer.go:313] Waiting for caches to sync for service config\nJan 02 15:55:41 worker-01 kube-proxy[202795]: I0102 15:55:41.937030  202795 shared_informer.go:313] Waiting for caches to sync for endpoint slice config\nJan 02 15:55:41 worker-01 kube-proxy[202795]: I0102 15:55:41.937042  202795 config.go:328] \"Starting node config controller\"\nJan 02 15:55:41 worker-01 kube-proxy[202795]: I0102 15:55:41.937058  202795 shared_informer.go:313] Waiting for caches to sync for node config\nJan 02 15:55:42 worker-01 kube-proxy[202795]: I0102 15:55:42.037973  202795 shared_informer.go:320] Caches are synced for service config\nJan 02 15:55:42 worker-01 kube-proxy[202795]: I0102 15:55:42.038059  202795 shared_informer.go:320] Caches are synced for node config\nJan 02 15:55:42 worker-01 kube-proxy[202795]: I0102 15:55:42.038075  202795 shared_informer.go:320] Caches are synced for endpoint slice config\nJan 02 15:56:16 worker-01 systemd[1]: Stopping Kubernetes Kube-Proxy Server...\nJan 02 15:56:16 worker-01 systemd[1]: kube-proxy.service: Deactivated successfully.\nJan 02 15:56:16 worker-01 systemd[1]: Stopped Kubernetes Kube-Proxy Server.",
+   "error": null,
+   "purpose": "kube-proxy status on the same node",
+   "tool_latency": null
+  }
+ ],
+ "agentrun": {
+  "tag": "test",
+  "dsl": "workspace/dsl_versions/v0.13.dsl.txt",
+  "dsl_version": "0.13",
+  "sop": {
+   "sop": "boutique-runtime-rca",
+   "scope": {
+    "system": "boutique",
+    "families": [
+     "runtime",
+     "admission",
+     "scheduling",
+     "startup",
+     "service",
+     "performance",
+     "infrastructure",
+     "codedefect"
+    ],
+    "severity": [
+     "SEV2",
+     "SEV3"
+    ]
+   },
+   "owner": "sre-platform",
+   "approved_by": [
+    "oncall-primary",
+    "sre-lead"
+   ],
+   "reviewed_at": "2026-10-23",
+   "change_ticket": "OPS-1241",
+   "boundaries": "R4 已知：`node_network_delay` 若快照里没有任何 Node 级 retrans 告警（例：performance/25），\n本 SOP 会退回 pod 级判断（当前工具面无法区分 pod 与 node 的延迟注入）。\n只读诊断：本 SOP 不执行任何写操作（重启/回滚/扩缩容），也不做对外播报；\n它回答\"最可能的根因与受害对象\"，处置与沟通由值班按 runbook 人工执行。\n不覆盖 SEV1（需 incident commander 介入）与变更引发的问题（走变更回滚流程）。\n输入是冻结快照：诊断结论对\"快照时刻\"成立，恢复后需重新取证。\nR1 已知边界：PVC 的 requested size / accessMode 在本 benchmark 的工具面不可见，\n因此 pvc_capacity 与 pvc_access_mode 无法区分（同一分数并列，交给 jev 或升级）。\n"
+  },
+  "params": {
+   "cands_cap": 8,
+   "max_waves": 10,
+   "min_waves": 5,
+   "steps_per_wave": 1,
+   "dominance_ratio": 1.5,
+   "conf_min": 0.0,
+   "escalate": true,
+   "escalate_budget": 8,
+   "judge_on_codedefect": true,
+   "jev_route": true,
+   "jev_pick": true,
+   "jev_verify": true,
+   "route_fallback": "runtime"
+  },
+  "nodes_executed": [
+   "anchors:extract_anchors",
+   "census:probes",
+   "route:decide",
+   "plan:build_plan",
+   "probe:probes",
+   "derive:derive_candidates",
+   "pick:decide",
+   "verify:decide",
+   "probe:probes",
+   "derive:derive_candidates",
+   "pick:decide",
+   "verify:decide",
+   "probe:probes",
+   "derive:derive_candidates",
+   "pick:decide",
+   "verify:decide",
+   "probe:probes",
+   "derive:derive_candidates",
+   "pick:decide",
+   "verify:decide",
+   "probe:probes",
+   "derive:derive_candidates",
+   "pick:decide",
+   "verify:decide",
+   "probe:probes",
+   "derive:derive_candidates",
+   "pick:decide",
+   "verify:decide",
+   "probe:probes",
+   "derive:derive_candidates",
+   "pick:decide",
+   "verify:decide",
+   "probe:probes",
+   "derive:derive_candidates",
+   "pick:decide",
+   "verify:decide",
+   "probe:probes",
+   "derive:derive_candidates",
+   "pick:decide",
+   "verify:decide",
+   "probe:probes",
+   "derive:derive_candidates",
+   "pick:decide",
+   "verify:decide",
+   "escalate:escalate",
+   "answer:normalize_answer",
+   "persist:persist_trace"
+  ],
+  "census": [
+   {
+    "step": "pods",
+    "gate": "always"
+   },
+   {
+    "step": "alerts",
+    "gate": "healthy_system"
+   }
+  ],
+  "plan": [
+   {
+    "step": "pods_labels",
+    "gate": "always",
+    "wave": 1
+   },
+   {
+    "step": "services",
+    "gate": "always",
+    "wave": 2
+   },
+   {
+    "step": "error_logs_entry",
+    "gate": "always",
+    "wave": 3
+   },
+   {
+    "step": "resourcequota",
+    "gate": "service_missing_for_pod",
+    "wave": 4
+   },
+   {
+    "step": "app_yaml_c1",
+    "gate": "service_target_found",
+    "wave": 5
+   },
+   {
+    "step": "app_yaml_c2",
+    "gate": "service_target_found | no_candidate_yet",
+    "wave": 6
+   },
+   {
+    "step": "app_yaml_c3",
+    "gate": "service_target_found | no_candidate_yet",
+    "wave": 7
+   },
+   {
+    "step": "deployments",
+    "gate": "no_candidate_yet",
+    "wave": 8
+   },
+   {
+    "step": "connectivity",
+    "gate": "no_candidate_yet",
+    "wave": 9
+   },
+   {
+    "step": "node_kube_proxy",
+    "gate": "connectivity_node_failure",
+    "wave": 10
+   }
+  ],
+  "family": "service",
+  "state_wiring": {
+   "family": "$route.family",
+   "route_probs": "$route.probabilities",
+   "picked": "$pick.picked",
+   "pick_dominant": "$pick.dominant",
+   "verify_status": "$verify.status",
+   "verify_prob": "$verify.confidence"
+  },
+  "bindings": {
+   "anchors": {
+    "anchors": "Anchors(case_id='boutique/infrastructure/17', system='boutique', namespace='boutique', query='Service Availability Disruption.', difficulty='medium', symptoms=['unavailable'], mentioned_apps=[], priors={'db_service': '', 'db_port': 0})"
+   },
+   "route": {
+    "family": "service",
+    "probabilities": {},
+    "route_why": "mechanism_mode"
+   },
+   "plan": {
+    "plan": "[{'name': 'pods_labels', 'key': 'pods:labels', 'tool': 'GetResources', 'args': <function _args_pods_labels at 0x10ee43740>, 'purpose': 'pod labels (service selector check)', 'when': <function compile_steps.<locals>.<lambda> at 0x10fbd9800>, 'gate': 'always', 'wave': 1}, {'name': 'services', 'key': 'services', 'tool': 'GetResources', 'args': <function _args_services at 0x10ee43d80>, 'purpose': 'service ports and selectors', 'when': <function compile_steps.<locals>.<lambda> at 0x10fbd9940>, 'gate': 'always', 'wave': 2}, {'name': 'error_logs_entry', 'key': 'errors:frontend', 'tool': 'GetErrorLogs', 'args': <function _args_error_logs_entry at 0x10ee747c0>, 'purpose': 'entry-service errors: which dependency is failing', 'when': <function compile_steps.<locals>.<lambda> at 0x10fbd98a0>, 'gate': 'always', 'wave': 3}, {'name': 'resourcequota', 'key': 'resourcequota', 'tool': 'GetResources', 'args': <function _args_resourcequota at 0x10ee43920>, 'purpose': 'quota headroom', 'when': <function compile_steps.<locals>.<lambda> at 0x10fbd99e0>, 'gate': 'service_missing_for_pod', 'wave': 4}, {'name': 'app_yaml_c1', 'key': 'appyaml:c1', 'tool': 'GetAppYAML', 'args': <function _app_yaml_args_at.<locals>.resolver at 0x10ee74ae0>, 'purpose': 'env wiring of the first mentioned app', 'when': <function compile_steps.<locals>.<lambda> at 0x10fbd9a80>, 'gate': 'service_target_found', 'wave': 5}, {'name': 'app_yaml_c2', 'key': 'appyaml:c2', 'tool': 'GetAppYAML', 'args': <function _app_yaml_args_at.<locals>.resolver at 0x10ee74b80>, 'purpose': 'env wiring of the second mentioned app', 'when': <function compile_steps.<locals>.<lambda> at 0x10fbd9b20>, 'gate': 'service_target_found | no_candidate_yet', 'wave': 6}, {'name': 'app_yaml_c3', 'key': 'appyaml:c3', 'tool': 'GetAppYAML', 'args': <function _app_yaml_args_at.<locals>.resolver at 0x10ee74c20>, 'purpose': 'env wiring of the entry service', 'when': <function compile_steps.<locals>.<lambda> at 0x10fbd9bc0>, 'gate': 'service_target_found | no_candidate_yet', 'wave': 7}, {'name': 'deployments', 'key': 'deployments', 'tool': 'GetResources', 'args': <function _args_deployments at 0x10ee437e0>, 'purpose': 'which deployment never got a pod', 'when': <function compile_steps.<locals>.<lambda> at 0x10fbd9c60>, 'gate': 'no_candidate_yet', 'wave': 8}, {'name': 'connectivity', 'key': 'connectivity', 'tool': 'CheckServiceConnectivity', 'args': <function _args_connectivity at 0x10ee74180>, 'purpose': 'in-cluster TCP reachability', 'when': <function compile_steps.<locals>.<lambda> at 0x10fbd9d00>, 'gate': 'no_candidate_yet', 'wave': 9}, {'name': 'node_kube_proxy', 'key': 'node:kube-proxy', 'tool': 'CheckNodeServiceStatus', 'args': <function _args_node_kube_proxy at 0x10ee74680>, 'purpose': 'kube-proxy status on the same node', 'when': <function compile_steps.<locals>.<lambda> at 0x10fbd9da0>, 'gate': 'connectivity_node_failure', 'wave': 10}]"
+   },
+   "derive": {
+    "candidates": "[Candidate(root_cause='kube_proxy_unavailable', object='node/worker-01', score=0.87, evidence='kube-proxy.service is inactive on worker-01', rule='node_component')]"
+   },
+   "pick": {
+    "picked": 0,
+    "dominant": true,
+    "pick_why": "dominance"
+   },
+   "verify": {
+    "status": "verified",
+    "confidence": null,
+    "verify_why": "dominant_candidate"
+   },
+   "escalate": {
+    "answer": null
+   },
+   "answer": {
+    "final": {
+     "key_evidence_summary": "kube-proxy.service is inactive on worker-01",
+     "top_3_predictions": [
+      {
+       "rank": 1,
+       "fault_object": "node/worker-01",
+       "root_cause": "kube_proxy_unavailable"
+      },
+      {
+       "rank": 2,
+       "fault_object": "node/worker-01",
+       "root_cause": "kube_proxy_unavailable"
+      },
+      {
+       "rank": 3,
+       "fault_object": "node/worker-01",
+       "root_cause": "kube_proxy_unavailable"
+      }
+     ]
+    }
+   }
+  },
+  "picked": {
+   "root_cause": "kube_proxy_unavailable",
+   "object": "node/worker-01",
+   "score": 0.87,
+   "evidence": "kube-proxy.service is inactive on worker-01",
+   "rule": "node_component"
+  },
+  "pick_why": "",
+  "verify_prob": null,
+  "verify_verdict": "verified",
+  "verified": true,
+  "escalated": false,
+  "escalate_reason": "",
+  "escalate_steps": 0,
+  "waves": 10,
+  "candidates": [
+   {
+    "root_cause": "kube_proxy_unavailable",
+    "object": "node/worker-01",
+    "score": 0.87,
+    "evidence": "kube-proxy.service is inactive on worker-01",
+    "rule": "node_component"
+   }
+  ],
+  "jev": [
+   {
+    "rid": "test:boutique/infrastructure/17#route",
+    "kind": "route",
+    "node": "route",
+    "mode": "mechanism",
+    "options": [
+     "service",
+     "infrastructure"
+    ],
+    "status": "mechanical",
+    "guard": "unavailable",
+    "use": "first_option",
+    "choice": "service",
+    "why": "mechanism_mode",
+    "dominant": false,
+    "continue_loop": false,
+    "escalate": false
+   },
+   {
+    "rid": "test:boutique/infrastructure/17#pick1",
+    "kind": "pick",
+    "node": "pick",
+    "mode": "mechanism",
+    "options": [],
+    "status": "mechanical",
+    "guard": "no_options",
+    "use": "none",
+    "choice": null,
+    "why": "no_candidates",
+    "dominant": false,
+    "continue_loop": false,
+    "escalate": false
+   },
+   {
+    "rid": "test:boutique/infrastructure/17#verify1",
+    "kind": "verify",
+    "node": "verify",
+    "mode": "mechanism",
+    "options": [
+     "supported",
+     "insufficient",
+     "contradicted"
+    ],
+    "status": "mechanical",
+    "guard": "no_pick",
+    "use": "unverified",
+    "choice": "unverified",
+    "why": "nothing_to_verify",
+    "dominant": false,
+    "continue_loop": false,
+    "escalate": false
+   },
+   {
+    "rid": "test:boutique/infrastructure/17#pick2",
+    "kind": "pick",
+    "node": "pick",
+    "mode": "mechanism",
+    "options": [],
+    "status": "mechanical",
+    "guard": "no_options",
+    "use": "none",
+    "choice": null,
+    "why": "no_candidates",
+    "dominant": false,
+    "continue_loop": false,
+    "escalate": false
+   },
+   {
+    "rid": "test:boutique/infrastructure/17#verify2",
+    "kind": "verify",
+    "node": "verify",
+    "mode": "mechanism",
+    "options": [
+     "supported",
+     "insufficient",
+     "contradicted"
+    ],
+    "status": "mechanical",
+    "guard": "no_pick",
+    "use": "unverified",
+    "choice": "unverified",
+    "why": "nothing_to_verify",
+    "dominant": false,
+    "continue_loop": false,
+    "escalate": false
+   },
+   {
+    "rid": "test:boutique/infrastructure/17#pick3",
+    "kind": "pick",
+    "node": "pick",
+    "mode": "mechanism",
+    "options": [],
+    "status": "mechanical",
+    "guard": "no_options",
+    "use": "none",
+    "choice": null,
+    "why": "no_candidates",
+    "dominant": false,
+    "continue_loop": false,
+    "escalate": false
+   },
+   {
+    "rid": "test:boutique/infrastructure/17#verify3",
+    "kind": "verify",
+    "node": "verify",
+    "mode": "mechanism",
+    "options": [
+     "supported",
+     "insufficient",
+     "contradicted"
+    ],
+    "status": "mechanical",
+    "guard": "no_pick",
+    "use": "unverified",
+    "choice": "unverified",
+    "why": "nothing_to_verify",
+    "dominant": false,
+    "continue_loop": false,
+    "escalate": false
+   },
+   {
+    "rid": "test:boutique/infrastructure/17#pick4",
+    "kind": "pick",
+    "node": "pick",
+    "mode": "mechanism",
+    "options": [],
+    "status": "mechanical",
+    "guard": "no_options",
+    "use": "none",
+    "choice": null,
+    "why": "no_candidates",
+    "dominant": false,
+    "continue_loop": false,
+    "escalate": false
+   },
+   {
+    "rid": "test:boutique/infrastructure/17#verify4",
+    "kind": "verify",
+    "node": "verify",
+    "mode": "mechanism",
+    "options": [
+     "supported",
+     "insufficient",
+     "contradicted"
+    ],
+    "status": "mechanical",
+    "guard": "no_pick",
+    "use": "unverified",
+    "choice": "unverified",
+    "why": "nothing_to_verify",
+    "dominant": false,
+    "continue_loop": false,
+    "escalate": false
+   },
+   {
+    "rid": "test:boutique/infrastructure/17#pick5",
+    "kind": "pick",
+    "node": "pick",
+    "mode": "mechanism",
+    "options": [],
+    "status": "mechanical",
+    "guard": "no_options",
+    "use": "none",
+    "choice": null,
+    "why": "no_candidates",
+    "dominant": false,
+    "continue_loop": false,
+    "escalate": false
+   },
+   {
+    "rid": "test:boutique/infrastructure/17#verify5",
+    "kind": "verify",
+    "node": "verify",
+    "mode": "mechanism",
+    "options": [
+     "supported",
+     "insufficient",
+     "contradicted"
+    ],
+    "status": "mechanical",
+    "guard": "no_pick",
+    "use": "unverified",
+    "choice": "unverified",
+    "why": "nothing_to_verify",
+    "dominant": false,
+    "continue_loop": false,
+    "escalate": false
+   },
+   {
+    "rid": "test:boutique/infrastructure/17#pick6",
+    "kind": "pick",
+    "node": "pick",
+    "mode": "mechanism",
+    "options": [],
+    "status": "mechanical",
+    "guard": "no_options",
+    "use": "none",
+    "choice": null,
+    "why": "no_candidates",
+    "dominant": false,
+    "continue_loop": false,
+    "escalate": false
+   },
+   {
+    "rid": "test:boutique/infrastructure/17#verify6",
+    "kind": "verify",
+    "node": "verify",
+    "mode": "mechanism",
+    "options": [
+     "supported",
+     "insufficient",
+     "contradicted"
+    ],
+    "status": "mechanical",
+    "guard": "no_pick",
+    "use": "unverified",
+    "choice": "unverified",
+    "why": "nothing_to_verify",
+    "dominant": false,
+    "continue_loop": false,
+    "escalate": false
+   },
+   {
+    "rid": "test:boutique/infrastructure/17#pick7",
+    "kind": "pick",
+    "node": "pick",
+    "mode": "mechanism",
+    "options": [],
+    "status": "mechanical",
+    "guard": "no_options",
+    "use": "none",
+    "choice": null,
+    "why": "no_candidates",
+    "dominant": false,
+    "continue_loop": false,
+    "escalate": false
+   },
+   {
+    "rid": "test:boutique/infrastructure/17#verify7",
+    "kind": "verify",
+    "node": "verify",
+    "mode": "mechanism",
+    "options": [
+     "supported",
+     "insufficient",
+     "contradicted"
+    ],
+    "status": "mechanical",
+    "guard": "no_pick",
+    "use": "unverified",
+    "choice": "unverified",
+    "why": "nothing_to_verify",
+    "dominant": false,
+    "continue_loop": false,
+    "escalate": false
+   },
+   {
+    "rid": "test:boutique/infrastructure/17#pick8",
+    "kind": "pick",
+    "node": "pick",
+    "mode": "mechanism",
+    "options": [],
+    "status": "mechanical",
+    "guard": "no_options",
+    "use": "none",
+    "choice": null,
+    "why": "no_candidates",
+    "dominant": false,
+    "continue_loop": false,
+    "escalate": false
+   },
+   {
+    "rid": "test:boutique/infrastructure/17#verify8",
+    "kind": "verify",
+    "node": "verify",
+    "mode": "mechanism",
+    "options": [
+     "supported",
+     "insufficient",
+     "contradicted"
+    ],
+    "status": "mechanical",
+    "guard": "no_pick",
+    "use": "unverified",
+    "choice": "unverified",
+    "why": "nothing_to_verify",
+    "dominant": false,
+    "continue_loop": false,
+    "escalate": false
+   },
+   {
+    "rid": "test:boutique/infrastructure/17#pick9",
+    "kind": "pick",
+    "node": "pick",
+    "mode": "mechanism",
+    "options": [
+     "c0"
+    ],
+    "status": "mechanical",
+    "guard": "top_over_second >= $params.dominance_ratio",
+    "use": "first_option",
+    "choice": 0,
+    "why": "dominance",
+    "dominant": true,
+    "continue_loop": false,
+    "escalate": false
+   },
+   {
+    "rid": "test:boutique/infrastructure/17#verify9",
+    "kind": "verify",
+    "node": "verify",
+    "mode": "mechanism",
+    "options": [
+     "supported",
+     "insufficient",
+     "contradicted"
+    ],
+    "status": "mechanical",
+    "guard": "$pick.dominant",
+    "use": "verified",
+    "choice": "verified",
+    "why": "dominant_candidate",
+    "dominant": false,
+    "continue_loop": false,
+    "escalate": false
+   },
+   {
+    "rid": "test:boutique/infrastructure/17#pick10",
+    "kind": "pick",
+    "node": "pick",
+    "mode": "mechanism",
+    "options": [
+     "c0"
+    ],
+    "status": "mechanical",
+    "guard": "top_over_second >= $params.dominance_ratio",
+    "use": "first_option",
+    "choice": 0,
+    "why": "dominance",
+    "dominant": true,
+    "continue_loop": false,
+    "escalate": false
+   },
+   {
+    "rid": "test:boutique/infrastructure/17#verify10",
+    "kind": "verify",
+    "node": "verify",
+    "mode": "mechanism",
+    "options": [
+     "supported",
+     "insufficient",
+     "contradicted"
+    ],
+    "status": "mechanical",
+    "guard": "$pick.dominant",
+    "use": "verified",
+    "choice": "verified",
+    "why": "dominant_candidate",
+    "dominant": false,
+    "continue_loop": false,
+    "escalate": false
+   }
+  ],
+  "nodes": [
+   {
+    "node": "code",
+    "id": "anchors",
+    "anchors": {
+     "case_id": "boutique/infrastructure/17",
+     "system": "boutique",
+     "namespace": "boutique",
+     "query": "Service Availability Disruption.",
+     "difficulty": "medium",
+     "symptoms": [
+      "unavailable"
+     ],
+     "mentioned_apps": []
+    }
+   },
+   {
+    "node": "probes",
+    "plan": "census",
+    "wave": 0,
+    "executed": 2,
+    "steps": [
+     {
+      "key": "pods",
+      "tool": "GetResources",
+      "arguments": {
+       "namespace": "boutique",
+       "resource_type": "pods",
+       "output_wide": true
+      },
+      "gate": "always"
+     },
+     {
+      "key": "alerts",
+      "tool": "GetAlerts",
+      "arguments": {},
+      "gate": "healthy_system"
+     }
+    ],
+    "skipped": []
+   },
+   {
+    "node": "decide",
+    "id": "route",
+    "rid": "test:boutique/infrastructure/17#route",
+    "status": "mechanical",
+    "guard": "unavailable",
+    "use": "first_option",
+    "choice": "service",
+    "dominant": false,
+    "why": "mechanism_mode"
+   },
+   {
+    "node": "code",
+    "id": "plan",
+    "family": "service",
+    "plan": [
+     {
+      "step": "pods_labels",
+      "gate": "always",
+      "wave": 1
+     },
+     {
+      "step": "services",
+      "gate": "always",
+      "wave": 2
+     },
+     {
+      "step": "error_logs_entry",
+      "gate": "always",
+      "wave": 3
+     },
+     {
+      "step": "resourcequota",
+      "gate": "service_missing_for_pod",
+      "wave": 4
+     },
+     {
+      "step": "app_yaml_c1",
+      "gate": "service_target_found",
+      "wave": 5
+     },
+     {
+      "step": "app_yaml_c2",
+      "gate": "service_target_found | no_candidate_yet",
+      "wave": 6
+     },
+     {
+      "step": "app_yaml_c3",
+      "gate": "service_target_found | no_candidate_yet",
+      "wave": 7
+     },
+     {
+      "step": "deployments",
+      "gate": "no_candidate_yet",
+      "wave": 8
+     },
+     {
+      "step": "connectivity",
+      "gate": "no_candidate_yet",
+      "wave": 9
+     },
+     {
+      "step": "node_kube_proxy",
+      "gate": "connectivity_node_failure",
+      "wave": 10
+     }
+    ]
+   },
+   {
+    "node": "probes",
+    "plan": "family",
+    "wave": 1,
+    "executed": 1,
+    "steps": [
+     {
+      "key": "pods:labels",
+      "tool": "GetResources",
+      "arguments": {
+       "namespace": "boutique",
+       "resource_type": "pods",
+       "show_labels": true
+      },
+      "gate": "always"
+     }
+    ],
+    "skipped": []
+   },
+   {
+    "node": "code",
+    "id": "derive",
+    "raw": 0,
+    "kept": 0,
+    "top": []
+   },
+   {
+    "node": "decide",
+    "id": "pick",
+    "rid": "test:boutique/infrastructure/17#pick1",
+    "status": "mechanical",
+    "guard": "no_options",
+    "use": "none",
+    "choice": null,
+    "dominant": false,
+    "why": "no_candidates"
+   },
+   {
+    "node": "decide",
+    "id": "verify",
+    "rid": "test:boutique/infrastructure/17#verify1",
+    "status": "mechanical",
+    "guard": "no_pick",
+    "use": "unverified",
+    "choice": "unverified",
+    "dominant": false,
+    "why": "nothing_to_verify"
+   },
+   {
+    "node": "probes",
+    "plan": "family",
+    "wave": 2,
+    "executed": 1,
+    "steps": [
+     {
+      "key": "services",
+      "tool": "GetResources",
+      "arguments": {
+       "namespace": "boutique",
+       "resource_type": "services"
+      },
+      "gate": "always"
+     }
+    ],
+    "skipped": []
+   },
+   {
+    "node": "code",
+    "id": "derive",
+    "raw": 0,
+    "kept": 0,
+    "top": []
+   },
+   {
+    "node": "decide",
+    "id": "pick",
+    "rid": "test:boutique/infrastructure/17#pick2",
+    "status": "mechanical",
+    "guard": "no_options",
+    "use": "none",
+    "choice": null,
+    "dominant": false,
+    "why": "no_candidates"
+   },
+   {
+    "node": "decide",
+    "id": "verify",
+    "rid": "test:boutique/infrastructure/17#verify2",
+    "status": "mechanical",
+    "guard": "no_pick",
+    "use": "unverified",
+    "choice": "unverified",
+    "dominant": false,
+    "why": "nothing_to_verify"
+   },
+   {
+    "node": "probes",
+    "plan": "family",
+    "wave": 3,
+    "executed": 1,
+    "steps": [
+     {
+      "key": "errors:frontend",
+      "tool": "GetErrorLogs",
+      "arguments": {
+       "namespace": "boutique",
+       "service_name": "frontend"
+      },
+      "gate": "always"
+     }
+    ],
+    "skipped": []
+   },
+   {
+    "node": "code",
+    "id": "derive",
+    "raw": 0,
+    "kept": 0,
+    "top": []
+   },
+   {
+    "node": "decide",
+    "id": "pick",
+    "rid": "test:boutique/infrastructure/17#pick3",
+    "status": "mechanical",
+    "guard": "no_options",
+    "use": "none",
+    "choice": null,
+    "dominant": false,
+    "why": "no_candidates"
+   },
+   {
+    "node": "decide",
+    "id": "verify",
+    "rid": "test:boutique/infrastructure/17#verify3",
+    "status": "mechanical",
+    "guard": "no_pick",
+    "use": "unverified",
+    "choice": "unverified",
+    "dominant": false,
+    "why": "nothing_to_verify"
+   },
+   {
+    "node": "probes",
+    "plan": "family",
+    "wave": 4,
+    "executed": 0,
+    "steps": [],
+    "skipped": [
+     {
+      "step": "resourcequota",
+      "why": "gate service_missing_for_pod"
+     }
+    ]
+   },
+   {
+    "node": "code",
+    "id": "derive",
+    "raw": 0,
+    "kept": 0,
+    "top": []
+   },
+   {
+    "node": "decide",
+    "id": "pick",
+    "rid": "test:boutique/infrastructure/17#pick4",
+    "status": "mechanical",
+    "guard": "no_options",
+    "use": "none",
+    "choice": null,
+    "dominant": false,
+    "why": "no_candidates"
+   },
+   {
+    "node": "decide",
+    "id": "verify",
+    "rid": "test:boutique/infrastructure/17#verify4",
+    "status": "mechanical",
+    "guard": "no_pick",
+    "use": "unverified",
+    "choice": "unverified",
+    "dominant": false,
+    "why": "nothing_to_verify"
+   },
+   {
+    "node": "probes",
+    "plan": "family",
+    "wave": 5,
+    "executed": 1,
+    "steps": [
+     {
+      "key": "appyaml:c1",
+      "tool": "GetAppYAML",
+      "arguments": {
+       "app_name": "shippingservice"
+      },
+      "gate": "service_target_found"
+     }
+    ],
+    "skipped": []
+   },
+   {
+    "node": "code",
+    "id": "derive",
+    "raw": 0,
+    "kept": 0,
+    "top": []
+   },
+   {
+    "node": "decide",
+    "id": "pick",
+    "rid": "test:boutique/infrastructure/17#pick5",
+    "status": "mechanical",
+    "guard": "no_options",
+    "use": "none",
+    "choice": null,
+    "dominant": false,
+    "why": "no_candidates"
+   },
+   {
+    "node": "decide",
+    "id": "verify",
+    "rid": "test:boutique/infrastructure/17#verify5",
+    "status": "mechanical",
+    "guard": "no_pick",
+    "use": "unverified",
+    "choice": "unverified",
+    "dominant": false,
+    "why": "nothing_to_verify"
+   },
+   {
+    "node": "probes",
+    "plan": "family",
+    "wave": 6,
+    "executed": 1,
+    "steps": [
+     {
+      "key": "appyaml:c2",
+      "tool": "GetAppYAML",
+      "arguments": {
+       "app_name": "frontend"
+      },
+      "gate": "service_target_found | no_candidate_yet"
+     }
+    ],
+    "skipped": []
+   },
+   {
+    "node": "code",
+    "id": "derive",
+    "raw": 0,
+    "kept": 0,
+    "top": []
+   },
+   {
+    "node": "decide",
+    "id": "pick",
+    "rid": "test:boutique/infrastructure/17#pick6",
+    "status": "mechanical",
+    "guard": "no_options",
+    "use": "none",
+    "choice": null,
+    "dominant": false,
+    "why": "no_candidates"
+   },
+   {
+    "node": "decide",
+    "id": "verify",
+    "rid": "test:boutique/infrastructure/17#verify6",
+    "status": "mechanical",
+    "guard": "no_pick",
+    "use": "unverified",
+    "choice": "unverified",
+    "dominant": false,
+    "why": "nothing_to_verify"
+   },
+   {
+    "node": "probes",
+    "plan": "family",
+    "wave": 7,
+    "executed": 0,
+    "steps": [],
+    "skipped": [
+     {
+      "step": "app_yaml_c3",
+      "why": "args not applicable"
+     }
+    ]
+   },
+   {
+    "node": "code",
+    "id": "derive",
+    "raw": 0,
+    "kept": 0,
+    "top": []
+   },
+   {
+    "node": "decide",
+    "id": "pick",
+    "rid": "test:boutique/infrastructure/17#pick7",
+    "status": "mechanical",
+    "guard": "no_options",
+    "use": "none",
+    "choice": null,
+    "dominant": false,
+    "why": "no_candidates"
+   },
+   {
+    "node": "decide",
+    "id": "verify",
+    "rid": "test:boutique/infrastructure/17#verify7",
+    "status": "mechanical",
+    "guard": "no_pick",
+    "use": "unverified",
+    "choice": "unverified",
+    "dominant": false,
+    "why": "nothing_to_verify"
+   },
+   {
+    "node": "probes",
+    "plan": "family",
+    "wave": 8,
+    "executed": 1,
+    "steps": [
+     {
+      "key": "deployments",
+      "tool": "GetResources",
+      "arguments": {
+       "namespace": "boutique",
+       "resource_type": "deployments"
+      },
+      "gate": "no_candidate_yet"
+     }
+    ],
+    "skipped": []
+   },
+   {
+    "node": "code",
+    "id": "derive",
+    "raw": 0,
+    "kept": 0,
+    "top": []
+   },
+   {
+    "node": "decide",
+    "id": "pick",
+    "rid": "test:boutique/infrastructure/17#pick8",
+    "status": "mechanical",
+    "guard": "no_options",
+    "use": "none",
+    "choice": null,
+    "dominant": false,
+    "why": "no_candidates"
+   },
+   {
+    "node": "decide",
+    "id": "verify",
+    "rid": "test:boutique/infrastructure/17#verify8",
+    "status": "mechanical",
+    "guard": "no_pick",
+    "use": "unverified",
+    "choice": "unverified",
+    "dominant": false,
+    "why": "nothing_to_verify"
+   },
+   {
+    "node": "probes",
+    "plan": "family",
+    "wave": 9,
+    "executed": 1,
+    "steps": [
+     {
+      "key": "connectivity",
+      "tool": "CheckServiceConnectivity",
+      "arguments": {
+       "namespace": "boutique",
+       "service_name": "adservice",
+       "port": 9555
+      },
+      "gate": "no_candidate_yet"
+     }
+    ],
+    "skipped": []
+   },
+   {
+    "node": "code",
+    "id": "derive",
+    "raw": 1,
+    "kept": 1,
+    "top": [
+     {
+      "root_cause": "kube_proxy_unavailable",
+      "object": "node/worker-01",
+      "score": 0.82,
+      "evidence": "debug pod on worker-01 cannot reach the service while ['worker-02', 'worker-03'] can",
+      "rule": "connectivity_by_node"
+     }
+    ]
+   },
+   {
+    "node": "decide",
+    "id": "pick",
+    "rid": "test:boutique/infrastructure/17#pick9",
+    "status": "mechanical",
+    "guard": "top_over_second >= $params.dominance_ratio",
+    "use": "first_option",
+    "choice": 0,
+    "dominant": true,
+    "why": "dominance"
+   },
+   {
+    "node": "decide",
+    "id": "verify",
+    "rid": "test:boutique/infrastructure/17#verify9",
+    "status": "mechanical",
+    "guard": "$pick.dominant",
+    "use": "verified",
+    "choice": "verified",
+    "dominant": false,
+    "why": "dominant_candidate"
+   },
+   {
+    "node": "probes",
+    "plan": "family",
+    "wave": 10,
+    "executed": 1,
+    "steps": [
+     {
+      "key": "node:kube-proxy",
+      "tool": "CheckNodeServiceStatus",
+      "arguments": {
+       "node_name": "worker-01",
+       "service_name": "kube-proxy"
+      },
+      "gate": "connectivity_node_failure"
+     }
+    ],
+    "skipped": []
+   },
+   {
+    "node": "code",
+    "id": "derive",
+    "raw": 2,
+    "kept": 1,
+    "top": [
+     {
+      "root_cause": "kube_proxy_unavailable",
+      "object": "node/worker-01",
+      "score": 0.87,
+      "evidence": "kube-proxy.service is inactive on worker-01",
+      "rule": "node_component"
+     }
+    ]
+   },
+   {
+    "node": "decide",
+    "id": "pick",
+    "rid": "test:boutique/infrastructure/17#pick10",
+    "status": "mechanical",
+    "guard": "top_over_second >= $params.dominance_ratio",
+    "use": "first_option",
+    "choice": 0,
+    "dominant": true,
+    "why": "dominance"
+   },
+   {
+    "node": "decide",
+    "id": "verify",
+    "rid": "test:boutique/infrastructure/17#verify10",
+    "status": "mechanical",
+    "guard": "$pick.dominant",
+    "use": "verified",
+    "choice": "verified",
+    "dominant": false,
+    "why": "dominant_candidate"
+   },
+   {
+    "node": "loop",
+    "id": "waves",
+    "stop": "max_waves",
+    "wave": 10
+   },
+   {
+    "node": "escalate",
+    "id": "escalate",
+    "fired": false,
+    "reasons": [],
+    "why": "no reason"
+   },
+   {
+    "node": "code",
+    "id": "answer",
+    "predictions": [
+     {
+      "rank": 1,
+      "fault_object": "node/worker-01",
+      "root_cause": "kube_proxy_unavailable"
+     },
+     {
+      "rank": 2,
+      "fault_object": "node/worker-01",
+      "root_cause": "kube_proxy_unavailable"
+     },
+     {
+      "rank": 3,
+      "fault_object": "node/worker-01",
+      "root_cause": "kube_proxy_unavailable"
+     }
+    ]
+   },
+   {
+    "node": "artifact",
+    "id": "persist",
+    "persisted": false,
+    "why": "written by the CLI driver"
+   }
+  ],
+  "notes": [],
+  "tool_calls": 10,
+  "model_calls": 0,
+  "tokens_in": 0,
+  "tokens_out": 0,
+  "wall_s": 0.3
+ }
+}

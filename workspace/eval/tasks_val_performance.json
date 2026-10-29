@@ -1,0 +1,35 @@
+{
+ "n": 4,
+ "cases": [
+  {
+   "id": "boutique/performance/17",
+   "system": "boutique",
+   "category": "performance",
+   "case": "17",
+   "difficulty": "hard"
+  },
+  {
+   "id": "boutique/performance/22",
+   "system": "boutique",
+   "category": "performance",
+   "case": "22",
+   "difficulty": "hard"
+  },
+  {
+   "id": "boutique/performance/29",
+   "system": "boutique",
+   "category": "performance",
+   "case": "29",
+   "difficulty": "hard"
+  },
+  {
+   "id": "boutique/performance/4",
+   "system": "boutique",
+   "category": "performance",
+   "case": "4",
+   "difficulty": "hard"
+  }
+ ],
+ "round": "performance",
+ "split": "val"
+}

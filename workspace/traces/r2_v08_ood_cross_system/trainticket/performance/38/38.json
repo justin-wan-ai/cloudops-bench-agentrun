@@ -1,0 +1,671 @@
+{
+ "case_id": "trainticket/performance/38",
+ "system_name": "trainticket",
+ "question": "Service quality degradation.",
+ "case_path": "/Users/justinwan/work/workspace/cloudops_bench_rsi/repo/benchmark/trainticket/performance/38",
+ "max_steps": 8,
+ "current_step": 3,
+ "finished": true,
+ "stop_reason": "submit",
+ "final_answer": "{\"key_evidence_summary\": \"network latency anomaly on the pod\", \"top_3_predictions\": [{\"rank\": 1, \"fault_object\": \"app/ts-inside-payment-service\", \"root_cause\": \"pod_network_delay\"}, {\"rank\": 2, \"fault_object\": \"app/ts-order-service\", \"root_cause\": \"pod_network_delay\"}, {\"rank\": 3, \"fault_object\": \"app/ts-inside-payment-service\", \"root_cause\": \"pod_network_delay\"}]}",
+ "metadata": {
+  "namespace": "train-ticket",
+  "query": "Service quality degradation.",
+  "fault_category": "performance",
+  "model_name": "agentrun-v0.8"
+ },
+ "steps": [
+  {
+   "step_id": 0,
+   "action_type": "tool",
+   "action_name": "GetResources",
+   "action_input": {
+    "namespace": "train-ticket",
+    "resource_type": "pods",
+    "output_wide": true
+   },
+   "observation": "NAME                                            READY   STATUS    RESTARTS       AGE    IP             NODE        NOMINATED NODE   READINESS GATES\nnacos-0                                         1/1     Running   0              7d8h   172.20.2.76    worker-02   <none>           <none>\nnacos-1                                         1/1     Running   0              7d8h   172.20.1.247   worker-01   <none>           <none>\nnacos-2                                         1/1     Running   0              7d8h   172.20.3.7     worker-03   <none>           <none>\nnacosdb-mysql-0                                 3/3     Running   1 (7d8h ago)   7d8h   172.20.2.75    worker-02   <none>           <none>\nnacosdb-mysql-1                                 3/3     Running   2 (7d8h ago)   7d8h   172.20.1.246   worker-01   <none>           <none>\nnacosdb-mysql-2                                 3/3     Running   1 (7d8h ago)   7d8h   172.20.3.6     worker-03   <none>           <none>\nrabbitmq-57b4f9969c-4cndj                       1/1     Running   0              7d8h   172.20.2.77    worker-02   <none>           <none>\nts-assurance-service-88f65755-ph2x8             2/2     Running   0              11m    172.20.1.172   worker-01   <none>           <none>\nts-auth-service-656fb96d87-56kgs                2/2     Running   0              11m    172.20.3.45    worker-03   <none>           <none>\nts-avatar-service-54fb8f5c57-thjpj              2/2     Running   0              11m    172.20.2.93    worker-02   <none>           <none>\nts-basic-service-57fb684696-gf56r               2/2     Running   0              11m    172.20.1.173   worker-01   <none>           <none>\nts-cancel-service-67fb7d5bb4-sgdkj              2/2     Running   0              11m    172.20.1.162   worker-01   <none>           <none>\nts-config-service-65779cfcd7-lvq8b              2/2     Running   0              11m    172.20.1.169   worker-01   <none>           <none>\nts-consign-price-service-9dbb69844-g9tgm        1/1     Running   0              34h    172.20.2.30    worker-02   <none>           <none>\nts-consign-service-846bdf46cc-dkkbt             2/2     Running   0              11m    172.20.2.95    worker-02   <none>           <none>\nts-contacts-service-7fc68f4bbc-ss8pd            2/2     Running   0              11m    172.20.2.90    worker-02   <none>           <none>\nts-delivery-service-659b5d4f75-xjhsr            2/2     Running   0              11m    172.20.3.48    worker-03   <none>           <none>\nts-execute-service-5f7c9df447-2sq52             2/2     Running   0              11m    172.20.3.54    worker-03   <none>           <none>\nts-food-delivery-service-5b898fdbbf-fbxb4       2/2     Running   0              11m    172.20.1.165   worker-01   <none>           <none>\nts-food-service-59c58c74cc-kdh9l                2/2     Running   0              11m    172.20.1.171   worker-01   <none>           <none>\nts-gateway-service-ddc65b886-mqm44              2/2     Running   0              11m    172.20.1.164   worker-01   <none>           <none>\nts-inside-payment-service-5b98976c87-vzxxx      2/2     Running   0              11m    172.20.2.100   worker-02   <none>           <none>\nts-news-service-578fd9cd67-l9dgn                2/2     Running   0              11m    172.20.1.163   worker-01   <none>           <none>\nts-notification-service-6b579b64d7-hvfjr        2/2     Running   0              11m    172.20.2.103   worker-02   <none>           <none>\nts-order-other-service-788d947bdf-rf2tx         2/2     Running   0              11m    172.20.2.102   worker-02   <none>           <none>\nts-order-service-dd54d5df9-wjbp6                2/2     Running   0              11m    172.20.1.167   worker-01   <none>           <none>\nts-payment-service-666d596f87-fp655             2/2     Running   0              11m    172.20.3.52    worker-03   <none>           <none>\nts-preserve-other-service-5f85fdfd7-dmw8m       2/2     Running   0              11m    172.20.3.51    worker-03   <none>           <none>\nts-preserve-service-6bccdc5454-nqtmg            2/2     Running   0              11m    172.20.3.47    worker-03   <none>           <none>\nts-price-service-6c4b77845-nwtlm                2/2     Running   0              11m    172.20.3.46    worker-03   <none>           <none>\nts-rebook-service-75d676f77b-hjbf2              2/2     Running   0              11m    172.20.2.98    worker-02   <none>           <none>\nts-route-plan-service-695f545f8c-lx6ld          2/2     Running   0              11m    172.20.2.99    worker-02   <none>           <none>\nts-route-service-688dc779fc-5q57h               2/2     Running   0              11m    172.20.1.178   worker-01   <none>           <none>\nts-seat-service-5fc7c67c7f-42lsq                2/2     Running   0              11m    172.20.1.181   worker-01   <none>           <none>\nts-security-service-5fb7f7fbff-8grhp            2/2     Running   0              11m    172.20.2.92    worker-02   <none>           <none>\nts-station-food-service-d99b9b859-v6shp         2/2     Running   0              11m    172.20.2.96    worker-02   <none>           <none>\nts-station-service-7cbf6b96c9-b9th8             2/2     Running   0              11m    172.20.3.44    worker-03   <none>           <none>\nts-ticket-office-service-6fd78bd9df-8pz4h       2/2     Running   1 (11m ago)    11m    172.20.3.49    worker-03   <none>           <none>\nts-train-food-service-67cb5bdf99-cb5sw          2/2     Running   0              11m    172.20.2.101   worker-02   <none>           <none>\nts-train-service-c4fb58df9-pwqwh                2/2     Running   0              11m    172.20.2.94    worker-02   <none>           <none>\nts-travel-plan-service-5985cdf6b6-fw9cw         2/2     Running   0              11m    172.20.3.53    worker-03   <none>           <none>\nts-travel-service-5b9b99c879-2qk47              2/2     Running   0              11m    172.20.2.97    worker-02   <none>           <none>\nts-travel2-service-849bffcb7c-glwmp             2/2     Running   0              11m    172.20.1.183   worker-01   <none>           <none>\nts-ui-dashboard-554844f867-6sqdn                2/2     Running   0              11m    172.20.1.184   worker-01   <none>           <none>\nts-user-service-6886cbf9cf-5dwdx                2/2     Running   0              11m    172.20.1.170   worker-01   <none>           <none>\nts-verification-code-service-7cbd896f77-9x9ph   2/2     Running   0              11m    172.20.2.91    worker-02   <none>           <none>\nts-voucher-service-5ffdd5456c-sj7hp             2/2     Running   1 (11m ago)    11m    172.20.3.50    worker-03   <none>           <none>\nts-wait-order-service-848dbb9dd7-tsct6          2/2     Running   0              11m    172.20.1.166   worker-01   <none>           <none>\ntsdb-mysql-0                                    3/3     Running   1 (34h ago)    34h    172.20.2.26    worker-02   <none>           <none>\ntsdb-mysql-1                                    3/3     Running   1 (34h ago)    34h    172.20.1.86    worker-01   <none>           <none>\ntsdb-mysql-2                                    3/3     Running   1 (34h ago)    34h    172.20.3.34    worker-03   <none>           <none>\n",
+   "error": null,
+   "purpose": "pod readiness census",
+   "tool_latency": null
+  },
+  {
+   "step_id": 1,
+   "action_type": "tool",
+   "action_name": "GetAlerts",
+   "action_input": {},
+   "observation": "{'status': 'has_anomalies', 'alert_count': 2, 'alerts': [{'type': 'Service', 'name': 'ts-inside-payment-service', 'entity_type': 'Service', 'entity_name': 'ts-inside-payment-service', 'time_range': '2026-03-15 23:25:10 ~ 2026-03-15 23:27:00', 'status': 'ABNORMAL', 'metric_category': 'LATENCY_DEGRADATION, TRAFFIC_ANOMALY', 'evidence': ['TRAFFIC_ANOMALY [Inbound SURGE] | Normal=23.35pps -> Current=55.80pps (+139.0%)', 'LATENCY_DEGRADATION [Slow Response] | p50latency: Normal=363.23ms -> Current=8333.33ms (+2194.2%) | Peak=9166.67ms | p90latency: Normal=6184.73ms -> Current=22000.00ms (+255.7%) | Peak=25000.00ms']}, {'type': 'Service', 'name': 'ts-order-service', 'entity_type': 'Service', 'entity_name': 'ts-order-service', 'time_range': '2026-03-15 23:25:10 ~ 2026-03-15 23:27:00', 'status': 'ABNORMAL', 'metric_category': 'RESOURCE_SATURATION', 'evidence': ['RESOURCE_SATURATION [cpu_cfs] | Val: 0.435s (Throttled)']}]}",
+   "error": null,
+   "purpose": "anomaly signature (routes performance/code families)",
+   "tool_latency": null
+  },
+  {
+   "step_id": 2,
+   "action_type": "tool",
+   "action_name": "GetRecentLogs",
+   "action_input": {
+    "namespace": "train-ticket",
+    "service_name": "ts-inside-payment-service"
+   },
+   "observation": "['From ts-inside-payment-service logs:', '2026-03-15T23:27:34.777481999+08:00 2026-03-15 15:27:34.777  INFO 1 --- [io-18673-exec-2] i.controller.InsidePaymentController     : [pay][Inside Payment Service.Pay][Pay for: 5e6fab27-c114-4e48-9b00-399f421e1185]', '2026-03-15T23:27:34.855946939+08:00 2026-03-15 15:27:34.855  INFO 1 --- [io-18673-exec-3] i.controller.InsidePaymentController     : [pay][Inside Payment Service.Pay][Pay for: 5e6fab27-c114-4e48-9b00-399f421e1185]', '2026-03-15T23:27:35.262334273+08:00 2026-03-15 15:27:35.262  INFO 1 --- [io-18673-exec-3] i.service.InsidePaymentServiceImpl       : [Inside Payment Service.pay][outside Pay][Out pay result: Response(status=1, msg=Pay Success, data=null)]', '2026-03-15T23:27:35.263597200+08:00 2026-03-15 15:27:35.263  INFO 1 --- [io-18673-exec-2] i.service.InsidePaymentServiceImpl       : [Inside Payment Service.pay][outside Pay][Out pay result: Response(status=1, msg=Pay Success, data=null)]', '2026-03-15T23:27:37.256873966+08:00 2026-03-15 15:27:37.256  INFO 1 --- [io-18673-exec-8] i.controller.InsidePaymentController     : [pay][Inside Payment Service.Pay][Pay for: 5e6fab27-c114-4e48-9b00-399f421e1185]', '2026-03-15T23:27:37.281103622+08:00 2026-03-15 15:27:37.280  INFO 1 --- [io-18673-exec-7] i.controller.InsidePaymentController     : [pay][Inside Payment Service.Pay][Pay for: 5e6fab27-c114-4e48-9b00-399f421e1185]', '2026-03-15T23:27:37.339205203+08:00 2026-03-15 15:27:37.339  WARN 1 --- [io-18673-exec-8] i.service.InsidePaymentServiceImpl       : [Inside Payment Service.pay][Order status Not allowed to Pay]', '2026-03-15T23:27:37.339571841+08:00 2026-03-15 15:27:37.339  WARN 1 --- [io-18673-exec-7] i.service.InsidePaymentServiceImpl       : [Inside Payment Service.pay][Order status Not allowed to Pay]', '2026-03-15T23:27:38.449301434+08:00 2026-03-15 15:27:38.449  INFO 1 --- [io-18673-exec-9] i.controller.InsidePaymentController     : [pay][Inside Payment Service.Pay][Pay for: d3434026-b5b3-48fc-880b-a50a4cc1caeb]', '2026-03-15T23:27:38.481926846+08:00 2026-03-15 15:27:38.481  INFO 1 --- [io-18673-exec-9] i.service.InsidePaymentServiceImpl       : [Inside Payment Service.pay][outside Pay][Out pay result: Response(status=1, msg=Pay Success, data=null)]', '2026-03-15T23:27:39.767097399+08:00 2026-03-15 15:27:39.766  INFO 1 --- [io-18673-exec-6] i.controller.InsidePaymentController     : [pay][Inside Payment Service.Pay][Pay for: 0fbe86a0-98f6-461a-956f-190d9db67f66]', '2026-03-15T23:27:39.858816098+08:00 2026-03-15 15:27:39.858  INFO 1 --- [io-18673-exec-6] i.service.InsidePaymentServiceImpl       : [Inside Payment Service.pay][outside Pay][Out pay result: Response(status=1, msg=Pay Success, data=null)]', '2026-03-15T23:27:40.071857430+08:00 2026-03-15 15:27:40.071  INFO 1 --- [io-18673-exec-5] i.controller.InsidePaymentController     : [pay][Inside Payment Service.Pay][Pay for: 0fbe86a0-98f6-461a-956f-190d9db67f66]', '2026-03-15T23:27:40.077947849+08:00 2026-03-15 15:27:40.077  WARN 1 --- [io-18673-exec-5] i.service.InsidePaymentServiceImpl       : [Inside Payment Service.pay][Order status Not allowed to Pay]', '2026-03-15T23:27:40.498401050+08:00 2026-03-15 15:27:40.498  INFO 1 --- [io-18673-exec-1] i.controller.InsidePaymentController     : [pay][Inside Payment Service.Pay][Pay for: b2420786-3539-45f5-9b12-b1c64c0dc15b]', '2026-03-15T23:27:40.531156125+08:00 2026-03-15 15:27:40.530  INFO 1 --- [io-18673-exec-1] i.service.InsidePaymentServiceImpl       : [Inside Payment Service.pay][outside Pay][Out pay result: Response(status=1, msg=Pay Success, data=null)]', '2026-03-15T23:27:40.777014239+08:00 2026-03-15 15:27:40.776  INFO 1 --- [o-18673-exec-10] i.controller.InsidePaymentController     : [pay][Inside Payment Service.Pay][Pay for: 3c028b18-cfb0-4f64-a5b3-99db9d624b1e]', '2026-03-15T23:27:40.808873830+08:00 2026-03-15 15:27:40.808  INFO 1 --- [o-18673-exec-10] i.service.InsidePaymentServiceImpl       : [Inside Payment Service.pay][outside Pay][Out pay result: Response(status=1, msg=Pay Success, data=null)]', '2026-03-15T23:27:41.178084747+08:00 2026-03-15 15:27:41.177  INFO 1 --- [o-18673-exec-11] i.controller.InsidePaymentController     : [pay][Inside Payment Service.Pay][Pay for: ad1d2e25-a091-43c1-9de0-a66e3979a2d9]', '2026-03-15T23:27:41.209234602+08:00 2026-03-15 15:27:41.208  INFO 1 --- [o-18673-exec-11] i.service.InsidePaymentServiceImpl       : [Inside Payment Service.pay][outside Pay][Out pay result: Response(status=1, msg=Pay Success, data=null)]', '2026-03-15T23:27:45.160644035+08:00 2026-03-15 15:27:45.160  INFO 1 --- [io-18673-exec-2] i.controller.InsidePaymentController     : [pay][Inside Payment Service.Pay][Pay for: 68540ed1-39e9-470d-90ff-09fd0fccf84c]', '2026-03-15T23:27:45.243144413+08:00 2026-03-15 15:27:45.242  INFO 1 --- [io-18673-exec-2] i.service.InsidePaymentServiceImpl       : [Inside Payment Service.pay][outside Pay][Out pay result: Response(status=1, msg=Pay Success, data=null)]', '2026-03-15T23:27:46.019677020+08:00 2026-03-15 15:27:46.019  INFO 1 --- [io-18673-exec-3] i.controller.InsidePaymentController     : [pay][Inside Payment Service.Pay][Pay for: ca82eaf9-208a-4fb4-a3aa-0fb11e3574bb]', '2026-03-15T23:27:46.058501201+08:00 2026-03-15 15:27:46.058  INFO 1 --- [io-18673-exec-3] i.service.InsidePaymentServiceImpl       : [Inside Payment Service.pay][outside Pay][Out pay result: Response(status=1, msg=Pay Success, data=null)]', '2026-03-15T23:27:48.065525413+08:00 2026-03-15 15:27:48.065  INFO 1 --- [io-18673-exec-7] i.controller.InsidePaymentController     : [pay][Inside Payment Service.Pay][Pay for: 93df7b3e-df38-4732-9154-d19769d878d8]', '2026-03-15T23:27:48.857715428+08:00 2026-03-15 15:27:48.857  INFO 1 --- [io-18673-exec-7] i.service.InsidePaymentServiceImpl       : [Inside Payment Service.pay][outside Pay][Out pay result: Response(status=1, msg=Pay Success, data=null)]', '2026-03-15T23:27:49.568064268+08:00 2026-03-15 15:27:49.567  INFO 1 --- [io-18673-exec-6] i.controller.InsidePaymentController     : [pay][Inside Payment Service.Pay][Pay for: 93df7b3e-df38-4732-9154-d19769d878d8]', '2026-03-15T23:27:49.621632195+08:00 2026-03-15 15:27:49.621  WARN 1 --- [io-18673-exec-6] i.service.InsidePaymentServiceImpl       : [Inside Payment Service.pay][Order status Not allowed to Pay]', '2026-03-15T23:27:51.562703060+08:00 2026-03-15 15:27:51.562  INFO 1 --- [io-18673-exec-5] i.controller.InsidePaymentController     : [pay][Inside Payment Service.Pay][Pay for: a9328634-de3e-403a-9845-634eaf55cec9]', '2026-03-15T23:27:51.752788630+08:00 2026-03-15 15:27:51.752  INFO 1 --- [io-18673-exec-5] i.service.InsidePaymentServiceImpl       : [Inside Payment Service.pay][outside Pay][Out pay result: Response(status=1, msg=Pay Success, data=null)]', '2026-03-15T23:27:54.469483913+08:00 2026-03-15 15:27:54.469  INFO 1 --- [o-18673-exec-10] i.controller.InsidePaymentController     : [pay][Inside Payment Service.Pay][Pay for: 33540d3f-5421-4d64-9862-41c290ba9af5]', '2026-03-15T23:27:54.546871789+08:00 2026-03-15 15:27:54.546  INFO 1 --- [o-18673-exec-10] i.service.InsidePaymentServiceImpl       : [Inside Payment Service.pay][outside Pay][Out pay result: Response(status=1, msg=Pay Success, data=null)]', '2026-03-15T23:27:57.070828316+08:00 2026-03-15 15:27:57.070  INFO 1 --- [o-18673-exec-11] i.controller.InsidePaymentController     : [pay][Inside Payment Service.Pay][Pay for: 2ba95dc1-d0fb-48e4-8f43-e58f3e058a8b]', '2026-03-15T23:27:57.147363909+08:00 2026-03-15 15:27:57.147  INFO 1 --- [o-18673-exec-11] i.service.InsidePaymentServiceImpl       : [Inside Payment Service.pay][outside Pay][Out pay result: Response(status=1, msg=Pay Success, data=null)]', '2026-03-15T23:27:57.219924507+08:00 2026-03-15 15:27:57.219  INFO 1 --- [io-18673-exec-4] i.controller.InsidePaymentController     : [pay][Inside Payment Service.Pay][Pay for: 2ba95dc1-d0fb-48e4-8f43-e58f3e058a8b]', '2026-03-15T23:27:57.226741400+08:00 2026-03-15 15:27:57.226  WARN 1 --- [io-18673-exec-4] i.service.InsidePaymentServiceImpl       : [Inside Payment Service.pay][Order status Not allowed to Pay]', '2026-03-15T23:27:57.256708059+08:00 2026-03-15 15:27:57.256  INFO 1 --- [io-18673-exec-2] i.controller.InsidePaymentController     : [pay][Inside Payment Service.Pay][Pay for: 2ba95dc1-d0fb-48e4-8f43-e58f3e058a8b]', '2026-03-15T23:27:57.320980050+08:00 2026-03-15 15:27:57.320  WARN 1 --- [io-18673-exec-2] i.service.InsidePaymentServiceImpl       : [Inside Payment Service.pay][Order status Not allowed to Pay]', '2026-03-15T23:27:58.482334299+08:00 2026-03-15 15:27:58.482  INFO 1 --- [io-18673-exec-3] i.controller.InsidePaymentController     : [pay][Inside Payment Service.Pay][Pay for: 1ea922bb-6715-4b51-8737-8f0bb535a6be]', '2026-03-15T23:27:58.545397070+08:00 2026-03-15 15:27:58.545  INFO 1 --- [io-18673-exec-3] i.service.InsidePaymentServiceImpl       : [Inside Payment Service.pay][outside Pay][Out pay result: Response(status=1, msg=Pay Success, data=null)]', '2026-03-15T23:27:59.174142991+08:00 2026-03-15 15:27:59.173  INFO 1 --- [io-18673-exec-8] i.controller.InsidePaymentController     : [pay][Inside Payment Service.Pay][Pay for: c7205fbe-0eb3-4b94-831d-879edcb47596]', '2026-03-15T23:27:59.206763812+08:00 2026-03-15 15:27:59.206  INFO 1 --- [io-18673-exec-8] i.service.InsidePaymentServiceImpl       : [Inside Payment Service.pay][outside Pay][Out pay result: Response(status=1, msg=Pay Success, data=null)]', '2026-03-15T23:27:59.489460457+08:00 2026-03-15 15:27:59.489  INFO 1 --- [io-18673-exec-9] i.controller.InsidePaymentController     : [pay][Inside Payment Service.Pay][Pay for: f48f298b-1b17-49ee-a449-61203237cc3a]', '2026-03-15T23:27:59.519547038+08:00 2026-03-15 15:27:59.519  INFO 1 --- [io-18673-exec-9] i.service.InsidePaymentServiceImpl       : [Inside Payment Service.pay][outside Pay][Out pay result: Response(status=1, msg=Pay Success, data=null)]', '2026-03-15T23:28:01.080994297+08:00 2026-03-15 15:28:01.080  INFO 1 --- [io-18673-exec-7] i.controller.InsidePaymentController     : [pay][Inside Payment Service.Pay][Pay for: ec9a7a9a-fca1-4e5e-a552-5299ce46b79f]', '2026-03-15T23:28:01.113090168+08:00 2026-03-15 15:28:01.112  INFO 1 --- [io-18673-exec-7] i.service.InsidePaymentServiceImpl       : [Inside Payment Service.pay][outside Pay][Out pay result: Response(status=1, msg=Pay Success, data=null)]', '2026-03-15T23:28:01.278560362+08:00 2026-03-15 15:28:01.278  INFO 1 --- [io-18673-exec-6] i.controller.InsidePaymentController     : [pay][Inside Payment Service.Pay][Pay for: 240dad12-ab24-47a9-85af-4fc90108dfec]', '2026-03-15T23:28:01.313715916+08:00 2026-03-15 15:28:01.313  INFO 1 --- [io-18673-exec-6] i.service.InsidePaymentServiceImpl       : [Inside Payment Service.pay][outside Pay][Out pay result: Response(status=1, msg=Pay Success, data=null)]', '2026-03-15T23:28:02.182073827+08:00 2026-03-15 15:28:02.181  INFO 1 --- [io-18673-exec-5] i.controller.InsidePaymentController     : [pay][Inside Payment Service.Pay][Pay for: cebfcdb2-0fab-4e1c-b905-cd4c5bb488ad]', '2026-03-15T23:28:02.213387520+08:00 2026-03-15 15:28:02.213  INFO 1 --- [io-18673-exec-5] i.service.InsidePaymentServiceImpl       : [Inside Payment Service.pay][outside Pay][Out pay result: Response(status=1, msg=Pay Success, data=null)]', '', 'From previous container logs:', 'Error: Error from server (BadRequest): previous terminated container \"ts-inside-payment-service\" in pod \"ts-inside-payment-service-5b98976c87-vzxxx\" not found']",
+   "error": null,
+   "purpose": "request latency / saturation logs",
+   "tool_latency": null
+  }
+ ],
+ "agentrun": {
+  "tag": "test",
+  "dsl": "workspace/dsl_versions/v0.8.dsl.txt",
+  "dsl_version": "0.8",
+  "sop": {
+   "sop": "boutique-runtime-rca",
+   "scope": {
+    "system": "boutique",
+    "families": [
+     "runtime",
+     "admission",
+     "scheduling",
+     "startup",
+     "service",
+     "performance",
+     "infrastructure",
+     "codedefect"
+    ],
+    "severity": [
+     "SEV2",
+     "SEV3"
+    ]
+   },
+   "owner": "sre-platform",
+   "approved_by": [
+    "oncall-primary",
+    "sre-lead"
+   ],
+   "reviewed_at": "2026-10-23",
+   "change_ticket": "OPS-1236",
+   "boundaries": "只读诊断：本 SOP 不执行任何写操作（重启/回滚/扩缩容），也不做对外播报；\n它回答\"最可能的根因与受害对象\"，处置与沟通由值班按 runbook 人工执行。\n不覆盖 SEV1（需 incident commander 介入）与变更引发的问题（走变更回滚流程）。\n输入是冻结快照：诊断结论对\"快照时刻\"成立，恢复后需重新取证。\nR1 已知边界：PVC 的 requested size / accessMode 在本 benchmark 的工具面不可见，\n因此 pvc_capacity 与 pvc_access_mode 无法区分（同一分数并列，交给 jev 或升级）。\n"
+  },
+  "params": {
+   "cands_cap": 8,
+   "max_waves": 8,
+   "min_waves": 5,
+   "steps_per_wave": 1,
+   "dominance_ratio": 1.5,
+   "conf_min": 0.0,
+   "escalate": true,
+   "escalate_budget": 8,
+   "judge_on_codedefect": true,
+   "jev_route": true,
+   "jev_pick": true,
+   "jev_verify": true,
+   "route_fallback": "runtime"
+  },
+  "nodes_executed": [
+   "anchors:extract_anchors",
+   "census:probes",
+   "route:decide",
+   "plan:build_plan",
+   "probe:probes",
+   "derive:derive_candidates",
+   "pick:decide",
+   "verify:decide",
+   "probe:probes",
+   "derive:derive_candidates",
+   "pick:decide",
+   "verify:decide",
+   "probe:probes",
+   "derive:derive_candidates",
+   "pick:decide",
+   "verify:decide",
+   "escalate:escalate",
+   "answer:normalize_answer",
+   "persist:persist_trace"
+  ],
+  "census": [
+   {
+    "step": "pods",
+    "gate": "always"
+   },
+   {
+    "step": "alerts",
+    "gate": "healthy_system"
+   }
+  ],
+  "plan": [
+   {
+    "step": "recent_logs",
+    "gate": "always",
+    "wave": 1
+   },
+   {
+    "step": "describe_pod",
+    "gate": "weak",
+    "wave": 2
+   },
+   {
+    "step": "deps",
+    "gate": "weak",
+    "wave": 3
+   }
+  ],
+  "family": "performance",
+  "state_wiring": {
+   "family": "$route.family",
+   "route_probs": "$route.probabilities",
+   "picked": "$pick.picked",
+   "pick_dominant": "$pick.dominant",
+   "verify_status": "$verify.status",
+   "verify_prob": "$verify.confidence"
+  },
+  "bindings": {
+   "anchors": {
+    "anchors": "Anchors(case_id='trainticket/performance/38', system='trainticket', namespace='train-ticket', query='Service quality degradation.', difficulty='hard', symptoms=['degradation'], mentioned_apps=[], priors={'db_service': 'tsdb-mysql-leader', 'db_port': 3306})"
+   },
+   "route": {
+    "family": "performance",
+    "probabilities": {},
+    "route_why": "mechanism_mode"
+   },
+   "plan": {
+    "plan": "[{'name': 'recent_logs', 'key': 'recent', 'tool': 'GetRecentLogs', 'args': <function _args_error_logs at 0x107ddb740>, 'purpose': 'request latency / saturation logs', 'when': <function compile_steps.<locals>.<lambda> at 0x107fee2a0>, 'gate': 'always', 'wave': 1}, {'name': 'describe_pod', 'key': 'describe:pod', 'tool': 'DescribeResource', 'args': <function _args_describe_pod at 0x107ddb560>, 'purpose': 'probe config, container state, restart reasons, scheduler events', 'when': <function compile_steps.<locals>.<lambda> at 0x107fede40>, 'gate': 'weak', 'wave': 2}, {'name': 'deps', 'key': 'deps', 'tool': 'GetServiceDependencies', 'args': <function _args_deps at 0x107ddbe20>, 'purpose': 'upstream/downstream call graph', 'when': <function compile_steps.<locals>.<lambda> at 0x107fedee0>, 'gate': 'weak', 'wave': 3}]"
+   },
+   "derive": {
+    "candidates": "[Candidate(root_cause='pod_network_delay', object='app/ts-inside-payment-service', score=0.82, evidence='network latency anomaly on the pod', rule='delay_alert'), Candidate(root_cause='pod_network_delay', object='app/ts-order-service', score=0.82, evidence='network latency anomaly on the pod', rule='delay_alert')]"
+   },
+   "pick": {
+    "picked": 0,
+    "dominant": false,
+    "pick_why": "no_new_evidence"
+   },
+   "verify": {
+    "status": "verified",
+    "confidence": null,
+    "verify_why": "no_new_evidence"
+   },
+   "escalate": {
+    "answer": null
+   },
+   "answer": {
+    "final": {
+     "key_evidence_summary": "network latency anomaly on the pod",
+     "top_3_predictions": [
+      {
+       "rank": 1,
+       "fault_object": "app/ts-inside-payment-service",
+       "root_cause": "pod_network_delay"
+      },
+      {
+       "rank": 2,
+       "fault_object": "app/ts-order-service",
+       "root_cause": "pod_network_delay"
+      },
+      {
+       "rank": 3,
+       "fault_object": "app/ts-inside-payment-service",
+       "root_cause": "pod_network_delay"
+      }
+     ]
+    }
+   }
+  },
+  "picked": {
+   "root_cause": "pod_network_delay",
+   "object": "app/ts-inside-payment-service",
+   "score": 0.82,
+   "evidence": "network latency anomaly on the pod",
+   "rule": "delay_alert"
+  },
+  "pick_why": "",
+  "verify_prob": null,
+  "verify_verdict": "verified",
+  "verified": true,
+  "escalated": false,
+  "escalate_reason": "",
+  "escalate_steps": 0,
+  "waves": 3,
+  "candidates": [
+   {
+    "root_cause": "pod_network_delay",
+    "object": "app/ts-inside-payment-service",
+    "score": 0.82,
+    "evidence": "network latency anomaly on the pod",
+    "rule": "delay_alert"
+   },
+   {
+    "root_cause": "pod_network_delay",
+    "object": "app/ts-order-service",
+    "score": 0.82,
+    "evidence": "network latency anomaly on the pod",
+    "rule": "delay_alert"
+   }
+  ],
+  "jev": [
+   {
+    "rid": "test:trainticket/performance/38#route",
+    "kind": "route",
+    "node": "route",
+    "mode": "mechanism",
+    "options": [
+     "performance",
+     "infrastructure"
+    ],
+    "status": "mechanical",
+    "guard": "unavailable",
+    "use": "first_option",
+    "choice": "performance",
+    "why": "mechanism_mode",
+    "dominant": false,
+    "continue_loop": false,
+    "escalate": false
+   },
+   {
+    "rid": "test:trainticket/performance/38#pick1",
+    "kind": "pick",
+    "node": "pick",
+    "mode": "mechanism",
+    "options": [
+     "c0",
+     "c1"
+    ],
+    "status": "mechanical",
+    "guard": "unavailable",
+    "use": "first_option",
+    "choice": 0,
+    "why": "mechanism_mode",
+    "dominant": false,
+    "continue_loop": false,
+    "escalate": false
+   },
+   {
+    "rid": "test:trainticket/performance/38#verify1",
+    "kind": "verify",
+    "node": "verify",
+    "mode": "mechanism",
+    "options": [
+     "supported",
+     "insufficient",
+     "contradicted"
+    ],
+    "status": "mechanical",
+    "guard": "unavailable",
+    "use": "verified",
+    "choice": "verified",
+    "why": "mechanism_mode",
+    "dominant": false,
+    "continue_loop": false,
+    "escalate": false
+   },
+   {
+    "rid": "test:trainticket/performance/38#pick2",
+    "kind": "pick",
+    "node": "pick",
+    "mode": "mechanism",
+    "options": [
+     "c0",
+     "c1"
+    ],
+    "status": "mechanical",
+    "guard": "unchanged_since_last",
+    "use": "previous",
+    "choice": 0,
+    "why": "no_new_evidence",
+    "dominant": false,
+    "continue_loop": false,
+    "escalate": false
+   },
+   {
+    "rid": "test:trainticket/performance/38#verify2",
+    "kind": "verify",
+    "node": "verify",
+    "mode": "mechanism",
+    "options": [
+     "supported",
+     "insufficient",
+     "contradicted"
+    ],
+    "status": "mechanical",
+    "guard": "unchanged_since_last",
+    "use": "previous",
+    "choice": "verified",
+    "why": "no_new_evidence",
+    "dominant": false,
+    "continue_loop": false,
+    "escalate": false
+   },
+   {
+    "rid": "test:trainticket/performance/38#pick3",
+    "kind": "pick",
+    "node": "pick",
+    "mode": "mechanism",
+    "options": [
+     "c0",
+     "c1"
+    ],
+    "status": "mechanical",
+    "guard": "unchanged_since_last",
+    "use": "previous",
+    "choice": 0,
+    "why": "no_new_evidence",
+    "dominant": false,
+    "continue_loop": false,
+    "escalate": false
+   },
+   {
+    "rid": "test:trainticket/performance/38#verify3",
+    "kind": "verify",
+    "node": "verify",
+    "mode": "mechanism",
+    "options": [
+     "supported",
+     "insufficient",
+     "contradicted"
+    ],
+    "status": "mechanical",
+    "guard": "unchanged_since_last",
+    "use": "previous",
+    "choice": "verified",
+    "why": "no_new_evidence",
+    "dominant": false,
+    "continue_loop": false,
+    "escalate": false
+   }
+  ],
+  "nodes": [
+   {
+    "node": "code",
+    "id": "anchors",
+    "anchors": {
+     "case_id": "trainticket/performance/38",
+     "system": "trainticket",
+     "namespace": "train-ticket",
+     "query": "Service quality degradation.",
+     "difficulty": "hard",
+     "symptoms": [
+      "degradation"
+     ],
+     "mentioned_apps": []
+    }
+   },
+   {
+    "node": "probes",
+    "plan": "census",
+    "wave": 0,
+    "executed": 2,
+    "steps": [
+     {
+      "key": "pods",
+      "tool": "GetResources",
+      "arguments": {
+       "namespace": "train-ticket",
+       "resource_type": "pods",
+       "output_wide": true
+      },
+      "gate": "always"
+     },
+     {
+      "key": "alerts",
+      "tool": "GetAlerts",
+      "arguments": {},
+      "gate": "healthy_system"
+     }
+    ],
+    "skipped": []
+   },
+   {
+    "node": "decide",
+    "id": "route",
+    "rid": "test:trainticket/performance/38#route",
+    "status": "mechanical",
+    "guard": "unavailable",
+    "use": "first_option",
+    "choice": "performance",
+    "dominant": false,
+    "why": "mechanism_mode"
+   },
+   {
+    "node": "code",
+    "id": "plan",
+    "family": "performance",
+    "plan": [
+     {
+      "step": "recent_logs",
+      "gate": "always",
+      "wave": 1
+     },
+     {
+      "step": "describe_pod",
+      "gate": "weak",
+      "wave": 2
+     },
+     {
+      "step": "deps",
+      "gate": "weak",
+      "wave": 3
+     }
+    ]
+   },
+   {
+    "node": "probes",
+    "plan": "family",
+    "wave": 1,
+    "executed": 1,
+    "steps": [
+     {
+      "key": "recent",
+      "tool": "GetRecentLogs",
+      "arguments": {
+       "namespace": "train-ticket",
+       "service_name": "ts-inside-payment-service"
+      },
+      "gate": "always"
+     }
+    ],
+    "skipped": []
+   },
+   {
+    "node": "code",
+    "id": "derive",
+    "raw": 2,
+    "kept": 2,
+    "top": [
+     {
+      "root_cause": "pod_network_delay",
+      "object": "app/ts-inside-payment-service",
+      "score": 0.82,
+      "evidence": "network latency anomaly on the pod",
+      "rule": "delay_alert"
+     },
+     {
+      "root_cause": "pod_network_delay",
+      "object": "app/ts-order-service",
+      "score": 0.82,
+      "evidence": "network latency anomaly on the pod",
+      "rule": "delay_alert"
+     }
+    ]
+   },
+   {
+    "node": "decide",
+    "id": "pick",
+    "rid": "test:trainticket/performance/38#pick1",
+    "status": "mechanical",
+    "guard": "unavailable",
+    "use": "first_option",
+    "choice": 0,
+    "dominant": false,
+    "why": "mechanism_mode"
+   },
+   {
+    "node": "decide",
+    "id": "verify",
+    "rid": "test:trainticket/performance/38#verify1",
+    "status": "mechanical",
+    "guard": "unavailable",
+    "use": "verified",
+    "choice": "verified",
+    "dominant": false,
+    "why": "mechanism_mode"
+   },
+   {
+    "node": "probes",
+    "plan": "family",
+    "wave": 2,
+    "executed": 0,
+    "steps": [],
+    "skipped": [
+     {
+      "step": "describe_pod",
+      "why": "gate weak"
+     }
+    ]
+   },
+   {
+    "node": "code",
+    "id": "derive",
+    "raw": 2,
+    "kept": 2,
+    "top": [
+     {
+      "root_cause": "pod_network_delay",
+      "object": "app/ts-inside-payment-service",
+      "score": 0.82,
+      "evidence": "network latency anomaly on the pod",
+      "rule": "delay_alert"
+     },
+     {
+      "root_cause": "pod_network_delay",
+      "object": "app/ts-order-service",
+      "score": 0.82,
+      "evidence": "network latency anomaly on the pod",
+      "rule": "delay_alert"
+     }
+    ]
+   },
+   {
+    "node": "decide",
+    "id": "pick",
+    "rid": "test:trainticket/performance/38#pick2",
+    "status": "mechanical",
+    "guard": "unchanged_since_last",
+    "use": "previous",
+    "choice": 0,
+    "dominant": false,
+    "why": "no_new_evidence"
+   },
+   {
+    "node": "decide",
+    "id": "verify",
+    "rid": "test:trainticket/performance/38#verify2",
+    "status": "mechanical",
+    "guard": "unchanged_since_last",
+    "use": "previous",
+    "choice": "verified",
+    "dominant": false,
+    "why": "no_new_evidence"
+   },
+   {
+    "node": "probes",
+    "plan": "family",
+    "wave": 3,
+    "executed": 0,
+    "steps": [],
+    "skipped": [
+     {
+      "step": "deps",
+      "why": "gate weak"
+     }
+    ]
+   },
+   {
+    "node": "code",
+    "id": "derive",
+    "raw": 2,
+    "kept": 2,
+    "top": [
+     {
+      "root_cause": "pod_network_delay",
+      "object": "app/ts-inside-payment-service",
+      "score": 0.82,
+      "evidence": "network latency anomaly on the pod",
+      "rule": "delay_alert"
+     },
+     {
+      "root_cause": "pod_network_delay",
+      "object": "app/ts-order-service",
+      "score": 0.82,
+      "evidence": "network latency anomaly on the pod",
+      "rule": "delay_alert"
+     }
+    ]
+   },
+   {
+    "node": "decide",
+    "id": "pick",
+    "rid": "test:trainticket/performance/38#pick3",
+    "status": "mechanical",
+    "guard": "unchanged_since_last",
+    "use": "previous",
+    "choice": 0,
+    "dominant": false,
+    "why": "no_new_evidence"
+   },
+   {
+    "node": "decide",
+    "id": "verify",
+    "rid": "test:trainticket/performance/38#verify3",
+    "status": "mechanical",
+    "guard": "unchanged_since_last",
+    "use": "previous",
+    "choice": "verified",
+    "dominant": false,
+    "why": "no_new_evidence"
+   },
+   {
+    "node": "loop",
+    "id": "waves",
+    "stop": "plan_exhausted",
+    "wave": 3
+   },
+   {
+    "node": "escalate",
+    "id": "escalate",
+    "fired": false,
+    "reasons": [],
+    "why": "no reason"
+   },
+   {
+    "node": "code",
+    "id": "answer",
+    "predictions": [
+     {
+      "rank": 1,
+      "fault_object": "app/ts-inside-payment-service",
+      "root_cause": "pod_network_delay"
+     },
+     {
+      "rank": 2,
+      "fault_object": "app/ts-order-service",
+      "root_cause": "pod_network_delay"
+     },
+     {
+      "rank": 3,
+      "fault_object": "app/ts-inside-payment-service",
+      "root_cause": "pod_network_delay"
+     }
+    ]
+   },
+   {
+    "node": "artifact",
+    "id": "persist",
+    "persisted": false,
+    "why": "written by the CLI driver"
+   }
+  ],
+  "notes": [],
+  "tool_calls": 3,
+  "model_calls": 0,
+  "tokens_in": 0,
+  "tokens_out": 0,
+  "wall_s": 0.13
+ }
+}

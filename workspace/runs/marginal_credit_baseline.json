@@ -1,0 +1,200 @@
+{
+  "root": "workspace/traces/baseline",
+  "cases": [
+    {
+      "case": "trainticket/runtime/61",
+      "calls": 4,
+      "credited_calls": 4,
+      "credit_ratio": 1.0,
+      "trace": [
+        {
+          "i": 0,
+          "tool": "GetResources",
+          "arguments": {
+            "resource_type": "pods",
+            "namespace": "train-ticket",
+            "output_wide": true
+          },
+          "credited": 1
+        },
+        {
+          "i": 1,
+          "tool": "GetErrorLogs",
+          "arguments": {
+            "namespace": "train-ticket",
+            "service_name": "ts-delivery-service"
+          },
+          "credited": 1
+        },
+        {
+          "i": 2,
+          "tool": "GetAppYAML",
+          "arguments": {
+            "app_name": "ts-delivery-service"
+          },
+          "credited": 1
+        },
+        {
+          "i": 3,
+          "tool": "GetResources",
+          "arguments": {
+            "resource_type": "services",
+            "namespace": "train-ticket",
+            "name": "tsdb-mysql-leader",
+            "output_yaml": true
+          },
+          "credited": 1
+        }
+      ]
+    },
+    {
+      "case": "boutique/codedefect/60",
+      "calls": 4,
+      "credited_calls": 3,
+      "credit_ratio": 0.75,
+      "trace": [
+        {
+          "i": 0,
+          "tool": "GetAlerts",
+          "arguments": {},
+          "credited": 1
+        },
+        {
+          "i": 1,
+          "tool": "GetErrorLogs",
+          "arguments": {
+            "namespace": "boutique",
+            "service_name": "frontend"
+          },
+          "credited": 0
+        },
+        {
+          "i": 2,
+          "tool": "ListCodeFiles",
+          "arguments": {
+            "app_name": "frontend"
+          },
+          "credited": 1
+        },
+        {
+          "i": 3,
+          "tool": "GetSourceCode",
+          "arguments": {
+            "app_name": "frontend",
+            "file_path": "handlers.go"
+          },
+          "credited": 1
+        }
+      ]
+    },
+    {
+      "case": "boutique/admission/32",
+      "calls": 4,
+      "credited_calls": 2,
+      "credit_ratio": 0.5,
+      "trace": [
+        {
+          "i": 0,
+          "tool": "GetResources",
+          "arguments": {
+            "resource_type": "pods",
+            "namespace": "boutique",
+            "output_wide": true
+          },
+          "credited": 0
+        },
+        {
+          "i": 1,
+          "tool": "GetResources",
+          "arguments": {
+            "resource_type": "deployments",
+            "namespace": "boutique",
+            "output_wide": true
+          },
+          "credited": 1
+        },
+        {
+          "i": 2,
+          "tool": "DescribeResource",
+          "arguments": {
+            "resource_type": "deployment",
+            "name": "shippingservice",
+            "namespace": "boutique"
+          },
+          "credited": 0
+        },
+        {
+          "i": 3,
+          "tool": "DescribeResource",
+          "arguments": {
+            "resource_type": "replicaset",
+            "name": "shippingservice-696cc9d869",
+            "namespace": "boutique"
+          },
+          "credited": 1
+        }
+      ]
+    },
+    {
+      "case": "boutique/scheduling/109",
+      "calls": 3,
+      "credited_calls": 3,
+      "credit_ratio": 1.0,
+      "trace": [
+        {
+          "i": 0,
+          "tool": "GetResources",
+          "arguments": {
+            "resource_type": "pods",
+            "namespace": "boutique",
+            "output_wide": true
+          },
+          "credited": 1
+        },
+        {
+          "i": 1,
+          "tool": "DescribeResource",
+          "arguments": {
+            "resource_type": "pod",
+            "name": "recommendationservice-54c95657c8-r4jxw",
+            "namespace": "boutique"
+          },
+          "credited": 1
+        },
+        {
+          "i": 2,
+          "tool": "GetClusterConfiguration",
+          "arguments": {},
+          "credited": 1
+        }
+      ]
+    },
+    {
+      "case": "boutique/runtime/32",
+      "calls": 2,
+      "credited_calls": 2,
+      "credit_ratio": 1.0,
+      "trace": [
+        {
+          "i": 0,
+          "tool": "GetResources",
+          "arguments": {
+            "resource_type": "pods",
+            "namespace": "boutique"
+          },
+          "credited": 1
+        },
+        {
+          "i": 1,
+          "tool": "DescribeResource",
+          "arguments": {
+            "resource_type": "pod",
+            "name": "checkoutservice-74fc7d4686-9vlrn",
+            "namespace": "boutique"
+          },
+          "credited": 1
+        }
+      ]
+    }
+  ]
+}

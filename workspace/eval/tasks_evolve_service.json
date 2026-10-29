@@ -1,0 +1,91 @@
+{
+ "n": 12,
+ "cases": [
+  {
+   "id": "boutique/service/13",
+   "system": "boutique",
+   "category": "service",
+   "case": "13",
+   "difficulty": "medium"
+  },
+  {
+   "id": "boutique/service/17",
+   "system": "boutique",
+   "category": "service",
+   "case": "17",
+   "difficulty": "medium"
+  },
+  {
+   "id": "boutique/service/20",
+   "system": "boutique",
+   "category": "service",
+   "case": "20",
+   "difficulty": "medium"
+  },
+  {
+   "id": "boutique/service/24",
+   "system": "boutique",
+   "category": "service",
+   "case": "24",
+   "difficulty": "medium"
+  },
+  {
+   "id": "boutique/service/26",
+   "system": "boutique",
+   "category": "service",
+   "case": "26",
+   "difficulty": "medium"
+  },
+  {
+   "id": "boutique/service/28",
+   "system": "boutique",
+   "category": "service",
+   "case": "28",
+   "difficulty": "medium"
+  },
+  {
+   "id": "boutique/service/32",
+   "system": "boutique",
+   "category": "service",
+   "case": "32",
+   "difficulty": "medium"
+  },
+  {
+   "id": "boutique/service/38",
+   "system": "boutique",
+   "category": "service",
+   "case": "38",
+   "difficulty": "medium"
+  },
+  {
+   "id": "boutique/service/4",
+   "system": "boutique",
+   "category": "service",
+   "case": "4",
+   "difficulty": "medium"
+  },
+  {
+   "id": "boutique/service/48",
+   "system": "boutique",
+   "category": "service",
+   "case": "48",
+   "difficulty": "medium"
+  },
+  {
+   "id": "boutique/service/5",
+   "system": "boutique",
+   "category": "service",
+   "case": "5",
+   "difficulty": "medium"
+  },
+  {
+   "id": "boutique/service/7",
+   "system": "boutique",
+   "category": "service",
+   "case": "7",
+   "difficulty": "medium"
+  }
+ ],
+ "round": "service",
+ "split": "evolve"
+}

@@ -1,0 +1,18 @@
+{
+  "set": "test5",
+  "frozen_at": "2026-10-23",
+  "sampling": {
+    "source": "Cloud-OpsBench benchmark/ (754 cases)",
+    "method": "random.Random(42).sample over benchmark/*/*/*/",
+    "seed": 42,
+    "n": 5
+  },
+  "note": "Only case pointers are frozen here. Ground truth lives in repo/process-label/ and in repo/benchmark/*/*/*/metadata.json#result; the solving path reads metadata.json through an allowlist (namespace/query/difficulty) and never touches `result`.",
+  "cases": [
+    {"id": "trainticket/runtime/61", "system": "trainticket", "category": "runtime", "case": "61", "difficulty": "easy"},
+    {"id": "boutique/codedefect/60", "system": "boutique", "category": "codedefect", "case": "60", "difficulty": "hard"},
+    {"id": "boutique/admission/32", "system": "boutique", "category": "admission", "case": "32", "difficulty": "medium"},
+    {"id": "boutique/scheduling/109", "system": "boutique", "category": "scheduling", "case": "109", "difficulty": "easy"},
+    {"id": "boutique/runtime/32", "system": "boutique", "category": "runtime", "case": "32", "difficulty": "easy"}
+  ]
+}

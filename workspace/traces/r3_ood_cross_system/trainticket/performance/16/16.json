@@ -1,0 +1,797 @@
+{
+ "case_id": "trainticket/performance/16",
+ "system_name": "trainticket",
+ "question": "Service quality degradation.",
+ "case_path": "/Users/justinwan/work/workspace/cloudops_bench_rsi/repo/benchmark/trainticket/performance/16",
+ "max_steps": 8,
+ "current_step": 3,
+ "finished": true,
+ "stop_reason": "submit",
+ "final_answer": "{\"key_evidence_summary\": \"network latency anomaly on the pod\", \"top_3_predictions\": [{\"rank\": 1, \"fault_object\": \"app/ts-cancel-service\", \"root_cause\": \"pod_network_delay\"}, {\"rank\": 2, \"fault_object\": \"app/ts-gateway-service\", \"root_cause\": \"pod_network_delay\"}, {\"rank\": 3, \"fault_object\": \"app/ts-order-service\", \"root_cause\": \"pod_network_delay\"}]}",
+ "metadata": {
+  "namespace": "train-ticket",
+  "query": "Service quality degradation.",
+  "fault_category": "performance",
+  "model_name": "agentrun-v0.9"
+ },
+ "steps": [
+  {
+   "step_id": 0,
+   "action_type": "tool",
+   "action_name": "GetResources",
+   "action_input": {
+    "namespace": "train-ticket",
+    "resource_type": "pods",
+    "output_wide": true,
+    "show_labels": true
+   },
+   "observation": "Error: Error: Only one of '--show-labels' or '-o wide' can be specified at a time for kubectl get.",
+   "error": null,
+   "purpose": "pod readiness census",
+   "tool_latency": null
+  },
+  {
+   "step_id": 1,
+   "action_type": "tool",
+   "action_name": "GetAlerts",
+   "action_input": {},
+   "observation": "{'status': 'has_anomalies', 'alert_count': 6, 'alerts': [{'type': 'Service', 'name': 'ts-cancel-service', 'entity_type': 'Service', 'entity_name': 'ts-cancel-service', 'time_range': '2026-03-19 20:30:12 ~ 2026-03-19 20:32:02', 'status': 'ABNORMAL', 'metric_category': 'LATENCY_DEGRADATION', 'evidence': ['LATENCY_DEGRADATION [Slow Response] | p50latency: Normal=82.31ms -> Current=2819.77ms (+3325.9%) | Peak=2975.00ms | p90latency: Normal=235.94ms -> Current=4563.95ms (+1834.4%) | Peak=4595.00ms']}, {'type': 'Service', 'name': 'ts-gateway-service', 'entity_type': 'Service', 'entity_name': 'ts-gateway-service', 'time_range': '2026-03-19 20:30:12 ~ 2026-03-19 20:32:02', 'status': 'ABNORMAL', 'metric_category': 'LATENCY_DEGRADATION', 'evidence': ['LATENCY_DEGRADATION [Slow Response] | p90latency: Normal=430.26ms -> Current=3755.38ms (+772.8%) | Peak=3818.18ms']}, {'type': 'Service', 'name': 'ts-order-service', 'entity_type': 'Service', 'entity_name': 'ts-order-service', 'time_range': '2026-03-19 20:30:12 ~ 2026-03-19 20:32:02', 'status': 'ABNORMAL', 'metric_category': 'RESOURCE_SATURATION', 'evidence': ['RESOURCE_SATURATION [cpu_cfs] | Val: 0.175s (Throttled)']}, {'type': 'Service', 'name': 'ts-preserve-service', 'entity_type': 'Service', 'entity_name': 'ts-preserve-service', 'time_range': '2026-03-19 20:30:12 ~ 2026-03-19 20:32:02', 'status': 'ABNORMAL', 'metric_category': 'LATENCY_DEGRADATION', 'evidence': ['LATENCY_DEGRADATION [Slow Response] | p50latency: Normal=625.00ms -> Current=3750.00ms (+500.0%) | Peak=3809.52ms | p90latency: Normal=2125.00ms -> Current=4750.00ms (+123.5%) | Peak=4857.14ms']}, {'type': 'Service', 'name': 'ts-ui-dashboard', 'entity_type': 'Service', 'entity_name': 'ts-ui-dashboard', 'time_range': '2026-03-19 20:30:12 ~ 2026-03-19 20:32:02', 'status': 'ABNORMAL', 'metric_category': 'LATENCY_DEGRADATION', 'evidence': ['LATENCY_DEGRADATION [Slow Response] | p90latency: Normal=403.70ms -> Current=3756.10ms (+830.4%) | Peak=3836.96ms']}, {'type': 'Service', 'name': 'ts-user-service', 'entity_type': 'Service', 'entity_name': 'ts-user-service', 'time_range': '2026-03-19 20:30:12 ~ 2026-03-19 20:32:02', 'status': 'ABNORMAL', 'metric_category': 'LATENCY_DEGRADATION', 'evidence': ['LATENCY_DEGRADATION [Slow Response] | p50latency: Normal=7.44ms -> Current=2500.00ms (+33513.4%) | Peak=2779.74ms | p90latency: Normal=9.58ms -> Current=4500.00ms (+46868.0%) | Peak=4555.95ms']}]}",
+   "error": null,
+   "purpose": "anomaly signature (routes performance/code families)",
+   "tool_latency": null
+  },
+  {
+   "step_id": 2,
+   "action_type": "tool",
+   "action_name": "GetRecentLogs",
+   "action_input": {
+    "namespace": "train-ticket",
+    "service_name": "ts-cancel-service"
+   },
+   "observation": "['From ts-cancel-service logs:', '2026-03-19T20:33:02.427471263+08:00 2026-03-19 12:33:02.427  INFO 1 --- [io-18885-exec-9] cancel.service.CancelServiceImpl         : [getOrderByIdFromOrder][Get Order][orderId: 62df4aa2-32a2-4ec1-83c7-22183b6dff22]', '2026-03-19T20:33:02.432353340+08:00 2026-03-19 12:33:02.432  INFO 1 --- [io-18885-exec-9] cancel.service.CancelServiceImpl         : [cancelOrder][Cancel Order, Order found G|H]', '2026-03-19T20:33:02.432359669+08:00 2026-03-19 12:33:02.432  INFO 1 --- [io-18885-exec-9] cancel.service.CancelServiceImpl         : [cancelFromOrder][Change Order Status]', '2026-03-19T20:33:02.444079575+08:00 2026-03-19 12:33:02.443  INFO 1 --- [io-18885-exec-9] cancel.service.CancelServiceImpl         : [cancelOrder][Cancel Order Success]', '2026-03-19T20:33:02.444090451+08:00 2026-03-19 12:33:02.444  INFO 1 --- [io-18885-exec-9] cancel.service.CancelServiceImpl         : [calculateRefund][Cancel Order][Order Travel Date: 2026-03-21]', '2026-03-19T20:33:02.444143541+08:00 2026-03-19 12:33:02.444  INFO 1 --- [io-18885-exec-9] cancel.service.CancelServiceImpl         : [calculateRefund][Cancel Order][nowDate  : Thu Mar 19 12:33:02 UTC 2026]', '2026-03-19T20:33:02.444154132+08:00 2026-03-19 12:33:02.444  INFO 1 --- [io-18885-exec-9] cancel.service.CancelServiceImpl         : [calculateRefund][Cancel Order][startTime: Sun Mar 21 08:00:00 UTC 3926]', '2026-03-19T20:33:02.444188885+08:00 2026-03-19 12:33:02.444  INFO 1 --- [io-18885-exec-9] cancel.service.CancelServiceImpl         : [calculateRefund][calculate refund][refund: 40.00]', '2026-03-19T20:33:02.444191813+08:00 2026-03-19 12:33:02.444  INFO 1 --- [io-18885-exec-9] cancel.service.CancelServiceImpl         : [drawbackMoney][Draw Back Money]', '2026-03-19T20:33:02.466110893+08:00 2026-03-19 12:33:02.465  INFO 1 --- [io-18885-exec-9] cancel.service.CancelServiceImpl         : [cancelOrder][Draw Back Money Success]', '2026-03-19T20:33:02.466123484+08:00 2026-03-19 12:33:02.466  INFO 1 --- [io-18885-exec-9] cancel.service.CancelServiceImpl         : [getAccount][Get By Id][orderId: 4d2a46c7-71cb-4cf1-b5bb-b68406d9da6f]', '2026-03-19T20:33:03.996237436+08:00 2026-03-19 12:33:03.996  INFO 1 --- [o-18885-exec-10] cancel.controller.CancelController       : [cancelTicket][Cancel Ticket][info: 7b065a26-a062-460f-8654-543d54a506c8]', '2026-03-19T20:33:03.996254137+08:00 2026-03-19 12:33:03.996  INFO 1 --- [o-18885-exec-10] cancel.controller.CancelController       : [cancelTicket][Cancel Ticket, Verify Success]', '2026-03-19T20:33:03.996256930+08:00 2026-03-19 12:33:03.996  INFO 1 --- [o-18885-exec-10] cancel.service.CancelServiceImpl         : [getOrderByIdFromOrder][Get Order][orderId: 7b065a26-a062-460f-8654-543d54a506c8]', '2026-03-19T20:33:04.023954433+08:00 2026-03-19 12:33:04.023  INFO 1 --- [o-18885-exec-10] cancel.service.CancelServiceImpl         : [cancelOrder][Cancel Order, Order found G|H]', '2026-03-19T20:33:04.023970644+08:00 2026-03-19 12:33:04.023  INFO 1 --- [o-18885-exec-10] cancel.service.CancelServiceImpl         : [cancelFromOrder][Change Order Status]', '2026-03-19T20:33:04.032292559+08:00 2026-03-19 12:33:04.032  INFO 1 --- [o-18885-exec-10] cancel.service.CancelServiceImpl         : [cancelOrder][Cancel Order Success]', '2026-03-19T20:33:04.032315503+08:00 2026-03-19 12:33:04.032  INFO 1 --- [o-18885-exec-10] cancel.service.CancelServiceImpl         : [calculateRefund][Cancel Order][Order Travel Date: 2026-03-20]', '2026-03-19T20:33:04.032352578+08:00 2026-03-19 12:33:04.032  INFO 1 --- [o-18885-exec-10] cancel.service.CancelServiceImpl         : [calculateRefund][Cancel Order][nowDate  : Thu Mar 19 12:33:04 UTC 2026]', '2026-03-19T20:33:04.032366295+08:00 2026-03-19 12:33:04.032  INFO 1 --- [o-18885-exec-10] cancel.service.CancelServiceImpl         : [calculateRefund][Cancel Order][startTime: Sat Mar 20 07:00:00 UTC 3926]', '2026-03-19T20:33:04.032400093+08:00 2026-03-19 12:33:04.032  INFO 1 --- [o-18885-exec-10] cancel.service.CancelServiceImpl         : [calculateRefund][calculate refund][refund: 40.00]', '2026-03-19T20:33:04.032404085+08:00 2026-03-19 12:33:04.032  INFO 1 --- [o-18885-exec-10] cancel.service.CancelServiceImpl         : [drawbackMoney][Draw Back Money]', '2026-03-19T20:33:04.054633416+08:00 2026-03-19 12:33:04.054  INFO 1 --- [o-18885-exec-10] cancel.service.CancelServiceImpl         : [cancelOrder][Draw Back Money Success]', '2026-03-19T20:33:04.054648016+08:00 2026-03-19 12:33:04.054  INFO 1 --- [o-18885-exec-10] cancel.service.CancelServiceImpl         : [getAccount][Get By Id][orderId: 4d2a46c7-71cb-4cf1-b5bb-b68406d9da6f]', '2026-03-19T20:33:04.068306361+08:00 2026-03-19 12:33:04.068  INFO 1 --- [io-18885-exec-7] cancel.controller.CancelController       : [cancelTicket][Cancel Ticket][info: 44fcc6b1-4774-48d9-92e4-9bd97da3a5ba]', '2026-03-19T20:33:04.068325470+08:00 2026-03-19 12:33:04.068  INFO 1 --- [io-18885-exec-7] cancel.controller.CancelController       : [cancelTicket][Cancel Ticket, Verify Success]', '2026-03-19T20:33:04.068328365+08:00 2026-03-19 12:33:04.068  INFO 1 --- [io-18885-exec-7] cancel.service.CancelServiceImpl         : [getOrderByIdFromOrder][Get Order][orderId: 44fcc6b1-4774-48d9-92e4-9bd97da3a5ba]', '2026-03-19T20:33:04.073317519+08:00 2026-03-19 12:33:04.073  INFO 1 --- [io-18885-exec-7] cancel.service.CancelServiceImpl         : [cancelOrder][Cancel Order, Order found G|H]', '2026-03-19T20:33:04.073326741+08:00 2026-03-19 12:33:04.073  INFO 1 --- [io-18885-exec-7] cancel.service.CancelServiceImpl         : [cancelFromOrder][Change Order Status]', '2026-03-19T20:33:04.081114372+08:00 2026-03-19 12:33:04.080  INFO 1 --- [io-18885-exec-7] cancel.service.CancelServiceImpl         : [cancelOrder][Cancel Order Success]', '2026-03-19T20:33:04.081129797+08:00 2026-03-19 12:33:04.081  INFO 1 --- [io-18885-exec-7] cancel.service.CancelServiceImpl         : [calculateRefund][Cancel Order][Order Travel Date: 2026-03-23]', '2026-03-19T20:33:04.081139434+08:00 2026-03-19 12:33:04.081  INFO 1 --- [io-18885-exec-7] cancel.service.CancelServiceImpl         : [calculateRefund][Cancel Order][nowDate  : Thu Mar 19 12:33:04 UTC 2026]', '2026-03-19T20:33:04.081142624+08:00 2026-03-19 12:33:04.081  INFO 1 --- [io-18885-exec-7] cancel.service.CancelServiceImpl         : [calculateRefund][Cancel Order][startTime: Tue Mar 23 07:00:00 UTC 3926]', '2026-03-19T20:33:04.081237692+08:00 2026-03-19 12:33:04.081  INFO 1 --- [io-18885-exec-7] cancel.service.CancelServiceImpl         : [calculateRefund][calculate refund][refund: 40.00]', '2026-03-19T20:33:04.081244162+08:00 2026-03-19 12:33:04.081  INFO 1 --- [io-18885-exec-7] cancel.service.CancelServiceImpl         : [drawbackMoney][Draw Back Money]', '2026-03-19T20:33:04.135727651+08:00 2026-03-19 12:33:04.135  INFO 1 --- [io-18885-exec-7] cancel.service.CancelServiceImpl         : [cancelOrder][Draw Back Money Success]', '2026-03-19T20:33:04.135745265+08:00 2026-03-19 12:33:04.135  INFO 1 --- [io-18885-exec-7] cancel.service.CancelServiceImpl         : [getAccount][Get By Id][orderId: 4d2a46c7-71cb-4cf1-b5bb-b68406d9da6f]', '2026-03-19T20:33:05.171779794+08:00 2026-03-19 12:33:05.171  INFO 1 --- [io-18885-exec-1] cancel.controller.CancelController       : [cancelTicket][Cancel Ticket][info: 417f5609-65a9-4639-bf79-6c40a896202f]', '2026-03-19T20:33:05.171811135+08:00 2026-03-19 12:33:05.171  INFO 1 --- [io-18885-exec-1] cancel.controller.CancelController       : [cancelTicket][Cancel Ticket, Verify Success]', '2026-03-19T20:33:05.171813967+08:00 2026-03-19 12:33:05.171  INFO 1 --- [io-18885-exec-1] cancel.service.CancelServiceImpl         : [getOrderByIdFromOrder][Get Order][orderId: 417f5609-65a9-4639-bf79-6c40a896202f]', '2026-03-19T20:33:05.176834874+08:00 2026-03-19 12:33:05.176  INFO 1 --- [io-18885-exec-1] cancel.service.CancelServiceImpl         : [cancelOrder][Cancel Order, Order found G|H]', '2026-03-19T20:33:05.176848078+08:00 2026-03-19 12:33:05.176  INFO 1 --- [io-18885-exec-1] cancel.service.CancelServiceImpl         : [cancelFromOrder][Change Order Status]', '2026-03-19T20:33:05.184681510+08:00 2026-03-19 12:33:05.184  INFO 1 --- [io-18885-exec-1] cancel.service.CancelServiceImpl         : [cancelOrder][Cancel Order Success]', '2026-03-19T20:33:05.184693555+08:00 2026-03-19 12:33:05.184  INFO 1 --- [io-18885-exec-1] cancel.service.CancelServiceImpl         : [calculateRefund][Cancel Order][Order Travel Date: 2026-03-20]', '2026-03-19T20:33:05.184744277+08:00 2026-03-19 12:33:05.184  INFO 1 --- [io-18885-exec-1] cancel.service.CancelServiceImpl         : [calculateRefund][Cancel Order][nowDate  : Thu Mar 19 12:33:05 UTC 2026]', '2026-03-19T20:33:05.184747441+08:00 2026-03-19 12:33:05.184  INFO 1 --- [io-18885-exec-1] cancel.service.CancelServiceImpl         : [calculateRefund][Cancel Order][startTime: Sat Mar 20 09:00:00 UTC 3926]', '2026-03-19T20:33:05.184817650+08:00 2026-03-19 12:33:05.184  INFO 1 --- [io-18885-exec-1] cancel.service.CancelServiceImpl         : [calculateRefund][calculate refund][refund: 200.00]', '2026-03-19T20:33:05.184822954+08:00 2026-03-19 12:33:05.184  INFO 1 --- [io-18885-exec-1] cancel.service.CancelServiceImpl         : [drawbackMoney][Draw Back Money]', '2026-03-19T20:33:05.214128087+08:00 2026-03-19 12:33:05.213  INFO 1 --- [io-18885-exec-1] cancel.service.CancelServiceImpl         : [cancelOrder][Draw Back Money Success]', '2026-03-19T20:33:05.214143866+08:00 2026-03-19 12:33:05.214  INFO 1 --- [io-18885-exec-1] cancel.service.CancelServiceImpl         : [getAccount][Get By Id][orderId: 4d2a46c7-71cb-4cf1-b5bb-b68406d9da6f]', '', 'From previous container logs:', 'Error: Error from server (BadRequest): previous terminated container \"ts-cancel-service\" in pod \"ts-cancel-service-67fb7d5bb4-4lrlb\" not found', '', 'From istio-proxy logs:', 'concurrency: 2', 'configPath: ./etc/istio/proxy', 'controlPlaneAuthPolicy: MUTUAL_TLS', 'discoveryAddress: istiod.istio-system.svc:15012', 'drainDuration: 45s', 'image:', '  imageType: distroless', 'proxyAdminPort: 15000', 'proxyMetadata:', '  ISTIO_META_ENABLE_HBONE: \"true\"', 'serviceCluster: istio-proxy', 'statNameLength: 189', 'statusPort: 15020', 'terminationDrainDuration: 5s']",
+   "error": null,
+   "purpose": "request latency / saturation logs",
+   "tool_latency": null
+  }
+ ],
+ "agentrun": {
+  "tag": "test",
+  "dsl": "workspace/dsl_versions/v0.9.dsl.txt",
+  "dsl_version": "0.9",
+  "sop": {
+   "sop": "boutique-runtime-rca",
+   "scope": {
+    "system": "boutique",
+    "families": [
+     "runtime",
+     "admission",
+     "scheduling",
+     "startup",
+     "service",
+     "performance",
+     "infrastructure",
+     "codedefect"
+    ],
+    "severity": [
+     "SEV2",
+     "SEV3"
+    ]
+   },
+   "owner": "sre-platform",
+   "approved_by": [
+    "oncall-primary",
+    "sre-lead"
+   ],
+   "reviewed_at": "2026-10-23",
+   "change_ticket": "OPS-1237",
+   "boundaries": "只读诊断：本 SOP 不执行任何写操作（重启/回滚/扩缩容），也不做对外播报；\n它回答\"最可能的根因与受害对象\"，处置与沟通由值班按 runbook 人工执行。\n不覆盖 SEV1（需 incident commander 介入）与变更引发的问题（走变更回滚流程）。\n输入是冻结快照：诊断结论对\"快照时刻\"成立，恢复后需重新取证。\nR1 已知边界：PVC 的 requested size / accessMode 在本 benchmark 的工具面不可见，\n因此 pvc_capacity 与 pvc_access_mode 无法区分（同一分数并列，交给 jev 或升级）。\n"
+  },
+  "params": {
+   "cands_cap": 8,
+   "max_waves": 8,
+   "min_waves": 5,
+   "steps_per_wave": 1,
+   "dominance_ratio": 1.5,
+   "conf_min": 0.0,
+   "escalate": true,
+   "escalate_budget": 8,
+   "judge_on_codedefect": true,
+   "jev_route": true,
+   "jev_pick": true,
+   "jev_verify": true,
+   "route_fallback": "runtime"
+  },
+  "nodes_executed": [
+   "anchors:extract_anchors",
+   "census:probes",
+   "route:decide",
+   "plan:build_plan",
+   "probe:probes",
+   "derive:derive_candidates",
+   "pick:decide",
+   "verify:decide",
+   "probe:probes",
+   "derive:derive_candidates",
+   "pick:decide",
+   "verify:decide",
+   "probe:probes",
+   "derive:derive_candidates",
+   "pick:decide",
+   "verify:decide",
+   "escalate:escalate",
+   "answer:normalize_answer",
+   "persist:persist_trace"
+  ],
+  "census": [
+   {
+    "step": "pods",
+    "gate": "always"
+   },
+   {
+    "step": "alerts",
+    "gate": "healthy_system"
+   }
+  ],
+  "plan": [
+   {
+    "step": "recent_logs",
+    "gate": "always",
+    "wave": 1
+   },
+   {
+    "step": "describe_pod",
+    "gate": "weak",
+    "wave": 2
+   },
+   {
+    "step": "deps",
+    "gate": "weak",
+    "wave": 3
+   }
+  ],
+  "family": "performance",
+  "state_wiring": {
+   "family": "$route.family",
+   "route_probs": "$route.probabilities",
+   "picked": "$pick.picked",
+   "pick_dominant": "$pick.dominant",
+   "verify_status": "$verify.status",
+   "verify_prob": "$verify.confidence"
+  },
+  "bindings": {
+   "anchors": {
+    "anchors": "Anchors(case_id='trainticket/performance/16', system='trainticket', namespace='train-ticket', query='Service quality degradation.', difficulty='hard', symptoms=['degradation'], mentioned_apps=[], priors={'db_service': 'tsdb-mysql-leader', 'db_port': 3306})"
+   },
+   "route": {
+    "family": "performance",
+    "probabilities": {},
+    "route_why": "mechanism_mode"
+   },
+   "plan": {
+    "plan": "[{'name': 'recent_logs', 'key': 'recent', 'tool': 'GetRecentLogs', 'args': <function _args_error_logs at 0x10d557ce0>, 'purpose': 'request latency / saturation logs', 'when': <function compile_steps.<locals>.<lambda> at 0x10d6839c0>, 'gate': 'always', 'wave': 1}, {'name': 'describe_pod', 'key': 'describe:pod', 'tool': 'DescribeResource', 'args': <function _args_describe_pod at 0x10d557b00>, 'purpose': 'probe config, container state, restart reasons, scheduler events', 'when': <function compile_steps.<locals>.<lambda> at 0x10d683b00>, 'gate': 'weak', 'wave': 2}, {'name': 'deps', 'key': 'deps', 'tool': 'GetServiceDependencies', 'args': <function _args_deps at 0x10d57c5e0>, 'purpose': 'upstream/downstream call graph', 'when': <function compile_steps.<locals>.<lambda> at 0x10d683ba0>, 'gate': 'weak', 'wave': 3}]"
+   },
+   "derive": {
+    "candidates": "[Candidate(root_cause='pod_network_delay', object='app/ts-cancel-service', score=0.82, evidence='network latency anomaly on the pod', rule='delay_alert'), Candidate(root_cause='pod_network_delay', object='app/ts-gateway-service', score=0.82, evidence='network latency anomaly on the pod', rule='delay_alert'), Candidate(root_cause='pod_network_delay', object='app/ts-order-service', score=0.82, evidence='network latency anomaly on the pod', rule='delay_alert'), Candidate(root_cause='pod_network_delay', object='app/ts-preserve-service', score=0.82, evidence='network latency anomaly on the pod', rule='delay_alert'), Candidate(root_cause='pod_network_delay', object='app/ts-ui-dashboard', score=0.82, evidence='network latency anomaly on the pod', rule='delay_alert'), Candidate(root_cause='pod_network_delay', object='app/ts-user-service', score=0.82, evidence='network latency anomaly on the pod', rule='delay_alert')]"
+   },
+   "pick": {
+    "picked": 0,
+    "dominant": false,
+    "pick_why": "no_new_evidence"
+   },
+   "verify": {
+    "status": "verified",
+    "confidence": null,
+    "verify_why": "no_new_evidence"
+   },
+   "escalate": {
+    "answer": null
+   },
+   "answer": {
+    "final": {
+     "key_evidence_summary": "network latency anomaly on the pod",
+     "top_3_predictions": [
+      {
+       "rank": 1,
+       "fault_object": "app/ts-cancel-service",
+       "root_cause": "pod_network_delay"
+      },
+      {
+       "rank": 2,
+       "fault_object": "app/ts-gateway-service",
+       "root_cause": "pod_network_delay"
+      },
+      {
+       "rank": 3,
+       "fault_object": "app/ts-order-service",
+       "root_cause": "pod_network_delay"
+      }
+     ]
+    }
+   }
+  },
+  "picked": {
+   "root_cause": "pod_network_delay",
+   "object": "app/ts-cancel-service",
+   "score": 0.82,
+   "evidence": "network latency anomaly on the pod",
+   "rule": "delay_alert"
+  },
+  "pick_why": "",
+  "verify_prob": null,
+  "verify_verdict": "verified",
+  "verified": true,
+  "escalated": false,
+  "escalate_reason": "",
+  "escalate_steps": 0,
+  "waves": 3,
+  "candidates": [
+   {
+    "root_cause": "pod_network_delay",
+    "object": "app/ts-cancel-service",
+    "score": 0.82,
+    "evidence": "network latency anomaly on the pod",
+    "rule": "delay_alert"
+   },
+   {
+    "root_cause": "pod_network_delay",
+    "object": "app/ts-gateway-service",
+    "score": 0.82,
+    "evidence": "network latency anomaly on the pod",
+    "rule": "delay_alert"
+   },
+   {
+    "root_cause": "pod_network_delay",
+    "object": "app/ts-order-service",
+    "score": 0.82,
+    "evidence": "network latency anomaly on the pod",
+    "rule": "delay_alert"
+   },
+   {
+    "root_cause": "pod_network_delay",
+    "object": "app/ts-preserve-service",
+    "score": 0.82,
+    "evidence": "network latency anomaly on the pod",
+    "rule": "delay_alert"
+   },
+   {
+    "root_cause": "pod_network_delay",
+    "object": "app/ts-ui-dashboard",
+    "score": 0.82,
+    "evidence": "network latency anomaly on the pod",
+    "rule": "delay_alert"
+   },
+   {
+    "root_cause": "pod_network_delay",
+    "object": "app/ts-user-service",
+    "score": 0.82,
+    "evidence": "network latency anomaly on the pod",
+    "rule": "delay_alert"
+   }
+  ],
+  "jev": [
+   {
+    "rid": "test:trainticket/performance/16#route",
+    "kind": "route",
+    "node": "route",
+    "mode": "mechanism",
+    "options": [
+     "performance",
+     "infrastructure"
+    ],
+    "status": "mechanical",
+    "guard": "unavailable",
+    "use": "first_option",
+    "choice": "performance",
+    "why": "mechanism_mode",
+    "dominant": false,
+    "continue_loop": false,
+    "escalate": false
+   },
+   {
+    "rid": "test:trainticket/performance/16#pick1",
+    "kind": "pick",
+    "node": "pick",
+    "mode": "mechanism",
+    "options": [
+     "c0",
+     "c1",
+     "c2",
+     "c3",
+     "c4",
+     "c5"
+    ],
+    "status": "mechanical",
+    "guard": "unavailable",
+    "use": "first_option",
+    "choice": 0,
+    "why": "mechanism_mode",
+    "dominant": false,
+    "continue_loop": false,
+    "escalate": false
+   },
+   {
+    "rid": "test:trainticket/performance/16#verify1",
+    "kind": "verify",
+    "node": "verify",
+    "mode": "mechanism",
+    "options": [
+     "supported",
+     "insufficient",
+     "contradicted"
+    ],
+    "status": "mechanical",
+    "guard": "unavailable",
+    "use": "verified",
+    "choice": "verified",
+    "why": "mechanism_mode",
+    "dominant": false,
+    "continue_loop": false,
+    "escalate": false
+   },
+   {
+    "rid": "test:trainticket/performance/16#pick2",
+    "kind": "pick",
+    "node": "pick",
+    "mode": "mechanism",
+    "options": [
+     "c0",
+     "c1",
+     "c2",
+     "c3",
+     "c4",
+     "c5"
+    ],
+    "status": "mechanical",
+    "guard": "unchanged_since_last",
+    "use": "previous",
+    "choice": 0,
+    "why": "no_new_evidence",
+    "dominant": false,
+    "continue_loop": false,
+    "escalate": false
+   },
+   {
+    "rid": "test:trainticket/performance/16#verify2",
+    "kind": "verify",
+    "node": "verify",
+    "mode": "mechanism",
+    "options": [
+     "supported",
+     "insufficient",
+     "contradicted"
+    ],
+    "status": "mechanical",
+    "guard": "unchanged_since_last",
+    "use": "previous",
+    "choice": "verified",
+    "why": "no_new_evidence",
+    "dominant": false,
+    "continue_loop": false,
+    "escalate": false
+   },
+   {
+    "rid": "test:trainticket/performance/16#pick3",
+    "kind": "pick",
+    "node": "pick",
+    "mode": "mechanism",
+    "options": [
+     "c0",
+     "c1",
+     "c2",
+     "c3",
+     "c4",
+     "c5"
+    ],
+    "status": "mechanical",
+    "guard": "unchanged_since_last",
+    "use": "previous",
+    "choice": 0,
+    "why": "no_new_evidence",
+    "dominant": false,
+    "continue_loop": false,
+    "escalate": false
+   },
+   {
+    "rid": "test:trainticket/performance/16#verify3",
+    "kind": "verify",
+    "node": "verify",
+    "mode": "mechanism",
+    "options": [
+     "supported",
+     "insufficient",
+     "contradicted"
+    ],
+    "status": "mechanical",
+    "guard": "unchanged_since_last",
+    "use": "previous",
+    "choice": "verified",
+    "why": "no_new_evidence",
+    "dominant": false,
+    "continue_loop": false,
+    "escalate": false
+   }
+  ],
+  "nodes": [
+   {
+    "node": "code",
+    "id": "anchors",
+    "anchors": {
+     "case_id": "trainticket/performance/16",
+     "system": "trainticket",
+     "namespace": "train-ticket",
+     "query": "Service quality degradation.",
+     "difficulty": "hard",
+     "symptoms": [
+      "degradation"
+     ],
+     "mentioned_apps": []
+    }
+   },
+   {
+    "node": "probes",
+    "plan": "census",
+    "wave": 0,
+    "executed": 2,
+    "steps": [
+     {
+      "key": "pods",
+      "tool": "GetResources",
+      "arguments": {
+       "namespace": "train-ticket",
+       "resource_type": "pods",
+       "output_wide": true,
+       "show_labels": true
+      },
+      "gate": "always"
+     },
+     {
+      "key": "alerts",
+      "tool": "GetAlerts",
+      "arguments": {},
+      "gate": "healthy_system"
+     }
+    ],
+    "skipped": []
+   },
+   {
+    "node": "decide",
+    "id": "route",
+    "rid": "test:trainticket/performance/16#route",
+    "status": "mechanical",
+    "guard": "unavailable",
+    "use": "first_option",
+    "choice": "performance",
+    "dominant": false,
+    "why": "mechanism_mode"
+   },
+   {
+    "node": "code",
+    "id": "plan",
+    "family": "performance",
+    "plan": [
+     {
+      "step": "recent_logs",
+      "gate": "always",
+      "wave": 1
+     },
+     {
+      "step": "describe_pod",
+      "gate": "weak",
+      "wave": 2
+     },
+     {
+      "step": "deps",
+      "gate": "weak",
+      "wave": 3
+     }
+    ]
+   },
+   {
+    "node": "probes",
+    "plan": "family",
+    "wave": 1,
+    "executed": 1,
+    "steps": [
+     {
+      "key": "recent",
+      "tool": "GetRecentLogs",
+      "arguments": {
+       "namespace": "train-ticket",
+       "service_name": "ts-cancel-service"
+      },
+      "gate": "always"
+     }
+    ],
+    "skipped": []
+   },
+   {
+    "node": "code",
+    "id": "derive",
+    "raw": 6,
+    "kept": 6,
+    "top": [
+     {
+      "root_cause": "pod_network_delay",
+      "object": "app/ts-cancel-service",
+      "score": 0.82,
+      "evidence": "network latency anomaly on the pod",
+      "rule": "delay_alert"
+     },
+     {
+      "root_cause": "pod_network_delay",
+      "object": "app/ts-gateway-service",
+      "score": 0.82,
+      "evidence": "network latency anomaly on the pod",
+      "rule": "delay_alert"
+     },
+     {
+      "root_cause": "pod_network_delay",
+      "object": "app/ts-order-service",
+      "score": 0.82,
+      "evidence": "network latency anomaly on the pod",
+      "rule": "delay_alert"
+     },
+     {
+      "root_cause": "pod_network_delay",
+      "object": "app/ts-preserve-service",
+      "score": 0.82,
+      "evidence": "network latency anomaly on the pod",
+      "rule": "delay_alert"
+     },
+     {
+      "root_cause": "pod_network_delay",
+      "object": "app/ts-ui-dashboard",
+      "score": 0.82,
+      "evidence": "network latency anomaly on the pod",
+      "rule": "delay_alert"
+     },
+     {
+      "root_cause": "pod_network_delay",
+      "object": "app/ts-user-service",
+      "score": 0.82,
+      "evidence": "network latency anomaly on the pod",
+      "rule": "delay_alert"
+     }
+    ]
+   },
+   {
+    "node": "decide",
+    "id": "pick",
+    "rid": "test:trainticket/performance/16#pick1",
+    "status": "mechanical",
+    "guard": "unavailable",
+    "use": "first_option",
+    "choice": 0,
+    "dominant": false,
+    "why": "mechanism_mode"
+   },
+   {
+    "node": "decide",
+    "id": "verify",
+    "rid": "test:trainticket/performance/16#verify1",
+    "status": "mechanical",
+    "guard": "unavailable",
+    "use": "verified",
+    "choice": "verified",
+    "dominant": false,
+    "why": "mechanism_mode"
+   },
+   {
+    "node": "probes",
+    "plan": "family",
+    "wave": 2,
+    "executed": 0,
+    "steps": [],
+    "skipped": [
+     {
+      "step": "describe_pod",
+      "why": "gate weak"
+     }
+    ]
+   },
+   {
+    "node": "code",
+    "id": "derive",
+    "raw": 6,
+    "kept": 6,
+    "top": [
+     {
+      "root_cause": "pod_network_delay",
+      "object": "app/ts-cancel-service",
+      "score": 0.82,
+      "evidence": "network latency anomaly on the pod",
+      "rule": "delay_alert"
+     },
+     {
+      "root_cause": "pod_network_delay",
+      "object": "app/ts-gateway-service",
+      "score": 0.82,
+      "evidence": "network latency anomaly on the pod",
+      "rule": "delay_alert"
+     },
+     {
+      "root_cause": "pod_network_delay",
+      "object": "app/ts-order-service",
+      "score": 0.82,
+      "evidence": "network latency anomaly on the pod",
+      "rule": "delay_alert"
+     },
+     {
+      "root_cause": "pod_network_delay",
+      "object": "app/ts-preserve-service",
+      "score": 0.82,
+      "evidence": "network latency anomaly on the pod",
+      "rule": "delay_alert"
+     },
+     {
+      "root_cause": "pod_network_delay",
+      "object": "app/ts-ui-dashboard",
+      "score": 0.82,
+      "evidence": "network latency anomaly on the pod",
+      "rule": "delay_alert"
+     },
+     {
+      "root_cause": "pod_network_delay",
+      "object": "app/ts-user-service",
+      "score": 0.82,
+      "evidence": "network latency anomaly on the pod",
+      "rule": "delay_alert"
+     }
+    ]
+   },
+   {
+    "node": "decide",
+    "id": "pick",
+    "rid": "test:trainticket/performance/16#pick2",
+    "status": "mechanical",
+    "guard": "unchanged_since_last",
+    "use": "previous",
+    "choice": 0,
+    "dominant": false,
+    "why": "no_new_evidence"
+   },
+   {
+    "node": "decide",
+    "id": "verify",
+    "rid": "test:trainticket/performance/16#verify2",
+    "status": "mechanical",
+    "guard": "unchanged_since_last",
+    "use": "previous",
+    "choice": "verified",
+    "dominant": false,
+    "why": "no_new_evidence"
+   },
+   {
+    "node": "probes",
+    "plan": "family",
+    "wave": 3,
+    "executed": 0,
+    "steps": [],
+    "skipped": [
+     {
+      "step": "deps",
+      "why": "gate weak"
+     }
+    ]
+   },
+   {
+    "node": "code",
+    "id": "derive",
+    "raw": 6,
+    "kept": 6,
+    "top": [
+     {
+      "root_cause": "pod_network_delay",
+      "object": "app/ts-cancel-service",
+      "score": 0.82,
+      "evidence": "network latency anomaly on the pod",
+      "rule": "delay_alert"
+     },
+     {
+      "root_cause": "pod_network_delay",
+      "object": "app/ts-gateway-service",
+      "score": 0.82,
+      "evidence": "network latency anomaly on the pod",
+      "rule": "delay_alert"
+     },
+     {
+      "root_cause": "pod_network_delay",
+      "object": "app/ts-order-service",
+      "score": 0.82,
+      "evidence": "network latency anomaly on the pod",
+      "rule": "delay_alert"
+     },
+     {
+      "root_cause": "pod_network_delay",
+      "object": "app/ts-preserve-service",
+      "score": 0.82,
+      "evidence": "network latency anomaly on the pod",
+      "rule": "delay_alert"
+     },
+     {
+      "root_cause": "pod_network_delay",
+      "object": "app/ts-ui-dashboard",
+      "score": 0.82,
+      "evidence": "network latency anomaly on the pod",
+      "rule": "delay_alert"
+     },
+     {
+      "root_cause": "pod_network_delay",
+      "object": "app/ts-user-service",
+      "score": 0.82,
+      "evidence": "network latency anomaly on the pod",
+      "rule": "delay_alert"
+     }
+    ]
+   },
+   {
+    "node": "decide",
+    "id": "pick",
+    "rid": "test:trainticket/performance/16#pick3",
+    "status": "mechanical",
+    "guard": "unchanged_since_last",
+    "use": "previous",
+    "choice": 0,
+    "dominant": false,
+    "why": "no_new_evidence"
+   },
+   {
+    "node": "decide",
+    "id": "verify",
+    "rid": "test:trainticket/performance/16#verify3",
+    "status": "mechanical",
+    "guard": "unchanged_since_last",
+    "use": "previous",
+    "choice": "verified",
+    "dominant": false,
+    "why": "no_new_evidence"
+   },
+   {
+    "node": "loop",
+    "id": "waves",
+    "stop": "plan_exhausted",
+    "wave": 3
+   },
+   {
+    "node": "escalate",
+    "id": "escalate",
+    "fired": false,
+    "reasons": [],
+    "why": "no reason"
+   },
+   {
+    "node": "code",
+    "id": "answer",
+    "predictions": [
+     {
+      "rank": 1,
+      "fault_object": "app/ts-cancel-service",
+      "root_cause": "pod_network_delay"
+     },
+     {
+      "rank": 2,
+      "fault_object": "app/ts-gateway-service",
+      "root_cause": "pod_network_delay"
+     },
+     {
+      "rank": 3,
+      "fault_object": "app/ts-order-service",
+      "root_cause": "pod_network_delay"
+     }
+    ]
+   },
+   {
+    "node": "artifact",
+    "id": "persist",
+    "persisted": false,
+    "why": "written by the CLI driver"
+   }
+  ],
+  "notes": [],
+  "tool_calls": 3,
+  "model_calls": 0,
+  "tokens_in": 0,
+  "tokens_out": 0,
+  "wall_s": 0.06
+ }
+}

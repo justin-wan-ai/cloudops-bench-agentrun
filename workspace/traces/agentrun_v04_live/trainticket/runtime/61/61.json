@@ -1,0 +1,595 @@
+{
+ "case_id": "trainticket/runtime/61",
+ "system_name": "trainticket",
+ "question": "Service Availability Disruption.",
+ "case_path": "/Users/justinwan/work/workspace/cloudops_bench_rsi/repo/benchmark/trainticket/runtime/61",
+ "max_steps": 5,
+ "current_step": 4,
+ "finished": true,
+ "stop_reason": "submit",
+ "final_answer": "{\"key_evidence_summary\": \"JDBC connect refused; datastore reachability unknown\", \"top_3_predictions\": [{\"rank\": 1, \"fault_object\": \"app/ts-delivery-service\", \"root_cause\": \"mysql_invalid_port\"}, {\"rank\": 2, \"fault_object\": \"app/ts-delivery-service\", \"root_cause\": \"mysql_invalid_port\"}, {\"rank\": 3, \"fault_object\": \"app/ts-delivery-service\", \"root_cause\": \"mysql_invalid_port\"}]}",
+ "metadata": {
+  "namespace": "train-ticket",
+  "query": "Service Availability Disruption.",
+  "fault_category": "runtime",
+  "model_name": "agentrun-v0.1"
+ },
+ "steps": [
+  {
+   "step_id": 0,
+   "action_type": "tool",
+   "action_name": "GetResources",
+   "action_input": {
+    "namespace": "train-ticket",
+    "resource_type": "pods"
+   },
+   "observation": "NAME                                            READY   STATUS             RESTARTS        AGE\nnacos-0                                         1/1     Running            0               3d22h\nnacos-1                                         1/1     Running            0               3d22h\nnacos-2                                         1/1     Running            0               3d22h\nnacosdb-mysql-0                                 3/3     Running            1 (3d22h ago)   3d22h\nnacosdb-mysql-1                                 3/3     Running            2 (3d22h ago)   3d22h\nnacosdb-mysql-2                                 3/3     Running            1 (3d22h ago)   3d22h\nrabbitmq-57b4f9969c-4cndj                       1/1     Running            0               3d22h\nts-assurance-service-85577d9b4d-w8wqt           1/1     Running            0               4m56s\nts-auth-service-7689b8d556-xlv5q                1/1     Running            0               5m4s\nts-avatar-service-5c7d494dcd-bn9q6              1/1     Running            0               5m1s\nts-basic-service-7695b48fbc-2wgms               1/1     Running            0               5m3s\nts-cancel-service-5f94cbd655-ftj9v              1/1     Running            0               5m3s\nts-config-service-778646698d-wl46n              1/1     Running            0               4m57s\nts-consign-price-service-9dbb69844-4q9km        1/1     Running            0               16h\nts-consign-service-7b6f69669d-2dq46             1/1     Running            0               5m1s\nts-contacts-service-878884888-c5nrf             1/1     Running            0               5m3s\nts-delivery-service-787cbf858d-2hs67            0/1     CrashLoopBackOff   4 (66s ago)     4m55s\nts-execute-service-84bddf7bb4-srzgh             1/1     Running            0               5m1s\nts-food-delivery-service-d7f948cf4-r5hg9        1/1     Running            0               4m57s\nts-food-service-6bdb8b7ddb-97lpp                1/1     Running            0               4m57s\nts-gateway-service-f8d94c6b5-dpmb6              1/1     Running            0               5m4s\nts-inside-payment-service-5d5bd5c84d-gcl9h      1/1     Running            0               5m\nts-news-service-85787d567b-l2z69                1/1     Running            0               4m56s\nts-notification-service-675d7d65b4-8qc4r        1/1     Running            0               4m58s\nts-order-other-service-77f574b58b-f7f7w         1/1     Running            0               5m2s\nts-order-service-57d9f6ffbd-9277t               1/1     Running            0               5m\nts-payment-service-76d7d44b5b-cr8rq             1/1     Running            0               4m56s\nts-preserve-other-service-76d474789b-9tnkw      1/1     Running            0               5m\nts-preserve-service-77b4fcb95c-672dp            1/1     Running            0               4m58s\nts-price-service-69f84bfbc4-2jvs6               1/1     Running            0               5m3s\nts-rebook-service-6556f4bdff-wr5ts              1/1     Running            0               5m1s\nts-route-plan-service-5db7d84bf6-l69pr          1/1     Running            0               5m1s\nts-route-service-84fdb67598-4d48w               1/1     Running            0               5m3s\nts-seat-service-79bf884688-4hj7p                1/1     Running            0               5m\nts-security-service-64cb5fb74d-njjjc            1/1     Running            0               4m58s\nts-station-food-service-68497bf65b-jk8cb        1/1     Running            0               5m3s\nts-station-service-fd984464d-f2wg8              1/1     Running            0               5m2s\nts-ticket-office-service-588b66bc4b-9x9j8       1/1     Running            0               5m2s\nts-train-food-service-54754ff6f6-ddn9h          1/1     Running            0               4m59s\nts-train-service-79b45885dd-jblcc               1/1     Running            0               4m59s\nts-travel-plan-service-684f8495b5-lpgtg         1/1     Running            0               5m\nts-travel-service-55fd6fc94d-pq96d              1/1     Running            0               4m56s\nts-travel2-service-c56664fd-g7md8               1/1     Running            0               5m2s\nts-ui-dashboard-554844f867-mvvnl                1/1     Running            0               4m59s\nts-user-service-b795844f6-zdnc6                 1/1     Running            0               4m57s\nts-verification-code-service-7b984b7994-h7h5k   1/1     Running            0               4m57s\nts-voucher-service-5b8bd94c88-z6b7v             1/1     Running            0               4m59s\nts-wait-order-service-79c76dff8d-jvrz9          1/1     Running            0               4m58s\ntsdb-mysql-0                                    3/3     Running            1 (16h ago)     17h\ntsdb-mysql-1                                    3/3     Running            1 (16h ago)     17h\ntsdb-mysql-2                                    3/3     Running            1 (16h ago)     16h\n",
+   "error": null,
+   "purpose": "pod readiness census",
+   "tool_latency": null
+  },
+  {
+   "step_id": 1,
+   "action_type": "tool",
+   "action_name": "DescribeResource",
+   "action_input": {
+    "namespace": "train-ticket",
+    "resource_type": "pods",
+    "name": "ts-delivery-service-787cbf858d-2hs67"
+   },
+   "observation": "Name:             ts-delivery-service-787cbf858d-2hs67\nNamespace:        train-ticket\nPriority:         0\nService Account:  default\nNode:             worker-01/192.168.0.222\nStart Time:       Thu, 12 Mar 2026 13:29:40 +0800\nLabels:           app=ts-delivery-service\n                  pod-template-hash=787cbf858d\nAnnotations:      <none>\nStatus:           Running\nIP:               172.20.1.84\nIPs:\n  IP:           172.20.1.84\nControlled By:  ReplicaSet/ts-delivery-service-787cbf858d\nContainers:\n  ts-delivery-service:\n    Container ID:   containerd://208c4fec0732505109a01c962fad3964fd93655c3745042bf78d837815102594\n    Image:          ghcr.io/sregym/ts-delivery-service:latest\n    Image ID:       ghcr.io/sregym/ts-delivery-service@sha256:92031321274ab413cee2b96b2c7ac59529d291833a2c3fbc74cca639b9883e00\n    Port:           18808/TCP\n    Host Port:      0/TCP\n    State:          Waiting\n      Reason:       CrashLoopBackOff\n    Last State:     Terminated\n      Reason:       Error\n      Exit Code:    1\n      Started:      Thu, 12 Mar 2026 13:33:02 +0800\n      Finished:     Thu, 12 Mar 2026 13:33:29 +0800\n    Ready:          False\n    Restart Count:  4\n    Limits:\n      cpu:     500m\n      memory:  2000Mi\n    Requests:\n      cpu:      300m\n      memory:   400Mi\n    Readiness:  tcp-socket :18808 delay=60s timeout=5s period=10s #success=1 #failure=3\n    Environment Variables from:\n      ts-delivery-mysql  Secret     Optional: false\n      rabbitmq           ConfigMap  Optional: false\n      nacos              ConfigMap  Optional: false\n    Environment:\n      SPRING_MAIN_ALLOW_CIRCULAR_REFERENCES:  true\n      NODE_IP:                                 (v1:status.hostIP)\n    Mounts:\n      /var/run/secrets/kubernetes.io/serviceaccount from kube-api-access-4cnsb (ro)\nConditions:\n  Type                        Status\n  PodReadyToStartContainers   True \n  Initialized                 True \n  Ready                       False \n  ContainersReady             False \n  PodScheduled                True \nVolumes:\n  kube-api-access-4cnsb:\n    Type:                    Projected (a volume that contains injected data from multiple sources)\n    TokenExpirationSeconds:  3607\n    ConfigMapName:           kube-root-ca.crt\n    ConfigMapOptional:       <nil>\n    DownwardAPI:             true\nQoS Class:                   Burstable\nNode-Selectors:              <none>\nTolerations:                 node.kubernetes.io/not-ready:NoExecute op=Exists for 300s\n                             node.kubernetes.io/unreachable:NoExecute op=Exists for 300s\nEvents:\n  Type     Reason     Age                   From               Message\n  ----     ------     ----                  ----               -------\n  Normal   Scheduled  4m59s                 default-scheduler  Successfully assigned train-ticket/ts-delivery-service-787cbf858d-2hs67 to worker-01\n  Normal   Pulled     97s (x5 over 4m59s)   kubelet            Container image \"ghcr.io/sregym/ts-delivery-service:latest\" already present on machine\n  Normal   Created    97s (x5 over 4m58s)   kubelet            Created container ts-delivery-service\n  Normal   Started    97s (x5 over 4m58s)   kubelet            Started container ts-delivery-service\n  Warning  BackOff    31s (x10 over 3m57s)  kubelet            Back-off restarting failed container ts-delivery-service in pod ts-delivery-service-787cbf858d-2hs67_train-ticket(821a2364-6f01-4f49-a0a4-0f43774c794c)\n",
+   "error": null,
+   "purpose": "probe config, container state, restart reasons, scheduler events",
+   "tool_latency": null
+  },
+  {
+   "step_id": 2,
+   "action_type": "tool",
+   "action_name": "GetAppYAML",
+   "action_input": {
+    "app_name": "ts-delivery-service"
+   },
+   "observation": "apiVersion: apps/v1\nkind: Deployment\nmetadata:\n  namespace: train-ticket\n  name: ts-delivery-service\nspec:\n  selector:\n    matchLabels:\n      app: ts-delivery-service\n  replicas: 1\n  template:\n    metadata:\n      labels:\n        app: ts-delivery-service\n    spec:\n      containers:\n      - name: ts-delivery-service\n        image: ghcr.io/sregym/ts-delivery-service:latest\n        imagePullPolicy: IfNotPresent\n        env:\n        - name: SPRING_MAIN_ALLOW_CIRCULAR_REFERENCES\n          value: 'true'\n        - name: NODE_IP\n          valueFrom:\n            fieldRef:\n              fieldPath: status.hostIP\n        envFrom:\n        - secretRef:\n            name: ts-delivery-mysql\n        - configMapRef:\n            name: rabbitmq\n        - configMapRef:\n            name: nacos\n        ports:\n        - containerPort: 18808\n        resources:\n          requests:\n            cpu: 300m\n            memory: 400Mi\n          limits:\n            cpu: 500m\n            memory: 2000Mi\n        readinessProbe:\n          tcpSocket:\n            port: 18808\n          initialDelaySeconds: 60\n          periodSeconds: 10\n          timeoutSeconds: 5\n---\napiVersion: v1\nkind: Service\nmetadata:\n  namespace: train-ticket\n  name: ts-delivery-service\nspec:\n  ports:\n  - name: http\n    port: 18808\n  selector:\n    app: ts-delivery-service\n---\napiVersion: v1\nkind: Secret\nmetadata:\n  namespace: train-ticket\n  name: ts-delivery-mysql\ntype: Opaque\nstringData:\n  DELIVERY_MYSQL_HOST: tsdb-mysql-leader\n  DELIVERY_MYSQL_PORT: '34006'\n  DELIVERY_MYSQL_DATABASE: ts\n  DELIVERY_MYSQL_USER: ts\n  DELIVERY_MYSQL_PASSWORD: Ts_123456\n",
+   "error": null,
+   "purpose": "declared probes / limits / image / env",
+   "tool_latency": null
+  },
+  {
+   "step_id": 3,
+   "action_type": "tool",
+   "action_name": "GetErrorLogs",
+   "action_input": {
+    "namespace": "train-ticket",
+    "service_name": "ts-delivery-service"
+   },
+   "observation": "{\n  \"app\": [\n    \"2026-03-12T13:35:21.340597730+08:00 2026-03-12 13:35:21.339 ERROR 1 --- [           main] com.zaxxer.hikari.pool.HikariPool        : HikariPool-1 - Exception during pool initialization.\\n2026-03-12T13:35:21.340618617+08:00 \",\n    \"2026-03-12T13:35:21.340621541+08:00 com.mysql.cj.jdbc.exceptions.CommunicationsException: Communications link failure\\n2026-03-12T13:35:21.340789278+08:00 Caused by: com.mysql.cj.exceptions.CJCommunicationsException: Communications link failure\\n2026-03-12T13:35:21.340826223+08:00 Caused by: java.net.ConnectException: Connection refused (Connection refused)\\n2026-03-12T13:35:21.340629113+08:00 \\tat com.mysql.cj.jdbc.exceptions.SQLError.createCommunicationsException(SQLError.java:175) ~[mysql-connector-j-8.0.33.jar!/:8.0.33]\\n2026-03-12T13:35:21.340631177+08:00 \\tat com.mysql.cj.jdbc.exceptions.SQLExceptionsMapping.translateException(SQLExceptionsMapping.java:64) ~[mysql-connector-j-8.0.33.jar!/:8.0.33]\\n2026-03-12T13:35:21.340633438+08:00 \\tat com.mysql.cj.jdbc.ConnectionImpl.createNewIO(ConnectionImpl.java:825) ~[mysql-connector-j-8.0.33.jar!/:8.0.33]\\n2026-03-12T13:35:21.340635679+08:00 \\tat com.mysql.cj.jdbc.ConnectionImpl.<init>(ConnectionImpl.java:446) ~[mysql-connector-j-8.0.33.jar!/:8.0.33]\",\n    \"2026-03-12T13:35:21.341899380+08:00 com.mysql.cj.jdbc.exceptions.CommunicationsException: Communications link failure\\n2026-03-12T13:35:21.342093886+08:00 Caused by: com.mysql.cj.exceptions.CJCommunicationsException: Communications link failure\\n2026-03-12T13:35:21.342136253+08:00 Caused by: java.net.ConnectException: Connection refused (Connection refused)\\n2026-03-12T13:35:21.341905845+08:00 \\tat com.mysql.cj.jdbc.exceptions.SQLError.createCommunicationsException(SQLError.java:175) ~[mysql-connector-j-8.0.33.jar!/:8.0.33]\\n2026-03-12T13:35:21.341915715+08:00 \\tat com.mysql.cj.jdbc.exceptions.SQLExceptionsMapping.translateException(SQLExceptionsMapping.java:64) ~[mysql-connector-j-8.0.33.jar!/:8.0.33]\\n2026-03-12T13:35:21.341917722+08:00 \\tat com.mysql.cj.jdbc.ConnectionImpl.createNewIO(ConnectionImpl.java:825) ~[mysql-connector-j-8.0.33.jar!/:8.0.33]\\n2026-03-12T13:35:21.341919902+08:00 \\tat com.mysql.cj.jdbc.ConnectionImpl.<init>(ConnectionImpl.java:446) ~[mysql-connector-j-8.0.33.jar!/:8.0.33]\",\n    \"2026-03-12T13:35:24.422275298+08:00 2026-03-12 13:35:24.421 ERROR 1 --- [           main] com.zaxxer.hikari.pool.HikariPool        : HikariPool-1 - Exception during pool initialization.\\n2026-03-12T13:35:24.422299670+08:00 \",\n    \"2026-03-12T13:35:24.422303819+08:00 com.mysql.cj.jdbc.exceptions.CommunicationsException: Communications link failure\\n2026-03-12T13:35:24.422479649+08:00 Caused by: com.mysql.cj.exceptions.CJCommunicationsException: Communications link failure\\n2026-03-12T13:35:24.422513067+08:00 Caused by: java.net.ConnectException: Connection refused (Connection refused)\\n2026-03-12T13:35:24.422314000+08:00 \\tat com.mysql.cj.jdbc.exceptions.SQLError.createCommunicationsException(SQLError.java:175) ~[mysql-connector-j-8.0.33.jar!/:8.0.33]\\n2026-03-12T13:35:24.422317530+08:00 \\tat com.mysql.cj.jdbc.exceptions.SQLExceptionsMapping.translateException(SQLExceptionsMapping.java:64) ~[mysql-connector-j-8.0.33.jar!/:8.0.33]\\n2026-03-12T13:35:24.422320518+08:00 \\tat com.mysql.cj.jdbc.ConnectionImpl.createNewIO(ConnectionImpl.java:825) ~[mysql-connector-j-8.0.33.jar!/:8.0.33]\\n2026-03-12T13:35:24.422323205+08:00 \\tat com.mysql.cj.jdbc.ConnectionImpl.<init>(ConnectionImpl.java:446) ~[mysql-connector-j-8.0.33.jar!/:8.0.33]\",\n    \"2026-03-12T13:35:24.423141922+08:00 2026-03-12 13:35:24.422  WARN 1 --- [           main] o.h.engine.jdbc.spi.SqlExceptionHelper   : SQL Error: 0, SQLState: 08S01\",\n    \"2026-03-12T13:35:24.423232369+08:00 2026-03-12 13:35:24.423 ERROR 1 --- [           main] o.h.engine.jdbc.spi.SqlExceptionHelper   : Communications link failure\\n2026-03-12T13:35:24.423236001+08:00 \\n2026-03-12T13:35:24.423240638+08:00 The last packet sent successfully to the server was 0 milliseconds ago. The driver has not received any packets from the server.\",\n    \"2026-03-12T13:35:24.428081625+08:00 2026-03-12 13:35:24.427 ERROR 1 --- [           main] j.LocalContainerEntityManagerFactoryBean : Failed to initialize JPA EntityManagerFactory: [PersistenceUnit: default] Unable to build Hibernate SessionFactory; nested exception is org.hibernate.exception.JDBCConnectionException: Unable to open JDBC Connection for DDL execution\",\n    \"2026-03-12T13:35:24.428551732+08:00 2026-03-12 13:35:24.428  WARN 1 --- [           main] ConfigServletWebServerApplicationContext : Exception encountered during context initialization - cancelling refresh attempt: org.springframework.beans.factory.BeanCreationException: Error creating bean with name 'entityManagerFactory' defined in class path resource [org/springframework/boot/autoconfigure/orm/jpa/HibernateJpaConfiguration.class]: Invocation of init method failed; nested exception is javax.persistence.PersistenceException: [PersistenceUnit: default] Unable to build Hibernate SessionFactory; nested exception is org.hibernate.exception.JDBCConnectionException: Unable to open JDBC Connection for DDL execution\",\n    \"2026-03-12T13:35:24.449408657+08:00 Error starting ApplicationContext. To display the conditions report re-run your application with 'debug' enabled.\",\n    \"2026-03-12T13:35:24.529897505+08:00 2026-03-12 13:35:24.529 ERROR 1 --- [           main] o.s.boot.SpringApplication               : Application run failed\\n2026-03-12T13:35:24.529915191+08:00 \",\n    \"2026-03-12T13:35:24.529918138+08:00 org.springframework.beans.factory.BeanCreationException: Error creating bean with name 'entityManagerFactory' defined in class path resource [org/springframework/boot/autoconfigure/orm/jpa/HibernateJpaConfiguration.class]: Invocation of init method failed; nested exception is javax.persistence.PersistenceException: [PersistenceUnit: default] Unable to build Hibernate SessionFactory; nested exception is org.hibernate.exception.JDBCConnectionException: Unable to open JDBC Connection for DDL execution\\n2026-03-12T13:35:24.529989048+08:00 Caused by: javax.persistence.PersistenceException: [PersistenceUnit: default] Unable to build Hibernate SessionFactory; nested exception is org.hibernate.exception.JDBCConnectionException: Unable to open JDBC Connection for DDL execution\\n2026-03-12T13:35:24.530006300+08:00 Caused by: org.hibernate.exception.JDBCConnectionException: Unable to open JDBC Connection for DDL execution\\n2026-03-12T13:35:24.530076873+08:00 Caused by: com.mysql.cj.jdbc.exceptions.CommunicationsException: Communications link failure\\n2026-03-12T13:35:24.530120294+08:00 Caused by: com.mysql.cj.exceptions.CJCommunicationsException: Communicati...\"\n  ],\n  \"previous\": [\n    \"2026-03-12 13:35:21.339 ERROR 1 --- [           main] com.zaxxer.hikari.pool.HikariPool        : HikariPool-1 - Exception during pool initialization.\\nCaused by: com.mysql.cj.exceptions.CJCommunicationsException: Communications link failure\\nCaused by: java.net.ConnectException: Connection refused (Connection refused)\\nCaused by: com.mysql.cj.exceptions.CJCommunicationsException: Communications link failure\\nCaused by: java.net.ConnectException: Connection refused (Connection refused)\\nCaused by: com.mysql.cj.exceptions.CJCommunicationsException: Communications link failure\\nCaused by: java.net.ConnectException: Connection refused (Connection refused)\\nCaused by: javax.persistence.PersistenceException: [PersistenceUnit: default] Unable to build Hibernate SessionFactory; nested exception is org.hibernate.exception.JDBCConnectionException: Unable to open JDBC Connection for DDL execution\\nCaused by: org.hibernate.exception.JDBCConnectionException: Unable to open JDBC Connection for DDL execution\\nCaused by: com.mysql.cj.jdbc.exceptions.CommunicationsException: Communications link failure\"\n  ]\n}",
+   "error": null,
+   "purpose": "application error logs",
+   "tool_latency": null
+  }
+ ],
+ "agentrun": {
+  "tag": "test",
+  "dsl": "workspace/dsl_versions/v0.4.dsl.txt",
+  "dsl_version": "0.4",
+  "params": {
+   "cands_cap": 8,
+   "max_waves": 5,
+   "min_waves": 5,
+   "steps_per_wave": 1,
+   "dominance_ratio": 1.5,
+   "conf_min": 0.0,
+   "escalate": true,
+   "escalate_budget": 8,
+   "judge_on_codedefect": true,
+   "jev_route": true,
+   "jev_pick": true,
+   "jev_verify": true,
+   "census": [
+    {
+     "step": "pods",
+     "gate": "always"
+    },
+    {
+     "step": "alerts",
+     "gate": "healthy_system"
+    }
+   ],
+   "family_plan": {
+    "admission": [
+     {
+      "step": "deployments",
+      "gate": "always"
+     },
+     {
+      "step": "events",
+      "gate": "always"
+     },
+     {
+      "step": "resourcequota",
+      "gate": "weak_strong"
+     },
+     {
+      "step": "describe_deployment",
+      "gate": "weak_very_strong"
+     }
+    ],
+    "scheduling": [
+     {
+      "step": "describe_pod",
+      "gate": "always"
+     },
+     {
+      "step": "pvcs",
+      "gate": "volume_evidence"
+     },
+     {
+      "step": "cluster_config",
+      "gate": "always"
+     }
+    ],
+    "startup": [
+     {
+      "step": "describe_pod",
+      "gate": "always"
+     },
+     {
+      "step": "app_yaml",
+      "gate": "weak_strong"
+     },
+     {
+      "step": "error_logs",
+      "gate": "weak"
+     }
+    ],
+    "runtime": [
+     {
+      "step": "describe_pod",
+      "gate": "always"
+     },
+     {
+      "step": "app_yaml",
+      "gate": "probe_or_restart_or_weak"
+     },
+     {
+      "step": "error_logs",
+      "gate": "restart_or_weak_strong"
+     }
+    ],
+    "service": [
+     {
+      "step": "services",
+      "gate": "always"
+     },
+     {
+      "step": "endpoints",
+      "gate": "always"
+     },
+     {
+      "step": "app_yaml",
+      "gate": "weak"
+     },
+     {
+      "step": "connectivity",
+      "gate": "weak_strong"
+     },
+     {
+      "step": "deps",
+      "gate": "weak_strong"
+     }
+    ],
+    "performance": [
+     {
+      "step": "recent_logs",
+      "gate": "always"
+     },
+     {
+      "step": "describe_pod",
+      "gate": "weak"
+     },
+     {
+      "step": "deps",
+      "gate": "weak"
+     }
+    ],
+    "infrastructure": [
+     {
+      "step": "node_status",
+      "gate": "always"
+     },
+     {
+      "step": "cluster_config",
+      "gate": "weak"
+     }
+    ],
+    "codedefect": [
+     {
+      "step": "code_files",
+      "gate": "always"
+     },
+     {
+      "step": "source_code",
+      "gate": "always"
+     },
+     {
+      "step": "recent_logs",
+      "gate": "weak_strong"
+     }
+    ]
+   },
+   "route_priority": [
+    {
+     "signal": "pending_pods",
+     "family": "scheduling"
+    },
+    {
+     "signal": "image_pull",
+     "family": "startup"
+    },
+    {
+     "signal": "not_ready_or_crash",
+     "family": "runtime"
+    },
+    {
+     "signal": "no_pods_created",
+     "family": "admission"
+    },
+    {
+     "signal": "code_shaped_alert",
+     "family": "codedefect"
+    },
+    {
+     "signal": "saturation_alert",
+     "family": "performance"
+    },
+    {
+     "signal": "healthy_unreachable",
+     "family": "service"
+    },
+    {
+     "signal": "healthy_degraded",
+     "family": "performance"
+    },
+    {
+     "signal": "residual",
+     "family": "infrastructure"
+    }
+   ],
+   "route_fallback": "runtime"
+  },
+  "nodes_executed": [
+   "code:extract_anchors",
+   "call",
+   "jev",
+   "code:build_plan",
+   "call",
+   "code:derive_candidates",
+   "jev",
+   "jev",
+   "call",
+   "code:derive_candidates",
+   "jev",
+   "jev",
+   "call",
+   "code:derive_candidates",
+   "jev",
+   "jev",
+   "call",
+   "code:derive_candidates",
+   "jev",
+   "jev",
+   "code:normalize_answer"
+  ],
+  "family": "runtime",
+  "route_probabilities": {
+   "runtime": 0.65,
+   "infrastructure": 0.0,
+   "other": 0.34
+  },
+  "picked": {
+   "root_cause": "mysql_invalid_port",
+   "object": "app/ts-delivery-service",
+   "score": 0.72,
+   "evidence": "JDBC connect refused; datastore reachability unknown",
+   "rule": "db_port"
+  },
+  "pick_why": "dominant candidate (single candidate); no model call",
+  "verify_prob": null,
+  "verified": true,
+  "verify_verdict": "dominant",
+  "escalated": false,
+  "escalate_reason": "",
+  "escalate_steps": 0,
+  "waves": 4,
+  "candidates": [
+   {
+    "root_cause": "mysql_invalid_port",
+    "object": "app/ts-delivery-service",
+    "score": 0.72,
+    "evidence": "JDBC connect refused; datastore reachability unknown",
+    "rule": "db_port"
+   }
+  ],
+  "jev": [
+   {
+    "rid": "test:trainticket/runtime/61#route",
+    "kind": "route",
+    "mode": "live",
+    "choice": "runtime",
+    "confidence": 0.48,
+    "probabilities": {
+     "runtime": 0.65,
+     "infrastructure": 0.0,
+     "other": 0.34
+    },
+    "status": "ans",
+    "why": "jev route",
+    "usage": {
+     "input_tokens": 173
+    }
+   },
+   {
+    "rid": "test:trainticket/runtime/61#pick3",
+    "kind": "pick",
+    "mode": "live",
+    "choice": 0,
+    "dominant": true,
+    "status": "mechanical",
+    "why": "dominant candidate (single candidate); no model call",
+    "confidence": null,
+    "probabilities": {}
+   }
+  ],
+  "nodes": [
+   {
+    "node": "code",
+    "logic": "extract_anchors",
+    "anchors": {
+     "case_id": "trainticket/runtime/61",
+     "system": "trainticket",
+     "namespace": "train-ticket",
+     "query": "Service Availability Disruption.",
+     "difficulty": "easy",
+     "symptoms": [],
+     "mentioned_apps": []
+    }
+   },
+   {
+    "node": "call",
+    "target": "probe_batch",
+    "wave": 0,
+    "executed": 1,
+    "steps": [
+     {
+      "key": "pods",
+      "tool": "GetResources",
+      "arguments": {
+       "namespace": "train-ticket",
+       "resource_type": "pods"
+      }
+     }
+    ],
+    "skipped": [
+     {
+      "key": "alerts",
+      "why": "when=false"
+     }
+    ]
+   },
+   {
+    "node": "jev",
+    "rid": "test:trainticket/runtime/61#route",
+    "kind": "route",
+    "choice": "runtime",
+    "confidence": 0.48,
+    "prob": null,
+    "status": "ans",
+    "mode": "live"
+   },
+   {
+    "node": "code",
+    "logic": "build_plan",
+    "family": "runtime",
+    "plan": [
+     {
+      "key": "describe:pod",
+      "tool": "DescribeResource",
+      "wave": 1
+     },
+     {
+      "key": "appyaml",
+      "tool": "GetAppYAML",
+      "wave": 2
+     },
+     {
+      "key": "errors",
+      "tool": "GetErrorLogs",
+      "wave": 3
+     }
+    ]
+   },
+   {
+    "node": "call",
+    "target": "probe_batch",
+    "wave": 1,
+    "executed": 1,
+    "steps": [
+     {
+      "key": "describe:pod",
+      "tool": "DescribeResource",
+      "arguments": {
+       "namespace": "train-ticket",
+       "resource_type": "pods",
+       "name": "ts-delivery-service-787cbf858d-2hs67"
+      }
+     }
+    ],
+    "skipped": []
+   },
+   {
+    "node": "code",
+    "logic": "derive_candidates",
+    "raw": 0,
+    "kept": 0,
+    "top": []
+   },
+   {
+    "node": "jev",
+    "kind": "pick",
+    "mode": "skipped",
+    "why": "no candidates"
+   },
+   {
+    "node": "call",
+    "target": "probe_batch",
+    "wave": 2,
+    "executed": 1,
+    "steps": [
+     {
+      "key": "appyaml",
+      "tool": "GetAppYAML",
+      "arguments": {
+       "app_name": "ts-delivery-service"
+      }
+     }
+    ],
+    "skipped": []
+   },
+   {
+    "node": "code",
+    "logic": "derive_candidates",
+    "raw": 0,
+    "kept": 0,
+    "top": []
+   },
+   {
+    "node": "jev",
+    "kind": "pick",
+    "mode": "skipped",
+    "why": "no candidates"
+   },
+   {
+    "node": "call",
+    "target": "probe_batch",
+    "wave": 3,
+    "executed": 1,
+    "steps": [
+     {
+      "key": "errors",
+      "tool": "GetErrorLogs",
+      "arguments": {
+       "namespace": "train-ticket",
+       "service_name": "ts-delivery-service"
+      }
+     }
+    ],
+    "skipped": []
+   },
+   {
+    "node": "code",
+    "logic": "derive_candidates",
+    "raw": 1,
+    "kept": 1,
+    "top": [
+     {
+      "root_cause": "mysql_invalid_port",
+      "object": "app/ts-delivery-service",
+      "score": 0.72,
+      "evidence": "JDBC connect refused; datastore reachability unknown",
+      "rule": "db_port"
+     }
+    ]
+   },
+   {
+    "node": "jev",
+    "rid": "test:trainticket/runtime/61#pick3",
+    "kind": "pick",
+    "choice": 0,
+    "confidence": null,
+    "prob": null,
+    "status": "mechanical",
+    "mode": "live"
+   },
+   {
+    "node": "jev",
+    "kind": "verify",
+    "mode": "skipped",
+    "why": "dominant candidate: semantic gate suppressed by design",
+    "scores": [
+     0.72
+    ]
+   },
+   {
+    "node": "call",
+    "target": "probe_batch",
+    "wave": 4,
+    "executed": 0,
+    "why": "plan exhausted"
+   },
+   {
+    "node": "code",
+    "logic": "derive_candidates",
+    "raw": 1,
+    "kept": 1,
+    "top": [
+     {
+      "root_cause": "mysql_invalid_port",
+      "object": "app/ts-delivery-service",
+      "score": 0.72,
+      "evidence": "JDBC connect refused; datastore reachability unknown",
+      "rule": "db_port"
+     }
+    ]
+   },
+   {
+    "node": "jev",
+    "kind": "pick",
+    "mode": "skipped",
+    "why": "no new candidate evidence since last wave"
+   },
+   {
+    "node": "jev",
+    "kind": "verify",
+    "mode": "skipped",
+    "why": "no new evidence since last verify"
+   },
+   {
+    "node": "loop",
+    "until": "plan_exhausted",
+    "wave": 4
+   },
+   {
+    "node": "escalate",
+    "reason": "predicate_false",
+    "hits": []
+   },
+   {
+    "node": "code",
+    "logic": "normalize_answer",
+    "predictions": [
+     {
+      "rank": 1,
+      "fault_object": "app/ts-delivery-service",
+      "root_cause": "mysql_invalid_port"
+     },
+     {
+      "rank": 2,
+      "fault_object": "app/ts-delivery-service",
+      "root_cause": "mysql_invalid_port"
+     },
+     {
+      "rank": 3,
+      "fault_object": "app/ts-delivery-service",
+      "root_cause": "mysql_invalid_port"
+     }
+    ]
+   }
+  ],
+  "notes": [],
+  "tool_calls": 4,
+  "model_calls": 1,
+  "tokens_in": 173,
+  "tokens_out": 0,
+  "wall_s": 0.33
+ }
+}

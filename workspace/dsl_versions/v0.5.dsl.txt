@@ -1,0 +1,246 @@
+# AgentRun DSL v0.5 -- agentic root cause analysis over a frozen incident snapshot
+#
+# v0.5 = v0.4 behaviour, re-expressed so that **every decision is readable in this file**.
+#
+# A `decide` node has exactly five sections:
+#   ask      the question sent to the decision model (verbatim)
+#   space    the option space: where options come from, their order, what is rendered,
+#            and whether an explicit `other` (abstain) option exists
+#   input    which state fields enter the payload, named one by one
+#   pre      ordered mechanical guards -> action. First match wins, and NO model call.
+#   post     exhaustive model-answer -> action map. `error` is mandatory; `other` is
+#            mandatory when space.other is true; `unavailable` covers mode=mechanism.
+#   out      named outputs; downstream nodes reference them as $node.field
+#
+# Vocabulary (all names validated at load time):
+#   guards : no_options | jev_disabled | has_stored_answer | unchanged_since_last | no_pick
+#            top_over_second >= <number|$params.key> | $node.field | $node.field == literal
+#   use    : answer | first_option | stored | previous | none | $params.key | <literal>
+#   extras : why, dominant (true|auto), continue_loop, escalate, require=beats_alternatives
+#   stop   : plan_exhausted | verified_and_model
+#
+# state: wires decision outputs into the runtime slots the rule engine reads; nothing is
+# wired implicitly in Python.
+
+dsl: agentrun-rca
+version: "0.5"
+
+params:
+  cands_cap: 8
+  max_waves: 5
+  min_waves: 5              # probes are free: keep collecting until the plan is exhausted
+  steps_per_wave: 1
+  dominance_ratio: 1.5      # used by decide(pick): top_over_second >= $params.dominance_ratio
+  conf_min: 0.0
+  escalate: true
+  escalate_budget: 8
+  judge_on_codedefect: true
+  route_fallback: runtime   # used only by the explicit no_options rule in decide(route)
+  jev_route: true
+  jev_pick: true
+  jev_verify: true
+
+# ---------------------------------------------------------------- probe plans
+# gate vocabulary (plans.GATES): always | healthy_system | weak | weak_strong |
+#   weak_very_strong | probe_evidence | restart_evidence | probe_or_restart_or_weak |
+#   restart_or_weak_strong | volume_evidence
+plans:
+  census:
+    - {step: pods,   gate: always}
+    - {step: alerts, gate: healthy_system}
+  admission:
+    - {step: deployments,         gate: always}
+    - {step: events,              gate: always}
+    - {step: resourcequota,       gate: weak_strong}
+    - {step: describe_deployment, gate: weak_very_strong}
+  scheduling:
+    - {step: describe_pod,   gate: always}
+    - {step: pvcs,           gate: volume_evidence}
+    - {step: cluster_config, gate: always}
+  startup:
+    - {step: describe_pod, gate: always}
+    - {step: app_yaml,     gate: weak_strong}
+    - {step: error_logs,   gate: weak}
+  runtime:
+    - {step: describe_pod, gate: always}
+    - {step: app_yaml,     gate: probe_or_restart_or_weak}
+    - {step: error_logs,   gate: restart_or_weak_strong}
+  service:
+    - {step: services,     gate: always}
+    - {step: endpoints,    gate: always}
+    - {step: app_yaml,     gate: weak}
+    - {step: connectivity, gate: weak_strong}
+    - {step: deps,         gate: weak_strong}
+  performance:
+    - {step: recent_logs,  gate: always}
+    - {step: describe_pod, gate: weak}
+    - {step: deps,         gate: weak}
+  infrastructure:
+    - {step: node_status,    gate: always}
+    - {step: cluster_config, gate: weak}
+  codedefect:
+    - {step: code_files,  gate: always}
+    - {step: source_code, gate: always}
+    - {step: recent_logs, gate: weak_strong}
+
+# ---------------------------------------------------------------- runtime wiring
+state:
+  family:        $route.family
+  route_probs:   $route.probabilities
+  picked:        $pick.picked
+  pick_dominant: $pick.dominant
+  verify_status: $verify.status
+  verify_prob:   $verify.confidence
+
+# ---------------------------------------------------------------- workflow
+flow:
+  - id: anchors
+    do: extract_anchors
+    out: {anchors: anchors}
+
+  - id: census
+    do: probes
+    plan: census
+
+  # =============================================================== route
+  - id: route
+    do: decide
+    ask: |
+      Which Kubernetes fault family best explains the observed state for this incident?
+      Judge by the concrete observations, not by the wording alone.
+      Prefer `other` over a near miss.
+    space:
+      from: signals
+      order:                                  # mechanical shortlist, top-down, first match wins
+        - {when: pending_pods,        value: scheduling}
+        - {when: image_pull,          value: startup}
+        - {when: not_ready_or_crash,  value: runtime}
+        - {when: no_pods_created,     value: admission}
+        - {when: code_shaped_alert,   value: codedefect}
+        - {when: saturation_alert,    value: performance}
+        - {when: healthy_unreachable, value: service}
+        - {when: healthy_degraded,    value: performance}
+        - {when: residual,            value: infrastructure}
+      other: true
+      render: [description, reason]
+    input:
+      incident: [query, system, namespace]
+      observed: signal_reasons
+    pre:
+      - if: jev_disabled
+        then: {use: first_option, why: jev_route=false}
+      - if: no_options
+        then: {use: $params.route_fallback, why: no_signal}
+      - if: has_stored_answer
+        then: {use: stored, why: answer_library}
+    post:
+      default:     {use: answer}
+      other:       {use: first_option, why: abstained}
+      unavailable: {use: first_option, why: mechanism_mode}
+      error:       {use: first_option, why: transport_error}
+    out: {family: choice, probabilities: distribution, route_why: reason}
+
+  - id: plan
+    do: build_plan
+    family: $route.family
+    out: {plan: plan}
+
+  # =============================================================== waves
+  - id: waves
+    do: loop
+    max_waves: $params.max_waves
+    min_waves: $params.min_waves
+    stop_when: [plan_exhausted, verified_and_model]
+    body:
+      - id: probe
+        do: probes
+        plan: family
+        wave: current
+
+      - id: derive
+        do: derive_candidates
+        out: {candidates: candidates}
+
+      # ----------------------------------------------------------- pick
+      - id: pick
+        do: decide
+        ask: |
+          Which candidate is the best evidence-grounded explanation of the incident?
+          Candidate order already encodes a deterministic prior; use it only as a tie-break.
+          Answer `other` when no candidate's evidence actually supports the symptom.
+        space:
+          from: candidates
+          limit: $params.cands_cap
+          render: [root_cause, object, rule, evidence, score]
+          other: true
+        input:
+          incident: [query, namespace, state.family]
+          candidates: space_items
+        pre:
+          - if: no_options
+            then: {use: none, why: no_candidates}
+          - if: unchanged_since_last
+            then: {use: previous, why: no_new_evidence}
+          - if: jev_disabled
+            then: {use: first_option, why: jev_pick=false}
+          - if: has_stored_answer
+            then: {use: stored, why: answer_library}
+          - if: top_over_second >= $params.dominance_ratio
+            then: {use: first_option, dominant: true, why: dominance}
+        post:
+          default:     {use: answer, dominant: auto}
+          other:       {use: first_option, dominant: auto, why: abstained}
+          unavailable: {use: first_option, dominant: auto, why: mechanism_mode}
+          error:       {use: first_option, dominant: auto, why: transport_error}
+        out: {picked: choice, dominant: dominance_flag, pick_why: reason}
+
+      # ----------------------------------------------------------- verify
+      - id: verify
+        do: decide
+        ask: |
+          How well is this hypothesis supported by the observations?
+          supported    = the quoted evidence pins this specific cause
+          insufficient = compatible, but does not discriminate it from the alternatives
+          contradicted = the observations speak against it
+        space:
+          from: fixed
+          options: [supported, insufficient, contradicted]
+          other: true
+        input:
+          incident: [query, namespace, state.family]
+          hypothesis: picked_item
+          key_observations: top_observations(3)
+        pre:
+          - if: no_pick
+            then: {use: unverified, why: nothing_to_verify}
+          - if: $pick.dominant
+            then: {use: verified,   why: dominant_candidate}
+          - if: unchanged_since_last
+            then: {use: previous,   why: no_new_evidence}
+          - if: jev_disabled
+            then: {use: verified,   why: jev_verify=false}
+          - if: has_stored_answer
+            then: {use: stored,     why: answer_library}
+        post:
+          supported:    {use: verified,   require: beats_alternatives}
+          insufficient: {use: unverified, continue_loop: true, why: insufficient}
+          contradicted: {use: unverified, escalate: true,     why: contradicted}
+          other:        {use: verified,   why: abstained}
+          unavailable:  {use: verified,   why: mechanism_mode}
+          error:        {use: verified,   why: transport_error}
+        out: {status: choice, confidence: p_supported, verify_why: reason}
+
+  # =============================================================== escalate
+  - id: escalate
+    do: escalate
+    when: [no_candidates, contradicted, family_unknown, weak_after_waves]
+    to: judge_agent
+    budget: $params.escalate_budget
+    out: {answer: answer}
+
+  - id: answer
+    do: normalize_answer
+    out: {final: payload}
+
+  - id: persist
+    do: persist_trace

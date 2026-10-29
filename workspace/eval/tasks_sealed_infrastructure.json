@@ -1,0 +1,175 @@
+{
+ "n": 24,
+ "cases": [
+  {
+   "id": "boutique/infrastructure/10",
+   "system": "boutique",
+   "category": "infrastructure",
+   "case": "10",
+   "difficulty": "medium"
+  },
+  {
+   "id": "boutique/infrastructure/11",
+   "system": "boutique",
+   "category": "infrastructure",
+   "case": "11",
+   "difficulty": "medium"
+  },
+  {
+   "id": "boutique/infrastructure/12",
+   "system": "boutique",
+   "category": "infrastructure",
+   "case": "12",
+   "difficulty": "medium"
+  },
+  {
+   "id": "boutique/infrastructure/15",
+   "system": "boutique",
+   "category": "infrastructure",
+   "case": "15",
+   "difficulty": "medium"
+  },
+  {
+   "id": "boutique/infrastructure/18",
+   "system": "boutique",
+   "category": "infrastructure",
+   "case": "18",
+   "difficulty": "medium"
+  },
+  {
+   "id": "boutique/infrastructure/2",
+   "system": "boutique",
+   "category": "infrastructure",
+   "case": "2",
+   "difficulty": "medium"
+  },
+  {
+   "id": "boutique/infrastructure/20",
+   "system": "boutique",
+   "category": "infrastructure",
+   "case": "20",
+   "difficulty": "medium"
+  },
+  {
+   "id": "boutique/infrastructure/21",
+   "system": "boutique",
+   "category": "infrastructure",
+   "case": "21",
+   "difficulty": "medium"
+  },
+  {
+   "id": "boutique/infrastructure/22",
+   "system": "boutique",
+   "category": "infrastructure",
+   "case": "22",
+   "difficulty": "medium"
+  },
+  {
+   "id": "boutique/infrastructure/23",
+   "system": "boutique",
+   "category": "infrastructure",
+   "case": "23",
+   "difficulty": "medium"
+  },
+  {
+   "id": "boutique/infrastructure/24",
+   "system": "boutique",
+   "category": "infrastructure",
+   "case": "24",
+   "difficulty": "medium"
+  },
+  {
+   "id": "boutique/infrastructure/27",
+   "system": "boutique",
+   "category": "infrastructure",
+   "case": "27",
+   "difficulty": "medium"
+  },
+  {
+   "id": "boutique/infrastructure/28",
+   "system": "boutique",
+   "category": "infrastructure",
+   "case": "28",
+   "difficulty": "medium"
+  },
+  {
+   "id": "boutique/infrastructure/32",
+   "system": "boutique",
+   "category": "infrastructure",
+   "case": "32",
+   "difficulty": "medium"
+  },
+  {
+   "id": "boutique/infrastructure/33",
+   "system": "boutique",
+   "category": "infrastructure",
+   "case": "33",
+   "difficulty": "medium"
+  },
+  {
+   "id": "boutique/infrastructure/34",
+   "system": "boutique",
+   "category": "infrastructure",
+   "case": "34",
+   "difficulty": "medium"
+  },
+  {
+   "id": "boutique/infrastructure/35",
+   "system": "boutique",
+   "category": "infrastructure",
+   "case": "35",
+   "difficulty": "medium"
+  },
+  {
+   "id": "boutique/infrastructure/38",
+   "system": "boutique",
+   "category": "infrastructure",
+   "case": "38",
+   "difficulty": "medium"
+  },
+  {
+   "id": "boutique/infrastructure/39",
+   "system": "boutique",
+   "category": "infrastructure",
+   "case": "39",
+   "difficulty": "medium"
+  },
+  {
+   "id": "boutique/infrastructure/40",
+   "system": "boutique",
+   "category": "infrastructure",
+   "case": "40",
+   "difficulty": "medium"
+  },
+  {
+   "id": "boutique/infrastructure/5",
+   "system": "boutique",
+   "category": "infrastructure",
+   "case": "5",
+   "difficulty": "medium"
+  },
+  {
+   "id": "boutique/infrastructure/6",
+   "system": "boutique",
+   "category": "infrastructure",
+   "case": "6",
+   "difficulty": "medium"
+  },
+  {
+   "id": "boutique/infrastructure/7",
+   "system": "boutique",
+   "category": "infrastructure",
+   "case": "7",
+   "difficulty": "medium"
+  },
+  {
+   "id": "boutique/infrastructure/8",
+   "system": "boutique",
+   "category": "infrastructure",
+   "case": "8",
+   "difficulty": "medium"
+  }
+ ],
+ "round": "infrastructure",
+ "split": "sealed"
+}

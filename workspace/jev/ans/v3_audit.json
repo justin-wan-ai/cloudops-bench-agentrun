@@ -1,0 +1,367 @@
+[
+  {
+    "rid": "test:trainticket/runtime/61#route",
+    "kind": "route",
+    "status": "ans",
+    "choice": "runtime",
+    "prob": null,
+    "mode": "live",
+    "usage": {
+      "input_tokens": 170
+    }
+  },
+  {
+    "rid": "test:trainticket/runtime/61#pick1",
+    "kind": "pick",
+    "status": "mechanical",
+    "choice": null,
+    "prob": null,
+    "mode": "live",
+    "usage": null
+  },
+  {
+    "rid": "test:trainticket/runtime/61#verify1",
+    "kind": "verify",
+    "status": "mechanical",
+    "choice": "unverified",
+    "prob": null,
+    "mode": "live",
+    "usage": null
+  },
+  {
+    "rid": "test:trainticket/runtime/61#pick2",
+    "kind": "pick",
+    "status": "mechanical",
+    "choice": null,
+    "prob": null,
+    "mode": "live",
+    "usage": null
+  },
+  {
+    "rid": "test:trainticket/runtime/61#verify2",
+    "kind": "verify",
+    "status": "mechanical",
+    "choice": "unverified",
+    "prob": null,
+    "mode": "live",
+    "usage": null
+  },
+  {
+    "rid": "test:trainticket/runtime/61#pick3",
+    "kind": "pick",
+    "status": "mechanical",
+    "choice": 0,
+    "prob": null,
+    "mode": "live",
+    "usage": null
+  },
+  {
+    "rid": "test:trainticket/runtime/61#verify3",
+    "kind": "verify",
+    "status": "mechanical",
+    "choice": "verified",
+    "prob": null,
+    "mode": "live",
+    "usage": null
+  },
+  {
+    "rid": "test:trainticket/runtime/61#pick4",
+    "kind": "pick",
+    "status": "mechanical",
+    "choice": 0,
+    "prob": null,
+    "mode": "live",
+    "usage": null
+  },
+  {
+    "rid": "test:trainticket/runtime/61#verify4",
+    "kind": "verify",
+    "status": "mechanical",
+    "choice": "verified",
+    "prob": null,
+    "mode": "live",
+    "usage": null
+  },
+  {
+    "rid": "test:boutique/codedefect/60#route",
+    "kind": "route",
+    "status": "ans",
+    "choice": "codedefect",
+    "prob": null,
+    "mode": "live",
+    "usage": {
+      "input_tokens": 223
+    }
+  },
+  {
+    "rid": "test:boutique/codedefect/60#pick1",
+    "kind": "pick",
+    "status": "ans",
+    "choice": 0,
+    "prob": null,
+    "mode": "live",
+    "usage": {
+      "input_tokens": 201
+    }
+  },
+  {
+    "rid": "test:boutique/codedefect/60#verify1",
+    "kind": "verify",
+    "status": "ans",
+    "choice": "verified",
+    "prob": null,
+    "mode": "live",
+    "usage": {
+      "input_tokens": 460
+    }
+  },
+  {
+    "rid": "test:boutique/codedefect/60#pick2",
+    "kind": "pick",
+    "status": "mechanical",
+    "choice": 0,
+    "prob": null,
+    "mode": "live",
+    "usage": null
+  },
+  {
+    "rid": "test:boutique/codedefect/60#verify2",
+    "kind": "verify",
+    "status": "mechanical",
+    "choice": "verified",
+    "prob": null,
+    "mode": "live",
+    "usage": null
+  },
+  {
+    "rid": "test:boutique/codedefect/60#pick3",
+    "kind": "pick",
+    "status": "mechanical",
+    "choice": 0,
+    "prob": null,
+    "mode": "live",
+    "usage": null
+  },
+  {
+    "rid": "test:boutique/codedefect/60#verify3",
+    "kind": "verify",
+    "status": "mechanical",
+    "choice": "verified",
+    "prob": null,
+    "mode": "live",
+    "usage": null
+  },
+  {
+    "rid": "test:boutique/admission/32#route",
+    "kind": "route",
+    "status": "ans",
+    "choice": "admission",
+    "prob": null,
+    "mode": "live",
+    "usage": {
+      "input_tokens": 151
+    }
+  },
+  {
+    "rid": "test:boutique/admission/32#pick1",
+    "kind": "pick",
+    "status": "mechanical",
+    "choice": null,
+    "prob": null,
+    "mode": "live",
+    "usage": null
+  },
+  {
+    "rid": "test:boutique/admission/32#verify1",
+    "kind": "verify",
+    "status": "mechanical",
+    "choice": "unverified",
+    "prob": null,
+    "mode": "live",
+    "usage": null
+  },
+  {
+    "rid": "test:boutique/admission/32#pick2",
+    "kind": "pick",
+    "status": "mechanical",
+    "choice": 0,
+    "prob": null,
+    "mode": "live",
+    "usage": null
+  },
+  {
+    "rid": "test:boutique/admission/32#verify2",
+    "kind": "verify",
+    "status": "mechanical",
+    "choice": "verified",
+    "prob": null,
+    "mode": "live",
+    "usage": null
+  },
+  {
+    "rid": "test:boutique/admission/32#pick3",
+    "kind": "pick",
+    "status": "mechanical",
+    "choice": 0,
+    "prob": null,
+    "mode": "live",
+    "usage": null
+  },
+  {
+    "rid": "test:boutique/admission/32#verify3",
+    "kind": "verify",
+    "status": "mechanical",
+    "choice": "verified",
+    "prob": null,
+    "mode": "live",
+    "usage": null
+  },
+  {
+    "rid": "test:boutique/scheduling/109#route",
+    "kind": "route",
+    "status": "ans",
+    "choice": "scheduling",
+    "prob": null,
+    "mode": "live",
+    "usage": {
+      "input_tokens": 228
+    }
+  },
+  {
+    "rid": "test:boutique/scheduling/109#pick1",
+    "kind": "pick",
+    "status": "mechanical",
+    "choice": 0,
+    "prob": null,
+    "mode": "live",
+    "usage": null
+  },
+  {
+    "rid": "test:boutique/scheduling/109#verify1",
+    "kind": "verify",
+    "status": "mechanical",
+    "choice": "verified",
+    "prob": null,
+    "mode": "live",
+    "usage": null
+  },
+  {
+    "rid": "test:boutique/scheduling/109#pick2",
+    "kind": "pick",
+    "status": "mechanical",
+    "choice": 0,
+    "prob": null,
+    "mode": "live",
+    "usage": null
+  },
+  {
+    "rid": "test:boutique/scheduling/109#verify2",
+    "kind": "verify",
+    "status": "mechanical",
+    "choice": "verified",
+    "prob": null,
+    "mode": "live",
+    "usage": null
+  },
+  {
+    "rid": "test:boutique/scheduling/109#pick3",
+    "kind": "pick",
+    "status": "mechanical",
+    "choice": 0,
+    "prob": null,
+    "mode": "live",
+    "usage": null
+  },
+  {
+    "rid": "test:boutique/scheduling/109#verify3",
+    "kind": "verify",
+    "status": "mechanical",
+    "choice": "verified",
+    "prob": null,
+    "mode": "live",
+    "usage": null
+  },
+  {
+    "rid": "test:boutique/scheduling/109#pick4",
+    "kind": "pick",
+    "status": "mechanical",
+    "choice": 0,
+    "prob": null,
+    "mode": "live",
+    "usage": null
+  },
+  {
+    "rid": "test:boutique/scheduling/109#verify4",
+    "kind": "verify",
+    "status": "mechanical",
+    "choice": "verified",
+    "prob": null,
+    "mode": "live",
+    "usage": null
+  },
+  {
+    "rid": "test:boutique/runtime/32#route",
+    "kind": "route",
+    "status": "ans",
+    "choice": "runtime",
+    "prob": null,
+    "mode": "live",
+    "usage": {
+      "input_tokens": 160
+    }
+  },
+  {
+    "rid": "test:boutique/runtime/32#pick1",
+    "kind": "pick",
+    "status": "mechanical",
+    "choice": 0,
+    "prob": null,
+    "mode": "live",
+    "usage": null
+  },
+  {
+    "rid": "test:boutique/runtime/32#verify1",
+    "kind": "verify",
+    "status": "mechanical",
+    "choice": "verified",
+    "prob": null,
+    "mode": "live",
+    "usage": null
+  },
+  {
+    "rid": "test:boutique/runtime/32#pick2",
+    "kind": "pick",
+    "status": "mechanical",
+    "choice": 0,
+    "prob": null,
+    "mode": "live",
+    "usage": null
+  },
+  {
+    "rid": "test:boutique/runtime/32#verify2",
+    "kind": "verify",
+    "status": "mechanical",
+    "choice": "verified",
+    "prob": null,
+    "mode": "live",
+    "usage": null
+  },
+  {
+    "rid": "test:boutique/runtime/32#pick3",
+    "kind": "pick",
+    "status": "mechanical",
+    "choice": 0,
+    "prob": null,
+    "mode": "live",
+    "usage": null
+  },
+  {
+    "rid": "test:boutique/runtime/32#verify3",
+    "kind": "verify",
+    "status": "mechanical",
+    "choice": "verified",
+    "prob": null,
+    "mode": "live",
+    "usage": null
+  }
+]

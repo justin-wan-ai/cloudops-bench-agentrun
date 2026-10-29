@@ -1,0 +1,973 @@
+{
+ "case_id": "boutique/admission/14",
+ "system_name": "boutique",
+ "question": "Service Availability Disruption.",
+ "case_path": "/Users/justinwan/work/workspace/cloudops_bench_rsi/repo/benchmark/boutique/admission/14",
+ "max_steps": 10,
+ "current_step": 5,
+ "finished": true,
+ "stop_reason": "submit",
+ "final_answer": "{\"key_evidence_summary\": \"cpu-request-quota: requests.cpu=2 requested, requests.cpu=10 used, limit requests.cpu=10\", \"top_3_predictions\": [{\"rank\": 1, \"fault_object\": \"namespace/boutique\", \"root_cause\": \"namespace_cpu_quota_exceeded\"}, {\"rank\": 2, \"fault_object\": \"namespace/boutique\", \"root_cause\": \"namespace_cpu_quota_exceeded\"}, {\"rank\": 3, \"fault_object\": \"namespace/boutique\", \"root_cause\": \"namespace_cpu_quota_exceeded\"}]}",
+ "metadata": {
+  "namespace": "boutique",
+  "query": "Service Availability Disruption.",
+  "fault_category": "admission",
+  "model_name": "agentrun-v0.13"
+ },
+ "steps": [
+  {
+   "step_id": 0,
+   "action_type": "tool",
+   "action_name": "GetResources",
+   "action_input": {
+    "namespace": "boutique",
+    "resource_type": "pods",
+    "output_wide": true
+   },
+   "observation": "NAME                                     READY   STATUS    RESTARTS   AGE   IP             NODE        NOMINATED NODE   READINESS GATES\nadservice-b7d6498c7-jwrkc                1/1     Running   0          94s   172.20.1.229   worker-01   <none>           <none>\ncartservice-8cbf5b9d4-qtzqr              1/1     Running   0          94s   172.20.2.65    worker-02   <none>           <none>\ncurrencyservice-8587d7cfd7-z7wn6         1/1     Running   0          94s   172.20.1.230   worker-01   <none>           <none>\nemailservice-5dcd9bdff-sfjd5             1/1     Running   0          93s   172.20.2.66    worker-02   <none>           <none>\nfrontend-64bcd9854d-gjfsr                1/1     Running   0          93s   172.20.3.153   worker-03   <none>           <none>\npaymentservice-5797775987-n2gxg          1/1     Running   0          93s   172.20.2.67    worker-02   <none>           <none>\nproductcatalogservice-d78f7f8f7-9dgdn    1/1     Running   0          93s   172.20.1.231   worker-01   <none>           <none>\nrecommendationservice-55d4896647-dwthk   1/1     Running   0          93s   172.20.3.154   worker-03   <none>           <none>\nredis-cart-869b6f5f6d-gmvd9              1/1     Running   0          92s   172.20.1.232   worker-01   <none>           <none>\nshippingservice-77f56d9479-lsc48         1/1     Running   0          92s   172.20.2.68    worker-02   <none>           <none>\n",
+   "error": null,
+   "purpose": "pod readiness census",
+   "tool_latency": null
+  },
+  {
+   "step_id": 1,
+   "action_type": "tool",
+   "action_name": "GetResources",
+   "action_input": {
+    "namespace": "boutique",
+    "resource_type": "deployments"
+   },
+   "observation": "NAME                    READY   UP-TO-DATE   AVAILABLE   AGE\nadservice               1/1     1            1           100s\ncartservice             1/1     1            1           100s\ncheckoutservice         0/1     0            0           98s\ncurrencyservice         1/1     1            1           100s\nemailservice            1/1     1            1           100s\nfrontend                1/1     1            1           99s\npaymentservice          1/1     1            1           99s\nproductcatalogservice   1/1     1            1           99s\nrecommendationservice   1/1     1            1           99s\nredis-cart              1/1     1            1           98s\nshippingservice         1/1     1            1           98s\n",
+   "error": null,
+   "purpose": "which deployment never got a pod",
+   "tool_latency": null
+  },
+  {
+   "step_id": 2,
+   "action_type": "tool",
+   "action_name": "GetResources",
+   "action_input": {
+    "namespace": "boutique",
+    "resource_type": "events"
+   },
+   "observation": "2m1s        Normal    SuccessfulCreate    replicaset/shippingservice-77f56d9479         Created pod: shippingservice-77f56d9479-lsc48\n2m1s        Normal    ScalingReplicaSet   deployment/checkoutservice                    Scaled up replica set checkoutservice-7545f6f597 to 1\n2m1s        Normal    Started             pod/recommendationservice-55d4896647-dwthk    Started container server\n2m1s        Normal    ScalingReplicaSet   deployment/shippingservice                    Scaled up replica set shippingservice-77f56d9479 to 1\n2m1s        Warning   FailedCreate        replicaset/checkoutservice-7545f6f597         Error creating: pods \"checkoutservice-7545f6f597-7ql2r\" is forbidden: exceeded quota: cpu-request-quota, requested: requests.cpu=2, used: requests.cpu=10, limited: requests.cpu=10\n2m1s        Normal    Started             pod/redis-cart-869b6f5f6d-gmvd9               Started container redis\n2m1s        Normal    Started             pod/shippingservice-77f56d9479-lsc48          Started container server\n2m1s        Normal    Scheduled           pod/shippingservice-77f56d9479-lsc48          Successfully assigned boutique/shippingservice-77f56d9479-lsc48 to worker-02\n2m1s        Warning   FailedCreate        replicaset/checkoutservice-7545f6f597         Error creating: pods \"checkoutservice-7545f6f597-rg289\" is forbidden: exceeded quota: cpu-request-quota, requested: requests.cpu=2, used: requests.cpu=10, limited: requests.cpu=10\n2m1s        Warning   FailedCreate        replicaset/checkoutservice-7545f6f597         Error creating: pods \"checkoutservice-7545f6f597-wx82t\" is forbidden: exceeded quota: cpu-request-quota, requested: requests.cpu=2, used: requests.cpu=10, limited: requests.cpu=10\n2m1s        Normal    Pulled              pod/productcatalogservice-d78f7f8f7-9dgdn     Container image \"us-central1-docker.pkg.dev/google-samples/microservices-demo/productcatalogservice:v0.10.3\" already present on machine\n2m1s        Warning   FailedCreate        replicaset/checkoutservice-7545f6f597         Error creating: pods \"checkoutservice-7545f6f597-c7774\" is forbidden: exceeded quota: cpu-request-quota, requested: requests.cpu=2, used: requests.cpu=10, limited: requests.cpu=10\n2m1s        Warning   FailedCreate        replicaset/checkoutservice-7545f6f597         Error creating: pods \"checkoutservice-7545f6f597-x8bgp\" is forbidden: exceeded quota: cpu-request-quota, requested: requests.cpu=2, used: requests.cpu=10, limited: requests.cpu=10\n2m1s        Normal    Created             pod/productcatalogservice-d78f7f8f7-9dgdn     Created container server\n2m1s        Normal    ScalingReplicaSet   deployment/redis-cart                         Scaled up replica set redis-cart-869b6f5f6d to 1\n2m          Warning   FailedCreate        replicaset/checkoutservice-7545f6f597         Error creating: pods \"checkoutservice-7545f6f597-8whpm\" is forbidden: exceeded quota: cpu-request-quota, requested: requests.cpu=2, used: requests.cpu=10, limited: requests.cpu=10\n2m          Warning   FailedCreate        replicaset/checkoutservice-7545f6f597         Error creating: pods \"checkoutservice-7545f6f597-xsq7f\" is forbidden: exceeded quota: cpu-request-quota, requested: requests.cpu=2, used: requests.cpu=10, limited: requests.cpu=10\n2m          Warning   FailedCreate        replicaset/checkoutservice-7545f6f597         Error creating: pods \"checkoutservice-7545f6f597-kwrbb\" is forbidden: exceeded quota: cpu-request-quota, requested: requests.cpu=2, used: requests.cpu=10, limited: requests.cpu=10\n2m          Warning   FailedCreate        replicaset/checkoutservice-7545f6f597         Error creating: pods \"checkoutservice-7545f6f597-ln926\" is forbidden: exceeded quota: cpu-request-quota, requested: requests.cpu=2, used: requests.cpu=10, limited: requests.cpu=10\n39s         Warning   FailedCreate        replicaset/checkoutservice-7545f6f597         (combined from similar events): Error creating: pods \"checkoutservice-7545f6f597-4ghj9\" is forbidden: exceeded quota: cpu-request-quota, requested: requests.cpu=2, used: requests.cpu=10, limited: requests.cpu=10\n",
+   "error": null,
+   "purpose": "quota/RBAC rejection surfaces as Warning events",
+   "tool_latency": null
+  },
+  {
+   "step_id": 3,
+   "action_type": "tool",
+   "action_name": "GetResources",
+   "action_input": {
+    "namespace": "boutique",
+    "resource_type": "resourcequota"
+   },
+   "observation": "NAME                AGE    REQUEST               LIMIT\ncpu-request-quota   112s   requests.cpu: 10/10   \n",
+   "error": null,
+   "purpose": "quota headroom",
+   "tool_latency": null
+  },
+  {
+   "step_id": 4,
+   "action_type": "tool",
+   "action_name": "GetResources",
+   "action_input": {
+    "namespace": "boutique",
+    "resource_type": "services"
+   },
+   "observation": "NAME                    TYPE        CLUSTER-IP      EXTERNAL-IP   PORT(S)        AGE\nadservice               ClusterIP   10.68.184.241   <none>        9555/TCP       96s\ncartservice             ClusterIP   10.68.14.228    <none>        7070/TCP       96s\ncheckoutservice         ClusterIP   10.68.168.63    <none>        5050/TCP       94s\ncurrencyservice         ClusterIP   10.68.62.231    <none>        7000/TCP       96s\nemailservice            ClusterIP   10.68.74.142    <none>        5000/TCP       96s\nfrontend                ClusterIP   10.68.69.159    <none>        80/TCP         95s\nfrontend-external       NodePort    10.68.82.36     <none>        80:30080/TCP   95s\npaymentservice          ClusterIP   10.68.193.209   <none>        50051/TCP      95s\nproductcatalogservice   ClusterIP   10.68.34.186    <none>        3550/TCP       95s\nrecommendationservice   ClusterIP   10.68.140.4     <none>        8080/TCP       95s\nredis-cart              ClusterIP   10.68.126.169   <none>        6379/TCP       94s\nshippingservice         ClusterIP   10.68.38.35     <none>        50051/TCP      94s\n",
+   "error": null,
+   "purpose": "service ports and selectors",
+   "tool_latency": null
+  }
+ ],
+ "agentrun": {
+  "tag": "test",
+  "dsl": "workspace/dsl_versions/v0.13.dsl.txt",
+  "dsl_version": "0.13",
+  "sop": {
+   "sop": "boutique-runtime-rca",
+   "scope": {
+    "system": "boutique",
+    "families": [
+     "runtime",
+     "admission",
+     "scheduling",
+     "startup",
+     "service",
+     "performance",
+     "infrastructure",
+     "codedefect"
+    ],
+    "severity": [
+     "SEV2",
+     "SEV3"
+    ]
+   },
+   "owner": "sre-platform",
+   "approved_by": [
+    "oncall-primary",
+    "sre-lead"
+   ],
+   "reviewed_at": "2026-10-23",
+   "change_ticket": "OPS-1241",
+   "boundaries": "R4 已知：`node_network_delay` 若快照里没有任何 Node 级 retrans 告警（例：performance/25），\n本 SOP 会退回 pod 级判断（当前工具面无法区分 pod 与 node 的延迟注入）。\n只读诊断：本 SOP 不执行任何写操作（重启/回滚/扩缩容），也不做对外播报；\n它回答\"最可能的根因与受害对象\"，处置与沟通由值班按 runbook 人工执行。\n不覆盖 SEV1（需 incident commander 介入）与变更引发的问题（走变更回滚流程）。\n输入是冻结快照：诊断结论对\"快照时刻\"成立，恢复后需重新取证。\nR1 已知边界：PVC 的 requested size / accessMode 在本 benchmark 的工具面不可见，\n因此 pvc_capacity 与 pvc_access_mode 无法区分（同一分数并列，交给 jev 或升级）。\n"
+  },
+  "params": {
+   "cands_cap": 8,
+   "max_waves": 10,
+   "min_waves": 5,
+   "steps_per_wave": 1,
+   "dominance_ratio": 1.5,
+   "conf_min": 0.0,
+   "escalate": true,
+   "escalate_budget": 8,
+   "judge_on_codedefect": true,
+   "jev_route": true,
+   "jev_pick": true,
+   "jev_verify": true,
+   "route_fallback": "runtime"
+  },
+  "nodes_executed": [
+   "anchors:extract_anchors",
+   "census:probes",
+   "route:decide",
+   "plan:build_plan",
+   "probe:probes",
+   "derive:derive_candidates",
+   "pick:decide",
+   "verify:decide",
+   "probe:probes",
+   "derive:derive_candidates",
+   "pick:decide",
+   "verify:decide",
+   "probe:probes",
+   "derive:derive_candidates",
+   "pick:decide",
+   "verify:decide",
+   "probe:probes",
+   "derive:derive_candidates",
+   "pick:decide",
+   "verify:decide",
+   "probe:probes",
+   "derive:derive_candidates",
+   "pick:decide",
+   "verify:decide",
+   "probe:probes",
+   "derive:derive_candidates",
+   "pick:decide",
+   "verify:decide",
+   "escalate:escalate",
+   "answer:normalize_answer",
+   "persist:persist_trace"
+  ],
+  "census": [
+   {
+    "step": "pods",
+    "gate": "always"
+   },
+   {
+    "step": "alerts",
+    "gate": "healthy_system"
+   }
+  ],
+  "plan": [
+   {
+    "step": "deployments",
+    "gate": "always",
+    "wave": 1
+   },
+   {
+    "step": "events",
+    "gate": "always",
+    "wave": 2
+   },
+   {
+    "step": "resourcequota",
+    "gate": "always",
+    "wave": 3
+   },
+   {
+    "step": "services",
+    "gate": "always",
+    "wave": 4
+   },
+   {
+    "step": "pvcs",
+    "gate": "volume_evidence",
+    "wave": 5
+   },
+   {
+    "step": "describe_deployment",
+    "gate": "weak_very_strong",
+    "wave": 6
+   }
+  ],
+  "family": "admission",
+  "state_wiring": {
+   "family": "$route.family",
+   "route_probs": "$route.probabilities",
+   "picked": "$pick.picked",
+   "pick_dominant": "$pick.dominant",
+   "verify_status": "$verify.status",
+   "verify_prob": "$verify.confidence"
+  },
+  "bindings": {
+   "anchors": {
+    "anchors": "Anchors(case_id='boutique/admission/14', system='boutique', namespace='boutique', query='Service Availability Disruption.', difficulty='medium', symptoms=['unavailable'], mentioned_apps=[], priors={'db_service': '', 'db_port': 0})"
+   },
+   "route": {
+    "family": "admission",
+    "probabilities": {},
+    "route_why": "mechanism_mode"
+   },
+   "plan": {
+    "plan": "[{'name': 'deployments', 'key': 'deployments', 'tool': 'GetResources', 'args': <function _args_deployments at 0x10ee437e0>, 'purpose': 'which deployment never got a pod', 'when': <function compile_steps.<locals>.<lambda> at 0x10eec9760>, 'gate': 'always', 'wave': 1}, {'name': 'events', 'key': 'events', 'tool': 'GetResources', 'args': <function _args_events at 0x10ee43880>, 'purpose': 'quota/RBAC rejection surfaces as Warning events', 'when': <function compile_steps.<locals>.<lambda> at 0x10eec98a0>, 'gate': 'always', 'wave': 2}, {'name': 'resourcequota', 'key': 'resourcequota', 'tool': 'GetResources', 'args': <function _args_resourcequota at 0x10ee43920>, 'purpose': 'quota headroom', 'when': <function compile_steps.<locals>.<lambda> at 0x10eec9800>, 'gate': 'always', 'wave': 3}, {'name': 'services', 'key': 'services', 'tool': 'GetResources', 'args': <function _args_services at 0x10ee43d80>, 'purpose': 'service ports and selectors', 'when': <function compile_steps.<locals>.<lambda> at 0x10eec9940>, 'gate': 'always', 'wave': 4}, {'name': 'pvcs', 'key': 'pvcs', 'tool': 'GetResources', 'args': <function _args_pvcs at 0x10ee43a60>, 'purpose': 'PVC status/capacity/class table', 'when': <function compile_steps.<locals>.<lambda> at 0x10eec99e0>, 'gate': 'volume_evidence', 'wave': 5}, {'name': 'describe_deployment', 'key': 'describe:deployment', 'tool': 'DescribeResource', 'args': <function _args_describe_deployment at 0x10ee43f60>, 'purpose': 'replica accounting for the starved deployment', 'when': <function compile_steps.<locals>.<lambda> at 0x10eec9a80>, 'gate': 'weak_very_strong', 'wave': 6}]"
+   },
+   "derive": {
+    "candidates": "[Candidate(root_cause='namespace_cpu_quota_exceeded', object='namespace/boutique', score=0.99, evidence='cpu-request-quota: requests.cpu=2 requested, requests.cpu=10 used, limit requests.cpu=10', rule='quota_event')]"
+   },
+   "pick": {
+    "picked": 0,
+    "dominant": true,
+    "pick_why": "no_new_evidence"
+   },
+   "verify": {
+    "status": "verified",
+    "confidence": null,
+    "verify_why": "dominant_candidate"
+   },
+   "escalate": {
+    "answer": null
+   },
+   "answer": {
+    "final": {
+     "key_evidence_summary": "cpu-request-quota: requests.cpu=2 requested, requests.cpu=10 used, limit requests.cpu=10",
+     "top_3_predictions": [
+      {
+       "rank": 1,
+       "fault_object": "namespace/boutique",
+       "root_cause": "namespace_cpu_quota_exceeded"
+      },
+      {
+       "rank": 2,
+       "fault_object": "namespace/boutique",
+       "root_cause": "namespace_cpu_quota_exceeded"
+      },
+      {
+       "rank": 3,
+       "fault_object": "namespace/boutique",
+       "root_cause": "namespace_cpu_quota_exceeded"
+      }
+     ]
+    }
+   }
+  },
+  "picked": {
+   "root_cause": "namespace_cpu_quota_exceeded",
+   "object": "namespace/boutique",
+   "score": 0.99,
+   "evidence": "cpu-request-quota: requests.cpu=2 requested, requests.cpu=10 used, limit requests.cpu=10",
+   "rule": "quota_event"
+  },
+  "pick_why": "",
+  "verify_prob": null,
+  "verify_verdict": "verified",
+  "verified": true,
+  "escalated": false,
+  "escalate_reason": "",
+  "escalate_steps": 0,
+  "waves": 6,
+  "candidates": [
+   {
+    "root_cause": "namespace_cpu_quota_exceeded",
+    "object": "namespace/boutique",
+    "score": 0.99,
+    "evidence": "cpu-request-quota: requests.cpu=2 requested, requests.cpu=10 used, limit requests.cpu=10",
+    "rule": "quota_event"
+   }
+  ],
+  "jev": [
+   {
+    "rid": "test:boutique/admission/14#route",
+    "kind": "route",
+    "node": "route",
+    "mode": "mechanism",
+    "options": [
+     "admission",
+     "infrastructure"
+    ],
+    "status": "mechanical",
+    "guard": "unavailable",
+    "use": "first_option",
+    "choice": "admission",
+    "why": "mechanism_mode",
+    "dominant": false,
+    "continue_loop": false,
+    "escalate": false
+   },
+   {
+    "rid": "test:boutique/admission/14#pick1",
+    "kind": "pick",
+    "node": "pick",
+    "mode": "mechanism",
+    "options": [],
+    "status": "mechanical",
+    "guard": "no_options",
+    "use": "none",
+    "choice": null,
+    "why": "no_candidates",
+    "dominant": false,
+    "continue_loop": false,
+    "escalate": false
+   },
+   {
+    "rid": "test:boutique/admission/14#verify1",
+    "kind": "verify",
+    "node": "verify",
+    "mode": "mechanism",
+    "options": [
+     "supported",
+     "insufficient",
+     "contradicted"
+    ],
+    "status": "mechanical",
+    "guard": "no_pick",
+    "use": "unverified",
+    "choice": "unverified",
+    "why": "nothing_to_verify",
+    "dominant": false,
+    "continue_loop": false,
+    "escalate": false
+   },
+   {
+    "rid": "test:boutique/admission/14#pick2",
+    "kind": "pick",
+    "node": "pick",
+    "mode": "mechanism",
+    "options": [
+     "c0"
+    ],
+    "status": "mechanical",
+    "guard": "top_over_second >= $params.dominance_ratio",
+    "use": "first_option",
+    "choice": 0,
+    "why": "dominance",
+    "dominant": true,
+    "continue_loop": false,
+    "escalate": false
+   },
+   {
+    "rid": "test:boutique/admission/14#verify2",
+    "kind": "verify",
+    "node": "verify",
+    "mode": "mechanism",
+    "options": [
+     "supported",
+     "insufficient",
+     "contradicted"
+    ],
+    "status": "mechanical",
+    "guard": "$pick.dominant",
+    "use": "verified",
+    "choice": "verified",
+    "why": "dominant_candidate",
+    "dominant": false,
+    "continue_loop": false,
+    "escalate": false
+   },
+   {
+    "rid": "test:boutique/admission/14#pick3",
+    "kind": "pick",
+    "node": "pick",
+    "mode": "mechanism",
+    "options": [
+     "c0"
+    ],
+    "status": "mechanical",
+    "guard": "unchanged_since_last",
+    "use": "previous",
+    "choice": 0,
+    "why": "no_new_evidence",
+    "dominant": true,
+    "continue_loop": false,
+    "escalate": false
+   },
+   {
+    "rid": "test:boutique/admission/14#verify3",
+    "kind": "verify",
+    "node": "verify",
+    "mode": "mechanism",
+    "options": [
+     "supported",
+     "insufficient",
+     "contradicted"
+    ],
+    "status": "mechanical",
+    "guard": "$pick.dominant",
+    "use": "verified",
+    "choice": "verified",
+    "why": "dominant_candidate",
+    "dominant": false,
+    "continue_loop": false,
+    "escalate": false
+   },
+   {
+    "rid": "test:boutique/admission/14#pick4",
+    "kind": "pick",
+    "node": "pick",
+    "mode": "mechanism",
+    "options": [
+     "c0"
+    ],
+    "status": "mechanical",
+    "guard": "unchanged_since_last",
+    "use": "previous",
+    "choice": 0,
+    "why": "no_new_evidence",
+    "dominant": true,
+    "continue_loop": false,
+    "escalate": false
+   },
+   {
+    "rid": "test:boutique/admission/14#verify4",
+    "kind": "verify",
+    "node": "verify",
+    "mode": "mechanism",
+    "options": [
+     "supported",
+     "insufficient",
+     "contradicted"
+    ],
+    "status": "mechanical",
+    "guard": "$pick.dominant",
+    "use": "verified",
+    "choice": "verified",
+    "why": "dominant_candidate",
+    "dominant": false,
+    "continue_loop": false,
+    "escalate": false
+   },
+   {
+    "rid": "test:boutique/admission/14#pick5",
+    "kind": "pick",
+    "node": "pick",
+    "mode": "mechanism",
+    "options": [
+     "c0"
+    ],
+    "status": "mechanical",
+    "guard": "unchanged_since_last",
+    "use": "previous",
+    "choice": 0,
+    "why": "no_new_evidence",
+    "dominant": true,
+    "continue_loop": false,
+    "escalate": false
+   },
+   {
+    "rid": "test:boutique/admission/14#verify5",
+    "kind": "verify",
+    "node": "verify",
+    "mode": "mechanism",
+    "options": [
+     "supported",
+     "insufficient",
+     "contradicted"
+    ],
+    "status": "mechanical",
+    "guard": "$pick.dominant",
+    "use": "verified",
+    "choice": "verified",
+    "why": "dominant_candidate",
+    "dominant": false,
+    "continue_loop": false,
+    "escalate": false
+   },
+   {
+    "rid": "test:boutique/admission/14#pick6",
+    "kind": "pick",
+    "node": "pick",
+    "mode": "mechanism",
+    "options": [
+     "c0"
+    ],
+    "status": "mechanical",
+    "guard": "unchanged_since_last",
+    "use": "previous",
+    "choice": 0,
+    "why": "no_new_evidence",
+    "dominant": true,
+    "continue_loop": false,
+    "escalate": false
+   },
+   {
+    "rid": "test:boutique/admission/14#verify6",
+    "kind": "verify",
+    "node": "verify",
+    "mode": "mechanism",
+    "options": [
+     "supported",
+     "insufficient",
+     "contradicted"
+    ],
+    "status": "mechanical",
+    "guard": "$pick.dominant",
+    "use": "verified",
+    "choice": "verified",
+    "why": "dominant_candidate",
+    "dominant": false,
+    "continue_loop": false,
+    "escalate": false
+   }
+  ],
+  "nodes": [
+   {
+    "node": "code",
+    "id": "anchors",
+    "anchors": {
+     "case_id": "boutique/admission/14",
+     "system": "boutique",
+     "namespace": "boutique",
+     "query": "Service Availability Disruption.",
+     "difficulty": "medium",
+     "symptoms": [
+      "unavailable"
+     ],
+     "mentioned_apps": []
+    }
+   },
+   {
+    "node": "probes",
+    "plan": "census",
+    "wave": 0,
+    "executed": 1,
+    "steps": [
+     {
+      "key": "pods",
+      "tool": "GetResources",
+      "arguments": {
+       "namespace": "boutique",
+       "resource_type": "pods",
+       "output_wide": true
+      },
+      "gate": "always"
+     }
+    ],
+    "skipped": [
+     {
+      "step": "alerts",
+      "why": "gate healthy_system"
+     }
+    ]
+   },
+   {
+    "node": "decide",
+    "id": "route",
+    "rid": "test:boutique/admission/14#route",
+    "status": "mechanical",
+    "guard": "unavailable",
+    "use": "first_option",
+    "choice": "admission",
+    "dominant": false,
+    "why": "mechanism_mode"
+   },
+   {
+    "node": "code",
+    "id": "plan",
+    "family": "admission",
+    "plan": [
+     {
+      "step": "deployments",
+      "gate": "always",
+      "wave": 1
+     },
+     {
+      "step": "events",
+      "gate": "always",
+      "wave": 2
+     },
+     {
+      "step": "resourcequota",
+      "gate": "always",
+      "wave": 3
+     },
+     {
+      "step": "services",
+      "gate": "always",
+      "wave": 4
+     },
+     {
+      "step": "pvcs",
+      "gate": "volume_evidence",
+      "wave": 5
+     },
+     {
+      "step": "describe_deployment",
+      "gate": "weak_very_strong",
+      "wave": 6
+     }
+    ]
+   },
+   {
+    "node": "probes",
+    "plan": "family",
+    "wave": 1,
+    "executed": 1,
+    "steps": [
+     {
+      "key": "deployments",
+      "tool": "GetResources",
+      "arguments": {
+       "namespace": "boutique",
+       "resource_type": "deployments"
+      },
+      "gate": "always"
+     }
+    ],
+    "skipped": []
+   },
+   {
+    "node": "code",
+    "id": "derive",
+    "raw": 0,
+    "kept": 0,
+    "top": []
+   },
+   {
+    "node": "decide",
+    "id": "pick",
+    "rid": "test:boutique/admission/14#pick1",
+    "status": "mechanical",
+    "guard": "no_options",
+    "use": "none",
+    "choice": null,
+    "dominant": false,
+    "why": "no_candidates"
+   },
+   {
+    "node": "decide",
+    "id": "verify",
+    "rid": "test:boutique/admission/14#verify1",
+    "status": "mechanical",
+    "guard": "no_pick",
+    "use": "unverified",
+    "choice": "unverified",
+    "dominant": false,
+    "why": "nothing_to_verify"
+   },
+   {
+    "node": "probes",
+    "plan": "family",
+    "wave": 2,
+    "executed": 1,
+    "steps": [
+     {
+      "key": "events",
+      "tool": "GetResources",
+      "arguments": {
+       "namespace": "boutique",
+       "resource_type": "events"
+      },
+      "gate": "always"
+     }
+    ],
+    "skipped": []
+   },
+   {
+    "node": "code",
+    "id": "derive",
+    "raw": 10,
+    "kept": 1,
+    "top": [
+     {
+      "root_cause": "namespace_cpu_quota_exceeded",
+      "object": "namespace/boutique",
+      "score": 0.99,
+      "evidence": "cpu-request-quota: requests.cpu=2 requested, requests.cpu=10 used, limit requests.cpu=10",
+      "rule": "quota_event"
+     }
+    ]
+   },
+   {
+    "node": "decide",
+    "id": "pick",
+    "rid": "test:boutique/admission/14#pick2",
+    "status": "mechanical",
+    "guard": "top_over_second >= $params.dominance_ratio",
+    "use": "first_option",
+    "choice": 0,
+    "dominant": true,
+    "why": "dominance"
+   },
+   {
+    "node": "decide",
+    "id": "verify",
+    "rid": "test:boutique/admission/14#verify2",
+    "status": "mechanical",
+    "guard": "$pick.dominant",
+    "use": "verified",
+    "choice": "verified",
+    "dominant": false,
+    "why": "dominant_candidate"
+   },
+   {
+    "node": "probes",
+    "plan": "family",
+    "wave": 3,
+    "executed": 1,
+    "steps": [
+     {
+      "key": "resourcequota",
+      "tool": "GetResources",
+      "arguments": {
+       "namespace": "boutique",
+       "resource_type": "resourcequota"
+      },
+      "gate": "always"
+     }
+    ],
+    "skipped": []
+   },
+   {
+    "node": "code",
+    "id": "derive",
+    "raw": 11,
+    "kept": 1,
+    "top": [
+     {
+      "root_cause": "namespace_cpu_quota_exceeded",
+      "object": "namespace/boutique",
+      "score": 0.99,
+      "evidence": "cpu-request-quota: requests.cpu=2 requested, requests.cpu=10 used, limit requests.cpu=10",
+      "rule": "quota_event"
+     }
+    ]
+   },
+   {
+    "node": "decide",
+    "id": "pick",
+    "rid": "test:boutique/admission/14#pick3",
+    "status": "mechanical",
+    "guard": "unchanged_since_last",
+    "use": "previous",
+    "choice": 0,
+    "dominant": true,
+    "why": "no_new_evidence"
+   },
+   {
+    "node": "decide",
+    "id": "verify",
+    "rid": "test:boutique/admission/14#verify3",
+    "status": "mechanical",
+    "guard": "$pick.dominant",
+    "use": "verified",
+    "choice": "verified",
+    "dominant": false,
+    "why": "dominant_candidate"
+   },
+   {
+    "node": "probes",
+    "plan": "family",
+    "wave": 4,
+    "executed": 1,
+    "steps": [
+     {
+      "key": "services",
+      "tool": "GetResources",
+      "arguments": {
+       "namespace": "boutique",
+       "resource_type": "services"
+      },
+      "gate": "always"
+     }
+    ],
+    "skipped": []
+   },
+   {
+    "node": "code",
+    "id": "derive",
+    "raw": 11,
+    "kept": 1,
+    "top": [
+     {
+      "root_cause": "namespace_cpu_quota_exceeded",
+      "object": "namespace/boutique",
+      "score": 0.99,
+      "evidence": "cpu-request-quota: requests.cpu=2 requested, requests.cpu=10 used, limit requests.cpu=10",
+      "rule": "quota_event"
+     }
+    ]
+   },
+   {
+    "node": "decide",
+    "id": "pick",
+    "rid": "test:boutique/admission/14#pick4",
+    "status": "mechanical",
+    "guard": "unchanged_since_last",
+    "use": "previous",
+    "choice": 0,
+    "dominant": true,
+    "why": "no_new_evidence"
+   },
+   {
+    "node": "decide",
+    "id": "verify",
+    "rid": "test:boutique/admission/14#verify4",
+    "status": "mechanical",
+    "guard": "$pick.dominant",
+    "use": "verified",
+    "choice": "verified",
+    "dominant": false,
+    "why": "dominant_candidate"
+   },
+   {
+    "node": "probes",
+    "plan": "family",
+    "wave": 5,
+    "executed": 0,
+    "steps": [],
+    "skipped": [
+     {
+      "step": "pvcs",
+      "why": "gate volume_evidence"
+     }
+    ]
+   },
+   {
+    "node": "code",
+    "id": "derive",
+    "raw": 11,
+    "kept": 1,
+    "top": [
+     {
+      "root_cause": "namespace_cpu_quota_exceeded",
+      "object": "namespace/boutique",
+      "score": 0.99,
+      "evidence": "cpu-request-quota: requests.cpu=2 requested, requests.cpu=10 used, limit requests.cpu=10",
+      "rule": "quota_event"
+     }
+    ]
+   },
+   {
+    "node": "decide",
+    "id": "pick",
+    "rid": "test:boutique/admission/14#pick5",
+    "status": "mechanical",
+    "guard": "unchanged_since_last",
+    "use": "previous",
+    "choice": 0,
+    "dominant": true,
+    "why": "no_new_evidence"
+   },
+   {
+    "node": "decide",
+    "id": "verify",
+    "rid": "test:boutique/admission/14#verify5",
+    "status": "mechanical",
+    "guard": "$pick.dominant",
+    "use": "verified",
+    "choice": "verified",
+    "dominant": false,
+    "why": "dominant_candidate"
+   },
+   {
+    "node": "probes",
+    "plan": "family",
+    "wave": 6,
+    "executed": 0,
+    "steps": [],
+    "skipped": [
+     {
+      "step": "describe_deployment",
+      "why": "gate weak_very_strong"
+     }
+    ]
+   },
+   {
+    "node": "code",
+    "id": "derive",
+    "raw": 11,
+    "kept": 1,
+    "top": [
+     {
+      "root_cause": "namespace_cpu_quota_exceeded",
+      "object": "namespace/boutique",
+      "score": 0.99,
+      "evidence": "cpu-request-quota: requests.cpu=2 requested, requests.cpu=10 used, limit requests.cpu=10",
+      "rule": "quota_event"
+     }
+    ]
+   },
+   {
+    "node": "decide",
+    "id": "pick",
+    "rid": "test:boutique/admission/14#pick6",
+    "status": "mechanical",
+    "guard": "unchanged_since_last",
+    "use": "previous",
+    "choice": 0,
+    "dominant": true,
+    "why": "no_new_evidence"
+   },
+   {
+    "node": "decide",
+    "id": "verify",
+    "rid": "test:boutique/admission/14#verify6",
+    "status": "mechanical",
+    "guard": "$pick.dominant",
+    "use": "verified",
+    "choice": "verified",
+    "dominant": false,
+    "why": "dominant_candidate"
+   },
+   {
+    "node": "loop",
+    "id": "waves",
+    "stop": "plan_exhausted",
+    "wave": 6
+   },
+   {
+    "node": "escalate",
+    "id": "escalate",
+    "fired": false,
+    "reasons": [],
+    "why": "no reason"
+   },
+   {
+    "node": "code",
+    "id": "answer",
+    "predictions": [
+     {
+      "rank": 1,
+      "fault_object": "namespace/boutique",
+      "root_cause": "namespace_cpu_quota_exceeded"
+     },
+     {
+      "rank": 2,
+      "fault_object": "namespace/boutique",
+      "root_cause": "namespace_cpu_quota_exceeded"
+     },
+     {
+      "rank": 3,
+      "fault_object": "namespace/boutique",
+      "root_cause": "namespace_cpu_quota_exceeded"
+     }
+    ]
+   },
+   {
+    "node": "artifact",
+    "id": "persist",
+    "persisted": false,
+    "why": "written by the CLI driver"
+   }
+  ],
+  "notes": [],
+  "tool_calls": 5,
+  "model_calls": 0,
+  "tokens_in": 0,
+  "tokens_out": 0,
+  "wall_s": 0.05
+ }
+}

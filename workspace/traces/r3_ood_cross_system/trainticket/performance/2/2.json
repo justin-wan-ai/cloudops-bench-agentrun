@@ -1,0 +1,735 @@
+{
+ "case_id": "trainticket/performance/2",
+ "system_name": "trainticket",
+ "question": "Service quality degradation.",
+ "case_path": "/Users/justinwan/work/workspace/cloudops_bench_rsi/repo/benchmark/trainticket/performance/2",
+ "max_steps": 8,
+ "current_step": 3,
+ "finished": true,
+ "stop_reason": "submit",
+ "final_answer": "{\"key_evidence_summary\": \"network latency anomaly on the pod\", \"top_3_predictions\": [{\"rank\": 1, \"fault_object\": \"app/ts-contacts-service\", \"root_cause\": \"pod_network_delay\"}, {\"rank\": 2, \"fault_object\": \"app/ts-gateway-service\", \"root_cause\": \"pod_network_delay\"}, {\"rank\": 3, \"fault_object\": \"app/ts-preserve-service\", \"root_cause\": \"pod_network_delay\"}]}",
+ "metadata": {
+  "namespace": "train-ticket",
+  "query": "Service quality degradation.",
+  "fault_category": "performance",
+  "model_name": "agentrun-v0.9"
+ },
+ "steps": [
+  {
+   "step_id": 0,
+   "action_type": "tool",
+   "action_name": "GetResources",
+   "action_input": {
+    "namespace": "train-ticket",
+    "resource_type": "pods",
+    "output_wide": true,
+    "show_labels": true
+   },
+   "observation": "Error: Error: Only one of '--show-labels' or '-o wide' can be specified at a time for kubectl get.",
+   "error": null,
+   "purpose": "pod readiness census",
+   "tool_latency": null
+  },
+  {
+   "step_id": 1,
+   "action_type": "tool",
+   "action_name": "GetAlerts",
+   "action_input": {},
+   "observation": "{'status': 'has_anomalies', 'alert_count': 4, 'alerts': [{'type': 'Service', 'name': 'ts-contacts-service', 'entity_type': 'Service', 'entity_name': 'ts-contacts-service', 'time_range': '2026-03-16 14:37:43 ~ 2026-03-16 14:39:38', 'status': 'ABNORMAL', 'metric_category': 'LATENCY_DEGRADATION, THROUGHPUT_DROP', 'evidence': ['THROUGHPUT_DROP [RPS] | Normal=1.56req/s -> Current=0.53req/s (-66.1%)', 'LATENCY_DEGRADATION [Slow Response] | p50latency: Normal=7.52ms -> Current=4750.00ms (+63081.7%) | Peak=5125.00ms | p90latency: Normal=9.56ms -> Current=8875.00ms (+92734.7%) | Peak=9025.00ms']}, {'type': 'Service', 'name': 'ts-gateway-service', 'entity_type': 'Service', 'entity_name': 'ts-gateway-service', 'time_range': '2026-03-16 14:37:43 ~ 2026-03-16 14:39:38', 'status': 'ABNORMAL', 'metric_category': 'LATENCY_DEGRADATION', 'evidence': ['LATENCY_DEGRADATION [Slow Response] | p90latency: Normal=199.30ms -> Current=5318.01ms (+2568.3%) | Peak=5945.95ms']}, {'type': 'Service', 'name': 'ts-preserve-service', 'entity_type': 'Service', 'entity_name': 'ts-preserve-service', 'time_range': '2026-03-16 14:37:43 ~ 2026-03-16 14:39:38', 'status': 'ABNORMAL', 'metric_category': 'LATENCY_DEGRADATION', 'evidence': ['LATENCY_DEGRADATION [Slow Response] | p50latency: Normal=202.40ms -> Current=7500.00ms (+3605.5%) | Peak=7638.89ms | p90latency: Normal=406.58ms -> Current=9500.00ms (+2236.6%) | Peak=9750.00ms']}, {'type': 'Service', 'name': 'ts-ui-dashboard', 'entity_type': 'Service', 'entity_name': 'ts-ui-dashboard', 'time_range': '2026-03-16 14:37:43 ~ 2026-03-16 14:39:38', 'status': 'ABNORMAL', 'metric_category': 'LATENCY_DEGRADATION', 'evidence': ['LATENCY_DEGRADATION [Slow Response] | p90latency: Normal=199.23ms -> Current=4927.08ms (+2373.1%) | Peak=5722.22ms']}]}",
+   "error": null,
+   "purpose": "anomaly signature (routes performance/code families)",
+   "tool_latency": null
+  },
+  {
+   "step_id": 2,
+   "action_type": "tool",
+   "action_name": "GetRecentLogs",
+   "action_input": {
+    "namespace": "train-ticket",
+    "service_name": "ts-contacts-service"
+   },
+   "observation": "['From ts-contacts-service logs:', '2026-03-16T14:40:28.232503391+08:00 2026-03-16 14:40:28.232  INFO 1 --- [io-12347-exec-8] contacts.controller.ContactsController   : [ContactsService][VerifyLogin Success]', '2026-03-16T14:40:28.232506426+08:00 2026-03-16 14:40:28.232  INFO 1 --- [io-12347-exec-8] contacts.service.ContactsServiceImpl     : FIND CONTACTS BY ID: 9b408a36-e2f7-4f56-b2dd-03c652d8914e', '2026-03-16T14:40:29.562942664+08:00 2026-03-16 14:40:29.562  INFO 1 --- [io-12347-exec-9] contacts.controller.ContactsController   : [findContactsByAccountId][Find Contacts By Account Id][accountId: 4d2a46c7-71cb-4cf1-b5bb-b68406d9da6f]', '2026-03-16T14:40:29.562963442+08:00 2026-03-16 14:40:29.562  INFO 1 --- [io-12347-exec-9] contacts.controller.ContactsController   : [ContactsService][VerifyLogin Success]', '2026-03-16T14:40:29.565047206+08:00 2026-03-16 14:40:29.564  INFO 1 --- [io-12347-exec-9] contacts.service.ContactsServiceImpl     : [findContactsByAccountId][Query Contacts][Result Size: 3]', '2026-03-16T14:40:30.164549572+08:00 2026-03-16 14:40:30.164  INFO 1 --- [io-12347-exec-6] contacts.controller.ContactsController   : [ContactsService][Contacts Id Print][id: 9b408a36-e2f7-4f56-b2dd-03c652d8914e]', '2026-03-16T14:40:30.164559093+08:00 2026-03-16 14:40:30.164  INFO 1 --- [io-12347-exec-6] contacts.controller.ContactsController   : [ContactsService][VerifyLogin Success]', '2026-03-16T14:40:30.164561886+08:00 2026-03-16 14:40:30.164  INFO 1 --- [io-12347-exec-6] contacts.service.ContactsServiceImpl     : FIND CONTACTS BY ID: 9b408a36-e2f7-4f56-b2dd-03c652d8914e', '2026-03-16T14:40:31.223018096+08:00 2026-03-16 14:40:31.222  INFO 1 --- [io-12347-exec-5] contacts.controller.ContactsController   : [findContactsByAccountId][Find Contacts By Account Id][accountId: 4d2a46c7-71cb-4cf1-b5bb-b68406d9da6f]', '2026-03-16T14:40:31.223034105+08:00 2026-03-16 14:40:31.222  INFO 1 --- [io-12347-exec-5] contacts.controller.ContactsController   : [ContactsService][VerifyLogin Success]', '2026-03-16T14:40:31.225202634+08:00 2026-03-16 14:40:31.225  INFO 1 --- [io-12347-exec-5] contacts.service.ContactsServiceImpl     : [findContactsByAccountId][Query Contacts][Result Size: 3]', '2026-03-16T14:40:31.427861400+08:00 2026-03-16 14:40:31.427  INFO 1 --- [io-12347-exec-7] contacts.controller.ContactsController   : [ContactsService][Contacts Id Print][id: 463ccc75-2ccc-4ef5-b015-de63fad194a1]', '2026-03-16T14:40:31.427876688+08:00 2026-03-16 14:40:31.427  INFO 1 --- [io-12347-exec-7] contacts.controller.ContactsController   : [ContactsService][VerifyLogin Success]', '2026-03-16T14:40:31.427879594+08:00 2026-03-16 14:40:31.427  INFO 1 --- [io-12347-exec-7] contacts.service.ContactsServiceImpl     : FIND CONTACTS BY ID: 463ccc75-2ccc-4ef5-b015-de63fad194a1', '2026-03-16T14:40:31.783115893+08:00 2026-03-16 14:40:31.782  INFO 1 --- [o-12347-exec-10] contacts.controller.ContactsController   : [findContactsByAccountId][Find Contacts By Account Id][accountId: 4d2a46c7-71cb-4cf1-b5bb-b68406d9da6f]', '2026-03-16T14:40:31.783139882+08:00 2026-03-16 14:40:31.783  INFO 1 --- [o-12347-exec-10] contacts.controller.ContactsController   : [ContactsService][VerifyLogin Success]', '2026-03-16T14:40:31.785115393+08:00 2026-03-16 14:40:31.785  INFO 1 --- [o-12347-exec-10] contacts.service.ContactsServiceImpl     : [findContactsByAccountId][Query Contacts][Result Size: 3]', '2026-03-16T14:40:32.264384245+08:00 2026-03-16 14:40:32.264  INFO 1 --- [io-12347-exec-1] contacts.controller.ContactsController   : [findContactsByAccountId][Find Contacts By Account Id][accountId: 4d2a46c7-71cb-4cf1-b5bb-b68406d9da6f]', '2026-03-16T14:40:32.264416006+08:00 2026-03-16 14:40:32.264  INFO 1 --- [io-12347-exec-1] contacts.controller.ContactsController   : [ContactsService][VerifyLogin Success]', '2026-03-16T14:40:32.266637422+08:00 2026-03-16 14:40:32.266  INFO 1 --- [io-12347-exec-1] contacts.service.ContactsServiceImpl     : [findContactsByAccountId][Query Contacts][Result Size: 3]', '2026-03-16T14:40:33.063307737+08:00 2026-03-16 14:40:33.063  INFO 1 --- [io-12347-exec-3] contacts.controller.ContactsController   : [findContactsByAccountId][Find Contacts By Account Id][accountId: 4d2a46c7-71cb-4cf1-b5bb-b68406d9da6f]', '2026-03-16T14:40:33.063326610+08:00 2026-03-16 14:40:33.063  INFO 1 --- [io-12347-exec-3] contacts.controller.ContactsController   : [ContactsService][VerifyLogin Success]', '2026-03-16T14:40:33.065557105+08:00 2026-03-16 14:40:33.065  INFO 1 --- [io-12347-exec-3] contacts.service.ContactsServiceImpl     : [findContactsByAccountId][Query Contacts][Result Size: 3]', '2026-03-16T14:40:33.554809446+08:00 2026-03-16 14:40:33.554  INFO 1 --- [io-12347-exec-4] contacts.controller.ContactsController   : [ContactsService][Contacts Id Print][id: 9b408a36-e2f7-4f56-b2dd-03c652d8914e]', '2026-03-16T14:40:33.554824775+08:00 2026-03-16 14:40:33.554  INFO 1 --- [io-12347-exec-4] contacts.controller.ContactsController   : [ContactsService][VerifyLogin Success]', '2026-03-16T14:40:33.554827839+08:00 2026-03-16 14:40:33.554  INFO 1 --- [io-12347-exec-4] contacts.service.ContactsServiceImpl     : FIND CONTACTS BY ID: 9b408a36-e2f7-4f56-b2dd-03c652d8914e', '2026-03-16T14:40:34.533023584+08:00 2026-03-16 14:40:34.532  INFO 1 --- [io-12347-exec-8] contacts.controller.ContactsController   : [findContactsByAccountId][Find Contacts By Account Id][accountId: 4d2a46c7-71cb-4cf1-b5bb-b68406d9da6f]', '2026-03-16T14:40:34.533041140+08:00 2026-03-16 14:40:34.532  INFO 1 --- [io-12347-exec-8] contacts.controller.ContactsController   : [ContactsService][VerifyLogin Success]', '2026-03-16T14:40:34.535221417+08:00 2026-03-16 14:40:34.535  INFO 1 --- [io-12347-exec-8] contacts.service.ContactsServiceImpl     : [findContactsByAccountId][Query Contacts][Result Size: 3]', '2026-03-16T14:40:34.842496489+08:00 2026-03-16 14:40:34.842  INFO 1 --- [io-12347-exec-9] contacts.controller.ContactsController   : [ContactsService][Contacts Id Print][id: 9b408a36-e2f7-4f56-b2dd-03c652d8914e]', '2026-03-16T14:40:34.842503254+08:00 2026-03-16 14:40:34.842  INFO 1 --- [io-12347-exec-9] contacts.controller.ContactsController   : [ContactsService][VerifyLogin Success]', '2026-03-16T14:40:34.842505964+08:00 2026-03-16 14:40:34.842  INFO 1 --- [io-12347-exec-9] contacts.service.ContactsServiceImpl     : FIND CONTACTS BY ID: 9b408a36-e2f7-4f56-b2dd-03c652d8914e', '2026-03-16T14:40:35.615392097+08:00 2026-03-16 14:40:35.615  INFO 1 --- [io-12347-exec-5] contacts.controller.ContactsController   : [ContactsService][Contacts Id Print][id: 463ccc75-2ccc-4ef5-b015-de63fad194a1]', '2026-03-16T14:40:35.615404355+08:00 2026-03-16 14:40:35.615  INFO 1 --- [io-12347-exec-5] contacts.controller.ContactsController   : [ContactsService][VerifyLogin Success]', '2026-03-16T14:40:35.615407021+08:00 2026-03-16 14:40:35.615  INFO 1 --- [io-12347-exec-5] contacts.service.ContactsServiceImpl     : FIND CONTACTS BY ID: 463ccc75-2ccc-4ef5-b015-de63fad194a1', '2026-03-16T14:40:35.640040693+08:00 2026-03-16 14:40:35.639  INFO 1 --- [io-12347-exec-7] contacts.controller.ContactsController   : [findContactsByAccountId][Find Contacts By Account Id][accountId: 4d2a46c7-71cb-4cf1-b5bb-b68406d9da6f]', '2026-03-16T14:40:35.640055256+08:00 2026-03-16 14:40:35.639  INFO 1 --- [io-12347-exec-7] contacts.controller.ContactsController   : [ContactsService][VerifyLogin Success]', '2026-03-16T14:40:35.641905442+08:00 2026-03-16 14:40:35.641  INFO 1 --- [io-12347-exec-7] contacts.service.ContactsServiceImpl     : [findContactsByAccountId][Query Contacts][Result Size: 3]', '2026-03-16T14:40:36.303921756+08:00 2026-03-16 14:40:36.303  INFO 1 --- [o-12347-exec-10] contacts.controller.ContactsController   : [findContactsByAccountId][Find Contacts By Account Id][accountId: 4d2a46c7-71cb-4cf1-b5bb-b68406d9da6f]', '2026-03-16T14:40:36.303933438+08:00 2026-03-16 14:40:36.303  INFO 1 --- [o-12347-exec-10] contacts.controller.ContactsController   : [ContactsService][VerifyLogin Success]', '2026-03-16T14:40:36.305866405+08:00 2026-03-16 14:40:36.305  INFO 1 --- [o-12347-exec-10] contacts.service.ContactsServiceImpl     : [findContactsByAccountId][Query Contacts][Result Size: 3]', '2026-03-16T14:40:36.398345658+08:00 2026-03-16 14:40:36.398  INFO 1 --- [io-12347-exec-2] contacts.controller.ContactsController   : [ContactsService][Contacts Id Print][id: 463ccc75-2ccc-4ef5-b015-de63fad194a1]', '2026-03-16T14:40:36.398357697+08:00 2026-03-16 14:40:36.398  INFO 1 --- [io-12347-exec-2] contacts.controller.ContactsController   : [ContactsService][VerifyLogin Success]', '2026-03-16T14:40:36.398360440+08:00 2026-03-16 14:40:36.398  INFO 1 --- [io-12347-exec-2] contacts.service.ContactsServiceImpl     : FIND CONTACTS BY ID: 463ccc75-2ccc-4ef5-b015-de63fad194a1', '2026-03-16T14:40:36.632064981+08:00 2026-03-16 14:40:36.631  INFO 1 --- [io-12347-exec-1] contacts.controller.ContactsController   : [ContactsService][Contacts Id Print][id: 70426ffa-0fdd-407e-b96d-548cfe0963ad]', '2026-03-16T14:40:36.632078068+08:00 2026-03-16 14:40:36.632  INFO 1 --- [io-12347-exec-1] contacts.controller.ContactsController   : [ContactsService][VerifyLogin Success]', '2026-03-16T14:40:36.632080906+08:00 2026-03-16 14:40:36.632  INFO 1 --- [io-12347-exec-1] contacts.service.ContactsServiceImpl     : FIND CONTACTS BY ID: 70426ffa-0fdd-407e-b96d-548cfe0963ad', '2026-03-16T14:40:37.863783290+08:00 2026-03-16 14:40:37.863  INFO 1 --- [io-12347-exec-3] contacts.controller.ContactsController   : [findContactsByAccountId][Find Contacts By Account Id][accountId: 4d2a46c7-71cb-4cf1-b5bb-b68406d9da6f]', '2026-03-16T14:40:37.863793509+08:00 2026-03-16 14:40:37.863  INFO 1 --- [io-12347-exec-3] contacts.controller.ContactsController   : [ContactsService][VerifyLogin Success]', '2026-03-16T14:40:37.865968523+08:00 2026-03-16 14:40:37.865  INFO 1 --- [io-12347-exec-3] contacts.service.ContactsServiceImpl     : [findContactsByAccountId][Query Contacts][Result Size: 3]', '', 'From previous container logs:', 'Error: Error from server (BadRequest): previous terminated container \"ts-contacts-service\" in pod \"ts-contacts-service-7fc68f4bbc-jqnnw\" not found']",
+   "error": null,
+   "purpose": "request latency / saturation logs",
+   "tool_latency": null
+  }
+ ],
+ "agentrun": {
+  "tag": "test",
+  "dsl": "workspace/dsl_versions/v0.9.dsl.txt",
+  "dsl_version": "0.9",
+  "sop": {
+   "sop": "boutique-runtime-rca",
+   "scope": {
+    "system": "boutique",
+    "families": [
+     "runtime",
+     "admission",
+     "scheduling",
+     "startup",
+     "service",
+     "performance",
+     "infrastructure",
+     "codedefect"
+    ],
+    "severity": [
+     "SEV2",
+     "SEV3"
+    ]
+   },
+   "owner": "sre-platform",
+   "approved_by": [
+    "oncall-primary",
+    "sre-lead"
+   ],
+   "reviewed_at": "2026-10-23",
+   "change_ticket": "OPS-1237",
+   "boundaries": "只读诊断：本 SOP 不执行任何写操作（重启/回滚/扩缩容），也不做对外播报；\n它回答\"最可能的根因与受害对象\"，处置与沟通由值班按 runbook 人工执行。\n不覆盖 SEV1（需 incident commander 介入）与变更引发的问题（走变更回滚流程）。\n输入是冻结快照：诊断结论对\"快照时刻\"成立，恢复后需重新取证。\nR1 已知边界：PVC 的 requested size / accessMode 在本 benchmark 的工具面不可见，\n因此 pvc_capacity 与 pvc_access_mode 无法区分（同一分数并列，交给 jev 或升级）。\n"
+  },
+  "params": {
+   "cands_cap": 8,
+   "max_waves": 8,
+   "min_waves": 5,
+   "steps_per_wave": 1,
+   "dominance_ratio": 1.5,
+   "conf_min": 0.0,
+   "escalate": true,
+   "escalate_budget": 8,
+   "judge_on_codedefect": true,
+   "jev_route": true,
+   "jev_pick": true,
+   "jev_verify": true,
+   "route_fallback": "runtime"
+  },
+  "nodes_executed": [
+   "anchors:extract_anchors",
+   "census:probes",
+   "route:decide",
+   "plan:build_plan",
+   "probe:probes",
+   "derive:derive_candidates",
+   "pick:decide",
+   "verify:decide",
+   "probe:probes",
+   "derive:derive_candidates",
+   "pick:decide",
+   "verify:decide",
+   "probe:probes",
+   "derive:derive_candidates",
+   "pick:decide",
+   "verify:decide",
+   "escalate:escalate",
+   "answer:normalize_answer",
+   "persist:persist_trace"
+  ],
+  "census": [
+   {
+    "step": "pods",
+    "gate": "always"
+   },
+   {
+    "step": "alerts",
+    "gate": "healthy_system"
+   }
+  ],
+  "plan": [
+   {
+    "step": "recent_logs",
+    "gate": "always",
+    "wave": 1
+   },
+   {
+    "step": "describe_pod",
+    "gate": "weak",
+    "wave": 2
+   },
+   {
+    "step": "deps",
+    "gate": "weak",
+    "wave": 3
+   }
+  ],
+  "family": "performance",
+  "state_wiring": {
+   "family": "$route.family",
+   "route_probs": "$route.probabilities",
+   "picked": "$pick.picked",
+   "pick_dominant": "$pick.dominant",
+   "verify_status": "$verify.status",
+   "verify_prob": "$verify.confidence"
+  },
+  "bindings": {
+   "anchors": {
+    "anchors": "Anchors(case_id='trainticket/performance/2', system='trainticket', namespace='train-ticket', query='Service quality degradation.', difficulty='hard', symptoms=['degradation'], mentioned_apps=[], priors={'db_service': 'tsdb-mysql-leader', 'db_port': 3306})"
+   },
+   "route": {
+    "family": "performance",
+    "probabilities": {},
+    "route_why": "mechanism_mode"
+   },
+   "plan": {
+    "plan": "[{'name': 'recent_logs', 'key': 'recent', 'tool': 'GetRecentLogs', 'args': <function _args_error_logs at 0x10d557ce0>, 'purpose': 'request latency / saturation logs', 'when': <function compile_steps.<locals>.<lambda> at 0x10d5bb6a0>, 'gate': 'always', 'wave': 1}, {'name': 'describe_pod', 'key': 'describe:pod', 'tool': 'DescribeResource', 'args': <function _args_describe_pod at 0x10d557b00>, 'purpose': 'probe config, container state, restart reasons, scheduler events', 'when': <function compile_steps.<locals>.<lambda> at 0x10d5bb7e0>, 'gate': 'weak', 'wave': 2}, {'name': 'deps', 'key': 'deps', 'tool': 'GetServiceDependencies', 'args': <function _args_deps at 0x10d57c5e0>, 'purpose': 'upstream/downstream call graph', 'when': <function compile_steps.<locals>.<lambda> at 0x10d5bb880>, 'gate': 'weak', 'wave': 3}]"
+   },
+   "derive": {
+    "candidates": "[Candidate(root_cause='pod_network_delay', object='app/ts-contacts-service', score=0.82, evidence='network latency anomaly on the pod', rule='delay_alert'), Candidate(root_cause='pod_network_delay', object='app/ts-gateway-service', score=0.82, evidence='network latency anomaly on the pod', rule='delay_alert'), Candidate(root_cause='pod_network_delay', object='app/ts-preserve-service', score=0.82, evidence='network latency anomaly on the pod', rule='delay_alert'), Candidate(root_cause='pod_network_delay', object='app/ts-ui-dashboard', score=0.82, evidence='network latency anomaly on the pod', rule='delay_alert')]"
+   },
+   "pick": {
+    "picked": 0,
+    "dominant": false,
+    "pick_why": "no_new_evidence"
+   },
+   "verify": {
+    "status": "verified",
+    "confidence": null,
+    "verify_why": "no_new_evidence"
+   },
+   "escalate": {
+    "answer": null
+   },
+   "answer": {
+    "final": {
+     "key_evidence_summary": "network latency anomaly on the pod",
+     "top_3_predictions": [
+      {
+       "rank": 1,
+       "fault_object": "app/ts-contacts-service",
+       "root_cause": "pod_network_delay"
+      },
+      {
+       "rank": 2,
+       "fault_object": "app/ts-gateway-service",
+       "root_cause": "pod_network_delay"
+      },
+      {
+       "rank": 3,
+       "fault_object": "app/ts-preserve-service",
+       "root_cause": "pod_network_delay"
+      }
+     ]
+    }
+   }
+  },
+  "picked": {
+   "root_cause": "pod_network_delay",
+   "object": "app/ts-contacts-service",
+   "score": 0.82,
+   "evidence": "network latency anomaly on the pod",
+   "rule": "delay_alert"
+  },
+  "pick_why": "",
+  "verify_prob": null,
+  "verify_verdict": "verified",
+  "verified": true,
+  "escalated": false,
+  "escalate_reason": "",
+  "escalate_steps": 0,
+  "waves": 3,
+  "candidates": [
+   {
+    "root_cause": "pod_network_delay",
+    "object": "app/ts-contacts-service",
+    "score": 0.82,
+    "evidence": "network latency anomaly on the pod",
+    "rule": "delay_alert"
+   },
+   {
+    "root_cause": "pod_network_delay",
+    "object": "app/ts-gateway-service",
+    "score": 0.82,
+    "evidence": "network latency anomaly on the pod",
+    "rule": "delay_alert"
+   },
+   {
+    "root_cause": "pod_network_delay",
+    "object": "app/ts-preserve-service",
+    "score": 0.82,
+    "evidence": "network latency anomaly on the pod",
+    "rule": "delay_alert"
+   },
+   {
+    "root_cause": "pod_network_delay",
+    "object": "app/ts-ui-dashboard",
+    "score": 0.82,
+    "evidence": "network latency anomaly on the pod",
+    "rule": "delay_alert"
+   }
+  ],
+  "jev": [
+   {
+    "rid": "test:trainticket/performance/2#route",
+    "kind": "route",
+    "node": "route",
+    "mode": "mechanism",
+    "options": [
+     "performance",
+     "infrastructure"
+    ],
+    "status": "mechanical",
+    "guard": "unavailable",
+    "use": "first_option",
+    "choice": "performance",
+    "why": "mechanism_mode",
+    "dominant": false,
+    "continue_loop": false,
+    "escalate": false
+   },
+   {
+    "rid": "test:trainticket/performance/2#pick1",
+    "kind": "pick",
+    "node": "pick",
+    "mode": "mechanism",
+    "options": [
+     "c0",
+     "c1",
+     "c2",
+     "c3"
+    ],
+    "status": "mechanical",
+    "guard": "unavailable",
+    "use": "first_option",
+    "choice": 0,
+    "why": "mechanism_mode",
+    "dominant": false,
+    "continue_loop": false,
+    "escalate": false
+   },
+   {
+    "rid": "test:trainticket/performance/2#verify1",
+    "kind": "verify",
+    "node": "verify",
+    "mode": "mechanism",
+    "options": [
+     "supported",
+     "insufficient",
+     "contradicted"
+    ],
+    "status": "mechanical",
+    "guard": "unavailable",
+    "use": "verified",
+    "choice": "verified",
+    "why": "mechanism_mode",
+    "dominant": false,
+    "continue_loop": false,
+    "escalate": false
+   },
+   {
+    "rid": "test:trainticket/performance/2#pick2",
+    "kind": "pick",
+    "node": "pick",
+    "mode": "mechanism",
+    "options": [
+     "c0",
+     "c1",
+     "c2",
+     "c3"
+    ],
+    "status": "mechanical",
+    "guard": "unchanged_since_last",
+    "use": "previous",
+    "choice": 0,
+    "why": "no_new_evidence",
+    "dominant": false,
+    "continue_loop": false,
+    "escalate": false
+   },
+   {
+    "rid": "test:trainticket/performance/2#verify2",
+    "kind": "verify",
+    "node": "verify",
+    "mode": "mechanism",
+    "options": [
+     "supported",
+     "insufficient",
+     "contradicted"
+    ],
+    "status": "mechanical",
+    "guard": "unchanged_since_last",
+    "use": "previous",
+    "choice": "verified",
+    "why": "no_new_evidence",
+    "dominant": false,
+    "continue_loop": false,
+    "escalate": false
+   },
+   {
+    "rid": "test:trainticket/performance/2#pick3",
+    "kind": "pick",
+    "node": "pick",
+    "mode": "mechanism",
+    "options": [
+     "c0",
+     "c1",
+     "c2",
+     "c3"
+    ],
+    "status": "mechanical",
+    "guard": "unchanged_since_last",
+    "use": "previous",
+    "choice": 0,
+    "why": "no_new_evidence",
+    "dominant": false,
+    "continue_loop": false,
+    "escalate": false
+   },
+   {
+    "rid": "test:trainticket/performance/2#verify3",
+    "kind": "verify",
+    "node": "verify",
+    "mode": "mechanism",
+    "options": [
+     "supported",
+     "insufficient",
+     "contradicted"
+    ],
+    "status": "mechanical",
+    "guard": "unchanged_since_last",
+    "use": "previous",
+    "choice": "verified",
+    "why": "no_new_evidence",
+    "dominant": false,
+    "continue_loop": false,
+    "escalate": false
+   }
+  ],
+  "nodes": [
+   {
+    "node": "code",
+    "id": "anchors",
+    "anchors": {
+     "case_id": "trainticket/performance/2",
+     "system": "trainticket",
+     "namespace": "train-ticket",
+     "query": "Service quality degradation.",
+     "difficulty": "hard",
+     "symptoms": [
+      "degradation"
+     ],
+     "mentioned_apps": []
+    }
+   },
+   {
+    "node": "probes",
+    "plan": "census",
+    "wave": 0,
+    "executed": 2,
+    "steps": [
+     {
+      "key": "pods",
+      "tool": "GetResources",
+      "arguments": {
+       "namespace": "train-ticket",
+       "resource_type": "pods",
+       "output_wide": true,
+       "show_labels": true
+      },
+      "gate": "always"
+     },
+     {
+      "key": "alerts",
+      "tool": "GetAlerts",
+      "arguments": {},
+      "gate": "healthy_system"
+     }
+    ],
+    "skipped": []
+   },
+   {
+    "node": "decide",
+    "id": "route",
+    "rid": "test:trainticket/performance/2#route",
+    "status": "mechanical",
+    "guard": "unavailable",
+    "use": "first_option",
+    "choice": "performance",
+    "dominant": false,
+    "why": "mechanism_mode"
+   },
+   {
+    "node": "code",
+    "id": "plan",
+    "family": "performance",
+    "plan": [
+     {
+      "step": "recent_logs",
+      "gate": "always",
+      "wave": 1
+     },
+     {
+      "step": "describe_pod",
+      "gate": "weak",
+      "wave": 2
+     },
+     {
+      "step": "deps",
+      "gate": "weak",
+      "wave": 3
+     }
+    ]
+   },
+   {
+    "node": "probes",
+    "plan": "family",
+    "wave": 1,
+    "executed": 1,
+    "steps": [
+     {
+      "key": "recent",
+      "tool": "GetRecentLogs",
+      "arguments": {
+       "namespace": "train-ticket",
+       "service_name": "ts-contacts-service"
+      },
+      "gate": "always"
+     }
+    ],
+    "skipped": []
+   },
+   {
+    "node": "code",
+    "id": "derive",
+    "raw": 4,
+    "kept": 4,
+    "top": [
+     {
+      "root_cause": "pod_network_delay",
+      "object": "app/ts-contacts-service",
+      "score": 0.82,
+      "evidence": "network latency anomaly on the pod",
+      "rule": "delay_alert"
+     },
+     {
+      "root_cause": "pod_network_delay",
+      "object": "app/ts-gateway-service",
+      "score": 0.82,
+      "evidence": "network latency anomaly on the pod",
+      "rule": "delay_alert"
+     },
+     {
+      "root_cause": "pod_network_delay",
+      "object": "app/ts-preserve-service",
+      "score": 0.82,
+      "evidence": "network latency anomaly on the pod",
+      "rule": "delay_alert"
+     },
+     {
+      "root_cause": "pod_network_delay",
+      "object": "app/ts-ui-dashboard",
+      "score": 0.82,
+      "evidence": "network latency anomaly on the pod",
+      "rule": "delay_alert"
+     }
+    ]
+   },
+   {
+    "node": "decide",
+    "id": "pick",
+    "rid": "test:trainticket/performance/2#pick1",
+    "status": "mechanical",
+    "guard": "unavailable",
+    "use": "first_option",
+    "choice": 0,
+    "dominant": false,
+    "why": "mechanism_mode"
+   },
+   {
+    "node": "decide",
+    "id": "verify",
+    "rid": "test:trainticket/performance/2#verify1",
+    "status": "mechanical",
+    "guard": "unavailable",
+    "use": "verified",
+    "choice": "verified",
+    "dominant": false,
+    "why": "mechanism_mode"
+   },
+   {
+    "node": "probes",
+    "plan": "family",
+    "wave": 2,
+    "executed": 0,
+    "steps": [],
+    "skipped": [
+     {
+      "step": "describe_pod",
+      "why": "gate weak"
+     }
+    ]
+   },
+   {
+    "node": "code",
+    "id": "derive",
+    "raw": 4,
+    "kept": 4,
+    "top": [
+     {
+      "root_cause": "pod_network_delay",
+      "object": "app/ts-contacts-service",
+      "score": 0.82,
+      "evidence": "network latency anomaly on the pod",
+      "rule": "delay_alert"
+     },
+     {
+      "root_cause": "pod_network_delay",
+      "object": "app/ts-gateway-service",
+      "score": 0.82,
+      "evidence": "network latency anomaly on the pod",
+      "rule": "delay_alert"
+     },
+     {
+      "root_cause": "pod_network_delay",
+      "object": "app/ts-preserve-service",
+      "score": 0.82,
+      "evidence": "network latency anomaly on the pod",
+      "rule": "delay_alert"
+     },
+     {
+      "root_cause": "pod_network_delay",
+      "object": "app/ts-ui-dashboard",
+      "score": 0.82,
+      "evidence": "network latency anomaly on the pod",
+      "rule": "delay_alert"
+     }
+    ]
+   },
+   {
+    "node": "decide",
+    "id": "pick",
+    "rid": "test:trainticket/performance/2#pick2",
+    "status": "mechanical",
+    "guard": "unchanged_since_last",
+    "use": "previous",
+    "choice": 0,
+    "dominant": false,
+    "why": "no_new_evidence"
+   },
+   {
+    "node": "decide",
+    "id": "verify",
+    "rid": "test:trainticket/performance/2#verify2",
+    "status": "mechanical",
+    "guard": "unchanged_since_last",
+    "use": "previous",
+    "choice": "verified",
+    "dominant": false,
+    "why": "no_new_evidence"
+   },
+   {
+    "node": "probes",
+    "plan": "family",
+    "wave": 3,
+    "executed": 0,
+    "steps": [],
+    "skipped": [
+     {
+      "step": "deps",
+      "why": "gate weak"
+     }
+    ]
+   },
+   {
+    "node": "code",
+    "id": "derive",
+    "raw": 4,
+    "kept": 4,
+    "top": [
+     {
+      "root_cause": "pod_network_delay",
+      "object": "app/ts-contacts-service",
+      "score": 0.82,
+      "evidence": "network latency anomaly on the pod",
+      "rule": "delay_alert"
+     },
+     {
+      "root_cause": "pod_network_delay",
+      "object": "app/ts-gateway-service",
+      "score": 0.82,
+      "evidence": "network latency anomaly on the pod",
+      "rule": "delay_alert"
+     },
+     {
+      "root_cause": "pod_network_delay",
+      "object": "app/ts-preserve-service",
+      "score": 0.82,
+      "evidence": "network latency anomaly on the pod",
+      "rule": "delay_alert"
+     },
+     {
+      "root_cause": "pod_network_delay",
+      "object": "app/ts-ui-dashboard",
+      "score": 0.82,
+      "evidence": "network latency anomaly on the pod",
+      "rule": "delay_alert"
+     }
+    ]
+   },
+   {
+    "node": "decide",
+    "id": "pick",
+    "rid": "test:trainticket/performance/2#pick3",
+    "status": "mechanical",
+    "guard": "unchanged_since_last",
+    "use": "previous",
+    "choice": 0,
+    "dominant": false,
+    "why": "no_new_evidence"
+   },
+   {
+    "node": "decide",
+    "id": "verify",
+    "rid": "test:trainticket/performance/2#verify3",
+    "status": "mechanical",
+    "guard": "unchanged_since_last",
+    "use": "previous",
+    "choice": "verified",
+    "dominant": false,
+    "why": "no_new_evidence"
+   },
+   {
+    "node": "loop",
+    "id": "waves",
+    "stop": "plan_exhausted",
+    "wave": 3
+   },
+   {
+    "node": "escalate",
+    "id": "escalate",
+    "fired": false,
+    "reasons": [],
+    "why": "no reason"
+   },
+   {
+    "node": "code",
+    "id": "answer",
+    "predictions": [
+     {
+      "rank": 1,
+      "fault_object": "app/ts-contacts-service",
+      "root_cause": "pod_network_delay"
+     },
+     {
+      "rank": 2,
+      "fault_object": "app/ts-gateway-service",
+      "root_cause": "pod_network_delay"
+     },
+     {
+      "rank": 3,
+      "fault_object": "app/ts-preserve-service",
+      "root_cause": "pod_network_delay"
+     }
+    ]
+   },
+   {
+    "node": "artifact",
+    "id": "persist",
+    "persisted": false,
+    "why": "written by the CLI driver"
+   }
+  ],
+  "notes": [],
+  "tool_calls": 3,
+  "model_calls": 0,
+  "tokens_in": 0,
+  "tokens_out": 0,
+  "wall_s": 0.09
+ }
+}

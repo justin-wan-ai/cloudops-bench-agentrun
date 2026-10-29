@@ -1,0 +1,735 @@
+{
+ "case_id": "trainticket/performance/28",
+ "system_name": "trainticket",
+ "question": "Service quality degradation.",
+ "case_path": "/Users/justinwan/work/workspace/cloudops_bench_rsi/repo/benchmark/trainticket/performance/28",
+ "max_steps": 8,
+ "current_step": 3,
+ "finished": true,
+ "stop_reason": "submit",
+ "final_answer": "{\"key_evidence_summary\": \"network latency anomaly on the pod\", \"top_3_predictions\": [{\"rank\": 1, \"fault_object\": \"app/ts-basic-service\", \"root_cause\": \"pod_network_delay\"}, {\"rank\": 2, \"fault_object\": \"app/ts-order-service\", \"root_cause\": \"pod_network_delay\"}, {\"rank\": 3, \"fault_object\": \"app/ts-route-service\", \"root_cause\": \"pod_network_delay\"}]}",
+ "metadata": {
+  "namespace": "train-ticket",
+  "query": "Service quality degradation.",
+  "fault_category": "performance",
+  "model_name": "agentrun-v0.9"
+ },
+ "steps": [
+  {
+   "step_id": 0,
+   "action_type": "tool",
+   "action_name": "GetResources",
+   "action_input": {
+    "namespace": "train-ticket",
+    "resource_type": "pods",
+    "output_wide": true,
+    "show_labels": true
+   },
+   "observation": "Error: Error: Only one of '--show-labels' or '-o wide' can be specified at a time for kubectl get.",
+   "error": null,
+   "purpose": "pod readiness census",
+   "tool_latency": null
+  },
+  {
+   "step_id": 1,
+   "action_type": "tool",
+   "action_name": "GetAlerts",
+   "action_input": {},
+   "observation": "{'status': 'has_anomalies', 'alert_count': 4, 'alerts': [{'type': 'Service', 'name': 'ts-basic-service', 'entity_type': 'Service', 'entity_name': 'ts-basic-service', 'time_range': '2026-03-20 12:19:31 ~ 2026-03-20 12:21:26', 'status': 'ABNORMAL', 'metric_category': 'LATENCY_DEGRADATION', 'evidence': ['LATENCY_DEGRADATION [Slow Response] | p50latency: Normal=40.22ms -> Current=18501.83ms (+45905.0%) | Peak=19545.46ms | p90latency: Normal=72.00ms -> Current=27700.37ms (+38372.7%) | Peak=27909.09ms']}, {'type': 'Service', 'name': 'ts-order-service', 'entity_type': 'Service', 'entity_name': 'ts-order-service', 'time_range': '2026-03-20 12:19:31 ~ 2026-03-20 12:21:26', 'status': 'ABNORMAL', 'metric_category': 'RESOURCE_SATURATION', 'evidence': ['RESOURCE_SATURATION [cpu_cfs] | Val: 0.479s (Throttled)']}, {'type': 'Service', 'name': 'ts-route-service', 'entity_type': 'Service', 'entity_name': 'ts-route-service', 'time_range': '2026-03-20 12:19:31 ~ 2026-03-20 12:21:26', 'status': 'ABNORMAL', 'metric_category': 'LATENCY_DEGRADATION', 'evidence': ['LATENCY_DEGRADATION [Slow Response] | p50latency: Normal=7.66ms -> Current=8224.79ms (+107329.3%) | Peak=8781.96ms | p90latency: Normal=9.78ms -> Current=21100.00ms (+215624.4%) | Peak=24099.72ms']}, {'type': 'Service', 'name': 'ts-travel-service', 'entity_type': 'Service', 'entity_name': 'ts-travel-service', 'time_range': '2026-03-20 12:19:31 ~ 2026-03-20 12:21:26', 'status': 'ABNORMAL', 'metric_category': 'LATENCY_DEGRADATION', 'evidence': ['LATENCY_DEGRADATION [Slow Response] | p90latency: Normal=3000.00ms -> Current=25075.16ms (+735.8%) | Peak=25913.04ms']}]}",
+   "error": null,
+   "purpose": "anomaly signature (routes performance/code families)",
+   "tool_latency": null
+  },
+  {
+   "step_id": 2,
+   "action_type": "tool",
+   "action_name": "GetRecentLogs",
+   "action_input": {
+    "namespace": "train-ticket",
+    "service_name": "ts-basic-service"
+   },
+   "observation": "['From ts-basic-service logs:', '2026-03-20T12:22:02.099089770+08:00 2026-03-20 12:22:02.098  INFO 1 --- [io-15680-exec-9] f.microservice.service.BasicServiceImpl  : [getRouteByRouteId][Get Route By Id][Success]', '2026-03-20T12:22:02.099620539+08:00 2026-03-20 12:22:02.099  INFO 1 --- [io-15680-exec-9] f.microservice.service.BasicServiceImpl  : [queryForTravel][query start index and end index][indexStart: 0 indexEnd: 1]', '2026-03-20T12:22:02.099626886+08:00 2026-03-20 12:22:02.099  INFO 1 --- [io-15680-exec-9] f.microservice.service.BasicServiceImpl  : [queryForTravel][query stations and distances][stations: [suzhou, shanghai] distances: [0, 50]]', '2026-03-20T12:22:02.099650514+08:00 2026-03-20 12:22:02.099  INFO 1 --- [io-15680-exec-9] f.microservice.service.BasicServiceImpl  : [queryPriceConfigByRouteIdAndTrainType][Query For Price Config][RouteId: 084837bb-53c8-4438-87c8-0321a4d09917 ,TrainType: GaoTieTwo]', '2026-03-20T12:22:02.105331472+08:00 2026-03-20 12:22:02.105  INFO 1 --- [io-15680-exec-9] f.microservice.service.BasicServiceImpl  : [queryPriceConfigByRouteIdAndTrainType][Response Resutl to String][result: Response(status=1, msg=Success, data={id=7de18cf8-bb17-4bb2-aeb4-85d8176d3a93, trainType=GaoTieTwo, routeId=084837bb-53c8-4438-87c8-0321a4d09917, basicPriceRate=0.6, firstClassPriceRate=1.0})]', '2026-03-20T12:22:02.105828662+08:00 2026-03-20 12:22:02.105  INFO 1 --- [io-15680-exec-9] f.microservice.service.BasicServiceImpl  : [queryForTravel][all done][result: TravelResult(status=true, percent=1.0, trainType=TrainType(id=0d6714aa-ad31-48a2-a682-d50a6291a28f, name=GaoTieTwo, economyClass=2147483647, confortClass=2147483647, averageSpeed=200), route=Route(id=084837bb-53c8-4438-87c8-0321a4d09917, stations=[suzhou, shanghai], distances=[0, 50], startStation=suzhou, endStation=shanghai), prices={confortClass=50.0, economyClass=30.0})]', '2026-03-20T12:22:08.856279378+08:00 2026-03-20 12:22:08.856  INFO 1 --- [io-15680-exec-5] f.m.controller.BasicController           : [queryForTravel][Query for travel][Travel: Travel(trip=Trip(id=97b1a029-1c96-4b01-b72e-0a9293e22b95, tripId=D1345, trainTypeName=DongCheOne, routeId=f3d4d4ef-693b-4456-8eed-59c0d717dd08, startStationName=shanghai, stationsName=suzhou, terminalStationName=taiyuan, startTime=2013-05-04 07:00:00, endTime=2013-05-04 19:59:52), startPlace=shanghai, endPlace=suzhou, departureTime=2026-03-23)]', '2026-03-20T12:22:08.856298169+08:00 2026-03-20 12:22:08.856  INFO 1 --- [io-15680-exec-5] f.microservice.service.BasicServiceImpl  : [checkStationExists][Check Station Exists][stationName: shanghai]', '2026-03-20T12:22:08.862756746+08:00 2026-03-20 12:22:08.862  INFO 1 --- [io-15680-exec-5] f.microservice.service.BasicServiceImpl  : [checkStationExists][Check Station Exists][stationName: suzhou]', '2026-03-20T12:22:08.866873226+08:00 2026-03-20 12:22:08.866  INFO 1 --- [io-15680-exec-5] f.microservice.service.BasicServiceImpl  : [queryTrainTypeByName][Query Train Type][Train Type name: DongCheOne]', '2026-03-20T12:22:08.874041341+08:00 2026-03-20 12:22:08.873  INFO 1 --- [io-15680-exec-5] f.microservice.service.BasicServiceImpl  : [getRouteByRouteId][Get Route By Id][Route ID：f3d4d4ef-693b-4456-8eed-59c0d717dd08]', '2026-03-20T12:22:08.882064846+08:00 2026-03-20 12:22:08.881  INFO 1 --- [io-15680-exec-5] f.microservice.service.BasicServiceImpl  : [getRouteByRouteId][Get Route By Id][Success]', '2026-03-20T12:22:08.882557651+08:00 2026-03-20 12:22:08.882  INFO 1 --- [io-15680-exec-5] f.microservice.service.BasicServiceImpl  : [queryForTravel][query start index and end index][indexStart: 0 indexEnd: 1]', '2026-03-20T12:22:08.882561425+08:00 2026-03-20 12:22:08.882  INFO 1 --- [io-15680-exec-5] f.microservice.service.BasicServiceImpl  : [queryForTravel][query stations and distances][stations: [shanghai, suzhou] distances: [0, 50]]', '2026-03-20T12:22:08.882568784+08:00 2026-03-20 12:22:08.882  INFO 1 --- [io-15680-exec-5] f.microservice.service.BasicServiceImpl  : [queryPriceConfigByRouteIdAndTrainType][Query For Price Config][RouteId: f3d4d4ef-693b-4456-8eed-59c0d717dd08 ,TrainType: DongCheOne]', '2026-03-20T12:22:08.889401961+08:00 2026-03-20 12:22:08.889  INFO 1 --- [io-15680-exec-5] f.microservice.service.BasicServiceImpl  : [queryPriceConfigByRouteIdAndTrainType][Response Resutl to String][result: Response(status=1, msg=Success, data={id=d5c4523a-827c-468c-95be-e9024a40572e, trainType=DongCheOne, routeId=f3d4d4ef-693b-4456-8eed-59c0d717dd08, basicPriceRate=0.45, firstClassPriceRate=1.0})]', '2026-03-20T12:22:08.889794935+08:00 2026-03-20 12:22:08.889  INFO 1 --- [io-15680-exec-5] f.microservice.service.BasicServiceImpl  : [queryForTravel][all done][result: TravelResult(status=true, percent=1.0, trainType=TrainType(id=3393eff2-b7a5-4ae4-bd41-15fb15d8400f, name=DongCheOne, economyClass=2147483647, confortClass=2147483647, averageSpeed=180), route=Route(id=f3d4d4ef-693b-4456-8eed-59c0d717dd08, stations=[shanghai, suzhou], distances=[0, 50], startStation=shanghai, endStation=suzhou), prices={confortClass=50.0, economyClass=22.5})]', '2026-03-20T12:22:10.952489433+08:00 2026-03-20 12:22:10.952  INFO 1 --- [io-15680-exec-7] f.m.controller.BasicController           : [queryForTravel][Query for travel][Travel: Travel(trip=Trip(id=97b1a029-1c96-4b01-b72e-0a9293e22b95, tripId=D1345, trainTypeName=DongCheOne, routeId=f3d4d4ef-693b-4456-8eed-59c0d717dd08, startStationName=shanghai, stationsName=suzhou, terminalStationName=taiyuan, startTime=2013-05-04 07:00:00, endTime=2013-05-04 19:59:52), startPlace=shanghai, endPlace=suzhou, departureTime=2026-03-20 12:22:10)]', '2026-03-20T12:22:10.952516731+08:00 2026-03-20 12:22:10.952  INFO 1 --- [io-15680-exec-7] f.microservice.service.BasicServiceImpl  : [checkStationExists][Check Station Exists][stationName: shanghai]', '2026-03-20T12:22:10.958900721+08:00 2026-03-20 12:22:10.958  INFO 1 --- [io-15680-exec-7] f.microservice.service.BasicServiceImpl  : [checkStationExists][Check Station Exists][stationName: suzhou]', '2026-03-20T12:22:10.962923225+08:00 2026-03-20 12:22:10.962  INFO 1 --- [io-15680-exec-7] f.microservice.service.BasicServiceImpl  : [queryTrainTypeByName][Query Train Type][Train Type name: DongCheOne]', '2026-03-20T12:22:10.970207718+08:00 2026-03-20 12:22:10.970  INFO 1 --- [io-15680-exec-7] f.microservice.service.BasicServiceImpl  : [getRouteByRouteId][Get Route By Id][Route ID：f3d4d4ef-693b-4456-8eed-59c0d717dd08]', '2026-03-20T12:22:10.978370847+08:00 2026-03-20 12:22:10.978  INFO 1 --- [io-15680-exec-7] f.microservice.service.BasicServiceImpl  : [getRouteByRouteId][Get Route By Id][Success]', '2026-03-20T12:22:10.978905870+08:00 2026-03-20 12:22:10.978  INFO 1 --- [io-15680-exec-7] f.microservice.service.BasicServiceImpl  : [queryForTravel][query start index and end index][indexStart: 0 indexEnd: 1]', '2026-03-20T12:22:10.978926111+08:00 2026-03-20 12:22:10.978  INFO 1 --- [io-15680-exec-7] f.microservice.service.BasicServiceImpl  : [queryForTravel][query stations and distances][stations: [shanghai, suzhou] distances: [0, 50]]', '2026-03-20T12:22:10.978929459+08:00 2026-03-20 12:22:10.978  INFO 1 --- [io-15680-exec-7] f.microservice.service.BasicServiceImpl  : [queryPriceConfigByRouteIdAndTrainType][Query For Price Config][RouteId: f3d4d4ef-693b-4456-8eed-59c0d717dd08 ,TrainType: DongCheOne]', '2026-03-20T12:22:10.986192718+08:00 2026-03-20 12:22:10.986  INFO 1 --- [io-15680-exec-7] f.microservice.service.BasicServiceImpl  : [queryPriceConfigByRouteIdAndTrainType][Response Resutl to String][result: Response(status=1, msg=Success, data={id=d5c4523a-827c-468c-95be-e9024a40572e, trainType=DongCheOne, routeId=f3d4d4ef-693b-4456-8eed-59c0d717dd08, basicPriceRate=0.45, firstClassPriceRate=1.0})]', '2026-03-20T12:22:10.986599220+08:00 2026-03-20 12:22:10.986  INFO 1 --- [io-15680-exec-7] f.microservice.service.BasicServiceImpl  : [queryForTravel][all done][result: TravelResult(status=true, percent=1.0, trainType=TrainType(id=3393eff2-b7a5-4ae4-bd41-15fb15d8400f, name=DongCheOne, economyClass=2147483647, confortClass=2147483647, averageSpeed=180), route=Route(id=f3d4d4ef-693b-4456-8eed-59c0d717dd08, stations=[shanghai, suzhou], distances=[0, 50], startStation=shanghai, endStation=suzhou), prices={confortClass=50.0, economyClass=22.5})]', '2026-03-20T12:22:21.396513600+08:00 2026-03-20 12:22:21.396  INFO 1 --- [io-15680-exec-8] f.m.controller.BasicController           : [queryForTravel][Query for travel][Travel: Travel(trip=Trip(id=97b1a029-1c96-4b01-b72e-0a9293e22b95, tripId=D1345, trainTypeName=DongCheOne, routeId=f3d4d4ef-693b-4456-8eed-59c0d717dd08, startStationName=shanghai, stationsName=suzhou, terminalStationName=taiyuan, startTime=2013-05-04 07:00:00, endTime=2013-05-04 19:59:52), startPlace=shanghai, endPlace=suzhou, departureTime=2026-03-22)]', '2026-03-20T12:22:21.396546324+08:00 2026-03-20 12:22:21.396  INFO 1 --- [io-15680-exec-8] f.microservice.service.BasicServiceImpl  : [checkStationExists][Check Station Exists][stationName: shanghai]', '2026-03-20T12:22:21.402867352+08:00 2026-03-20 12:22:21.402  INFO 1 --- [io-15680-exec-8] f.microservice.service.BasicServiceImpl  : [checkStationExists][Check Station Exists][stationName: suzhou]', '2026-03-20T12:22:21.407009420+08:00 2026-03-20 12:22:21.406  INFO 1 --- [io-15680-exec-8] f.microservice.service.BasicServiceImpl  : [queryTrainTypeByName][Query Train Type][Train Type name: DongCheOne]', '2026-03-20T12:22:21.413859906+08:00 2026-03-20 12:22:21.413  INFO 1 --- [io-15680-exec-8] f.microservice.service.BasicServiceImpl  : [getRouteByRouteId][Get Route By Id][Route ID：f3d4d4ef-693b-4456-8eed-59c0d717dd08]', '2026-03-20T12:22:21.421516410+08:00 2026-03-20 12:22:21.421  INFO 1 --- [io-15680-exec-8] f.microservice.service.BasicServiceImpl  : [getRouteByRouteId][Get Route By Id][Success]', '2026-03-20T12:22:21.422009591+08:00 2026-03-20 12:22:21.421  INFO 1 --- [io-15680-exec-8] f.microservice.service.BasicServiceImpl  : [queryForTravel][query start index and end index][indexStart: 0 indexEnd: 1]', '2026-03-20T12:22:21.422015030+08:00 2026-03-20 12:22:21.421  INFO 1 --- [io-15680-exec-8] f.microservice.service.BasicServiceImpl  : [queryForTravel][query stations and distances][stations: [shanghai, suzhou] distances: [0, 50]]', '2026-03-20T12:22:21.422019232+08:00 2026-03-20 12:22:21.421  INFO 1 --- [io-15680-exec-8] f.microservice.service.BasicServiceImpl  : [queryPriceConfigByRouteIdAndTrainType][Query For Price Config][RouteId: f3d4d4ef-693b-4456-8eed-59c0d717dd08 ,TrainType: DongCheOne]', '2026-03-20T12:22:21.428636324+08:00 2026-03-20 12:22:21.428  INFO 1 --- [io-15680-exec-8] f.microservice.service.BasicServiceImpl  : [queryPriceConfigByRouteIdAndTrainType][Response Resutl to String][result: Response(status=1, msg=Success, data={id=d5c4523a-827c-468c-95be-e9024a40572e, trainType=DongCheOne, routeId=f3d4d4ef-693b-4456-8eed-59c0d717dd08, basicPriceRate=0.45, firstClassPriceRate=1.0})]', '2026-03-20T12:22:21.429010211+08:00 2026-03-20 12:22:21.428  INFO 1 --- [io-15680-exec-8] f.microservice.service.BasicServiceImpl  : [queryForTravel][all done][result: TravelResult(status=true, percent=1.0, trainType=TrainType(id=3393eff2-b7a5-4ae4-bd41-15fb15d8400f, name=DongCheOne, economyClass=2147483647, confortClass=2147483647, averageSpeed=180), route=Route(id=f3d4d4ef-693b-4456-8eed-59c0d717dd08, stations=[shanghai, suzhou], distances=[0, 50], startStation=shanghai, endStation=suzhou), prices={confortClass=50.0, economyClass=22.5})]', '2026-03-20T12:22:23.640252070+08:00 2026-03-20 12:22:23.639  INFO 1 --- [io-15680-exec-6] f.m.controller.BasicController           : [queryForTravel][Query for travel][Travel: Travel(trip=Trip(id=97b1a029-1c96-4b01-b72e-0a9293e22b95, tripId=D1345, trainTypeName=DongCheOne, routeId=f3d4d4ef-693b-4456-8eed-59c0d717dd08, startStationName=shanghai, stationsName=suzhou, terminalStationName=taiyuan, startTime=2013-05-04 07:00:00, endTime=2013-05-04 19:59:52), startPlace=shanghai, endPlace=suzhou, departureTime=2026-03-20 12:22:23)]', '2026-03-20T12:22:23.640275768+08:00 2026-03-20 12:22:23.639  INFO 1 --- [io-15680-exec-6] f.microservice.service.BasicServiceImpl  : [checkStationExists][Check Station Exists][stationName: shanghai]', '2026-03-20T12:22:23.649621121+08:00 2026-03-20 12:22:23.649  INFO 1 --- [io-15680-exec-6] f.microservice.service.BasicServiceImpl  : [checkStationExists][Check Station Exists][stationName: suzhou]', '2026-03-20T12:22:23.653963075+08:00 2026-03-20 12:22:23.653  INFO 1 --- [io-15680-exec-6] f.microservice.service.BasicServiceImpl  : [queryTrainTypeByName][Query Train Type][Train Type name: DongCheOne]', '2026-03-20T12:22:23.661390750+08:00 2026-03-20 12:22:23.661  INFO 1 --- [io-15680-exec-6] f.microservice.service.BasicServiceImpl  : [getRouteByRouteId][Get Route By Id][Route ID：f3d4d4ef-693b-4456-8eed-59c0d717dd08]', '2026-03-20T12:22:23.669835047+08:00 2026-03-20 12:22:23.669  INFO 1 --- [io-15680-exec-6] f.microservice.service.BasicServiceImpl  : [getRouteByRouteId][Get Route By Id][Success]', '2026-03-20T12:22:23.670446294+08:00 2026-03-20 12:22:23.670  INFO 1 --- [io-15680-exec-6] f.microservice.service.BasicServiceImpl  : [queryForTravel][query start index and end index][indexStart: 0 indexEnd: 1]', '2026-03-20T12:22:23.670466925+08:00 2026-03-20 12:22:23.670  INFO 1 --- [io-15680-exec-6] f.microservice.service.BasicServiceImpl  : [queryForTravel][query stations and distances][stations: [shanghai, suzhou] distances: [0, 50]]', '2026-03-20T12:22:23.670469899+08:00 2026-03-20 12:22:23.670  INFO 1 --- [io-15680-exec-6] f.microservice.service.BasicServiceImpl  : [queryPriceConfigByRouteIdAndTrainType][Query For Price Config][RouteId: f3d4d4ef-693b-4456-8eed-59c0d717dd08 ,TrainType: DongCheOne]', '2026-03-20T12:22:23.677720475+08:00 2026-03-20 12:22:23.677  INFO 1 --- [io-15680-exec-6] f.microservice.service.BasicServiceImpl  : [queryPriceConfigByRouteIdAndTrainType][Response Resutl to String][result: Response(status=1, msg=Success, data={id=d5c4523a-827c-468c-95be-e9024a40572e, trainType=DongCheOne, routeId=f3d4d4ef-693b-4456-8eed-59c0d717dd08, basicPriceRate=0.45, firstClassPriceRate=1.0})]', '2026-03-20T12:22:23.678212397+08:00 2026-03-20 12:22:23.678  INFO 1 --- [io-15680-exec-6] f.microservice.service.BasicServiceImpl  : [queryForTravel][all done][result: TravelResult(status=true, percent=1.0, trainType=TrainType(id=3393eff2-b7a5-4ae4-bd41-15fb15d8400f, name=DongCheOne, economyClass=2147483647, confortClass=2147483647, averageSpeed=180), route=Route(id=f3d4d4ef-693b-4456-8eed-59c0d717dd08, stations=[shanghai, suzhou], distances=[0, 50], startStation=shanghai, endStation=suzhou), prices={confortClass=50.0, economyClass=22.5})]', '', 'From previous container logs:', 'Error: Error from server (BadRequest): previous terminated container \"ts-basic-service\" in pod \"ts-basic-service-57fb684696-jwllb\" not found', '', 'From istio-proxy logs:', 'concurrency: 2', 'configPath: ./etc/istio/proxy', 'controlPlaneAuthPolicy: MUTUAL_TLS', 'discoveryAddress: istiod.istio-system.svc:15012', 'drainDuration: 45s', 'image:', '  imageType: distroless', 'proxyAdminPort: 15000', 'proxyMetadata:', '  ISTIO_META_ENABLE_HBONE: \"true\"', 'serviceCluster: istio-proxy', 'statNameLength: 189', 'statusPort: 15020', 'terminationDrainDuration: 5s']",
+   "error": null,
+   "purpose": "request latency / saturation logs",
+   "tool_latency": null
+  }
+ ],
+ "agentrun": {
+  "tag": "test",
+  "dsl": "workspace/dsl_versions/v0.9.dsl.txt",
+  "dsl_version": "0.9",
+  "sop": {
+   "sop": "boutique-runtime-rca",
+   "scope": {
+    "system": "boutique",
+    "families": [
+     "runtime",
+     "admission",
+     "scheduling",
+     "startup",
+     "service",
+     "performance",
+     "infrastructure",
+     "codedefect"
+    ],
+    "severity": [
+     "SEV2",
+     "SEV3"
+    ]
+   },
+   "owner": "sre-platform",
+   "approved_by": [
+    "oncall-primary",
+    "sre-lead"
+   ],
+   "reviewed_at": "2026-10-23",
+   "change_ticket": "OPS-1237",
+   "boundaries": "只读诊断：本 SOP 不执行任何写操作（重启/回滚/扩缩容），也不做对外播报；\n它回答\"最可能的根因与受害对象\"，处置与沟通由值班按 runbook 人工执行。\n不覆盖 SEV1（需 incident commander 介入）与变更引发的问题（走变更回滚流程）。\n输入是冻结快照：诊断结论对\"快照时刻\"成立，恢复后需重新取证。\nR1 已知边界：PVC 的 requested size / accessMode 在本 benchmark 的工具面不可见，\n因此 pvc_capacity 与 pvc_access_mode 无法区分（同一分数并列，交给 jev 或升级）。\n"
+  },
+  "params": {
+   "cands_cap": 8,
+   "max_waves": 8,
+   "min_waves": 5,
+   "steps_per_wave": 1,
+   "dominance_ratio": 1.5,
+   "conf_min": 0.0,
+   "escalate": true,
+   "escalate_budget": 8,
+   "judge_on_codedefect": true,
+   "jev_route": true,
+   "jev_pick": true,
+   "jev_verify": true,
+   "route_fallback": "runtime"
+  },
+  "nodes_executed": [
+   "anchors:extract_anchors",
+   "census:probes",
+   "route:decide",
+   "plan:build_plan",
+   "probe:probes",
+   "derive:derive_candidates",
+   "pick:decide",
+   "verify:decide",
+   "probe:probes",
+   "derive:derive_candidates",
+   "pick:decide",
+   "verify:decide",
+   "probe:probes",
+   "derive:derive_candidates",
+   "pick:decide",
+   "verify:decide",
+   "escalate:escalate",
+   "answer:normalize_answer",
+   "persist:persist_trace"
+  ],
+  "census": [
+   {
+    "step": "pods",
+    "gate": "always"
+   },
+   {
+    "step": "alerts",
+    "gate": "healthy_system"
+   }
+  ],
+  "plan": [
+   {
+    "step": "recent_logs",
+    "gate": "always",
+    "wave": 1
+   },
+   {
+    "step": "describe_pod",
+    "gate": "weak",
+    "wave": 2
+   },
+   {
+    "step": "deps",
+    "gate": "weak",
+    "wave": 3
+   }
+  ],
+  "family": "performance",
+  "state_wiring": {
+   "family": "$route.family",
+   "route_probs": "$route.probabilities",
+   "picked": "$pick.picked",
+   "pick_dominant": "$pick.dominant",
+   "verify_status": "$verify.status",
+   "verify_prob": "$verify.confidence"
+  },
+  "bindings": {
+   "anchors": {
+    "anchors": "Anchors(case_id='trainticket/performance/28', system='trainticket', namespace='train-ticket', query='Service quality degradation.', difficulty='hard', symptoms=['degradation'], mentioned_apps=[], priors={'db_service': 'tsdb-mysql-leader', 'db_port': 3306})"
+   },
+   "route": {
+    "family": "performance",
+    "probabilities": {},
+    "route_why": "mechanism_mode"
+   },
+   "plan": {
+    "plan": "[{'name': 'recent_logs', 'key': 'recent', 'tool': 'GetRecentLogs', 'args': <function _args_error_logs at 0x10d557ce0>, 'purpose': 'request latency / saturation logs', 'when': <function compile_steps.<locals>.<lambda> at 0x10d59db20>, 'gate': 'always', 'wave': 1}, {'name': 'describe_pod', 'key': 'describe:pod', 'tool': 'DescribeResource', 'args': <function _args_describe_pod at 0x10d557b00>, 'purpose': 'probe config, container state, restart reasons, scheduler events', 'when': <function compile_steps.<locals>.<lambda> at 0x10d622fc0>, 'gate': 'weak', 'wave': 2}, {'name': 'deps', 'key': 'deps', 'tool': 'GetServiceDependencies', 'args': <function _args_deps at 0x10d57c5e0>, 'purpose': 'upstream/downstream call graph', 'when': <function compile_steps.<locals>.<lambda> at 0x10d6231a0>, 'gate': 'weak', 'wave': 3}]"
+   },
+   "derive": {
+    "candidates": "[Candidate(root_cause='pod_network_delay', object='app/ts-basic-service', score=0.82, evidence='network latency anomaly on the pod', rule='delay_alert'), Candidate(root_cause='pod_network_delay', object='app/ts-order-service', score=0.82, evidence='network latency anomaly on the pod', rule='delay_alert'), Candidate(root_cause='pod_network_delay', object='app/ts-route-service', score=0.82, evidence='network latency anomaly on the pod', rule='delay_alert'), Candidate(root_cause='pod_network_delay', object='app/ts-travel-service', score=0.82, evidence='network latency anomaly on the pod', rule='delay_alert')]"
+   },
+   "pick": {
+    "picked": 0,
+    "dominant": false,
+    "pick_why": "no_new_evidence"
+   },
+   "verify": {
+    "status": "verified",
+    "confidence": null,
+    "verify_why": "no_new_evidence"
+   },
+   "escalate": {
+    "answer": null
+   },
+   "answer": {
+    "final": {
+     "key_evidence_summary": "network latency anomaly on the pod",
+     "top_3_predictions": [
+      {
+       "rank": 1,
+       "fault_object": "app/ts-basic-service",
+       "root_cause": "pod_network_delay"
+      },
+      {
+       "rank": 2,
+       "fault_object": "app/ts-order-service",
+       "root_cause": "pod_network_delay"
+      },
+      {
+       "rank": 3,
+       "fault_object": "app/ts-route-service",
+       "root_cause": "pod_network_delay"
+      }
+     ]
+    }
+   }
+  },
+  "picked": {
+   "root_cause": "pod_network_delay",
+   "object": "app/ts-basic-service",
+   "score": 0.82,
+   "evidence": "network latency anomaly on the pod",
+   "rule": "delay_alert"
+  },
+  "pick_why": "",
+  "verify_prob": null,
+  "verify_verdict": "verified",
+  "verified": true,
+  "escalated": false,
+  "escalate_reason": "",
+  "escalate_steps": 0,
+  "waves": 3,
+  "candidates": [
+   {
+    "root_cause": "pod_network_delay",
+    "object": "app/ts-basic-service",
+    "score": 0.82,
+    "evidence": "network latency anomaly on the pod",
+    "rule": "delay_alert"
+   },
+   {
+    "root_cause": "pod_network_delay",
+    "object": "app/ts-order-service",
+    "score": 0.82,
+    "evidence": "network latency anomaly on the pod",
+    "rule": "delay_alert"
+   },
+   {
+    "root_cause": "pod_network_delay",
+    "object": "app/ts-route-service",
+    "score": 0.82,
+    "evidence": "network latency anomaly on the pod",
+    "rule": "delay_alert"
+   },
+   {
+    "root_cause": "pod_network_delay",
+    "object": "app/ts-travel-service",
+    "score": 0.82,
+    "evidence": "network latency anomaly on the pod",
+    "rule": "delay_alert"
+   }
+  ],
+  "jev": [
+   {
+    "rid": "test:trainticket/performance/28#route",
+    "kind": "route",
+    "node": "route",
+    "mode": "mechanism",
+    "options": [
+     "performance",
+     "infrastructure"
+    ],
+    "status": "mechanical",
+    "guard": "unavailable",
+    "use": "first_option",
+    "choice": "performance",
+    "why": "mechanism_mode",
+    "dominant": false,
+    "continue_loop": false,
+    "escalate": false
+   },
+   {
+    "rid": "test:trainticket/performance/28#pick1",
+    "kind": "pick",
+    "node": "pick",
+    "mode": "mechanism",
+    "options": [
+     "c0",
+     "c1",
+     "c2",
+     "c3"
+    ],
+    "status": "mechanical",
+    "guard": "unavailable",
+    "use": "first_option",
+    "choice": 0,
+    "why": "mechanism_mode",
+    "dominant": false,
+    "continue_loop": false,
+    "escalate": false
+   },
+   {
+    "rid": "test:trainticket/performance/28#verify1",
+    "kind": "verify",
+    "node": "verify",
+    "mode": "mechanism",
+    "options": [
+     "supported",
+     "insufficient",
+     "contradicted"
+    ],
+    "status": "mechanical",
+    "guard": "unavailable",
+    "use": "verified",
+    "choice": "verified",
+    "why": "mechanism_mode",
+    "dominant": false,
+    "continue_loop": false,
+    "escalate": false
+   },
+   {
+    "rid": "test:trainticket/performance/28#pick2",
+    "kind": "pick",
+    "node": "pick",
+    "mode": "mechanism",
+    "options": [
+     "c0",
+     "c1",
+     "c2",
+     "c3"
+    ],
+    "status": "mechanical",
+    "guard": "unchanged_since_last",
+    "use": "previous",
+    "choice": 0,
+    "why": "no_new_evidence",
+    "dominant": false,
+    "continue_loop": false,
+    "escalate": false
+   },
+   {
+    "rid": "test:trainticket/performance/28#verify2",
+    "kind": "verify",
+    "node": "verify",
+    "mode": "mechanism",
+    "options": [
+     "supported",
+     "insufficient",
+     "contradicted"
+    ],
+    "status": "mechanical",
+    "guard": "unchanged_since_last",
+    "use": "previous",
+    "choice": "verified",
+    "why": "no_new_evidence",
+    "dominant": false,
+    "continue_loop": false,
+    "escalate": false
+   },
+   {
+    "rid": "test:trainticket/performance/28#pick3",
+    "kind": "pick",
+    "node": "pick",
+    "mode": "mechanism",
+    "options": [
+     "c0",
+     "c1",
+     "c2",
+     "c3"
+    ],
+    "status": "mechanical",
+    "guard": "unchanged_since_last",
+    "use": "previous",
+    "choice": 0,
+    "why": "no_new_evidence",
+    "dominant": false,
+    "continue_loop": false,
+    "escalate": false
+   },
+   {
+    "rid": "test:trainticket/performance/28#verify3",
+    "kind": "verify",
+    "node": "verify",
+    "mode": "mechanism",
+    "options": [
+     "supported",
+     "insufficient",
+     "contradicted"
+    ],
+    "status": "mechanical",
+    "guard": "unchanged_since_last",
+    "use": "previous",
+    "choice": "verified",
+    "why": "no_new_evidence",
+    "dominant": false,
+    "continue_loop": false,
+    "escalate": false
+   }
+  ],
+  "nodes": [
+   {
+    "node": "code",
+    "id": "anchors",
+    "anchors": {
+     "case_id": "trainticket/performance/28",
+     "system": "trainticket",
+     "namespace": "train-ticket",
+     "query": "Service quality degradation.",
+     "difficulty": "hard",
+     "symptoms": [
+      "degradation"
+     ],
+     "mentioned_apps": []
+    }
+   },
+   {
+    "node": "probes",
+    "plan": "census",
+    "wave": 0,
+    "executed": 2,
+    "steps": [
+     {
+      "key": "pods",
+      "tool": "GetResources",
+      "arguments": {
+       "namespace": "train-ticket",
+       "resource_type": "pods",
+       "output_wide": true,
+       "show_labels": true
+      },
+      "gate": "always"
+     },
+     {
+      "key": "alerts",
+      "tool": "GetAlerts",
+      "arguments": {},
+      "gate": "healthy_system"
+     }
+    ],
+    "skipped": []
+   },
+   {
+    "node": "decide",
+    "id": "route",
+    "rid": "test:trainticket/performance/28#route",
+    "status": "mechanical",
+    "guard": "unavailable",
+    "use": "first_option",
+    "choice": "performance",
+    "dominant": false,
+    "why": "mechanism_mode"
+   },
+   {
+    "node": "code",
+    "id": "plan",
+    "family": "performance",
+    "plan": [
+     {
+      "step": "recent_logs",
+      "gate": "always",
+      "wave": 1
+     },
+     {
+      "step": "describe_pod",
+      "gate": "weak",
+      "wave": 2
+     },
+     {
+      "step": "deps",
+      "gate": "weak",
+      "wave": 3
+     }
+    ]
+   },
+   {
+    "node": "probes",
+    "plan": "family",
+    "wave": 1,
+    "executed": 1,
+    "steps": [
+     {
+      "key": "recent",
+      "tool": "GetRecentLogs",
+      "arguments": {
+       "namespace": "train-ticket",
+       "service_name": "ts-basic-service"
+      },
+      "gate": "always"
+     }
+    ],
+    "skipped": []
+   },
+   {
+    "node": "code",
+    "id": "derive",
+    "raw": 4,
+    "kept": 4,
+    "top": [
+     {
+      "root_cause": "pod_network_delay",
+      "object": "app/ts-basic-service",
+      "score": 0.82,
+      "evidence": "network latency anomaly on the pod",
+      "rule": "delay_alert"
+     },
+     {
+      "root_cause": "pod_network_delay",
+      "object": "app/ts-order-service",
+      "score": 0.82,
+      "evidence": "network latency anomaly on the pod",
+      "rule": "delay_alert"
+     },
+     {
+      "root_cause": "pod_network_delay",
+      "object": "app/ts-route-service",
+      "score": 0.82,
+      "evidence": "network latency anomaly on the pod",
+      "rule": "delay_alert"
+     },
+     {
+      "root_cause": "pod_network_delay",
+      "object": "app/ts-travel-service",
+      "score": 0.82,
+      "evidence": "network latency anomaly on the pod",
+      "rule": "delay_alert"
+     }
+    ]
+   },
+   {
+    "node": "decide",
+    "id": "pick",
+    "rid": "test:trainticket/performance/28#pick1",
+    "status": "mechanical",
+    "guard": "unavailable",
+    "use": "first_option",
+    "choice": 0,
+    "dominant": false,
+    "why": "mechanism_mode"
+   },
+   {
+    "node": "decide",
+    "id": "verify",
+    "rid": "test:trainticket/performance/28#verify1",
+    "status": "mechanical",
+    "guard": "unavailable",
+    "use": "verified",
+    "choice": "verified",
+    "dominant": false,
+    "why": "mechanism_mode"
+   },
+   {
+    "node": "probes",
+    "plan": "family",
+    "wave": 2,
+    "executed": 0,
+    "steps": [],
+    "skipped": [
+     {
+      "step": "describe_pod",
+      "why": "gate weak"
+     }
+    ]
+   },
+   {
+    "node": "code",
+    "id": "derive",
+    "raw": 4,
+    "kept": 4,
+    "top": [
+     {
+      "root_cause": "pod_network_delay",
+      "object": "app/ts-basic-service",
+      "score": 0.82,
+      "evidence": "network latency anomaly on the pod",
+      "rule": "delay_alert"
+     },
+     {
+      "root_cause": "pod_network_delay",
+      "object": "app/ts-order-service",
+      "score": 0.82,
+      "evidence": "network latency anomaly on the pod",
+      "rule": "delay_alert"
+     },
+     {
+      "root_cause": "pod_network_delay",
+      "object": "app/ts-route-service",
+      "score": 0.82,
+      "evidence": "network latency anomaly on the pod",
+      "rule": "delay_alert"
+     },
+     {
+      "root_cause": "pod_network_delay",
+      "object": "app/ts-travel-service",
+      "score": 0.82,
+      "evidence": "network latency anomaly on the pod",
+      "rule": "delay_alert"
+     }
+    ]
+   },
+   {
+    "node": "decide",
+    "id": "pick",
+    "rid": "test:trainticket/performance/28#pick2",
+    "status": "mechanical",
+    "guard": "unchanged_since_last",
+    "use": "previous",
+    "choice": 0,
+    "dominant": false,
+    "why": "no_new_evidence"
+   },
+   {
+    "node": "decide",
+    "id": "verify",
+    "rid": "test:trainticket/performance/28#verify2",
+    "status": "mechanical",
+    "guard": "unchanged_since_last",
+    "use": "previous",
+    "choice": "verified",
+    "dominant": false,
+    "why": "no_new_evidence"
+   },
+   {
+    "node": "probes",
+    "plan": "family",
+    "wave": 3,
+    "executed": 0,
+    "steps": [],
+    "skipped": [
+     {
+      "step": "deps",
+      "why": "gate weak"
+     }
+    ]
+   },
+   {
+    "node": "code",
+    "id": "derive",
+    "raw": 4,
+    "kept": 4,
+    "top": [
+     {
+      "root_cause": "pod_network_delay",
+      "object": "app/ts-basic-service",
+      "score": 0.82,
+      "evidence": "network latency anomaly on the pod",
+      "rule": "delay_alert"
+     },
+     {
+      "root_cause": "pod_network_delay",
+      "object": "app/ts-order-service",
+      "score": 0.82,
+      "evidence": "network latency anomaly on the pod",
+      "rule": "delay_alert"
+     },
+     {
+      "root_cause": "pod_network_delay",
+      "object": "app/ts-route-service",
+      "score": 0.82,
+      "evidence": "network latency anomaly on the pod",
+      "rule": "delay_alert"
+     },
+     {
+      "root_cause": "pod_network_delay",
+      "object": "app/ts-travel-service",
+      "score": 0.82,
+      "evidence": "network latency anomaly on the pod",
+      "rule": "delay_alert"
+     }
+    ]
+   },
+   {
+    "node": "decide",
+    "id": "pick",
+    "rid": "test:trainticket/performance/28#pick3",
+    "status": "mechanical",
+    "guard": "unchanged_since_last",
+    "use": "previous",
+    "choice": 0,
+    "dominant": false,
+    "why": "no_new_evidence"
+   },
+   {
+    "node": "decide",
+    "id": "verify",
+    "rid": "test:trainticket/performance/28#verify3",
+    "status": "mechanical",
+    "guard": "unchanged_since_last",
+    "use": "previous",
+    "choice": "verified",
+    "dominant": false,
+    "why": "no_new_evidence"
+   },
+   {
+    "node": "loop",
+    "id": "waves",
+    "stop": "plan_exhausted",
+    "wave": 3
+   },
+   {
+    "node": "escalate",
+    "id": "escalate",
+    "fired": false,
+    "reasons": [],
+    "why": "no reason"
+   },
+   {
+    "node": "code",
+    "id": "answer",
+    "predictions": [
+     {
+      "rank": 1,
+      "fault_object": "app/ts-basic-service",
+      "root_cause": "pod_network_delay"
+     },
+     {
+      "rank": 2,
+      "fault_object": "app/ts-order-service",
+      "root_cause": "pod_network_delay"
+     },
+     {
+      "rank": 3,
+      "fault_object": "app/ts-route-service",
+      "root_cause": "pod_network_delay"
+     }
+    ]
+   },
+   {
+    "node": "artifact",
+    "id": "persist",
+    "persisted": false,
+    "why": "written by the CLI driver"
+   }
+  ],
+  "notes": [],
+  "tool_calls": 3,
+  "model_calls": 0,
+  "tokens_in": 0,
+  "tokens_out": 0,
+  "wall_s": 0.13
+ }
+}

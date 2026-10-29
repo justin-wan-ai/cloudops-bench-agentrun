@@ -1,0 +1,538 @@
+{
+ "case_id": "boutique/performance/22",
+ "system_name": "boutique",
+ "question": "Service latency increased significantly",
+ "case_path": "/Users/justinwan/work/workspace/cloudops_bench_rsi/repo/benchmark/boutique/performance/22",
+ "max_steps": 8,
+ "current_step": 3,
+ "finished": true,
+ "stop_reason": "submit",
+ "final_answer": "{\"key_evidence_summary\": \"shippingservice is the deepest service with a latency spike (1846ms); its callers only inherit it\", \"top_3_predictions\": [{\"rank\": 1, \"fault_object\": \"app/shippingservice\", \"root_cause\": \"pod_network_delay\"}, {\"rank\": 2, \"fault_object\": \"app/shippingservice\", \"root_cause\": \"pod_network_delay\"}, {\"rank\": 3, \"fault_object\": \"app/shippingservice\", \"root_cause\": \"pod_network_delay\"}]}",
+ "metadata": {
+  "namespace": "boutique",
+  "query": "Service latency increased significantly",
+  "fault_category": "performance",
+  "model_name": "agentrun-v0.13"
+ },
+ "steps": [
+  {
+   "step_id": 0,
+   "action_type": "tool",
+   "action_name": "GetResources",
+   "action_input": {
+    "namespace": "boutique",
+    "resource_type": "pods",
+    "output_wide": true
+   },
+   "observation": "NAME                                     READY   STATUS    RESTARTS   AGE    IP            NODE        NOMINATED NODE   READINESS GATES\nadservice-d68dfc56-56qbz                 2/2     Running   0          6m7s   172.20.2.40   worker-02   <none>           <none>\ncartservice-7c5f46fc47-qcjjv             2/2     Running   0          6m7s   172.20.1.25   worker-01   <none>           <none>\ncheckoutservice-dbcdcb5fb-d8lz9          2/2     Running   0          6m7s   172.20.2.41   worker-02   <none>           <none>\ncurrencyservice-5cd6467fc4-8mhsg         2/2     Running   0          6m7s   172.20.1.26   worker-01   <none>           <none>\nemailservice-7dc7d85bcb-hk5zq            2/2     Running   0          6m7s   172.20.2.42   worker-02   <none>           <none>\nfrontend-6778bd7b8b-qxs75                2/2     Running   0          6m6s   172.20.1.27   worker-01   <none>           <none>\npaymentservice-869f9f96cd-96gz4          2/2     Running   0          6m6s   172.20.2.43   worker-02   <none>           <none>\nproductcatalogservice-6fb89f98f8-nkzxf   2/2     Running   0          6m6s   172.20.1.28   worker-01   <none>           <none>\nrecommendationservice-54dfdd6986-95kbh   2/2     Running   0          6m6s   172.20.2.44   worker-02   <none>           <none>\nredis-cart-58649b5469-k4xlw              2/2     Running   0          6m5s   172.20.1.29   worker-01   <none>           <none>\nshippingservice-674c8c548d-cn5cr         2/2     Running   0          6m5s   172.20.2.45   worker-02   <none>           <none>\n",
+   "error": null,
+   "purpose": "pod readiness census",
+   "tool_latency": null
+  },
+  {
+   "step_id": 1,
+   "action_type": "tool",
+   "action_name": "GetAlerts",
+   "action_input": {},
+   "observation": "{'status': 'has_anomalies', 'alert_count': 10, 'alerts': [{'type': 'Service', 'name': 'adservice', 'time_range': '2025-12-26 12:23:21 ~ 2025-12-26 12:25:16', 'status': 'ABNORMAL', 'evidence': ['THROUGHPUT_DROP [RPS] | Normal=12.33req/s -> Current=6.20req/s (-49.7%)', 'LATENCY_DEGRADATION [Slow Response] | adservice-p90latency: Normal=5.63ms -> Current=205.27ms (+3548.6%)']}, {'type': 'Service', 'name': 'checkoutservice', 'time_range': '2025-12-26 12:23:21 ~ 2025-12-26 12:25:16', 'status': 'ABNORMAL', 'evidence': ['THROUGHPUT_DROP [RPS] | Normal=3.09req/s -> Current=0.36req/s (-88.4%)', 'ERROR_SPIKE [Success Rate Drop] | Normal=100.0% -> Cur=25.0% (-75.0%)', 'LATENCY_DEGRADATION [Slow Response] | checkoutservice-p50latency: Normal=17.55ms -> Current=3632.62ms (+20595.1%) | checkoutservice-p90latency: Normal=24.37ms -> Current=9185.01ms (+37597.4%)']}, {'type': 'Service', 'name': 'currencyservice', 'time_range': '2025-12-26 12:23:21 ~ 2025-12-26 12:25:16', 'status': 'ABNORMAL', 'evidence': ['TRAFFIC_ANOMALY [Network Drop] | Inbound: Normal=149.46pps -> Current=76.52pps (-48.8%) | Outbound: Normal=144.35pps -> Current=72.71pps (-49.6%)']}, {'type': 'Service', 'name': 'emailservice', 'time_range': '2025-12-26 12:23:21 ~ 2025-12-26 12:25:16', 'status': 'ABNORMAL', 'evidence': ['THROUGHPUT_DROP [RPS] | Normal=3.03req/s -> Current=1.16req/s (-61.8%)']}, {'type': 'Service', 'name': 'frontend', 'time_range': '2025-12-26 12:23:21 ~ 2025-12-26 12:25:16', 'status': 'ABNORMAL', 'evidence': ['TRAFFIC_ANOMALY [Network Drop] | Inbound: Normal=398.31pps -> Current=171.12pps (-57.0%) | Outbound: Normal=429.06pps -> Current=198.78pps (-53.7%)', 'THROUGHPUT_DROP [RPS] | Normal=27.08req/s -> Current=14.45req/s (-46.6%)', 'LATENCY_DEGRADATION [Slow Response] | frontend-p50latency: Normal=15.96ms -> Current=3480.10ms (+21709.5%) | frontend-p90latency: Normal=37.42ms -> Current=10221.84ms (+27217.3%)']}, {'type': 'Service', 'name': 'paymentservice', 'time_range': '2025-12-26 12:23:21 ~ 2025-12-26 12:25:16', 'status': 'ABNORMAL', 'evidence': ['THROUGHPUT_DROP [RPS] | Normal=3.04req/s -> Current=1.34req/s (-56.0%)']}, {'type': 'Service', 'name': 'productcatalogservice', 'time_range': '2025-12-26 12:23:21 ~ 2025-12-26 12:25:16', 'status': 'ABNORMAL', 'evidence': ['TRAFFIC_ANOMALY [Network Drop] | Inbound: Normal=149.52pps -> Current=52.56pps (-64.8%) | Outbound: Normal=117.49pps -> Current=40.72pps (-65.3%)', 'THROUGHPUT_DROP [RPS] | Normal=121.01req/s -> Current=65.59req/s (-45.8%)', 'LATENCY_DEGRADATION [Slow Response] | productcatalogservice-p90latency: Normal=1.48ms -> Current=606.48ms (+40823.2%)']}, {'type': 'Service', 'name': 'recommendationservice', 'time_range': '2025-12-26 12:23:21 ~ 2025-12-26 12:25:16', 'status': 'ABNORMAL', 'evidence': ['TRAFFIC_ANOMALY [Network Drop] | Normal=49.20pps -> Current=21.94pps (-55.4%)', 'THROUGHPUT_DROP [RPS] | Normal=16.02req/s -> Current=8.33req/s (-48.0%)', 'LATENCY_DEGRADATION [Slow Response] | recommendationservice-p50latency: Normal=3.01ms -> Current=4328.87ms (+143716.3%) | recommendationservice-p90latency: Normal=4.82ms -> Current=8500.55ms (+176303.8%)']}, {'type': 'Service', 'name': 'redis-cart', 'time_range': '2025-12-26 12:23:21 ~ 2025-12-26 12:25:16', 'status': 'ABNORMAL', 'evidence': ['TRAFFIC_ANOMALY [Network Drop] | Normal=30.06pps -> Current=14.75pps (-50.9%)']}, {'type': 'Service', 'name': 'shippingservice', 'time_range': '2025-12-26 12:23:21 ~ 2025-12-26 12:25:16', 'status': 'ABNORMAL', 'evidence': ['TRAFFIC_ANOMALY [Network Drop] | Normal=23.55pps -> Current=9.97pps (-57.7%)', 'THROUGHPUT_DROP [RPS] | Normal=11.71req/s -> Current=2.95req/s (-74.8%)', 'LATENCY_DEGRADATION [Slow Response] | shippingservice-p90latency: Normal=4.32ms -> Current=1846.45ms (+42649.9%)']}]}",
+   "error": null,
+   "purpose": "anomaly signature (routes performance/code families)",
+   "tool_latency": null
+  },
+  {
+   "step_id": 2,
+   "action_type": "tool",
+   "action_name": "GetServiceDependencies",
+   "action_input": {
+    "service_name": "frontend"
+   },
+   "observation": "[Service]: frontend (Entrypoint)\n[Upstream (Called By)]: (User Traffic)\n[Downstream (Calls)]:\nfrontend\n├── adservice\n├── recommendationservice\n│   └── productcatalogservice\n├── productcatalogservice\n├── checkoutservice\n│   ├── productcatalogservice\n│   ├── shippingservice\n│   ├── currencyservice\n│   ├── paymentservice\n│   ├── emailservice\n│   └── cartservice\n│       └── redis-cart  <-- (Database)\n├── shippingservice\n├── cartservice\n│   └── redis-cart      <-- (Database)\n└── currencyservice",
+   "error": null,
+   "purpose": "whole call graph from the entrypoint",
+   "tool_latency": null
+  }
+ ],
+ "agentrun": {
+  "tag": "test",
+  "dsl": "workspace/dsl_versions/v0.13.dsl.txt",
+  "dsl_version": "0.13",
+  "sop": {
+   "sop": "boutique-runtime-rca",
+   "scope": {
+    "system": "boutique",
+    "families": [
+     "runtime",
+     "admission",
+     "scheduling",
+     "startup",
+     "service",
+     "performance",
+     "infrastructure",
+     "codedefect"
+    ],
+    "severity": [
+     "SEV2",
+     "SEV3"
+    ]
+   },
+   "owner": "sre-platform",
+   "approved_by": [
+    "oncall-primary",
+    "sre-lead"
+   ],
+   "reviewed_at": "2026-10-23",
+   "change_ticket": "OPS-1241",
+   "boundaries": "R4 已知：`node_network_delay` 若快照里没有任何 Node 级 retrans 告警（例：performance/25），\n本 SOP 会退回 pod 级判断（当前工具面无法区分 pod 与 node 的延迟注入）。\n只读诊断：本 SOP 不执行任何写操作（重启/回滚/扩缩容），也不做对外播报；\n它回答\"最可能的根因与受害对象\"，处置与沟通由值班按 runbook 人工执行。\n不覆盖 SEV1（需 incident commander 介入）与变更引发的问题（走变更回滚流程）。\n输入是冻结快照：诊断结论对\"快照时刻\"成立，恢复后需重新取证。\nR1 已知边界：PVC 的 requested size / accessMode 在本 benchmark 的工具面不可见，\n因此 pvc_capacity 与 pvc_access_mode 无法区分（同一分数并列，交给 jev 或升级）。\n"
+  },
+  "params": {
+   "cands_cap": 8,
+   "max_waves": 8,
+   "min_waves": 5,
+   "steps_per_wave": 1,
+   "dominance_ratio": 1.5,
+   "conf_min": 0.0,
+   "escalate": true,
+   "escalate_budget": 8,
+   "judge_on_codedefect": true,
+   "jev_route": true,
+   "jev_pick": true,
+   "jev_verify": true,
+   "route_fallback": "runtime"
+  },
+  "nodes_executed": [
+   "anchors:extract_anchors",
+   "census:probes",
+   "route:decide",
+   "plan:build_plan",
+   "probe:probes",
+   "derive:derive_candidates",
+   "pick:decide",
+   "verify:decide",
+   "probe:probes",
+   "derive:derive_candidates",
+   "pick:decide",
+   "verify:decide",
+   "escalate:escalate",
+   "answer:normalize_answer",
+   "persist:persist_trace"
+  ],
+  "census": [
+   {
+    "step": "pods",
+    "gate": "always"
+   },
+   {
+    "step": "alerts",
+    "gate": "healthy_system"
+   }
+  ],
+  "plan": [
+   {
+    "step": "deps_entry",
+    "gate": "always",
+    "wave": 1
+   },
+   {
+    "step": "describe_pod",
+    "gate": "weak",
+    "wave": 2
+   }
+  ],
+  "family": "performance",
+  "state_wiring": {
+   "family": "$route.family",
+   "route_probs": "$route.probabilities",
+   "picked": "$pick.picked",
+   "pick_dominant": "$pick.dominant",
+   "verify_status": "$verify.status",
+   "verify_prob": "$verify.confidence"
+  },
+  "bindings": {
+   "anchors": {
+    "anchors": "Anchors(case_id='boutique/performance/22', system='boutique', namespace='boutique', query='Service latency increased significantly', difficulty='hard', symptoms=['degradation'], mentioned_apps=[], priors={'db_service': '', 'db_port': 0})"
+   },
+   "route": {
+    "family": "performance",
+    "probabilities": {},
+    "route_why": "mechanism_mode"
+   },
+   "plan": {
+    "plan": "[{'name': 'deps_entry', 'key': 'deps:entry', 'tool': 'GetServiceDependencies', 'args': <function _args_deps_entry at 0x1125f8ae0>, 'purpose': 'whole call graph from the entrypoint', 'when': <function compile_steps.<locals>.<lambda> at 0x11292f240>, 'gate': 'always', 'wave': 1}, {'name': 'describe_pod', 'key': 'describe:pod', 'tool': 'DescribeResource', 'args': <function _args_describe_pod at 0x1125c7f60>, 'purpose': 'probe config, container state, restart reasons, scheduler events', 'when': <function compile_steps.<locals>.<lambda> at 0x11292f380>, 'gate': 'weak', 'wave': 2}]"
+   },
+   "derive": {
+    "candidates": "[Candidate(root_cause='pod_network_delay', object='app/shippingservice', score=0.97, evidence='shippingservice is the deepest service with a latency spike (1846ms); its callers only inherit it', rule='alert_latency_leaf')]"
+   },
+   "pick": {
+    "picked": 0,
+    "dominant": true,
+    "pick_why": "no_new_evidence"
+   },
+   "verify": {
+    "status": "verified",
+    "confidence": null,
+    "verify_why": "dominant_candidate"
+   },
+   "escalate": {
+    "answer": null
+   },
+   "answer": {
+    "final": {
+     "key_evidence_summary": "shippingservice is the deepest service with a latency spike (1846ms); its callers only inherit it",
+     "top_3_predictions": [
+      {
+       "rank": 1,
+       "fault_object": "app/shippingservice",
+       "root_cause": "pod_network_delay"
+      },
+      {
+       "rank": 2,
+       "fault_object": "app/shippingservice",
+       "root_cause": "pod_network_delay"
+      },
+      {
+       "rank": 3,
+       "fault_object": "app/shippingservice",
+       "root_cause": "pod_network_delay"
+      }
+     ]
+    }
+   }
+  },
+  "picked": {
+   "root_cause": "pod_network_delay",
+   "object": "app/shippingservice",
+   "score": 0.97,
+   "evidence": "shippingservice is the deepest service with a latency spike (1846ms); its callers only inherit it",
+   "rule": "alert_latency_leaf"
+  },
+  "pick_why": "",
+  "verify_prob": null,
+  "verify_verdict": "verified",
+  "verified": true,
+  "escalated": false,
+  "escalate_reason": "",
+  "escalate_steps": 0,
+  "waves": 2,
+  "candidates": [
+   {
+    "root_cause": "pod_network_delay",
+    "object": "app/shippingservice",
+    "score": 0.97,
+    "evidence": "shippingservice is the deepest service with a latency spike (1846ms); its callers only inherit it",
+    "rule": "alert_latency_leaf"
+   }
+  ],
+  "jev": [
+   {
+    "rid": "test:boutique/performance/22#route",
+    "kind": "route",
+    "node": "route",
+    "mode": "mechanism",
+    "options": [
+     "performance",
+     "infrastructure"
+    ],
+    "status": "mechanical",
+    "guard": "unavailable",
+    "use": "first_option",
+    "choice": "performance",
+    "why": "mechanism_mode",
+    "dominant": false,
+    "continue_loop": false,
+    "escalate": false
+   },
+   {
+    "rid": "test:boutique/performance/22#pick1",
+    "kind": "pick",
+    "node": "pick",
+    "mode": "mechanism",
+    "options": [
+     "c0"
+    ],
+    "status": "mechanical",
+    "guard": "top_over_second >= $params.dominance_ratio",
+    "use": "first_option",
+    "choice": 0,
+    "why": "dominance",
+    "dominant": true,
+    "continue_loop": false,
+    "escalate": false
+   },
+   {
+    "rid": "test:boutique/performance/22#verify1",
+    "kind": "verify",
+    "node": "verify",
+    "mode": "mechanism",
+    "options": [
+     "supported",
+     "insufficient",
+     "contradicted"
+    ],
+    "status": "mechanical",
+    "guard": "$pick.dominant",
+    "use": "verified",
+    "choice": "verified",
+    "why": "dominant_candidate",
+    "dominant": false,
+    "continue_loop": false,
+    "escalate": false
+   },
+   {
+    "rid": "test:boutique/performance/22#pick2",
+    "kind": "pick",
+    "node": "pick",
+    "mode": "mechanism",
+    "options": [
+     "c0"
+    ],
+    "status": "mechanical",
+    "guard": "unchanged_since_last",
+    "use": "previous",
+    "choice": 0,
+    "why": "no_new_evidence",
+    "dominant": true,
+    "continue_loop": false,
+    "escalate": false
+   },
+   {
+    "rid": "test:boutique/performance/22#verify2",
+    "kind": "verify",
+    "node": "verify",
+    "mode": "mechanism",
+    "options": [
+     "supported",
+     "insufficient",
+     "contradicted"
+    ],
+    "status": "mechanical",
+    "guard": "$pick.dominant",
+    "use": "verified",
+    "choice": "verified",
+    "why": "dominant_candidate",
+    "dominant": false,
+    "continue_loop": false,
+    "escalate": false
+   }
+  ],
+  "nodes": [
+   {
+    "node": "code",
+    "id": "anchors",
+    "anchors": {
+     "case_id": "boutique/performance/22",
+     "system": "boutique",
+     "namespace": "boutique",
+     "query": "Service latency increased significantly",
+     "difficulty": "hard",
+     "symptoms": [
+      "degradation"
+     ],
+     "mentioned_apps": []
+    }
+   },
+   {
+    "node": "probes",
+    "plan": "census",
+    "wave": 0,
+    "executed": 2,
+    "steps": [
+     {
+      "key": "pods",
+      "tool": "GetResources",
+      "arguments": {
+       "namespace": "boutique",
+       "resource_type": "pods",
+       "output_wide": true
+      },
+      "gate": "always"
+     },
+     {
+      "key": "alerts",
+      "tool": "GetAlerts",
+      "arguments": {},
+      "gate": "healthy_system"
+     }
+    ],
+    "skipped": []
+   },
+   {
+    "node": "decide",
+    "id": "route",
+    "rid": "test:boutique/performance/22#route",
+    "status": "mechanical",
+    "guard": "unavailable",
+    "use": "first_option",
+    "choice": "performance",
+    "dominant": false,
+    "why": "mechanism_mode"
+   },
+   {
+    "node": "code",
+    "id": "plan",
+    "family": "performance",
+    "plan": [
+     {
+      "step": "deps_entry",
+      "gate": "always",
+      "wave": 1
+     },
+     {
+      "step": "describe_pod",
+      "gate": "weak",
+      "wave": 2
+     }
+    ]
+   },
+   {
+    "node": "probes",
+    "plan": "family",
+    "wave": 1,
+    "executed": 1,
+    "steps": [
+     {
+      "key": "deps:entry",
+      "tool": "GetServiceDependencies",
+      "arguments": {
+       "service_name": "frontend"
+      },
+      "gate": "always"
+     }
+    ],
+    "skipped": []
+   },
+   {
+    "node": "code",
+    "id": "derive",
+    "raw": 1,
+    "kept": 1,
+    "top": [
+     {
+      "root_cause": "pod_network_delay",
+      "object": "app/shippingservice",
+      "score": 0.97,
+      "evidence": "shippingservice is the deepest service with a latency spike (1846ms); its callers only inherit it",
+      "rule": "alert_latency_leaf"
+     }
+    ]
+   },
+   {
+    "node": "decide",
+    "id": "pick",
+    "rid": "test:boutique/performance/22#pick1",
+    "status": "mechanical",
+    "guard": "top_over_second >= $params.dominance_ratio",
+    "use": "first_option",
+    "choice": 0,
+    "dominant": true,
+    "why": "dominance"
+   },
+   {
+    "node": "decide",
+    "id": "verify",
+    "rid": "test:boutique/performance/22#verify1",
+    "status": "mechanical",
+    "guard": "$pick.dominant",
+    "use": "verified",
+    "choice": "verified",
+    "dominant": false,
+    "why": "dominant_candidate"
+   },
+   {
+    "node": "probes",
+    "plan": "family",
+    "wave": 2,
+    "executed": 0,
+    "steps": [],
+    "skipped": [
+     {
+      "step": "describe_pod",
+      "why": "gate weak"
+     }
+    ]
+   },
+   {
+    "node": "code",
+    "id": "derive",
+    "raw": 1,
+    "kept": 1,
+    "top": [
+     {
+      "root_cause": "pod_network_delay",
+      "object": "app/shippingservice",
+      "score": 0.97,
+      "evidence": "shippingservice is the deepest service with a latency spike (1846ms); its callers only inherit it",
+      "rule": "alert_latency_leaf"
+     }
+    ]
+   },
+   {
+    "node": "decide",
+    "id": "pick",
+    "rid": "test:boutique/performance/22#pick2",
+    "status": "mechanical",
+    "guard": "unchanged_since_last",
+    "use": "previous",
+    "choice": 0,
+    "dominant": true,
+    "why": "no_new_evidence"
+   },
+   {
+    "node": "decide",
+    "id": "verify",
+    "rid": "test:boutique/performance/22#verify2",
+    "status": "mechanical",
+    "guard": "$pick.dominant",
+    "use": "verified",
+    "choice": "verified",
+    "dominant": false,
+    "why": "dominant_candidate"
+   },
+   {
+    "node": "loop",
+    "id": "waves",
+    "stop": "plan_exhausted",
+    "wave": 2
+   },
+   {
+    "node": "escalate",
+    "id": "escalate",
+    "fired": false,
+    "reasons": [],
+    "why": "no reason"
+   },
+   {
+    "node": "code",
+    "id": "answer",
+    "predictions": [
+     {
+      "rank": 1,
+      "fault_object": "app/shippingservice",
+      "root_cause": "pod_network_delay"
+     },
+     {
+      "rank": 2,
+      "fault_object": "app/shippingservice",
+      "root_cause": "pod_network_delay"
+     },
+     {
+      "rank": 3,
+      "fault_object": "app/shippingservice",
+      "root_cause": "pod_network_delay"
+     }
+    ]
+   },
+   {
+    "node": "artifact",
+    "id": "persist",
+    "persisted": false,
+    "why": "written by the CLI driver"
+   }
+  ],
+  "notes": [],
+  "tool_calls": 3,
+  "model_calls": 0,
+  "tokens_in": 0,
+  "tokens_out": 0,
+  "wall_s": 0.13
+ }
+}
