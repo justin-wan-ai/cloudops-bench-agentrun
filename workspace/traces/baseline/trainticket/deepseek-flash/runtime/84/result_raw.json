@@ -1,0 +1,6 @@
+{
+  "Completed": "{\"key_evidence_summary\": \"ts-gateway-service is the only unhealthy workload and is in CrashLoopBackOff. Its logs show startup failure with PortInUseException for port 18888. The Deployment YAML configures the Istio sidecar statusPort as 18888 and also configures the gateway application container to listen on containerPort 18888, directly causing the conflict and making the gateway unreachable.\", \"top_3_predictions\": [{\"rank\": 1, \"fault_object\": \"app/ts-gateway-service\", \"root_cause\": \"service_sidecar_port_conflict\"}, {\"rank\": 2, \"fault_object\": \"app/ts-gateway-service\", \"root_cause\": \"service_port_mapping_mismatch\"}, {\"rank\": 3, \"fault_object\": \"app/ts-gateway-service\", \"root_cause\": \"gateway_misrouted\"}]}",
+  "finished": true,
+  "stop_reason": "submit",
+  "steps_used": 5
+}

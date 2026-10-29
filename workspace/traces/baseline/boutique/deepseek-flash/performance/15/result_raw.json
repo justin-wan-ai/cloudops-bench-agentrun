@@ -1,0 +1,6 @@
+{
+  "Completed": "{\"key_evidence_summary\": \"currencyservice showed p90 latency rising from 3.82ms to 921.97ms with inbound/outbound traffic dropping ~59-66%. Its pod was Running 2/2, TCP connectivity succeeded, application logs showed successful conversions, and source/deployment config showed no obvious application/probe fault. The dependency graph confirms currencyservice is a leaf called by frontend and checkoutservice, matching their downstream latency alerts. This points to a network delay affecting currencyservice rather than an application crash or code defect.\", \"top_3_predictions\": [{\"rank\": 1, \"fault_object\": \"app/currencyservice\", \"root_cause\": \"pod_network_delay\"}, {\"rank\": 2, \"fault_object\": \"node/worker-01\", \"root_cause\": \"node_network_delay\"}, {\"rank\": 3, \"fault_object\": \"app/currencyservice\", \"root_cause\": \"code_artificial_delay\"}]}",
+  "finished": true,
+  "stop_reason": "submit",
+  "steps_used": 12
+}

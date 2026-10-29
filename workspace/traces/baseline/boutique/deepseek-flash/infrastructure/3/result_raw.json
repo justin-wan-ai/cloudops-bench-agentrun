@@ -1,0 +1,6 @@
+{
+  "Completed": "{\"key_evidence_summary\": \"worker-01 is NotReady; all affected pods stuck in Init:0/1 are scheduled on worker-01 while worker-02 pods run normally. kubelet is active but repeatedly fails with container runtime errors because /run/containerd/containerd.sock is missing. containerd on worker-01 is inactive (dead), directly explaining the container-runtime failure and service availability disruption.\", \"top_3_predictions\": [{\"rank\": 1, \"fault_object\": \"node/worker-01\", \"root_cause\": \"containerd_unavailable\"}, {\"rank\": 2, \"fault_object\": \"node/worker-01\", \"root_cause\": \"kubelet_unavailable\"}, {\"rank\": 3, \"fault_object\": \"node/worker-01\", \"root_cause\": \"node_network_packet_loss\"}]}",
+  "finished": true,
+  "stop_reason": "submit",
+  "steps_used": 5
+}

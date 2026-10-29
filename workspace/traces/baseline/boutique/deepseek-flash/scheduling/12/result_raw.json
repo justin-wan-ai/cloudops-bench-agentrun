@@ -1,0 +1,6 @@
+{
+  "Completed": "{\"key_evidence_summary\": \"emailservice pod is Pending. Describe shows nodeSelector hardware-type=gpu and FailedScheduling: 2 nodes didn't match selector, 2 were unschedulable. Cluster config shows only worker-01 has hardware-type=gpu, but worker-01 is tainted node.kubernetes.io/unschedulable:NoSchedule (cordoned). Other schedulable workers lack the label, so the pod cannot schedule on any available node.\", \"top_3_predictions\": [{\"rank\": 1, \"fault_object\": \"app/emailservice\", \"root_cause\": \"node_cordon_mismatch\"}, {\"rank\": 2, \"fault_object\": \"app/emailservice\", \"root_cause\": \"node_selector_mismatch\"}, {\"rank\": 3, \"fault_object\": \"app/emailservice\", \"root_cause\": \"taint_toleration_mismatch\"}]}",
+  "finished": true,
+  "stop_reason": "submit",
+  "steps_used": 4
+}

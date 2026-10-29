@@ -1,0 +1,6 @@
+{
+  "Completed": "{\"key_evidence_summary\": \"adservice pod is stuck Pending with no node assigned and no events. Worker nodes are all Ready with ample allocatable CPU/memory and no taints; the adservice Deployment has no nodeSelector, affinity, or tolerations that would block scheduling. The master node's kube-scheduler service is inactive/dead (Active: inactive (dead), 'Stopped Kubernetes Scheduler'), which prevents any new pods from being scheduled, explaining why adservice remains Pending while pre-existing pods continue Running.\", \"top_3_predictions\": [{\"rank\": 1, \"fault_object\": \"node/master\", \"root_cause\": \"kube_scheduler_unavailable\"}, {\"rank\": 2, \"fault_object\": \"app/adservice\", \"root_cause\": \"taint_toleration_mismatch\"}, {\"rank\": 3, \"fault_object\": \"app/adservice\", \"root_cause\": \"node_affinity_mismatch\"}]}",
+  "finished": true,
+  "stop_reason": "submit",
+  "steps_used": 9
+}

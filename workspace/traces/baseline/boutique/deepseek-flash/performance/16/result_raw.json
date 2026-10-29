@@ -1,0 +1,6 @@
+{
+  "Completed": "{\"key_evidence_summary\": \"checkoutservice and emailservice show severe latency spikes and both pods run on worker-02; frontend, on worker-01, also degrades due to downstream calls. Nodes are Ready without pressure, kube-proxy is healthy, emailservice source is a dummy immediate handler, its logs show normal request processing, and service connectivity succeeds. The common substrate is worker-02, indicating node-level network delay.\", \"top_3_predictions\": [{\"rank\": 1, \"fault_object\": \"node/worker-02\", \"root_cause\": \"node_network_delay\"}, {\"rank\": 2, \"fault_object\": \"node/worker-02\", \"root_cause\": \"node_network_packet_loss\"}, {\"rank\": 3, \"fault_object\": \"app/checkoutservice\", \"root_cause\": \"code_busy_loop\"}]}",
+  "finished": true,
+  "stop_reason": "submit",
+  "steps_used": 18
+}

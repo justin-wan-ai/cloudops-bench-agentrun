@@ -1,0 +1,6 @@
+{
+  "Completed": "{\"key_evidence_summary\": \"paymentservice pod is in ErrImagePull/ImagePullBackOff. Kubelet events explicitly report inability to retrieve image pull secret `non-existent-secret`, and image pull fails with 401 Unauthorized from ghcr.io. Deployment YAML confirms `imagePullSecrets: - name: non-existent-secret` for paymentservice.\", \"top_3_predictions\": [{\"rank\": 1, \"fault_object\": \"app/paymentservice\", \"root_cause\": \"missing_image_pull_secret\"}, {\"rank\": 2, \"fault_object\": \"app/paymentservice\", \"root_cause\": \"incorrect_image_reference\"}, {\"rank\": 3, \"fault_object\": \"app/paymentservice\", \"root_cause\": \"missing_secret_binding\"}]}",
+  "finished": true,
+  "stop_reason": "submit",
+  "steps_used": 4
+}

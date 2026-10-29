@@ -1,0 +1,6 @@
+{
+  "Completed": "{\"key_evidence_summary\": \"Alerts show significant latency degradation in frontend and checkoutservice, traffic drops in multiple services, and node-level TCP retransmission anomalies. worker-02 has the dominant retransmission spike (Normal=0.00 -> Current=9.07retrans, new spike), while worker-01 has a smaller increase. Pods for affected services are placed on worker-02, and cluster nodes are otherwise Ready with no scheduling/resource pressure. This supports node-level packet loss on worker-02 as the root cause of the elevated service latency.\", \"top_3_predictions\": [{\"rank\": 1, \"fault_object\": \"node/worker-02\", \"root_cause\": \"node_network_packet_loss\"}, {\"rank\": 2, \"fault_object\": \"node/worker-02\", \"root_cause\": \"node_network_delay\"}, {\"rank\": 3, \"fault_object\": \"node/worker-01\", \"root_cause\": \"node_network_packet_loss\"}]}",
+  "finished": true,
+  "stop_reason": "submit",
+  "steps_used": 4
+}

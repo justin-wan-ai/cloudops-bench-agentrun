@@ -1,0 +1,6 @@
+{
+  "Completed": "{\"key_evidence_summary\": \"currencyservice pod is Running but 0/1 Ready. The readiness probe uses httpGet on port 7000, while the container serves gRPC on that port. Kubelet reports repeated readiness failures with 'malformed HTTP response' containing gRPC binary framing bytes. The Deployment YAML confirms readinessProbe.httpGet.port=7000, whereas livenessProbe correctly uses gRPC.\", \"top_3_predictions\": [{\"rank\": 1, \"fault_object\": \"app/currencyservice\", \"root_cause\": \"readiness_probe_incorrect_protocol\"}, {\"rank\": 2, \"fault_object\": \"app/currencyservice\", \"root_cause\": \"readiness_probe_incorrect_port\"}, {\"rank\": 3, \"fault_object\": \"app/currencyservice\", \"root_cause\": \"liveness_probe_incorrect_protocol\"}]}",
+  "finished": true,
+  "stop_reason": "submit",
+  "steps_used": 4
+}

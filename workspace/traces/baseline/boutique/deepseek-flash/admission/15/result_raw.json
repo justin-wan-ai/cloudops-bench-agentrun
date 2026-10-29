@@ -1,0 +1,6 @@
+{
+  "Completed": "{\"key_evidence_summary\": \"currencyservice Deployment is 0/2 available; its ReplicaSet shows FailedCreate events stating pod creation is forbidden because namespace quota cpu-request-quota is exceeded (used requests.cpu=10, limit=10, additional request=1). currencyservice Service consequently has no endpoints, explaining partial service unreachability.\", \"top_3_predictions\": [{\"rank\": 1, \"fault_object\": \"namespace/boutique\", \"root_cause\": \"namespace_cpu_quota_exceeded\"}, {\"rank\": 2, \"fault_object\": \"namespace/boutique\", \"root_cause\": \"namespace_memory_quota_exceeded\"}, {\"rank\": 3, \"fault_object\": \"app/currencyservice\", \"root_cause\": \"cpu_capacity_mismatch\"}]}",
+  "finished": true,
+  "stop_reason": "submit",
+  "steps_used": 7
+}

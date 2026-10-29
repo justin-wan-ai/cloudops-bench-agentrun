@@ -1,0 +1,6 @@
+{
+  "Completed": "{\"key_evidence_summary\": \"Only ts-delivery-service is unhealthy: its pod is in CreateContainerConfigError. The pod description shows kubelet repeatedly reporting `Error: secret \\\"ts-delivery-mysql\\\" not found`, while the image was already present. This indicates the deployment references a missing Secret required for environment variables, preventing container startup and causing the delivery service to be unreachable.\", \"top_3_predictions\": [{\"rank\": 1, \"fault_object\": \"app/ts-delivery-service\", \"root_cause\": \"missing_secret_binding\"}, {\"rank\": 2, \"fault_object\": \"app/ts-delivery-service\", \"root_cause\": \"mysql_invalid_credentials\"}, {\"rank\": 3, \"fault_object\": \"app/ts-delivery-service\", \"root_cause\": \"service_env_var_address_mismatch\"}]}",
+  "finished": true,
+  "stop_reason": "submit",
+  "steps_used": 3
+}

@@ -1,0 +1,6 @@
+{
+  "Completed": "{\"key_evidence_summary\": \"frontend pod is Pending and unscheduled. DescribeResource shows Node-Selectors: disktype=ssd and a FailedScheduling event stating 0/4 nodes are available: 1 unschedulable, 3 did not match the Pod's node affinity/selector. This confirms a frontend node selector mismatch causing the only frontend replica to remain unavailable.\", \"top_3_predictions\": [{\"rank\": 1, \"fault_object\": \"app/frontend\", \"root_cause\": \"node_selector_mismatch\"}, {\"rank\": 2, \"fault_object\": \"app/frontend\", \"root_cause\": \"node_affinity_mismatch\"}, {\"rank\": 3, \"fault_object\": \"app/frontend\", \"root_cause\": \"node_cordon_mismatch\"}]}",
+  "finished": true,
+  "stop_reason": "submit",
+  "steps_used": 4
+}

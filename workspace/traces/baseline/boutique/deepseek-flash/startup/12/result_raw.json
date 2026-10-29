@@ -1,0 +1,6 @@
+{
+  "Completed": "{\"key_evidence_summary\": \"productcatalogservice is stuck in ErrImagePull/ImagePullBackOff. Its pod events show kubelet failed to pull corp-registry.internal/productcatalogservice:v0.10.3 because DNS lookup of corp-registry.internal returned 'no such host'. All other boutique pods are Running, so the fault is isolated to productcatalogservice's image registry DNS resolution.\", \"top_3_predictions\": [{\"rank\": 1, \"fault_object\": \"app/productcatalogservice\", \"root_cause\": \"image_registry_dns_failure\"}, {\"rank\": 2, \"fault_object\": \"app/productcatalogservice\", \"root_cause\": \"incorrect_image_reference\"}, {\"rank\": 3, \"fault_object\": \"app/productcatalogservice\", \"root_cause\": \"missing_image_pull_secret\"}]}",
+  "finished": true,
+  "stop_reason": "submit",
+  "steps_used": 3
+}

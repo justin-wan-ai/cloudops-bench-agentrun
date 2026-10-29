@@ -1,0 +1,6 @@
+{
+  "Completed": "{\"key_evidence_summary\": \"currencyservice pod is Pending with a FailedScheduling event stating 2 nodes did not match its node affinity/selector and 2 nodes were unschedulable. The pod requires nodeSelector hardware-type=gpu; only worker-01 has this label, but worker-01 carries the node.kubernetes.io/unschedulable:NoSchedule taint (cordoned). Thus the only matching node is cordoned, preventing scheduling and causing partial service unreachability.\", \"top_3_predictions\": [{\"rank\": 1, \"fault_object\": \"app/currencyservice\", \"root_cause\": \"node_cordon_mismatch\"}, {\"rank\": 2, \"fault_object\": \"app/currencyservice\", \"root_cause\": \"node_selector_mismatch\"}, {\"rank\": 3, \"fault_object\": \"app/currencyservice\", \"root_cause\": \"taint_toleration_mismatch\"}]}",
+  "finished": true,
+  "stop_reason": "submit",
+  "steps_used": 4
+}

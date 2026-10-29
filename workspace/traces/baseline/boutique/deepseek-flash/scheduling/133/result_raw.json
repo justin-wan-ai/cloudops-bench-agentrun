@@ -1,0 +1,6 @@
+{
+  "Completed": "{\"key_evidence_summary\": \"redis-cart pod is Pending with FailedScheduling due to an unbound immediate PVC. The PVC redis-cart-pvc is Pending with 'no persistent volumes available for this claim and no storage class is set'. A 1Gi RWO Available PV exists (redis-cart-pv) with no storage class, matching capacity/access mode but labeled app=static-web, while the PVC selector requires app=backend-api. Thus the PV cannot bind to the PVC, leaving redis-cart unavailable.\", \"top_3_predictions\": [{\"rank\": 1, \"fault_object\": \"app/redis-cart\", \"root_cause\": \"pvc_selector_mismatch\"}, {\"rank\": 2, \"fault_object\": \"app/redis-cart\", \"root_cause\": \"pvc_storage_class_mismatch\"}, {\"rank\": 3, \"fault_object\": \"app/redis-cart\", \"root_cause\": \"pv_binding_occupied\"}]}",
+  "finished": true,
+  "stop_reason": "submit",
+  "steps_used": 8
+}

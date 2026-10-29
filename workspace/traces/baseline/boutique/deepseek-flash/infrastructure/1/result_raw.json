@@ -1,0 +1,6 @@
+{
+  "Completed": "{\"key_evidence_summary\": \"Multiple pods on worker-01 are stuck in Init:0/1, while pods on worker-02 are Running. adservice pod events show FailedCreatePodSandBox with dial unix /run/containerd/containerd.sock: no such file or directory. CheckNodeServiceStatus confirms containerd.service on worker-01 is inactive (dead), causing container sandbox creation to fail and disrupting services scheduled on that node.\", \"top_3_predictions\": [{\"rank\": 1, \"fault_object\": \"node/worker-01\", \"root_cause\": \"containerd_unavailable\"}, {\"rank\": 2, \"fault_object\": \"node/worker-01\", \"root_cause\": \"kubelet_unavailable\"}, {\"rank\": 3, \"fault_object\": \"node/worker-01\", \"root_cause\": \"kube_proxy_unavailable\"}]}",
+  "finished": true,
+  "stop_reason": "submit",
+  "steps_used": 4
+}

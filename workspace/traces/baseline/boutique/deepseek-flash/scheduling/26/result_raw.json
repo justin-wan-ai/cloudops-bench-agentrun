@@ -1,0 +1,6 @@
+{
+  "Completed": "{\"key_evidence_summary\": \"adservice is stuck Pending with PodScheduled=False. Scheduler event: 0/4 nodes available, 1 unschedulable, 3 Insufficient cpu. The adservice Deployment explicitly requests and limits CPU at 5000m, which cannot be satisfied by the schedulable nodes given current CPU allocations. Other boutique pods are Running, so the availability disruption is localized to adservice.\", \"top_3_predictions\": [{\"rank\": 1, \"fault_object\": \"app/adservice\", \"root_cause\": \"cpu_capacity_mismatch\"}, {\"rank\": 2, \"fault_object\": \"app/adservice\", \"root_cause\": \"node_cordon_mismatch\"}, {\"rank\": 3, \"fault_object\": \"app/adservice\", \"root_cause\": \"pod_cpu_overload\"}]}",
+  "finished": true,
+  "stop_reason": "submit",
+  "steps_used": 6
+}

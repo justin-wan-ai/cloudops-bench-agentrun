@@ -1,0 +1,6 @@
+{
+  "Completed": "{\"key_evidence_summary\": \"All boutique pods are Running except cartservice-79b49f5555-pzjnb, which is Pending 0/1. Its describe shows PodScheduled=False and a FailedScheduling event: 0/4 nodes available, with 1 node unschedulable and 3 nodes having an untolerated taint {critical: true}. Cluster configuration confirms worker-01, worker-02, and worker-03 are Ready but all carry critical=true:NoSchedule, while the master is unschedulable. The cartservice pod has no matching toleration, so it cannot be scheduled on any worker, leaving cartservice without a ready endpoint and causing partial service unreachability.\", \"top_3_predictions\": [{\"rank\": 1, \"fault_object\": \"app/cartservice\", \"root_cause\": \"taint_toleration_mismatch\"}, {\"rank\": 2, \"fault_object\": \"app/cartservice\", \"root_cause\": \"node_cordon_mismatch\"}, {\"rank\": 3, \"fault_object\": \"app/cartservice\", \"root_cause\": \"node_selector_mismatch\"}]}",
+  "finished": true,
+  "stop_reason": "submit",
+  "steps_used": 4
+}

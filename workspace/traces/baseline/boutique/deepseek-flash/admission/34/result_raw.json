@@ -1,0 +1,6 @@
+{
+  "Completed": "{\"key_evidence_summary\": \"cartservice Deployment is 0/1 with ReplicaFailure. Its ReplicaSet events show repeated FailedCreate errors: 'pods ... is forbidden: exceeded quota: boutique-quota, requested: pods=1, used: pods=10, limited: pods=10'. All other pods are Running and Ready. The cartservice Service exists but has no backing pod, causing partial service unreachability.\", \"top_3_predictions\": [{\"rank\": 1, \"fault_object\": \"namespace/boutique\", \"root_cause\": \"namespace_pod_quota_exceeded\"}, {\"rank\": 2, \"fault_object\": \"namespace/boutique\", \"root_cause\": \"namespace_cpu_quota_exceeded\"}, {\"rank\": 3, \"fault_object\": \"namespace/boutique\", \"root_cause\": \"namespace_memory_quota_exceeded\"}]}",
+  "finished": true,
+  "stop_reason": "submit",
+  "steps_used": 6
+}

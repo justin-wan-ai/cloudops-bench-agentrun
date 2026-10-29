@@ -1,0 +1,6 @@
+{
+  "Completed": "{\"key_evidence_summary\": \"The alert shows ts-assurance-service returning HTTP 503 errors. The only unhealthy pod is ts-assurance-service-f84b798d-h2tkp, stuck in CreateContainerConfigError. Its pod events explicitly report: Error: secret \\\"ts-assurance-mysql\\\" not found. This missing Secret prevents the container from being created, leaving the service without a ready backend and causing partial service unreachability.\", \"top_3_predictions\": [{\"rank\": 1, \"fault_object\": \"app/ts-assurance-service\", \"root_cause\": \"missing_secret_binding\"}, {\"rank\": 2, \"fault_object\": \"app/ts-assurance-service\", \"root_cause\": \"service_selector_mismatch\"}, {\"rank\": 3, \"fault_object\": \"app/ts-assurance-service\", \"root_cause\": \"service_dns_resolution_failure\"}]}",
+  "finished": true,
+  "stop_reason": "submit",
+  "steps_used": 4
+}

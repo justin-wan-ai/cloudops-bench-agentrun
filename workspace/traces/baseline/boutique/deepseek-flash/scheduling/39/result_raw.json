@@ -1,0 +1,6 @@
+{
+  "Completed": "{\"key_evidence_summary\": \"paymentservice-9c44ddcbf-g9t92 is Pending with PodScheduled=False. DescribeResource reports memory requests/limits of 22Gi, and FailedScheduling events state 3 nodes have Insufficient memory while 1 node is unschedulable. GetClusterConfiguration shows all worker nodes Ready with ~15Gi allocatable memory and no memory pressure. Thus paymentservice requests more memory than any schedulable node can provide, causing partial service unreachability.\", \"top_3_predictions\": [{\"rank\": 1, \"fault_object\": \"app/paymentservice\", \"root_cause\": \"memory_capacity_mismatch\"}, {\"rank\": 2, \"fault_object\": \"app/paymentservice\", \"root_cause\": \"container_memory_limit_too_low\"}, {\"rank\": 3, \"fault_object\": \"app/paymentservice\", \"root_cause\": \"node_selector_mismatch\"}]}",
+  "finished": true,
+  "stop_reason": "submit",
+  "steps_used": 4
+}

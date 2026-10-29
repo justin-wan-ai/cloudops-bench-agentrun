@@ -1,0 +1,6 @@
+{
+  "Completed": "{\"key_evidence_summary\": \"`checkoutservice` Deployment is 0/1 available with ReplicaFailure=True FailedCreate. Its ReplicaSet events state pod creation was forbidden: exceeded quota `memory-request-quota`, requested 300Mi, used 3000Mi, limited 3Gi. All other application pods are Running and Ready, so the availability disruption is caused by namespace memory quota exhaustion preventing checkoutservice pod creation.\", \"top_3_predictions\": [{\"rank\": 1, \"fault_object\": \"namespace/boutique\", \"root_cause\": \"namespace_memory_quota_exceeded\"}, {\"rank\": 2, \"fault_object\": \"namespace/boutique\", \"root_cause\": \"namespace_cpu_quota_exceeded\"}, {\"rank\": 3, \"fault_object\": \"app/checkoutservice\", \"root_cause\": \"memory_capacity_mismatch\"}]}",
+  "finished": true,
+  "stop_reason": "submit",
+  "steps_used": 7
+}

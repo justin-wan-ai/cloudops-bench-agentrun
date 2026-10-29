@@ -1,0 +1,6 @@
+{
+  "Completed": "{\"key_evidence_summary\": \"emailservice has 2/3 replicas Pending while all other services are Running. The pending pod event states '0/4 nodes are available: 4 node(s) were unschedulable.' Cluster configuration confirms all four nodes carry the node.kubernetes.io/unschedulable:NoSchedule taint, indicating nodes are cordoned and new emailservice replicas cannot be scheduled.\", \"top_3_predictions\": [{\"rank\": 1, \"fault_object\": \"app/emailservice\", \"root_cause\": \"node_cordon_mismatch\"}, {\"rank\": 2, \"fault_object\": \"app/emailservice\", \"root_cause\": \"taint_toleration_mismatch\"}, {\"rank\": 3, \"fault_object\": \"app/emailservice\", \"root_cause\": \"node_affinity_mismatch\"}]}",
+  "finished": true,
+  "stop_reason": "submit",
+  "steps_used": 5
+}

@@ -1,0 +1,6 @@
+{
+  "Completed": "{\"key_evidence_summary\": \"paymentservice-6cff9d48f4-mwggd is Pending. The scheduler reports 0/4 nodes available: 1 node is unschedulable and 3 nodes have Insufficient cpu. The paymentservice container requests cpu=12, while worker nodes have only 8 allocatable CPU each; memory is not the limiting factor. This app-level CPU request exceeds available node CPU capacity, preventing payment service scheduling and causing availability disruption.\", \"top_3_predictions\": [{\"rank\": 1, \"fault_object\": \"app/paymentservice\", \"root_cause\": \"cpu_capacity_mismatch\"}, {\"rank\": 2, \"fault_object\": \"app/paymentservice\", \"root_cause\": \"node_cordon_mismatch\"}, {\"rank\": 3, \"fault_object\": \"app/paymentservice\", \"root_cause\": \"taint_toleration_mismatch\"}]}",
+  "finished": true,
+  "stop_reason": "submit",
+  "steps_used": 4
+}

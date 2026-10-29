@@ -1,0 +1,6 @@
+{
+  "Completed": "{\"key_evidence_summary\": \"Alerts show cartservice p95 latency rose from 10.77ms to 83.83ms with CPU throttling (0.811s) and CPU usage rising to 0.16 cores from 0.02 cores. checkoutservice and frontend latency increases are consistent with downstream impact. The cartservice pod is Running with no restarts, and inspection of the active RPC/store/health-check/startup code found no obvious busy loop, supporting excessive pod CPU load rather than a code-level busy loop.\", \"top_3_predictions\": [{\"rank\": 1, \"fault_object\": \"app/cartservice\", \"root_cause\": \"pod_cpu_overload\"}, {\"rank\": 2, \"fault_object\": \"app/cartservice\", \"root_cause\": \"code_busy_loop\"}, {\"rank\": 3, \"fault_object\": \"node/worker-01\", \"root_cause\": \"node_network_delay\"}]}",
+  "finished": true,
+  "stop_reason": "submit",
+  "steps_used": 13
+}

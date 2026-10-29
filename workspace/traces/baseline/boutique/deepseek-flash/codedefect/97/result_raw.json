@@ -1,0 +1,6 @@
+{
+  "Completed": "{\"key_evidence_summary\": \"Only shippingservice showed anomalies: CPU saturation and a filesystem write surge. Its `quote.go` implementation writes 30,000 CSV rows to `/tmp/tmp.csv` on every `CreateQuoteFromFloat` call during `GetQuote`, directly explaining the abnormal write volume and performance degradation.\", \"top_3_predictions\": [{\"rank\": 1, \"fault_object\": \"app/shippingservice\", \"root_cause\": \"code_excessive_file_writes\"}, {\"rank\": 2, \"fault_object\": \"app/shippingservice\", \"root_cause\": \"code_busy_loop\"}, {\"rank\": 3, \"fault_object\": \"app/shippingservice\", \"root_cause\": \"pod_cpu_overload\"}]}",
+  "finished": true,
+  "stop_reason": "submit",
+  "steps_used": 7
+}

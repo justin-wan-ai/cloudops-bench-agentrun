@@ -1,0 +1,6 @@
+{
+  "Completed": "{\"key_evidence_summary\": \"productcatalogservice-ddb46fc86-h9klx is Pending with no scheduling events. All worker nodes are Ready and have ample CPU/memory. The pod has no node selectors, affinity, or tolerations that would prevent scheduling. The kube-scheduler service on master is inactive (dead since 2025-12-02 21:32:08), so new pods cannot be scheduled, causing service availability disruption.\", \"top_3_predictions\": [{\"rank\": 1, \"fault_object\": \"node/master\", \"root_cause\": \"kube_scheduler_unavailable\"}, {\"rank\": 2, \"fault_object\": \"app/productcatalogservice\", \"root_cause\": \"node_selector_mismatch\"}, {\"rank\": 3, \"fault_object\": \"app/productcatalogservice\", \"root_cause\": \"node_affinity_mismatch\"}]}",
+  "finished": true,
+  "stop_reason": "submit",
+  "steps_used": 8
+}

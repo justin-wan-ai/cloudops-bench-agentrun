@@ -1,0 +1,6 @@
+{
+  "Completed": "{\"key_evidence_summary\": \"worker-02 shows a new TCP retransmission spike during the incident window, while multiple services hosted on worker-02 (cartservice, currencyservice, emailservice, productcatalogservice, recommendationservice, shippingservice) exhibit throughput drops and cascading latency. cartservice p50 latency rises to ~1236 ms, checkoutservice to ~7005 ms, and frontend to ~11557 ms, consistent with node-level packet loss affecting cross-node RPCs. All pods remain Running, making scheduling/startup faults less likely.\", \"top_3_predictions\": [{\"rank\": 1, \"fault_object\": \"node/worker-02\", \"root_cause\": \"node_network_packet_loss\"}, {\"rank\": 2, \"fault_object\": \"node/worker-02\", \"root_cause\": \"node_network_delay\"}, {\"rank\": 3, \"fault_object\": \"app/cartservice\", \"root_cause\": \"pod_network_delay\"}]}",
+  "finished": true,
+  "stop_reason": "submit",
+  "steps_used": 3
+}

@@ -1,0 +1,6 @@
+{
+  "Completed": "{\"key_evidence_summary\": \"All boutique pods are Running, but active TCP connectivity to cartservice:7070 fails. The cartservice Service is explicitly configured as 7070/UDP with TargetPort 7070/UDP, despite cartservice being a TCP/gRPC service. Endpoints exist, so this is a Service protocol configuration fault affecting the cartservice application unit.\", \"top_3_predictions\": [{\"rank\": 1, \"fault_object\": \"app/cartservice\", \"root_cause\": \"service_protocol_mismatch\"}, {\"rank\": 2, \"fault_object\": \"app/cartservice\", \"root_cause\": \"service_port_mapping_mismatch\"}, {\"rank\": 3, \"fault_object\": \"app/cartservice\", \"root_cause\": \"service_dns_resolution_failure\"}]}",
+  "finished": true,
+  "stop_reason": "submit",
+  "steps_used": 5
+}

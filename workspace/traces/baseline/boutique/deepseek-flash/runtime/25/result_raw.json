@@ -1,0 +1,6 @@
+{
+  "Completed": "{\"key_evidence_summary\": \"emailservice pod is stuck in ContainerCreating/Pending. Describe events show repeated FailedCreatePodSandBox errors: container init was OOM-killed, with descriptor hinting memory limit too low. The pod has an extremely low memory limit and request of 5Mi. Other boutique pods are Running, making a node-wide or namespace-wide issue unlikely.\", \"top_3_predictions\": [{\"rank\": 1, \"fault_object\": \"app/emailservice\", \"root_cause\": \"container_memory_limit_too_low\"}, {\"rank\": 2, \"fault_object\": \"app/emailservice\", \"root_cause\": \"code_memory_leak\"}, {\"rank\": 3, \"fault_object\": \"node/worker-03\", \"root_cause\": \"memory_capacity_mismatch\"}]}",
+  "finished": true,
+  "stop_reason": "submit",
+  "steps_used": 4
+}

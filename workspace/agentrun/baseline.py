@@ -15,6 +15,8 @@ import sys
 import time
 
 from . import benchbridge  # noqa: F401  (sys.path side effect: repo agent dir)
+from pathlib import Path
+
 from .env import TASKS_FILE, TRACES_BASELINE, agent_model, case_path
 
 import run as bench_run  # repo/agents/cloudops_agent/run.py
@@ -47,9 +49,10 @@ def main(argv: list[str] | None = None) -> int:
     parser = argparse.ArgumentParser()
     parser.add_argument("--max-iterations", type=int, default=20)
     parser.add_argument("--only", default="", help="comma separated case ids")
+    parser.add_argument("--tasks-file", default=str(TASKS_FILE))
     args = parser.parse_args(argv)
 
-    cases = json.loads(TASKS_FILE.read_text())["cases"]
+    cases = json.loads(Path(args.tasks_file).read_text())["cases"]
     if args.only:
         wanted = {item.strip() for item in args.only.split(",") if item.strip()}
         cases = [c for c in cases if c["id"] in wanted]

@@ -1,0 +1,6 @@
+{
+  "Completed": "{\"key_evidence_summary\": \"Only emailservice is unhealthy, in ErrImagePull/ImagePullBackOff. Its pod image pull from ghcr.io fails with 403 Forbidden during anonymous token authorization. The emailservice Deployment references ghcr.io/google-samples/microservices-demo/emailservice:v0.10.3 and has no imagePullSecrets, while healthy frontend and adservice deployments use us-central1-docker.pkg.dev/google-samples/microservices-demo images. This supports an incorrect image reference for emailservice, with missing image-pull credentials as a plausible alternative.\", \"top_3_predictions\": [{\"rank\": 1, \"fault_object\": \"app/emailservice\", \"root_cause\": \"incorrect_image_reference\"}, {\"rank\": 2, \"fault_object\": \"app/emailservice\", \"root_cause\": \"missing_image_pull_secret\"}, {\"rank\": 3, \"fault_object\": \"app/emailservice\", \"root_cause\": \"image_registry_dns_failure\"}]}",
+  "finished": true,
+  "stop_reason": "submit",
+  "steps_used": 8
+}

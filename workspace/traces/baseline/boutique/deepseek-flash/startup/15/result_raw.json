@@ -1,0 +1,6 @@
+{
+  "Completed": "{\"key_evidence_summary\": \"All boutique pods are Running except `currencyservice-f9bc5fbdc-5bwxg`, which is in `ImagePullBackOff`. Its pod events show repeated `Failed to pull image ...currencyservice:v0.10.33 ... not found` / `ErrImagePull`. The error is a registry NotFound for the configured image reference, not a DNS failure or authentication failure.\", \"top_3_predictions\": [{\"rank\": 1, \"fault_object\": \"app/currencyservice\", \"root_cause\": \"incorrect_image_reference\"}, {\"rank\": 2, \"fault_object\": \"app/currencyservice\", \"root_cause\": \"image_registry_dns_failure\"}, {\"rank\": 3, \"fault_object\": \"app/currencyservice\", \"root_cause\": \"missing_image_pull_secret\"}]}",
+  "finished": true,
+  "stop_reason": "submit",
+  "steps_used": 3
+}

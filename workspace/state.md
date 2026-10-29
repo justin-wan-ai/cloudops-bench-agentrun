@@ -6,7 +6,10 @@
   - ood cross-system 84 **0.155**（去掉蒙对后的诚实值）/ unseen-type 36 **0.028**（承诺不碰）
   - 全量 754 机制口径 **0.714**（基线 0.435，累计 +210 题），候选率 0.836，成本 4.14 步/题、**0 模型调用**
 - 数据划分：`eval/partition_v5.json`（id 549 / ood_cross 84 / ood_unseen 36 / quarantine 85）
-- 全局基线（机制口径）：`runs/coverage_754_v013.json`；基线 agent：`runs/score_baseline.json`
+- 全局基线（机制口径）：`runs/coverage_754_v013.json`
+- 自由 agent 基线：5 题 `runs/score_baseline.json`；**115 题（evolve）`runs/score_baseline_evolve.json`**
+  → JRA 0.896 / MC 0.809 / 5.46 次模型调用/题 / 45.5k token/题 / 29.1s/题
+- 口径提醒：0.435 是 AgentRun v0.6 的全量扫描（爬山起点），不是自由 agent 的成绩
 
 ## 本次会话做了什么（按时间顺序）
 

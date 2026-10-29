@@ -1,0 +1,6 @@
+{
+  "Completed": "{\"key_evidence_summary\": \"ts-preserve-service returns 500s with 'Service Instance cannot be null' because ts-security-service is in CrashLoopBackOff. ts-security-service logs show MySQL connection refused to tsdb-mysql-leader. Its Secret configures SECURITY_MYSQL_PORT=34016, while the tsdb-mysql-leader Service exposes port 3306/targetPort mysql. This incorrect MySQL port causes startup failure and downstream unreachability.\", \"top_3_predictions\": [{\"rank\": 1, \"fault_object\": \"app/ts-security-service\", \"root_cause\": \"mysql_invalid_port\"}, {\"rank\": 2, \"fault_object\": \"app/ts-security-service\", \"root_cause\": \"service_env_var_address_mismatch\"}, {\"rank\": 3, \"fault_object\": \"app/ts-security-service\", \"root_cause\": \"service_port_mapping_mismatch\"}]}",
+  "finished": true,
+  "stop_reason": "submit",
+  "steps_used": 10
+}

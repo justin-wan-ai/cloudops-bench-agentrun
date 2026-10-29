@@ -1,0 +1,6 @@
+{
+  "Completed": "{\"key_evidence_summary\": \"ts-order-service pod is 1/2 Ready with 4 restarts. App container logs show 'PortInUseException: Port 12031 is already in use' and exits with code 1. The Deployment pod annotation 'proxy.istio.io/config: {\\\"statusPort\\\": 12031}' configures the Istio sidecar status port to 12031, identical to the application containerPort and readinessProbe port 12031, causing a port collision that prevents the app from starting and makes the service partially unreachable.\", \"top_3_predictions\": [{\"rank\": 1, \"fault_object\": \"app/ts-order-service\", \"root_cause\": \"service_sidecar_port_conflict\"}, {\"rank\": 2, \"fault_object\": \"app/ts-order-service\", \"root_cause\": \"readiness_probe_incorrect_port\"}, {\"rank\": 3, \"fault_object\": \"app/ts-order-service\", \"root_cause\": \"service_port_mapping_mismatch\"}]}",
+  "finished": true,
+  "stop_reason": "submit",
+  "steps_used": 5
+}

@@ -1,0 +1,6 @@
+{
+  "Completed": "{\"key_evidence_summary\": \"The `shippingservice` Service has selector `app=shipping_service`, but the running pod has label `app=shippingservice`. `kubectl describe service shippingservice` shows empty Endpoints, confirming the Service selector does not match any backend pod and making shippingservice unreachable.\", \"top_3_predictions\": [{\"rank\": 1, \"fault_object\": \"app/shippingservice\", \"root_cause\": \"service_selector_mismatch\"}, {\"rank\": 2, \"fault_object\": \"app/shippingservice\", \"root_cause\": \"service_port_mapping_mismatch\"}, {\"rank\": 3, \"fault_object\": \"app/checkoutservice\", \"root_cause\": \"service_env_var_address_mismatch\"}]}",
+  "finished": true,
+  "stop_reason": "submit",
+  "steps_used": 6
+}

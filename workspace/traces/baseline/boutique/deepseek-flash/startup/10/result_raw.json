@@ -1,0 +1,6 @@
+{
+  "Completed": "{\"key_evidence_summary\": \"Only frontend is unavailable, with Status ErrImagePull/ImagePullBackOff. DescribeResource events show kubelet failed to pull the frontend image because `corp-registry.internal` could not be resolved: `lookup corp-registry.internal on 127.0.0.53:53: no such host`. Other boutique pods are Running, and no active metric alerts were present.\", \"top_3_predictions\": [{\"rank\": 1, \"fault_object\": \"app/frontend\", \"root_cause\": \"image_registry_dns_failure\"}, {\"rank\": 2, \"fault_object\": \"app/frontend\", \"root_cause\": \"incorrect_image_reference\"}, {\"rank\": 3, \"fault_object\": \"app/frontend\", \"root_cause\": \"missing_image_pull_secret\"}]}",
+  "finished": true,
+  "stop_reason": "submit",
+  "steps_used": 4
+}

@@ -1,0 +1,6 @@
+{
+  "Completed": "{\"key_evidence_summary\": \"productcatalogservice pod is 0/1 Running with Ready=False. DescribeResource shows repeated Readiness probe failures returning 'malformed HTTP response \\\\x00\\\\x00\\\\x06\\\\x04...' (an HTTP/2 gRPC preface). The deployment YAML confirms readinessProbe uses httpGet path=/ port=3550 while livenessProbe correctly uses grpc port=3550, and the service/container port 3550 is a gRPC endpoint. Thus the readiness probe protocol is misconfigured (HTTP against a gRPC port), leaving the pod NotReady.\", \"top_3_predictions\": [{\"rank\": 1, \"fault_object\": \"app/productcatalogservice\", \"root_cause\": \"readiness_probe_incorrect_protocol\"}, {\"rank\": 2, \"fault_object\": \"app/productcatalogservice\", \"root_cause\": \"readiness_probe_incorrect_port\"}, {\"rank\": 3, \"fault_object\": \"app/productcatalogservice\", \"root_cause\": \"service_selector_mismatch\"}]}",
+  "finished": true,
+  "stop_reason": "submit",
+  "steps_used": 4
+}

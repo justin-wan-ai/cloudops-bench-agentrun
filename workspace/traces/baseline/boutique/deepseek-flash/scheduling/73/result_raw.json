@@ -1,0 +1,6 @@
+{
+  "Completed": "{\"key_evidence_summary\": \"cartservice pod is Pending with FailedScheduling: 3 nodes did not match node affinity/selector and 1 node is unschedulable. The cartservice Deployment requires nodeAffinity label `storage-vendor` Exists, but none of the worker nodes have that label; master is tainted unschedulable. This prevents cartservice from scheduling, causing partial service unreachability.\", \"top_3_predictions\": [{\"rank\": 1, \"fault_object\": \"app/cartservice\", \"root_cause\": \"node_affinity_mismatch\"}, {\"rank\": 2, \"fault_object\": \"app/cartservice\", \"root_cause\": \"node_selector_mismatch\"}, {\"rank\": 3, \"fault_object\": \"app/cartservice\", \"root_cause\": \"taint_toleration_mismatch\"}]}",
+  "finished": true,
+  "stop_reason": "submit",
+  "steps_used": 5
+}

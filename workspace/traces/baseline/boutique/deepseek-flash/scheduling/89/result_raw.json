@@ -1,0 +1,6 @@
+{
+  "Completed": "{\"key_evidence_summary\": \"cartservice-7c8d449dcf-js2xd is the only Pending pod. Its spec requires Node-Selectors: region=cn-north, while cluster nodes only have standard kubernetes.io labels and no region=cn-north. Scheduler reports 3 nodes did not match Pod node affinity/selector and 1 node is unschedulable. This directly explains partial service unreachability for cartservice.\", \"top_3_predictions\": [{\"rank\": 1, \"fault_object\": \"app/cartservice\", \"root_cause\": \"node_selector_mismatch\"}, {\"rank\": 2, \"fault_object\": \"app/cartservice\", \"root_cause\": \"node_affinity_mismatch\"}, {\"rank\": 3, \"fault_object\": \"app/cartservice\", \"root_cause\": \"node_cordon_mismatch\"}]}",
+  "finished": true,
+  "stop_reason": "submit",
+  "steps_used": 4
+}

@@ -1,0 +1,6 @@
+{
+  "Completed": "{\"key_evidence_summary\": \"redis-cart-8454c66588-pf7bs is Pending with PodScheduled=False. Scheduler events show 0/4 nodes available: 1 unschedulable and 3 failed due to pod anti-affinity. The redis-cart Deployment defines requiredDuringSchedulingIgnoredDuringExecution podAntiAffinity against pods with label service=backend on hostname topology. backend-service pods are running on all worker nodes, preventing redis-cart from scheduling.\", \"top_3_predictions\": [{\"rank\": 1, \"fault_object\": \"app/redis-cart\", \"root_cause\": \"pod_anti_affinity_conflict\"}, {\"rank\": 2, \"fault_object\": \"app/redis-cart\", \"root_cause\": \"node_cordon_mismatch\"}, {\"rank\": 3, \"fault_object\": \"app/redis-cart\", \"root_cause\": \"taint_toleration_mismatch\"}]}",
+  "finished": true,
+  "stop_reason": "submit",
+  "steps_used": 4
+}

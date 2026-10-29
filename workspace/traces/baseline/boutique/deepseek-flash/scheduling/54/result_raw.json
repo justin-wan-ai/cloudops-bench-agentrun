@@ -1,0 +1,6 @@
+{
+  "Completed": "{\"key_evidence_summary\": \"redis-cart pod is Pending because its PVC redis-cart-pvc is unbound. The PVC requests 10Gi, but the only available matching PV redis-cart-pv provides just 1Gi, producing FailedBinding and FailedScheduling events. Other boutique pods are Running.\", \"top_3_predictions\": [{\"rank\": 1, \"fault_object\": \"app/redis-cart\", \"root_cause\": \"pvc_capacity_mismatch\"}, {\"rank\": 2, \"fault_object\": \"app/redis-cart\", \"root_cause\": \"pvc_storage_class_mismatch\"}, {\"rank\": 3, \"fault_object\": \"app/redis-cart\", \"root_cause\": \"pvc_selector_mismatch\"}]}",
+  "finished": true,
+  "stop_reason": "submit",
+  "steps_used": 9
+}

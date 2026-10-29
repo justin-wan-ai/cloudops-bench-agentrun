@@ -1,0 +1,6 @@
+{
+  "Completed": "{\"key_evidence_summary\": \"`productcatalogservice-ddb46fc86-hw4ft` is Pending. Scheduler events report 3 nodes with untolerated taint `{critical: true}` and 1 unschedulable node. `GetClusterConfiguration` confirms all worker nodes have `critical=true:NoSchedule`, while `GetAppYAML` shows the productcatalogservice Deployment has no matching toleration. Therefore, the service cannot schedule its unavailable replica.\", \"top_3_predictions\": [{\"rank\": 1, \"fault_object\": \"app/productcatalogservice\", \"root_cause\": \"taint_toleration_mismatch\"}, {\"rank\": 2, \"fault_object\": \"app/productcatalogservice\", \"root_cause\": \"node_cordon_mismatch\"}, {\"rank\": 3, \"fault_object\": \"app/productcatalogservice\", \"root_cause\": \"node_selector_mismatch\"}]}",
+  "finished": true,
+  "stop_reason": "submit",
+  "steps_used": 5
+}

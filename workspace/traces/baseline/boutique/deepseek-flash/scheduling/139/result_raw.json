@@ -1,0 +1,6 @@
+{
+  "Completed": "{\"key_evidence_summary\": \"redis-cart is the only Pending pod. Its pod events show FailedScheduling because of an unbound immediate PersistentVolumeClaim. The redis-cart-pvc is Pending with no available PV and no storage class; the sole PV redis-pv is already Bound to boutique/pvc-a. Therefore redis-cart cannot mount its data volume, causing partial service unreachability.\", \"top_3_predictions\": [{\"rank\": 1, \"fault_object\": \"app/redis-cart\", \"root_cause\": \"pv_binding_occupied\"}, {\"rank\": 2, \"fault_object\": \"app/redis-cart\", \"root_cause\": \"pvc_storage_class_mismatch\"}, {\"rank\": 3, \"fault_object\": \"app/redis-cart\", \"root_cause\": \"pvc_capacity_mismatch\"}]}",
+  "finished": true,
+  "stop_reason": "submit",
+  "steps_used": 6
+}

@@ -1,0 +1,6 @@
+{
+  "Completed": "{\"key_evidence_summary\": \"Alerts show severe latency degradation in adservice, checkoutservice, and recommendationservice, all scheduled on worker-02. worker-02 also shows a sharp TCP retransmission spike (0.00 -> 6.67), while worker-01 shows a smaller increase. Node status is otherwise Ready with no pressure, making node network packet loss the strongest root cause.\", \"top_3_predictions\": [{\"rank\": 1, \"fault_object\": \"node/worker-02\", \"root_cause\": \"node_network_packet_loss\"}, {\"rank\": 2, \"fault_object\": \"node/worker-01\", \"root_cause\": \"node_network_packet_loss\"}, {\"rank\": 3, \"fault_object\": \"app/recommendationservice\", \"root_cause\": \"pod_network_delay\"}]}",
+  "finished": true,
+  "stop_reason": "submit",
+  "steps_used": 5
+}

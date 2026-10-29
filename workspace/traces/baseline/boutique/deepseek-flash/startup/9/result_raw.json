@@ -1,0 +1,6 @@
+{
+  "Completed": "{\"key_evidence_summary\": \"Only emailservice is unhealthy: pod emailservice-7f65596fc8-dvm5r is Pending with ErrImagePull/ImagePullBackOff. DescribeResource events show kubelet failed to pull corp-registry.internal/microservices-demo/emailservice:v0.10.3 because DNS lookup for corp-registry.internal returned 'no such host'. This indicates image registry DNS resolution failure for the emailservice application, causing partial service unreachability.\", \"top_3_predictions\": [{\"rank\": 1, \"fault_object\": \"app/emailservice\", \"root_cause\": \"image_registry_dns_failure\"}, {\"rank\": 2, \"fault_object\": \"app/emailservice\", \"root_cause\": \"incorrect_image_reference\"}, {\"rank\": 3, \"fault_object\": \"app/emailservice\", \"root_cause\": \"missing_image_pull_secret\"}]}",
+  "finished": true,
+  "stop_reason": "submit",
+  "steps_used": 3
+}

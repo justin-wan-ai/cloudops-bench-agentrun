@@ -1,0 +1,6 @@
+{
+  "Completed": "{\"key_evidence_summary\": \"Alert on productcatalogservice showed RESOURCE_SATURATION (CPU) plus FILESYSTEM_WRITE_SURGE (peak 365007.86B/s). Source code inspection of product_catalog.go revealed ListProducts calls os.Create('/tmp/tmp.csv') and writes 30,000 CSV rows per invocation, directly explaining the filesystem write surge and correlated CPU load. No error logs were present, and deployment config was normal.\", \"top_3_predictions\": [{\"rank\": 1, \"fault_object\": \"app/productcatalogservice\", \"root_cause\": \"code_excessive_file_writes\"}, {\"rank\": 2, \"fault_object\": \"app/productcatalogservice\", \"root_cause\": \"code_artificial_delay\"}, {\"rank\": 3, \"fault_object\": \"app/productcatalogservice\", \"root_cause\": \"pod_cpu_overload\"}]}",
+  "finished": true,
+  "stop_reason": "submit",
+  "steps_used": 8
+}

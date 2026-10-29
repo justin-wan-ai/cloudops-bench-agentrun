@@ -1,0 +1,6 @@
+{
+  "Completed": "{\"key_evidence_summary\": \"productcatalogservice shows an isolated p90 latency spike to ~1158 ms from ~2.5 ms, while recommendationservice and frontend are degraded upstream callers. All pods are Running/Ready with no restarts, productcatalogservice logs show no errors, node resources are healthy, and service TCP connectivity succeeds. The code contains an EXTRA_LATENCY sleep path, but neither the Deployment nor Pod sets EXTRA_LATENCY, so that path is inactive. The evidence best supports pod-level network delay on productcatalogservice.\", \"top_3_predictions\": [{\"rank\": 1, \"fault_object\": \"app/productcatalogservice\", \"root_cause\": \"pod_network_delay\"}, {\"rank\": 2, \"fault_object\": \"app/productcatalogservice\", \"root_cause\": \"code_artificial_delay\"}, {\"rank\": 3, \"fault_object\": \"node/worker-01\", \"root_cause\": \"node_network_delay\"}]}",
+  "finished": true,
+  "stop_reason": "submit",
+  "steps_used": 20
+}

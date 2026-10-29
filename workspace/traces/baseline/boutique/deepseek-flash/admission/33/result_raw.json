@@ -1,0 +1,6 @@
+{
+  "Completed": "{\"key_evidence_summary\": \"The adservice Deployment is stuck at 0/1 replicas, and its ReplicaSet emits repeated FailedCreate events: pods are forbidden because the namespace quota `pod-count-quota` is exceeded (requested pods=1, used=10, limited=10). All other boutique pods are Running, so the fault is namespace-level pod quota exhaustion causing adservice to be unavailable.\", \"top_3_predictions\": [{\"rank\": 1, \"fault_object\": \"namespace/boutique\", \"root_cause\": \"namespace_pod_quota_exceeded\"}, {\"rank\": 2, \"fault_object\": \"namespace/boutique\", \"root_cause\": \"namespace_cpu_quota_exceeded\"}, {\"rank\": 3, \"fault_object\": \"app/adservice\", \"root_cause\": \"deployment_zero_replicas\"}]}",
+  "finished": true,
+  "stop_reason": "submit",
+  "steps_used": 6
+}

@@ -1,0 +1,6 @@
+{
+  "Completed": "{\"key_evidence_summary\": \"paymentservice is the only Pending pod and is unscheduled (`Node: <none>`). Worker nodes are Ready, untainted, and have ample CPU/memory. No namespace ResourceQuota exists. The critical finding is that `kube-scheduler.service` on `master` is inactive/dead, so new pods cannot be scheduled, causing partial service unreachability because paymentservice has no running endpoint.\", \"top_3_predictions\": [{\"rank\": 1, \"fault_object\": \"node/master\", \"root_cause\": \"kube_scheduler_unavailable\"}, {\"rank\": 2, \"fault_object\": \"app/paymentservice\", \"root_cause\": \"node_cordon_mismatch\"}, {\"rank\": 3, \"fault_object\": \"app/paymentservice\", \"root_cause\": \"deployment_zero_replicas\"}]}",
+  "finished": true,
+  "stop_reason": "submit",
+  "steps_used": 7
+}

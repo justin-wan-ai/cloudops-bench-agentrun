@@ -1,0 +1,6 @@
+{
+  "Completed": "{\"key_evidence_summary\": \"adservice pod is Pending with FailedScheduling: 3 nodes did not match pod node affinity/selector and 1 node was unschedulable. The adservice Deployment requires nodeAffinity env in [prod, staging], but worker-01/02/03 are labeled env=dev, and master is unschedulable.\", \"top_3_predictions\": [{\"rank\": 1, \"fault_object\": \"app/adservice\", \"root_cause\": \"node_affinity_mismatch\"}, {\"rank\": 2, \"fault_object\": \"app/adservice\", \"root_cause\": \"node_selector_mismatch\"}, {\"rank\": 3, \"fault_object\": \"app/adservice\", \"root_cause\": \"taint_toleration_mismatch\"}]}",
+  "finished": true,
+  "stop_reason": "submit",
+  "steps_used": 5
+}

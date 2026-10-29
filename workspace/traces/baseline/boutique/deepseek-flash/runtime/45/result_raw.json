@@ -1,0 +1,6 @@
+{
+  "Completed": "{\"key_evidence_summary\": \"shippingservice pod is Running but 0/1 Ready. DescribeResource shows repeated readiness probe failures connecting to 172.20.1.78:50052 with context deadline exceeded. The container declares/listens on gRPC port 50051 and has PORT=50051, while the readiness probe is configured for port 50052. This indicates a readiness probe port mismatch.\", \"top_3_predictions\": [{\"rank\": 1, \"fault_object\": \"app/shippingservice\", \"root_cause\": \"readiness_probe_incorrect_port\"}, {\"rank\": 2, \"fault_object\": \"app/shippingservice\", \"root_cause\": \"readiness_probe_incorrect_timing\"}, {\"rank\": 3, \"fault_object\": \"app/shippingservice\", \"root_cause\": \"service_port_mapping_mismatch\"}]}",
+  "finished": true,
+  "stop_reason": "submit",
+  "steps_used": 3
+}

@@ -1,0 +1,6 @@
+{
+  "Completed": "{\"key_evidence_summary\": \"All other boutique Pods are Running, but emailservice Deployment has 0/1 available replicas and no emailservice Pod exists. The emailservice ReplicaSet reports FailedCreate events stating Pod creation is forbidden because the namespace memory-request quota is exceeded: requested 500Mi, used 3000Mi, limited 3Gi. Thus the service availability disruption is caused by the namespace memory quota being exhausted.\", \"top_3_predictions\": [{\"rank\": 1, \"fault_object\": \"namespace/boutique\", \"root_cause\": \"namespace_memory_quota_exceeded\"}, {\"rank\": 2, \"fault_object\": \"namespace/boutique\", \"root_cause\": \"namespace_cpu_quota_exceeded\"}, {\"rank\": 3, \"fault_object\": \"namespace/boutique\", \"root_cause\": \"namespace_pod_quota_exceeded\"}]}",
+  "finished": true,
+  "stop_reason": "submit",
+  "steps_used": 6
+}

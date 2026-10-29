@@ -1,0 +1,6 @@
+{
+  "Completed": "{\"key_evidence_summary\": \"redis-cart-6587955858-h82lp is Pending with PodScheduled=False. Its Deployment requires nodeSelector kubernetes.io/hostname=worker-01, but worker-01's labels do not include kubernetes.io/hostname, while worker-02 and worker-03 do. The scheduler reports nodes not matching pod node affinity/selector. The PVC is Bound and worker-01 kubelet is active, making storage and kubelet failures unlikely. worker-01 also has an untolerated node-unhealthy taint, making taint/toleration mismatch the next-best alternative.\", \"top_3_predictions\": [{\"rank\": 1, \"fault_object\": \"app/redis-cart\", \"root_cause\": \"node_selector_mismatch\"}, {\"rank\": 2, \"fault_object\": \"app/redis-cart\", \"root_cause\": \"taint_toleration_mismatch\"}, {\"rank\": 3, \"fault_object\": \"app/redis-cart\", \"root_cause\": \"node_affinity_mismatch\"}]}",
+  "finished": true,
+  "stop_reason": "submit",
+  "steps_used": 19
+}

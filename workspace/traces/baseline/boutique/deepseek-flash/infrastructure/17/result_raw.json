@@ -1,0 +1,6 @@
+{
+  "Completed": "{\"key_evidence_summary\": \"All application pods were Running/Ready and Services existed in `boutique`. Frontend logs showed downstream RPC/DNS-like connectivity errors. Direct TCP checks to `shippingservice:50051` failed from worker-01 but succeeded from worker-02 and worker-03. Inspection of worker-01 showed `kube-proxy.service` is inactive/dead, explaining service routing/connectivity disruption localized to that node.\", \"top_3_predictions\": [{\"rank\": 1, \"fault_object\": \"node/worker-01\", \"root_cause\": \"kube_proxy_unavailable\"}, {\"rank\": 2, \"fault_object\": \"node/worker-01\", \"root_cause\": \"node_network_packet_loss\"}, {\"rank\": 3, \"fault_object\": \"app/frontend\", \"root_cause\": \"service_dns_resolution_failure\"}]}",
+  "finished": true,
+  "stop_reason": "submit",
+  "steps_used": 8
+}

@@ -1,0 +1,6 @@
+{
+  "Completed": "{\"key_evidence_summary\": \"cartservice pod is Pending with PodScheduled=False. Scheduler events show 0/4 nodes available: 1 node unschedulable and 3 nodes failed due to pod anti-affinity rules. cartservice Deployment YAML has requiredDuringSchedulingIgnoredDuringExecution podAntiAffinity matching label service=backend on topologyKey kubernetes.io/hostname, and backend pods are running on worker-01/02/03. This prevents cartservice from scheduling and causes partial service unreachability.\", \"top_3_predictions\": [{\"rank\": 1, \"fault_object\": \"app/cartservice\", \"root_cause\": \"pod_anti_affinity_conflict\"}, {\"rank\": 2, \"fault_object\": \"app/cartservice\", \"root_cause\": \"node_cordon_mismatch\"}, {\"rank\": 3, \"fault_object\": \"app/cartservice\", \"root_cause\": \"node_affinity_mismatch\"}]}",
+  "finished": true,
+  "stop_reason": "submit",
+  "steps_used": 4
+}

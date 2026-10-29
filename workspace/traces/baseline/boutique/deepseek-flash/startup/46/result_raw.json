@@ -1,0 +1,6 @@
+{
+  "Completed": "{\"key_evidence_summary\": \"Only frontend is unhealthy: frontend pod is Pending in ErrImagePull/ImagePullBackOff. Describe shows image pull failed at ghcr.io token authorization with 403 Forbidden, not DNS resolution failure. The frontend Deployment has no imagePullSecrets configured, while the image reference is structurally valid. This supports missing registry credentials for app/frontend.\", \"top_3_predictions\": [{\"rank\": 1, \"fault_object\": \"app/frontend\", \"root_cause\": \"missing_image_pull_secret\"}, {\"rank\": 2, \"fault_object\": \"app/frontend\", \"root_cause\": \"incorrect_image_reference\"}, {\"rank\": 3, \"fault_object\": \"app/frontend\", \"root_cause\": \"image_registry_dns_failure\"}]}",
+  "finished": true,
+  "stop_reason": "submit",
+  "steps_used": 4
+}

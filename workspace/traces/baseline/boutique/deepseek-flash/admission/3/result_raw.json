@@ -1,0 +1,6 @@
+{
+  "Completed": "{\"key_evidence_summary\": \"checkoutservice Deployment is 0/1 available; its ReplicaSet shows ReplicaFailure=True with FailedCreate events: `pods \\\"checkoutservice-d4d5bb7d8-\\\" is forbidden: error looking up service account boutique/checkoutservices: serviceaccount \\\"checkoutservices\\\" not found`. All other boutique services are Running, so the incident is localized to checkoutservice and caused by a missing ServiceAccount.\", \"top_3_predictions\": [{\"rank\": 1, \"fault_object\": \"app/checkoutservice\", \"root_cause\": \"missing_service_account\"}, {\"rank\": 2, \"fault_object\": \"app/checkoutservice\", \"root_cause\": \"missing_secret_binding\"}, {\"rank\": 3, \"fault_object\": \"app/checkoutservice\", \"root_cause\": \"deployment_zero_replicas\"}]}",
+  "finished": true,
+  "stop_reason": "submit",
+  "steps_used": 6
+}

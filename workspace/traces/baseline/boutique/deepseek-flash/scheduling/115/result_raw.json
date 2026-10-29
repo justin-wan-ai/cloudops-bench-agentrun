@@ -1,0 +1,6 @@
+{
+  "Completed": "{\"key_evidence_summary\": \"frontend has 5 replicas but only 3 are Running and one frontend pod is placed on each of worker-01/02/03. Two frontend pods are Pending. The frontend Deployment enforces requiredDuringSchedulingIgnoredDuringExecution podAntiAffinity on app=frontend with topologyKey kubernetes.io/hostname, permitting at most one frontend pod per node. The Pending pod event states: 0/4 nodes available, 1 unschedulable, and 3 did not match pod anti-affinity rules. The cluster has only three normal schedulable worker nodes plus a cordoned/unschedulable master, so a 5-replica frontend cannot satisfy the anti-affinity rule.\", \"top_3_predictions\": [{\"rank\": 1, \"fault_object\": \"app/frontend\", \"root_cause\": \"pod_anti_affinity_conflict\"}, {\"rank\": 2, \"fault_object\": \"app/frontend\", \"root_cause\": \"node_cordon_mismatch\"}, {\"rank\": 3, \"fault_object\": \"app/frontend\", \"root_cause\": \"taint_toleration_mismatch\"}]}",
+  "finished": true,
+  "stop_reason": "submit",
+  "steps_used": 5
+}

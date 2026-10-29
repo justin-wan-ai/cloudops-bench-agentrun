@@ -1,0 +1,6 @@
+{
+  "Completed": "{\"key_evidence_summary\": \"adservice Deployment is 0/1 available, its ReplicaSet created no pods, and the replicaset-controller event explicitly reports FailedCreate: serviceaccount \\\"services\\\" not found in namespace boutique. All other boutique pods are Running and Ready, and the adservice Service exists but has no backing pod.\", \"top_3_predictions\": [{\"rank\": 1, \"fault_object\": \"app/adservice\", \"root_cause\": \"missing_service_account\"}, {\"rank\": 2, \"fault_object\": \"namespace/boutique\", \"root_cause\": \"namespace_pod_quota_exceeded\"}, {\"rank\": 3, \"fault_object\": \"app/adservice\", \"root_cause\": \"deployment_zero_replicas\"}]}",
+  "finished": true,
+  "stop_reason": "submit",
+  "steps_used": 6
+}

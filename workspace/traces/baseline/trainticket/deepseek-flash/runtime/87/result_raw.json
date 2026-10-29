@@ -1,0 +1,6 @@
+{
+  "Completed": "{\"key_evidence_summary\": \"Payment requests fail with HTTP 500 at ts-inside-payment-service, which depends on ts-payment-service. The ts-payment-service deployment is the only unavailable deployment (0/1 available), its pod is 1/2 Running with 4 restarts, and previous logs show `PortInUseException: Port 19001 is already in use`. The deployment config uses container port 19001 while the Istio proxy annotation also sets statusPort 19001, indicating a sidecar/app port conflict that prevents the payment service from becoming available.\", \"top_3_predictions\": [{\"rank\": 1, \"fault_object\": \"app/ts-payment-service\", \"root_cause\": \"service_sidecar_port_conflict\"}, {\"rank\": 2, \"fault_object\": \"app/ts-payment-service\", \"root_cause\": \"readiness_probe_incorrect_port\"}, {\"rank\": 3, \"fault_object\": \"app/ts-inside-payment-service\", \"root_cause\": \"service_dns_resolution_failure\"}]}",
+  "finished": true,
+  "stop_reason": "submit",
+  "steps_used": 10
+}

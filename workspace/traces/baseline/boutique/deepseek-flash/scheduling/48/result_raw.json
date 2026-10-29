@@ -1,0 +1,6 @@
+{
+  "Completed": "{\"key_evidence_summary\": \"paymentservice-6bb6859449-wfld5 is Pending with PodScheduled=False. Scheduler events report 0/4 nodes available: 1 unschedulable and 3 Insufficient memory. The paymentservice Deployment requests 8Gi memory, which is the dominant scheduling constraint. All worker nodes are Ready with no MemoryPressure, and no ResourceQuota exists in boutique.\", \"top_3_predictions\": [{\"rank\": 1, \"fault_object\": \"app/paymentservice\", \"root_cause\": \"memory_capacity_mismatch\"}, {\"rank\": 2, \"fault_object\": \"app/paymentservice\", \"root_cause\": \"pod_anti_affinity_conflict\"}, {\"rank\": 3, \"fault_object\": \"app/paymentservice\", \"root_cause\": \"node_affinity_mismatch\"}]}",
+  "finished": true,
+  "stop_reason": "submit",
+  "steps_used": 6
+}

@@ -1,0 +1,6 @@
+{
+  "Completed": "{\"key_evidence_summary\": \"ts-travel-service is the only unhealthy pod (CrashLoopBackOff). Logs show repeated MySQL Communications link failure with Connection refused. The deployment secret sets TRAVEL_MYSQL_PORT=34022, but the tsdb-mysql-leader Service exposes MySQL only on port 3306. Since DNS resolution succeeds (refused rather than unknown host), the fault is an incorrect MySQL port configuration in ts-travel-service.\", \"top_3_predictions\": [{\"rank\": 1, \"fault_object\": \"app/ts-travel-service\", \"root_cause\": \"mysql_invalid_port\"}, {\"rank\": 2, \"fault_object\": \"app/ts-travel-service\", \"root_cause\": \"service_env_var_address_mismatch\"}, {\"rank\": 3, \"fault_object\": \"app/ts-travel-service\", \"root_cause\": \"service_dns_resolution_failure\"}]}",
+  "finished": true,
+  "stop_reason": "submit",
+  "steps_used": 5
+}

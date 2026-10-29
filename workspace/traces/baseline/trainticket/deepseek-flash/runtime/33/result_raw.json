@@ -1,0 +1,6 @@
+{
+  "Completed": "{\"key_evidence_summary\": \"Only ts-assurance-service is unhealthy (CrashLoopBackOff). Its logs show Hibernate/JDBC startup failure caused by 'Access denied for user ts@172.20.2.87 (using password: YES)', meaning the DB password supplied is incorrect, so the DataSource fails and the pod repeatedly restarts. All other services and DB pods are Running, so MySQL itself is up and reachable; the fault is app-specific invalid credentials.\", \"top_3_predictions\": [{\"rank\": 1, \"fault_object\": \"app/ts-assurance-service\", \"root_cause\": \"mysql_invalid_credentials\"}, {\"rank\": 2, \"fault_object\": \"app/ts-assurance-service\", \"root_cause\": \"missing_secret_binding\"}, {\"rank\": 3, \"fault_object\": \"app/ts-assurance-service\", \"root_cause\": \"service_env_var_address_mismatch\"}]}",
+  "finished": true,
+  "stop_reason": "submit",
+  "steps_used": 3
+}
