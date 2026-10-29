@@ -231,6 +231,8 @@ escalate 保证一件事：流程失效时，结果不会比原 agent 更差。
 │   ├── runs/                 每轮测试结果（score / coverage / compare）
 │   ├── traces/               轨迹证据（baseline、各轮、final）
 │   ├── jev/                  判定请求、答案库、审计
+│   ├── agentrun.md           方法论原稿，出自 https://github.com/Parcha-ai/agentrun
+│   ├── coding-agent-rsi-data-partitioning-guide.md   数据划分方法论（外部输入）
 │   └── 00_charter.md … 08_final_report.md
 ├── README.md                 本文件
 ├── LICENSE                   MIT（代码）
